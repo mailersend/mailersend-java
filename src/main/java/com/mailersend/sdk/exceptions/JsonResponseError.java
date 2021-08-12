@@ -7,13 +7,10 @@
  **************************************************/
 package com.mailersend.sdk.exceptions;
 
-public class MailerSendException extends Exception {
+import java.util.HashMap;
 
-    public int code;
+public class JsonResponseError {
     
-    public MailerSendException(String message) {
-        
-        super(message);
-    }
-
+    public String message = "";
+    public HashMap<String, String[]> errors = new HashMap<String, String[]>();
 }

@@ -7,13 +7,16 @@
  **************************************************/
 package com.mailersend.sdk.exceptions;
 
-public class MailerSendException extends Exception {
+import java.util.HashMap;
 
-    public int code;
+public class MailerSendResponseError extends MailerSendException {
+
+    public String message = "";
+    public HashMap<String, String[]> errors = new HashMap<String, String[]>();
     
-    public MailerSendException(String message) {
+    public MailerSendResponseError(String message) {
         
         super(message);
     }
-
+    
 }

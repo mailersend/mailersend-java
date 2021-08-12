@@ -7,6 +7,10 @@
  **************************************************/
 package com.mailersend.sdk;
 
+import java.net.http.HttpClient;
+
+import com.google.gson.Gson;
+import com.mailersend.sdk.exceptions.MailerSendResponseError;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
 /**
@@ -54,10 +58,15 @@ public class MailerSend {
     /**
      * Sends the given email
      * @param email
+     * @throws MailerSendResponseError 
      */
-    public void Send(Email email) {
+    public void Send(Email email) throws MailerSendResponseError {
         
+        String json = email.serializeForSending();
         
-       
+        MailerSendApi api = new MailerSendApi();
+        api.setToken(this.token);
+        
+        api.postRequest("/email", json, MailerSendResponseError.class);
     }
 }

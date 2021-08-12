@@ -15,53 +15,19 @@ import com.mailersend.sdk.*;
 import com.mailersend.sdk.email.attributes.Personalization;
 
 public class EmailConfigurationTest {
-    
-    private final String emailFrom = "your@email.com";
-    private final String fromName = "Your Name";
-    
-    private final String toEmail = "your@client.com";
-    private final String toName = "Your Client";
-    
-    private final String subject = "Subject";
-    private final String text = "This is the text content";
-    private final String html = "<p>This is the HTML <strong>content</strong></p>";
-    
-    private final String templateId = "123";
-
-    
-    /**
-     * Creates a basic email with the above configuration
-     * @return
-     */
-    private Email createBasicEmail() {
         
-        Email email = new Email();
-        
-        email.setFrom(this.fromName, this.emailFrom);
-        email.addRecipient(this.toName, this.toEmail);
-        
-        email.setSubject(this.subject);
-        email.setHtml(this.html);
-        email.setPlain(this.text);
-        
-        email.setTemplateId(this.templateId);
-        
-        return email;
-    }
-    
-    
     /**
      * Tests the from name and email
      */
     @Test
     public void TestEmailFromConfiguration() {
         
-        Email email = this.createBasicEmail();
+        Email email = TestHelper.createBasicEmail(true);
         
-        email.setFrom(this.fromName, this.emailFrom);
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
 
-        assertEquals(email.from.name, this.fromName);
-        assertEquals(email.from.email, this.emailFrom);
+        assertEquals(email.from.name, TestHelper.fromName);
+        assertEquals(email.from.email, TestHelper.emailFrom);
     }
     
     
@@ -71,13 +37,13 @@ public class EmailConfigurationTest {
     @Test
     public void TestSingleRecipientConfiguration() {
         
-        Email email = this.createBasicEmail();
+        Email email = TestHelper.createBasicEmail(true);
         
         assertEquals(email.recipients.size(), 1);
         
-        assertEquals(email.recipients.get(0).name, this.toName);
+        assertEquals(email.recipients.get(0).name, TestHelper.toName);
         
-        assertEquals(email.recipients.get(0).email, this.toEmail);
+        assertEquals(email.recipients.get(0).email, TestHelper.toEmail);
     }
     
     
@@ -90,7 +56,7 @@ public class EmailConfigurationTest {
         String secondRecipientName = "Test Recipient 2";
         String secondRecipientEmail = "test@recipient2.com";
         
-        Email email = this.createBasicEmail();
+        Email email = TestHelper.createBasicEmail(true);
         
         email.addRecipient(secondRecipientName, secondRecipientEmail);
         
@@ -107,11 +73,11 @@ public class EmailConfigurationTest {
     @Test
     public void TestEmailContentsConfiguration() {
         
-        Email email = this.createBasicEmail();
+        Email email = TestHelper.createBasicEmail(true);
         
-        assertEquals(email.subject, this.subject);
-        assertEquals(email.html, this.html);
-        assertEquals(email.text, this.text);
+        assertEquals(email.subject, TestHelper.subject);
+        assertEquals(email.html, TestHelper.html);
+        assertEquals(email.text, TestHelper.text);
     }
     
     
@@ -126,7 +92,7 @@ public class EmailConfigurationTest {
         
         Email email = new Email();
         
-        Recipient recipient = new Recipient(this.toName, this.toEmail);
+        Recipient recipient = new Recipient(TestHelper.toName, TestHelper.toEmail);
         
         email.addPersonalization(recipient, personalizationName, personalizationValue);
         
@@ -176,7 +142,7 @@ public class EmailConfigurationTest {
         
         Email email = new Email();
         
-        Recipient firstRecipient = new Recipient(this.toName, this.toEmail);
+        Recipient firstRecipient = new Recipient(TestHelper.toName, TestHelper.toEmail);
         email.AddRecipient(firstRecipient);
         
         Recipient secondRecipient = new Recipient(recipient2Name, recipient2Email);

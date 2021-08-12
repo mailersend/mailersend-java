@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.email.attributes.Attachment;
 import com.mailersend.sdk.email.attributes.Personalization;
@@ -57,10 +58,10 @@ public class Email {
     
     
     // keeps the global personalizations
-    protected HashMap<String, String> allRecipientsPersonalization = new HashMap<String, String>();
+    protected transient HashMap<String, String> allRecipientsPersonalization = new HashMap<String, String>();
     
     // keeps the global variable substitutions
-    protected HashMap<String, String> allRecipientsSubstitutions = new HashMap<String, String>();
+    protected transient HashMap<String, String> allRecipientsSubstitutions = new HashMap<String, String>();
     
     /**
      * Adds a recipient to the email
@@ -281,5 +282,51 @@ public class Email {
         attachment.AddAttachmentFromFile(path);
         
         this.attachments.add(attachment);
+    }
+    
+    
+    /**
+     * Adds each entry of the allRecipientsPersonalization hash map as a personalization for each recipient
+     */
+    private void preparePersonalizationForAllRecipients() {
+        
+        for (Recipient recipient : this.recipients) {
+            
+            for (String name : allRecipientsPersonalization.keySet()) {
+                
+                addPersonalization(recipient, name, allRecipientsPersonalization.get(name));
+            }
+        }
+    }
+    
+    
+    /**
+     * Adds each entry of the allRecipientsSubstitutions hash map as a substitution for each recipient
+     */
+    private void prepareSubstitutionsForAllRecipients() {
+        
+        for (Recipient recipient : this.recipients) {
+            
+            for (String name : allRecipientsSubstitutions.keySet()) {
+                
+                addPersonalization(recipient, name, allRecipientsSubstitutions.get(name));
+            }
+        }
+    }
+    
+    
+    /**
+     * Prepares the email for sending and returns it as a serialized JSON string
+     * @return String
+     */
+    protected String serializeForSending() {
+        
+        preparePersonalizationForAllRecipients();
+        prepareSubstitutionsForAllRecipients();
+        
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        
+        return json;
     }
 }
