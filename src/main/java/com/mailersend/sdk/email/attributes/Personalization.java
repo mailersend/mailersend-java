@@ -17,5 +17,5 @@ public class Personalization {
     public String email;
 
     @SerializedName("data")
-    public HashMap<String, String> data = new HashMap<String, String>();
+    public HashMap<String, Object> data = new HashMap<String, Object>();
 }

@@ -7,12 +7,14 @@
  **************************************************/
 package com.mailersend.sdk;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.email.attributes.Attachment;
 import com.mailersend.sdk.email.attributes.Personalization;
@@ -58,7 +60,7 @@ public class Email {
     
     
     // keeps the global personalizations
-    protected transient HashMap<String, String> allRecipientsPersonalization = new HashMap<String, String>();
+    protected transient HashMap<String, Object> allRecipientsPersonalization = new HashMap<String, Object>();
     
     // keeps the global variable substitutions
     protected transient HashMap<String, String> allRecipientsSubstitutions = new HashMap<String, String>();
@@ -108,6 +110,16 @@ public class Email {
     
     
     /**
+     * Adds a carbon copy recipient to the email
+     * @param recipient
+     */
+    public void AddCc(Recipient recipient) {
+        
+        this.cc.add(recipient);
+    }
+    
+    
+    /**
      * Adds a blind carbon copy recipient to the email
      * @param name
      * @param email
@@ -115,6 +127,16 @@ public class Email {
     public void AddBcc(String name, String email) {
         
         Recipient recipient = new Recipient(name, email);
+        this.bcc.add(recipient);
+    }
+    
+    
+    /**
+     * Adds a blind carbon copy recipient to the email
+     * @param recipient
+     */
+    public void AddBcc(Recipient recipient) {
+        
         this.bcc.add(recipient);
     }
     
@@ -170,13 +192,14 @@ public class Email {
         this.templateId = templateId;
     }
     
+    
     /**
      * Adds a personalization for the given recipient
      * @param recipient
      * @param name
      * @param value
      */
-    public void addPersonalization(Recipient recipient, String name, String value) {
+    public void addPersonalization(Recipient recipient, String name, Object value) {
         
         // check if there is already a personalization for this recipient
         Personalization personalizationEntry = null;
@@ -211,7 +234,7 @@ public class Email {
      * @param name
      * @param value
      */
-    public void addPersonalization(String name, String value) {
+    public void addPersonalization(String name, Object value) {
         
         this.allRecipientsPersonalization.put(name, value);
     }
@@ -276,12 +299,17 @@ public class Email {
      * @param path
      * @throws IOException
      */
-    public void AttachFile(String path) throws IOException {
+    public void attachFile(String path) throws IOException {
     
         Attachment attachment = new Attachment();
         attachment.AddAttachmentFromFile(path);
         
         this.attachments.add(attachment);
+    }
+    
+    public void attachFile(File file) throws IOException {
+        
+        attachFile(file.getAbsolutePath());
     }
     
     
@@ -320,13 +348,13 @@ public class Email {
      * @return String
      */
     protected String serializeForSending() {
-        
+            
         preparePersonalizationForAllRecipients();
         prepareSubstitutionsForAllRecipients();
         
         Gson gson = new Gson();
         String json = gson.toJson(this);
-        
+
         return json;
     }
 }

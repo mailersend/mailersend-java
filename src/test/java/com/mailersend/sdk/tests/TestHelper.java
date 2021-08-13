@@ -11,20 +11,26 @@ import com.mailersend.sdk.Email;
 
 public class TestHelper {
 
-    public static final String emailFrom = "your@email.com";
-    public static final String fromName = "Your Name";
+    public static final String emailFrom = "from@email.com";
+    public static final String fromName = "From Name";
     
-    public static final String toEmail = "your@client.com";
-    public static final String toName = "Your Client";
+    public static final String toEmail = "to@email.com";
+    public static final String toName = "To Name";
+    
+    public static final String ccEmail = "test@ccemail.com";
+    public static final String ccName = "CC Email";
+    
+    public static final String bccEmail = "test@bccemail.com";
+    public static final String bccName = "BCC Email";
     
     public static final String subject = "Subject";
     public static final String text = "This is the text content";
     public static final String html = "<p>This is the HTML <strong>content</strong></p>";
     
-    public static final String templateId = "123";
+    public static final String templateId = "a MailerSend template id";
     
     public static final String invalidToken = "an invalid token";
-    public static final String validToken = "...";
+    public static final String validToken = "your MailerSend API token";
     
     /**
      * Creates a basic email with the above configuration
@@ -43,9 +49,10 @@ public class TestHelper {
             
             email.setHtml(html);
             email.setPlain(text);
-        }
+        } else {
         
-        email.setTemplateId(templateId);
+            email.setTemplateId(templateId);
+        }
         
         return email;
     }

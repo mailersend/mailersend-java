@@ -165,4 +165,62 @@ public class EmailConfigurationTest {
         assertEquals(p2.data.size(), 1);
         assertEquals(p2.data.get(secondPName), secondPValue);
     }
+    
+    
+    /**
+     * Tests that carbon copy recipients can be added to the email
+     */
+    @Test
+    public void TestCcRecipients() {
+        
+        Recipient ccRecipient1 = new Recipient("name1", "test1@cc.com");
+        Recipient ccRecipient2 = new Recipient("name2", "test2@cc.com");
+        
+        Email email = TestHelper.createBasicEmail(false);
+        
+        // test adding the recipient directly
+        email.AddCc(ccRecipient1.name, ccRecipient1.email);
+        
+        assertEquals(email.cc.size(), 1);
+        
+        assertTrue(email.cc.get(0).name.equals(ccRecipient1.name));
+        assertTrue(email.cc.get(0).email.equals(ccRecipient1.email));
+        
+        // test adding the recipient object
+        email.AddCc(ccRecipient2);
+        
+        assertEquals(email.cc.size(), 2);
+        
+        assertTrue(email.cc.get(1).name.equals(ccRecipient2.name));
+        assertTrue(email.cc.get(1).email.equals(ccRecipient2.email));
+    }
+    
+    
+    /**
+     * Tests that blind carbon copy recipients can be added to the email
+     */
+    @Test
+    public void TestBccRecipients() {
+        
+        Recipient bccRecipient1 = new Recipient("name1", "test1@bcc.com");
+        Recipient bccRecipient2 = new Recipient("name2", "test2@bcc.com");
+        
+        Email email = TestHelper.createBasicEmail(false);
+        
+        // test adding the recipient directly
+        email.AddBcc(bccRecipient1.name, bccRecipient1.email);
+        
+        assertEquals(email.bcc.size(), 1);
+        
+        assertTrue(email.bcc.get(0).name.equals(bccRecipient1.name));
+        assertTrue(email.bcc.get(0).email.equals(bccRecipient1.email));
+        
+        // test adding the recipient object
+        email.AddBcc(bccRecipient2);
+        
+        assertEquals(email.bcc.size(), 2);
+        
+        assertTrue(email.bcc.get(1).name.equals(bccRecipient2.name));
+        assertTrue(email.bcc.get(1).email.equals(bccRecipient2.email));
+    }
 }

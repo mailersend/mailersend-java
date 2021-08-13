@@ -5,13 +5,14 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.exceptions;
+package com.mailersend.sdk;
 
-public class InvalidDomainException extends MailerSendException {
+/**
+ * Represents a successful email send via MailerSend
+ */
+public class MailerSendResponse {
 
-    public InvalidDomainException(String message) {
-        
-        super(message);
-    }
-
+    public String messageId = "";
+    public int rateLimit;
+    public int rateLimitRemaining;
 }
