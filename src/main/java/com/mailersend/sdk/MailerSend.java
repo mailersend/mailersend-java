@@ -78,10 +78,10 @@ public class MailerSend {
     /**
      * Gets the activities for the given domain id
      * @param domainId
-     * @return Activity[]
+     * @return 
      * @throws MailerSendException
      */
-    public Activity[] getActivities(String domainId) throws MailerSendException {
+    public Activities getActivities(String domainId) throws MailerSendException {
         
         return this.getActivities(domainId, 1, 25, null, null, null);
     }
@@ -98,7 +98,7 @@ public class MailerSend {
      * @return the found list of activities
      * @throws MailerSendException
      */
-    public Activity[] getActivities(String domainId, int page, int limit, LocalDateTime dateFrom, LocalDateTime dateTo, String[] events) throws MailerSendException {
+    public Activities getActivities(String domainId, int page, int limit, LocalDateTime dateFrom, LocalDateTime dateTo, String[] events) throws MailerSendException {
         
         String endpoint = "/activity/".concat(domainId);
         
@@ -118,7 +118,13 @@ public class MailerSend {
         MailerSendApi api = new MailerSendApi();
         api.setToken(this.token);
         
-        Activity[] activities = api.getRequest(endpoint, Activity[].class);
+        Activities activities = api.getRequest(endpoint, Activities.class);
+        
+        activities.mailersendObj = this;
+        activities.domainId = domainId;
+        activities.dateFrom = dateFrom;
+        activities.dateTo = dateTo;
+        activities.events = events;
         
         return activities;
     }

@@ -63,7 +63,7 @@ public class MailerSendApi {
      * @return T
      * @throws MailerSendException
      */
-    public <T> T getRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
+    public <T extends MailerSendResponse> T getRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
         
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
                 .header("Content-type", "applicateion/json")
@@ -97,7 +97,7 @@ public class MailerSendApi {
      * @return T
      * @throws MailerSendException
      */
-    public <T> T postRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
+    public <T extends MailerSendResponse> T postRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
        
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
                 .header("Content-type", "applicateion/json")
@@ -140,7 +140,7 @@ public class MailerSendApi {
      * @return T
      * @throws MailerSendException
      */
-    private <T> T handleApiResponse(HttpResponse<String> responseObject, Class<T> responseClass) throws MailerSendException {
+    private <T extends MailerSendResponse> T handleApiResponse(HttpResponse<String> responseObject, Class<T> responseClass) throws MailerSendException {
         
         String stringResponse = "";
         
@@ -181,14 +181,12 @@ public class MailerSendApi {
             }
         }
         
-        MailerSendResponse status = new MailerSendResponse();
-        
         // get the response headers
-        status.messageId = responseObject.headers().firstValue("x-message-id").get();
+        response.messageId = responseObject.headers().firstValue("x-message-id").get();
         
         try {
             
-            status.rateLimit = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-limit").get());
+            response.rateLimit = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-limit").get());
         } catch (NumberFormatException e) {
             
             // left empty on purpose
@@ -196,13 +194,11 @@ public class MailerSendApi {
         
         try {
             
-            status.rateLimitRemaining = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-remaining").get());
+            response.rateLimitRemaining = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-remaining").get());
         } catch (NumberFormatException e) {
             
             // left empty on purpose
         }
-        
-        this.lastRequestResponse = status;
         
         return response;
     }
