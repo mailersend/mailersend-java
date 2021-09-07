@@ -7,9 +7,28 @@
  **************************************************/
 package com.mailersend.sdk;
 
+import java.util.Date;
+
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Recipient {
+    
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("id")
+    public String id = null;
+    
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("created_at")
+    public Date createdAt = null;
+    
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("updated_at")
+    public Date updatedAt = null;
+    
+    @Expose(serialize = false, deserialize = true)
+    @SerializedName("deleted_at")
+    public Date deletedAt = null;
 
     @SerializedName("name")
     public String name;

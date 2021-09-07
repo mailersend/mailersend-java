@@ -11,18 +11,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.email.attributes.Attachment;
 import com.mailersend.sdk.email.attributes.Personalization;
 import com.mailersend.sdk.email.attributes.Substitution;
 import com.mailersend.sdk.email.attributes.Variable;
+import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 public class Email {
-
+    
     @SerializedName("to")
     public ArrayList<Recipient> recipients = new ArrayList<Recipient>();
 
@@ -57,8 +61,7 @@ public class Email {
 
     @SerializedName("personalization")
     public ArrayList<Personalization> personalization = new ArrayList<Personalization>();
-    
-    
+        
     // keeps the global personalizations
     protected transient HashMap<String, Object> allRecipientsPersonalization = new HashMap<String, Object>();
     
@@ -352,7 +355,11 @@ public class Email {
         preparePersonalizationForAllRecipients();
         prepareSubstitutionsForAllRecipients();
         
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
+                .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
+                .create();
+        
         String json = gson.toJson(this);
 
         return json;
