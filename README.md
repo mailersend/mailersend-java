@@ -368,7 +368,7 @@ public void getActivities() {
     
         int page = 1;
         int limit = 25; // also the default limit is 25
-        Date dateFrom = DateUtils.addDays(new Date(),-30); // you'll need apache-commons for this
+        Date dateFrom = DateUtils.addDays(new Date(), -30); // you'll need apache-commons for this
         Date dateTo = new Date();
 
         String events[] = {EventTypes.OPENED, EventTypes.SENT}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
