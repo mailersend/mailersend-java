@@ -7,9 +7,6 @@
  **************************************************/
 package com.mailersend.sdk;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -149,6 +146,7 @@ public class MailerSend {
             params.add(eventsParam);
         }
         
+        // add the parameters to the endpoint url
         for (int i = 0; i < params.size(); i++) {
             
             String attrSep = "&";
@@ -167,8 +165,10 @@ public class MailerSend {
         
         Activities activities = api.getRequest(endpoint, Activities.class);
         
+        // call postDeserialize to parse dates, etc.
         activities.postDeserialize();
         
+        // we pass these to the Activities object so that we can provide pagination
         activities.mailersendObj = this;
         activities.domainId = domainId;
         activities.dateFrom = dateFrom;
