@@ -18,7 +18,7 @@ MailerSend Java SDK
         - [Get a list of Activities](#get-a-list-of-activities)
         - [Activities filters](#activities-filters)
         - [Activities pagination](#activities-pagination)
-        - [Get email for resent](#activity-email-for-resent)
+        - [Get email for resend](#activity-email-for-resend)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -316,12 +316,12 @@ Through the `Activities` object you can get the list of activities, get the next
 ### Get a list of activities
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.Activities;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
-public void sendEmail() {
+public void getActivities() {
 
     MailerSend ms = new MailerSend();
 
@@ -352,13 +352,13 @@ public void sendEmail() {
 ### Activities filters
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.Activities;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.EventTypes;
 
-public void sendEmail() {
+public void getActivities() {
 
     MailerSend ms = new MailerSend();
 
@@ -390,12 +390,12 @@ public void sendEmail() {
 ### Activities pagination
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.Activities;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
-public void sendEmail() {
+public void getActivities() {
 
     MailerSend ms = new MailerSend();
 
@@ -442,15 +442,16 @@ public void sendEmail() {
 }
 ```
 
-### Activity email for resent
+### Activity email for resend
 
 ```java
+import com.mailersend.sdk.Activities;
 import com.mailersend.sdk.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
-public void sendEmail() {
+public void getActivities() {
 
     MailerSend ms = new MailerSend();
 
