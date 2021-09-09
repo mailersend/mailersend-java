@@ -14,6 +14,11 @@ MailerSend Java SDK
         - [Advanced personalization](#advanced-personalization)
         - [Simple personalization](#simple-personalization)
         - [Send email with attachment](#send-email-with-attachment)
+    - [Activities](#activities)
+        - [Get a list of Activities](#get-a-list-of-activities)
+        - [Activities filters](#activities-filters)
+        - [Activities pagination](#activities-pagination)
+        - [Get email for resent](#activity-email-for-resent)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -292,6 +297,176 @@ public void sendEmail() {
     
         MailerSendResponse response = ms.send(email);
         System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+## Activities 
+
+### General
+
+The SDK provides a simple interface to retrieve a list of activities for a domain.
+
+The SDK returns an `Activities` object on successful send or throws a `MailerSendException` on a failed one.
+
+Through the `Activities` object you can get the list of activities, get the next page of results, convert an activity into an email for resend, etc.
+
+### Get a list of activities
+
+```java
+import com.mailersend.sdk.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmail() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        Activities activities = ms.getActivities("domain id");
+
+        for (Activity activity : activities.activities) {
+
+            System.out.println(activity.id);
+            System.out.println(activity.createdAt.toString());
+
+            System.out.println(activity.email.from);
+            System.out.println(activity.email.subject);
+            System.out.println(activitiy.email.recipient.email);
+        }
+
+        
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Activities filters
+
+```java
+import com.mailersend.sdk.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.EventTypes;
+
+public void sendEmail() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        int page = 1;
+        int limit = 25; // also the default limit is 25
+        Date dateFrom = DateUtils.addDays(new Date(),-30); // you'll need apache-commons for this
+        Date dateTo = new Date();
+
+        String events[] = {EventTypes.OPENED, EventTypes.SENT}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
+
+        Activities activities = ms.getActivities("domain id", page, limit, dateFrom, dateTo, events);
+
+        for (Activity activity : activities.activities) {
+
+            System.out.println(activity.id);
+        }
+        
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Activities pagination
+
+```java
+import com.mailersend.sdk.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmail() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        // without any filters, the default limit is 25
+        Activities activities = ms.getActivities("domain id");
+
+        System.out.println(activities.getCurrentPage());
+
+        for (Activity activity : activities.activities) {
+
+            System.out.println(activity.id);
+        }
+
+
+        // get the next page
+        Activities nextPage = activities.nextPage();
+
+        System.out.println(nextPage.getCurrentPage());
+
+        for (Activity activity : nextPage.activities) {
+
+            System.out.println(activity.id);
+        }
+
+
+        // you can also get the previous page
+        Activities previousPage = nextPage.previousPage();
+
+        System.out.println(previousPage.getCurrentPage());
+
+        for (Activity activity : previousPage.activities) {
+
+            System.out.println(activity.id);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Activity email for resent
+
+```java
+import com.mailersend.sdk.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmail() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        // without any filters, the default limit is 25
+        Activities activities = ms.getActivities("domain id");
+
+        Activity activity = activities.activities[0];
+
+        Email email = activity.email.toEmail();
+
+        // you can change the email contents or add a template id and send it with `ms.send(email)`
+
     } catch (MailerSendException e) {
 
         e.printStackTrace();
