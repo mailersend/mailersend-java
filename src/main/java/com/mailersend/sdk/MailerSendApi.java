@@ -8,7 +8,6 @@
 package com.mailersend.sdk;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -33,8 +32,6 @@ public class MailerSendApi {
     private String apiToken = "";
     
     private HttpClient client;
-    
-    private MailerSendResponse lastRequestResponse;
     
     /**
      * Constructor, initializes the HttpClient
@@ -123,16 +120,6 @@ public class MailerSendApi {
     
     
     /**
-     * Returns the status of the last request made to the API.
-     * @return
-     */
-    public MailerSendResponse getLastRequestStatus() {
-        
-        return this.lastRequestResponse;
-    }
-    
-    
-    /**
      * Handles the response from the MailerSend API. It deserializes the JSON response into an object with the given type
      * @param <T> The type of what the response will be deserialized to
      * @param responseObject The HttpResponse object of the request
@@ -163,6 +150,8 @@ public class MailerSendApi {
             throw responseError;
         }
         
+        stringResponse = responseObject.body().toString();
+        
         T response = null;
         
         if (!stringResponse.equals("")) {
@@ -182,7 +171,14 @@ public class MailerSendApi {
         }
         
         // get the response headers
-        response.messageId = responseObject.headers().firstValue("x-message-id").get();
+        
+        try {
+            // only email sends will have a message id header
+            response.messageId = responseObject.headers().firstValue("x-message-id").get();
+        } catch (Exception e) {
+            
+            // left empty on purpose
+        }
         
         try {
             

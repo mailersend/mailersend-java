@@ -10,6 +10,8 @@ package com.mailersend.sdk;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Date;
 
 import com.mailersend.sdk.exceptions.MailerSendException;
 
@@ -67,9 +69,7 @@ public class MailerSend {
         MailerSendApi api = new MailerSendApi();
         api.setToken(this.token);
        
-        api.postRequest("/email", json, null);
-        
-        MailerSendResponse response = api.getLastRequestStatus();
+        MailerSendResponse response = api.postRequest("/email", json, MailerSendResponse.class);
         
         return response;
     }
@@ -98,27 +98,76 @@ public class MailerSend {
      * @return the found list of activities
      * @throws MailerSendException
      */
-    public Activities getActivities(String domainId, int page, int limit, LocalDateTime dateFrom, LocalDateTime dateTo, String[] events) throws MailerSendException {
+    public Activities getActivities(String domainId, int page, int limit, Date dateFrom, Date dateTo, String[] events) throws MailerSendException {
         
         String endpoint = "/activity/".concat(domainId);
         
+        // prepare the request parameters
+        ArrayList<String> params = new ArrayList<String>();
+        
         if (page > -1) {
             
-            endpoint = endpoint.concat("&page=").concat(String.valueOf(page));
+            params.add("page=".concat(String.valueOf(page)));
         }
         
         if (limit > -1) {
             
-            endpoint = endpoint.concat("&limit=").concat(String.valueOf(limit));
+            params.add("limit=".concat(String.valueOf(limit)));
         }
         
+        if (dateFrom != null && dateTo != null) {
+            
+            if (!dateTo.after(dateFrom)) {
+                
+                throw new MailerSendException("From date cannot be after to date.");
+            }
+        }
+        
+        if (dateFrom != null) {
+            
+            params.add("date_from=".concat(String.valueOf(dateFrom.getTime() / 1000)));
+        }
+        
+        if (dateTo != null) {
+            
+            params.add("date_to=".concat(String.valueOf(dateTo.getTime() / 1000)));
+        }
+        
+        if (events != null) {
+            
+            String eventsParam = "";
+            for (int i = 0; i < events.length; i++) {
+                
+                if (i > 0) {
+                    
+                    eventsParam.concat("&");
+                }
+                
+                eventsParam = eventsParam.concat("event[]=").concat(events[i]);
+            }
+            
+            params.add(eventsParam);
+        }
+        
+        for (int i = 0; i < params.size(); i++) {
+            
+            String attrSep = "&";
+            
+            if (i == 0) {
+                
+                attrSep = "?";
+            }
+            
+            endpoint = endpoint.concat(attrSep).concat(params.get(i));
+        }
 
-        // TODO: add the rest of the query params (dateFrom, dateTo, etc.).
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(this.token);
         
         Activities activities = api.getRequest(endpoint, Activities.class);
+        
+        activities.postDeserialize();
         
         activities.mailersendObj = this;
         activities.domainId = domainId;
