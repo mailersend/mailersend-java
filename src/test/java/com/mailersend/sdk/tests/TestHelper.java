@@ -32,6 +32,8 @@ public class TestHelper {
     public static final String invalidToken = "an invalid token";
     public static final String validToken = "your MailerSend API token";
     
+    public static final String domainId = "A valid domain id for your account";
+    
     /**
      * Creates a basic email with the above configuration
      * @return

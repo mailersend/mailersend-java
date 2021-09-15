@@ -15,4 +15,5 @@ public class MailerSendResponse {
     public String messageId = "";
     public int rateLimit;
     public int rateLimitRemaining;
+    
 }
