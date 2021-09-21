@@ -12,7 +12,7 @@ import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-import com.mailersend.sdk.Activities;
+import com.mailersend.sdk.ActivitiesList;
 import com.mailersend.sdk.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.activities.attributes.Activity;
@@ -45,7 +45,7 @@ public class ActivitiesTest {
         
         try {
             
-            Activities activities = ms.getActivities(TestHelper.domainId, 1, 25, dateFrom, dateTo, null);
+            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 25, dateFrom, dateTo, null);
             
         } catch (MailerSendException e) {
 
@@ -69,7 +69,7 @@ public class ActivitiesTest {
         
         try {
             
-            Activities activities = ms.getActivities(TestHelper.domainId);
+            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId);
             
             assertTrue(activities.activities.length > 0);
             
@@ -92,17 +92,17 @@ public class ActivitiesTest {
         
         try {
             
-            Activities activities = ms.getActivities(TestHelper.domainId, 1, 10, null, null, null);
+            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 10, null, null, null);
          
             assertTrue(activities.activities.length > 0);
             
-            Activities secondPage = activities.nextPage();
+            ActivitiesList secondPage = activities.nextPage();
             
             assertTrue(secondPage.activities.length > 0);
             
             assertNotEquals(secondPage.activities[0].id, activities.activities[0].id); 
             
-            Activities previousPage = secondPage.previousPage();
+            ActivitiesList previousPage = secondPage.previousPage();
             
             assertEquals(previousPage.activities[0].id, activities.activities[0].id);
             
@@ -125,7 +125,7 @@ public class ActivitiesTest {
         
         try {
             
-            Activities activities = ms.getActivities(TestHelper.domainId, 1, 100, null, null, new String[] { EventTypes.OPENED });
+            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 100, null, null, new String[] { EventTypes.OPENED });
          
             assertTrue(activities.activities.length > 0);
             
@@ -152,7 +152,7 @@ public class ActivitiesTest {
         
         try {
             
-            Activities activities = ms.getActivities(TestHelper.domainId, 1, 10, null, null, null);
+            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 10, null, null, null);
          
             assertTrue(activities.activities.length > 0);
             
@@ -190,7 +190,7 @@ public class ActivitiesTest {
         
         try {
             
-            Activities activities = ms.getActivities(TestHelper.domainId, 1, 10, null, null, null);
+            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 10, null, null, null);
             
             assertTrue(activities.activities.length > 0);
             

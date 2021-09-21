@@ -10,7 +10,7 @@ package com.mailersend.sdk.util;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Keeps the links from a returned MailerSend response (e.g. Activities)
+ * Keeps the links from a returned MailerSend response (e.g. ActivitiesList)
  */
 public class ResponseLinks {
 

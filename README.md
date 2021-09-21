@@ -316,7 +316,7 @@ Through the `Activities` object you can get the list of activities, get the next
 ### Get a list of activities
 
 ```java
-import com.mailersend.sdk.Activities;
+import com.mailersend.sdk.ActivitiesList;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -329,7 +329,7 @@ public void getActivities() {
 
     try {
     
-        Activities activities = ms.getActivities("domain id");
+        ActivitiesList activities = ms.activities.getActivities("domain id");
 
         for (Activity activity : activities.activities) {
 
@@ -352,7 +352,7 @@ public void getActivities() {
 ### Activities filters
 
 ```java
-import com.mailersend.sdk.Activities;
+import com.mailersend.sdk.ActivitiesList;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -373,7 +373,7 @@ public void getActivities() {
 
         String events[] = {EventTypes.OPENED, EventTypes.SENT}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
 
-        Activities activities = ms.getActivities("domain id", page, limit, dateFrom, dateTo, events);
+        ActivitiesList activities = ms.activities.getActivities("domain id", page, limit, dateFrom, dateTo, events);
 
         for (Activity activity : activities.activities) {
 
@@ -390,7 +390,7 @@ public void getActivities() {
 ### Activities pagination
 
 ```java
-import com.mailersend.sdk.Activities;
+import com.mailersend.sdk.ActivitiesList;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -404,7 +404,7 @@ public void getActivities() {
     try {
     
         // without any filters, the default limit is 25
-        Activities activities = ms.getActivities("domain id");
+        ActivitiesList activities = ms.activities.getActivities("domain id");
 
         System.out.println(activities.getCurrentPage());
 
@@ -415,7 +415,7 @@ public void getActivities() {
 
 
         // get the next page
-        Activities nextPage = activities.nextPage();
+        ActivitiesList nextPage = activities.nextPage();
 
         System.out.println(nextPage.getCurrentPage());
 
@@ -426,7 +426,7 @@ public void getActivities() {
 
 
         // you can also get the previous page
-        Activities previousPage = nextPage.previousPage();
+        ActivitiesList previousPage = nextPage.previousPage();
 
         System.out.println(previousPage.getCurrentPage());
 
@@ -445,7 +445,7 @@ public void getActivities() {
 ### Activity email for resend
 
 ```java
-import com.mailersend.sdk.Activities;
+import com.mailersend.sdk.ActivitiesList;
 import com.mailersend.sdk.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -460,9 +460,9 @@ public void getActivities() {
     try {
     
         // without any filters, the default limit is 25
-        Activities activities = ms.getActivities("domain id");
+        ActivitiesList activities = ms.getActivities("domain id");
 
-        Activity activity = activities.activities[0];
+        Activity activity = ms.activities.activities[0];
 
         Email email = activity.email.toEmail();
 
