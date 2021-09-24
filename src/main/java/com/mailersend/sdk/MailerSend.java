@@ -12,6 +12,7 @@ import java.util.Date;
 
 import com.mailersend.sdk.activities.Activities;
 import com.mailersend.sdk.analytics.Analytics;
+import com.mailersend.sdk.domains.Domains;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
 /**
@@ -25,11 +26,13 @@ public class MailerSend {
     
     public Activities activities = null;
     public Analytics analytics = null;
+    public Domains domains = null;
     
     public MailerSend() {
         
         activities = new Activities(this);
         analytics = new Analytics(this);
+        domains = new Domains(this);
     }
     
     /**

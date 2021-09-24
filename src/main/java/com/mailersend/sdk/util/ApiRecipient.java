@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.activities;
+package com.mailersend.sdk.util;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -15,7 +15,7 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.Recipient;
 
-public class ActivityRecipient {
+public class ApiRecipient {
 
     @SerializedName("id")
     public String id = null;
@@ -42,7 +42,7 @@ public class ActivityRecipient {
     /**
      * Converts the retrieved dates to java.util.Date
      */
-    protected void parseDates() {
+    public void parseDates() {
 
         TemporalAccessor ta;
         Instant instant;
@@ -71,7 +71,7 @@ public class ActivityRecipient {
     
     
     /**
-     * Converts this ActivityRecipient to a com.mailersend.sdk.Recipient
+     * Converts this ApiRecipient to a com.mailersend.sdk.Recipient
      * @return
      */
     public Recipient toRecipient() {

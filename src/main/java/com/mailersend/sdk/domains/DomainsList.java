@@ -5,16 +5,14 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk;
+package com.mailersend.sdk.domains;
 
-/**
- * Represents a successful email send via MailerSend
- */
-public class MailerSendResponse {
+import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.util.PaginatedResponse;
 
-    public int responseStatusCode;
-    public String messageId = "";
-    public int rateLimit;
-    public int rateLimitRemaining;
+public class DomainsList extends PaginatedResponse{
+
     
+    @SerializedName("data")
+    public Domain[] domains;
 }

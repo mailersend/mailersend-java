@@ -120,6 +120,73 @@ public class MailerSendApi {
     
     
     /**
+     * Does a DELETE request to the given endpoint of the MailerSend API
+     * @param <T> The type of what the response will be deserialized to
+     * @param endpoint The MailerSend API endpoint
+     * @param responseClass The class of the response object
+     * @return T
+     * @throws MailerSendException
+     */
+    public <T extends MailerSendResponse> T deleteRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
+        
+        HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
+                .header("Content-type", "applicateion/json")
+                .header("Authorization", "Bearer ".concat(this.apiToken))
+                .DELETE()
+                .build();
+        
+        HttpResponse<String> responseObject = null;
+        
+        try {
+            
+            responseObject = this.client.send(request, BodyHandlers.ofString());
+                        
+        } catch (IOException | InterruptedException e) {
+
+            MailerSendException ex = (MailerSendException) e;
+            
+            throw ex;
+        }
+        
+        return this.handleApiResponse(responseObject, responseClass);
+    }
+    
+    
+    /**
+     * Does a PUT request to the given endpoint of the MailerSend API
+     * @param <T> The type of what the response will be deserialized to
+     * @param endpoint The MailerSend API endpoint
+     * @param requestBody The body of the POST request
+     * @param responseClass The class of the response object
+     * @return T
+     * @throws MailerSendException
+     */
+    public <T extends MailerSendResponse> T putRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
+       
+        HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
+                .header("Content-type", "applicateion/json")
+                .header("Authorization", "Bearer ".concat(this.apiToken))
+                .PUT(BodyPublishers.ofString(requestBody))
+                .build();
+        
+        HttpResponse<String> responseObject = null;
+        
+        try {
+            
+            responseObject = this.client.send(request, BodyHandlers.ofString());
+                        
+        } catch (IOException | InterruptedException e) {
+
+            MailerSendException ex = (MailerSendException) e;
+            
+            throw ex;
+        }
+        
+        return this.handleApiResponse(responseObject, responseClass);
+    }
+    
+    
+    /**
      * Handles the response from the MailerSend API. It deserializes the JSON response into an object with the given type
      * @param <T> The type of what the response will be deserialized to
      * @param responseObject The HttpResponse object of the request
@@ -195,6 +262,8 @@ public class MailerSendApi {
             
             // left empty on purpose
         }
+        
+        response.responseStatusCode = responseObject.statusCode();
         
         return response;
     }
