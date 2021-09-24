@@ -5,11 +5,12 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk;
+package com.mailersend.sdk.activities;
 
 import java.util.Date;
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.activities.attributes.Activity;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.ResponseLinks;
 import com.mailersend.sdk.util.ResponseMeta;
@@ -118,7 +119,7 @@ public class ActivitiesList extends MailerSendResponse {
      * to the /activities endpoint 
      * Do not call directly
      */
-    protected void postDeserialize() {
+    public void postDeserialize() {
         
         for (Activity activity : activities) {
             

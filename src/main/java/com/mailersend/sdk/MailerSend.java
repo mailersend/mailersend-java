@@ -10,6 +10,8 @@ package com.mailersend.sdk;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.mailersend.sdk.activities.Activities;
+import com.mailersend.sdk.analytics.Analytics;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
 /**
@@ -39,6 +41,15 @@ public class MailerSend {
         this.token = token;
     }
     
+    
+    /**
+     * Returns the MailerSend token
+     * @return
+     */
+    public String getToken() {
+        
+        return this.token;
+    }
     
     /**
      * Sets the default from

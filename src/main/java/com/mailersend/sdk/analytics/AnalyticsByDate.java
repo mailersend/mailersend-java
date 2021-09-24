@@ -1,8 +1,12 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.analytics;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
@@ -12,7 +16,7 @@ public class AnalyticsByDate {
     @SerializedName("date")
     private String dateString;
     
-    public Date date;
+    public Date statDate;
     
     @SerializedName("processed")
     public int processed;
@@ -55,18 +59,13 @@ public class AnalyticsByDate {
     
     
     /**
-     * Converts the retrieved dates to java.util.Date
+     * Converts the retrieved timestamps to java.util.Date
      */
     private void parseDates() {
         
-        TemporalAccessor ta;
-        Instant instant;
-        
         if (dateString != null && !dateString.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(dateString);
-            instant = Instant.from(ta);
-            date = Date.from(instant);
+   
+            statDate = new Date(Long.parseLong(dateString) * 1000);
         }
     }
 }

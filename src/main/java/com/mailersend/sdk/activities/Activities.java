@@ -5,11 +5,13 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk;
+package com.mailersend.sdk.activities;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
 public class Activities {
@@ -19,10 +21,10 @@ public class Activities {
     
     
     /**
-     * Protected constructor, this should only be accessed from MailerSend.activities
+     * Do not initialize directly. This should only be accessed from MailerSend.activities
      * @param apiReference
      */
-    protected Activities(MailerSend apiReference)
+    public Activities(MailerSend apiReference)
     {
         
         apiObjectReference = apiReference;
@@ -117,7 +119,7 @@ public class Activities {
 
         
         MailerSendApi api = new MailerSendApi();
-        api.setToken(apiObjectReference.token);
+        api.setToken(apiObjectReference.getToken());
         
         ActivitiesList activities = api.getRequest(endpoint, ActivitiesList.class);
         

@@ -19,6 +19,11 @@ MailerSend Java SDK
         - [Activities filters](#activities-filters)
         - [Activities pagination](#activities-pagination)
         - [Get email for resend](#activity-email-for-resend)
+    - [Analytics](#analytics)
+        - [Activity data by date](#activity-data-by-date)
+        - [Opens by country](#opens-by-country)
+        - [Opens by user-agent name](#opens-by-user-agent-name)
+        - [Opens by reading environment](#opens-by-reading-environment)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -31,8 +36,6 @@ For now please download the latest release from GitHub or download the source an
 # Usage
 
 ## Email 
-
-### General
 
 The SDK provides a simple interface to send an email through MailerSend. Check the examples below for various use cases.
 
@@ -305,8 +308,6 @@ public void sendEmail() {
 ```
 ## Activities 
 
-### General
-
 The SDK provides a simple interface to retrieve a list of activities for a domain.
 
 The SDK returns an `Activities` object on successful send or throws a `MailerSendException` on a failed one.
@@ -470,6 +471,166 @@ public void getActivities() {
 
     } catch (MailerSendException e) {
 
+        e.printStackTrace();
+    }
+}
+```
+
+# Analytics
+
+Analytics retrieval follows the builder pattern and is accessible from the `MailerSend.analytics` object.
+
+## Activity data by date
+
+```java
+import java.util.Date;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.analytics.AnalyticsByDate;
+import com.mailersend.sdk.analytics.AnalyticsByDateList;
+import com.mailersend.sdk.analytics.AnalyticsList;
+import com.mailersend.sdk.analytics.AnalyticsStatistic;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.EventTypes;
+
+public void getAnalyticsByDate() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+        
+        Date dateFrom = new Date(); // set your from date normally
+        
+        AnalyticsByDateList list = ms.analytics
+                .dateFrom(dateFrom)
+                .dateTo(new Date())
+                .domainId(TestHelper.domainId)
+                .getByDate(new String[] {EventTypes.DELIVERED, EventTypes.OPENED, EventTypes.CLICKED});
+        
+        System.out.println("\n\nAnalytics by date for domain:");
+        for (AnalyticsByDate dayStat : list.statistics) {
+            
+            System.out.println(dayStat.statDate.toString());
+            System.out.println(dayStat.delivered);
+            System.out.println(dayStat.opened);
+            System.out.println(dayStat.clicked);
+                            
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Opens by country
+
+```java
+import java.util.Date;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.analytics.AnalyticsList;
+import com.mailersend.sdk.analytics.AnalyticsStatistic;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getOpensByCountry() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+        
+        Date dateFrom = new Date(); // set your from date normally
+        
+        AnalyticsList list = ms.analytics
+                .dateFrom(dateFrom)
+                .dateTo(new Date())
+                .domainId(TestHelper.domainId)
+                .getOpensByCountry();
+        
+        System.out.println("\n\nOpens by country:");
+        
+        for (AnalyticsStatistic stat : list.statistics) {
+            
+            System.out.println(stat.name + " - " + stat.count);
+        }
+                
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Opens by user agent name
+
+```java
+import java.util.Date;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.analytics.AnalyticsList;
+import com.mailersend.sdk.analytics.AnalyticsStatistic;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getOpensByUserAgentName() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+        
+        Date dateFrom = new Date(); // set your from date normally
+        
+        AnalyticsList list = ms.analytics
+                .dateFrom(dateFrom)
+                .dateTo(new Date())
+                .getOpensByUserAgent();
+        
+        System.out.println("\n\nOpens by user agent:");
+        
+        for (AnalyticsStatistic stat : list.statistics) {
+            
+            System.out.println(stat.name + " - " + stat.count);
+        }
+                
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Opens by reading environment
+
+```java
+import java.util.Date;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.analytics.AnalyticsList;
+import com.mailersend.sdk.analytics.AnalyticsStatistic;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getOpensByUserAgentType() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+        
+        Date dateFrom = new Date(); // set your from date normally
+        
+        AnalyticsList list = ms.analytics
+                .dateFrom(dateFrom)
+                .dateTo(new Date())
+                .getOpensByUserAgenType();
+        
+        System.out.println("\n\nOpens by user agent type:");
+        
+        for (AnalyticsStatistic stat : list.statistics) {
+            
+            System.out.println(stat.name + " - " + stat.count);
+        }
+                
+    } catch (MailerSendException e) {
+        
         e.printStackTrace();
     }
 }

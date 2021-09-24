@@ -5,47 +5,29 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.activities.attributes;
+package com.mailersend.sdk.activities;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
-import java.util.Collections;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.Email;
-import com.mailersend.sdk.Recipient;
 
-public class ActivityEmail {
+public class Activity {
 
     @SerializedName("id")
     public String id;
-    
-    @SerializedName("from")
-    public String from;
-    
-    @SerializedName("subject")
-    public String subject;
-    
-    @SerializedName("text")
-    public String text;
-    
-    @SerializedName("html")
-    public String html;
-    
-    @SerializedName("status")
-    public String status;
-    
-    @SerializedName("tags")
-    public String[] tags;
     
     public Date createdAt;
     
     public Date updatedAt;
     
-    @SerializedName("recipient")
-    public ActivityRecipient recipient;
+    @SerializedName("type")
+    public String type;
+    
+    @SerializedName("email")
+    public ActivityEmail email;
     
     
     @SerializedName("created_at")
@@ -56,24 +38,9 @@ public class ActivityEmail {
     
     
     /**
-     * Is called to perform any actions after the deserialization of the response
-     * to the /activities endpoint 
-     */
-    protected void postDeserialize() {
-        
-        parseDates();
-        
-        if (recipient != null) {
-            
-            recipient.parseDates();
-        }
-    }
-    
-    
-    /**
      * Converts the retrieved dates to java.util.Date
      */
-    private void parseDates() {
+    protected void parseDates() {
         
         TemporalAccessor ta;
         Instant instant;
@@ -95,21 +62,17 @@ public class ActivityEmail {
     
     
     /**
-     * Converts this ActivityEmail into a com.mailersend.sdk.Email object
-     * @return
+     * Is called to perform any actions after the deserialization of the response
+     * to the /activities endpoint 
      */
-    public Email toEmail() {
+    public void postDeserialize() {
         
-        Email email = new Email();
-        email.subject = subject;
-        email.from = new Recipient("", from);
-        email.html = html;
-        email.text = text;
+        parseDates();
         
-        Collections.addAll(email.tags, tags);
-        
-        email.AddRecipient(recipient.toRecipient());
-        
-        return email;
+        if (email != null) {
+            
+            email.postDeserialize();
+        }
     }
+    
 }

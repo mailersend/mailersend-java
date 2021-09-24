@@ -5,29 +5,48 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.activities.attributes;
+package com.mailersend.sdk.activities;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.Collections;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.Email;
 import com.mailersend.sdk.Recipient;
 
-public class ActivityRecipient {
+public class ActivityEmail {
 
     @SerializedName("id")
-    public String id = null;
+    public String id;
     
-    public Date createdAt = null;
+    @SerializedName("from")
+    public String from;
     
-    public Date updatedAt = null;
+    @SerializedName("subject")
+    public String subject;
     
-    public Date deletedAt = null;
+    @SerializedName("text")
+    public String text;
     
-    @SerializedName("email")
-    public String email;
+    @SerializedName("html")
+    public String html;
+    
+    @SerializedName("status")
+    public String status;
+    
+    @SerializedName("tags")
+    public String[] tags;
+    
+    public Date createdAt;
+    
+    public Date updatedAt;
+    
+    @SerializedName("recipient")
+    public ActivityRecipient recipient;
+    
     
     @SerializedName("created_at")
     private String createdAtString;
@@ -35,15 +54,27 @@ public class ActivityRecipient {
     @SerializedName("updated_at")
     private String updatedAtString;
     
-    @SerializedName("deleted_at")
-    private String deletedAtString;
+    
+    /**
+     * Is called to perform any actions after the deserialization of the response
+     * to the /activities endpoint 
+     */
+    protected void postDeserialize() {
+        
+        parseDates();
+        
+        if (recipient != null) {
+            
+            recipient.parseDates();
+        }
+    }
     
     
     /**
      * Converts the retrieved dates to java.util.Date
      */
-    protected void parseDates() {
-
+    private void parseDates() {
+        
         TemporalAccessor ta;
         Instant instant;
         
@@ -60,24 +91,25 @@ public class ActivityRecipient {
             instant = Instant.from(ta);
             updatedAt = Date.from(instant);
         }
-        
-        if (deletedAtString != null && !deletedAtString.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(deletedAtString);
-            instant = Instant.from(ta);
-            deletedAt = Date.from(instant);
-        }
     }
     
     
     /**
-     * Converts this ActivityRecipient to a com.mailersend.sdk.Recipient
+     * Converts this ActivityEmail into a com.mailersend.sdk.Email object
      * @return
      */
-    public Recipient toRecipient() {
+    public Email toEmail() {
         
-        Recipient recipient = new Recipient("", email);
+        Email email = new Email();
+        email.subject = subject;
+        email.from = new Recipient("", from);
+        email.html = html;
+        email.text = text;
         
-        return recipient;
+        Collections.addAll(email.tags, tags);
+        
+        email.AddRecipient(recipient.toRecipient());
+        
+        return email;
     }
 }

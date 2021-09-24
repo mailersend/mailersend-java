@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.activities.attributes;
+package com.mailersend.sdk.activities;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -13,22 +13,21 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.Recipient;
 
-public class Activity {
+public class ActivityRecipient {
 
     @SerializedName("id")
-    public String id;
+    public String id = null;
     
-    public Date createdAt;
+    public Date createdAt = null;
     
-    public Date updatedAt;
+    public Date updatedAt = null;
     
-    @SerializedName("type")
-    public String type;
+    public Date deletedAt = null;
     
     @SerializedName("email")
-    public ActivityEmail email;
-    
+    public String email;
     
     @SerializedName("created_at")
     private String createdAtString;
@@ -36,12 +35,15 @@ public class Activity {
     @SerializedName("updated_at")
     private String updatedAtString;
     
+    @SerializedName("deleted_at")
+    private String deletedAtString;
+    
     
     /**
      * Converts the retrieved dates to java.util.Date
      */
     protected void parseDates() {
-        
+
         TemporalAccessor ta;
         Instant instant;
         
@@ -58,21 +60,24 @@ public class Activity {
             instant = Instant.from(ta);
             updatedAt = Date.from(instant);
         }
+        
+        if (deletedAtString != null && !deletedAtString.isBlank()) {
+            
+            ta = DateTimeFormatter.ISO_INSTANT.parse(deletedAtString);
+            instant = Instant.from(ta);
+            deletedAt = Date.from(instant);
+        }
     }
     
     
     /**
-     * Is called to perform any actions after the deserialization of the response
-     * to the /activities endpoint 
+     * Converts this ActivityRecipient to a com.mailersend.sdk.Recipient
+     * @return
      */
-    public void postDeserialize() {
+    public Recipient toRecipient() {
         
-        parseDates();
+        Recipient recipient = new Recipient("", email);
         
-        if (email != null) {
-            
-            email.postDeserialize();
-        }
+        return recipient;
     }
-    
 }

@@ -12,10 +12,10 @@ import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 
-import com.mailersend.sdk.ActivitiesList;
 import com.mailersend.sdk.Email;
 import com.mailersend.sdk.MailerSend;
-import com.mailersend.sdk.activities.attributes.Activity;
+import com.mailersend.sdk.activities.ActivitiesList;
+import com.mailersend.sdk.activities.Activity;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.EventTypes;
 

@@ -1,12 +1,15 @@
-package com.mailersend.sdk;
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
+package com.mailersend.sdk.analytics;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.analytics.AnalyticsByDate;
 
 public class AnalyticsByDateList {
 
@@ -27,7 +30,11 @@ public class AnalyticsByDateList {
     @SerializedName("stats")
     public AnalyticsByDate[] statistics;
     
-    protected void postDeserialize() {
+    
+    /**
+     * Does all the needed actions after deserialization 
+     */
+    public void postDeserialize() {
         
         parseDates();
         
@@ -39,25 +46,19 @@ public class AnalyticsByDateList {
     
     
     /**
-     * Converts the retrieved dates to java.util.Date
+     * Converts the retrieved timestamps to java.util.Date
      */
     private void parseDates() {
         
-        TemporalAccessor ta;
-        Instant instant;
-        
         if (dateFromString != null && !dateFromString.isBlank()) {
             
-            ta = DateTimeFormatter.ISO_INSTANT.parse(dateFromString);
-            instant = Instant.from(ta);
-            dateFrom = Date.from(instant);
+            dateFrom = new Date(Long.parseLong(dateFromString) * 1000);
+            
         }
         
         if (dateToString != null && !dateToString.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(dateToString);
-            instant = Instant.from(ta);
-            dateTo = Date.from(instant);
+
+            dateTo = new Date(Long.parseLong(dateToString) * 1000);
         }
     }
     
