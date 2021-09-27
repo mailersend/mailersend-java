@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.domains;
 
 import com.google.gson.annotations.SerializedName;
@@ -9,6 +16,10 @@ public class DomainRecipientsList extends PaginatedResponse{
     @SerializedName("data")
     public ApiRecipient[] recipients;
     
+    
+    /**
+     * Performs any needed actions after deserialization
+     */
     public void postProcessing() {
         
         for (ApiRecipient rec : recipients) {

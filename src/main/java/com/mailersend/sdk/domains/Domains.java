@@ -179,6 +179,44 @@ public class Domains {
     
     
     /**
+     * Gets the DNS records of a domain
+     * @param domainId
+     * @return
+     * @throws MailerSendException
+     */
+    public DomainDnsRecords getDomainDnsRecords(String domainId) throws MailerSendException {
+        
+        String endpoint = "/domains/".concat(domainId).concat("/dns-records");
+        
+        MailerSendApi api = new MailerSendApi();
+        api.setToken(apiObjectReference.getToken());
+        
+        DomainDnsRecordsResponse response = api.getRequest(endpoint, DomainDnsRecordsResponse.class);
+        
+        return response.records;
+    }
+    
+    
+    /**
+     * Verifies the domain with the given id
+     * @param domainId
+     * @return
+     * @throws MailerSendException
+     */
+    public DomainVerificationStatus verifyDomain(String domainId) throws MailerSendException {
+        
+        String endpoint = "/domains/".concat(domainId).concat("/verify");
+        
+        MailerSendApi api = new MailerSendApi();
+        api.setToken(apiObjectReference.getToken());
+        
+        DomainVerificationStatus response = api.getRequest(endpoint, DomainVerificationStatus.class);
+        
+        return response;
+    }
+    
+    
+    /**
      * Prepares the query part of the request url
      * @return
      */

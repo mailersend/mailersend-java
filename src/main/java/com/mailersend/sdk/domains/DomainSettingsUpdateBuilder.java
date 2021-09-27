@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.domains;
 
 import com.google.gson.Gson;
@@ -13,6 +20,11 @@ public class DomainSettingsUpdateBuilder {
     
     private DomainSettings settings;
     
+    
+    /**
+     * Protected constructor, should only be instantiated by the sdk
+     * @param apiObjectRef
+     */
     protected DomainSettingsUpdateBuilder(MailerSend apiObjectRef) {
         
         apiObjectReference = apiObjectRef;

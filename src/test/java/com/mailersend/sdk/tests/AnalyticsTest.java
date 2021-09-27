@@ -35,7 +35,7 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
-            AnalyticsByDateList list = ms.analytics
+            AnalyticsByDateList list = ms.analytics()
                     .dateFrom(dateFrom)
                     .dateTo(new Date())
                     .getByDate(new String[] {EventTypes.DELIVERED, EventTypes.OPENED, EventTypes.CLICKED});
@@ -72,7 +72,7 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
-            AnalyticsByDateList list = ms.analytics
+            AnalyticsByDateList list = ms.analytics()
                     .dateFrom(dateFrom)
                     .dateTo(new Date())
                     .domainId(TestHelper.domainId)
@@ -111,7 +111,7 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
-            AnalyticsList list = ms.analytics
+            AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
                     .dateTo(new Date())
                     .domainId(TestHelper.domainId)
@@ -146,7 +146,7 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
-            AnalyticsList list = ms.analytics
+            AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
                     .dateTo(new Date())
                     .getOpensByUserAgent();
@@ -179,7 +179,7 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
-            AnalyticsList list = ms.analytics
+            AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
                     .dateTo(new Date())
                     .getOpensByUserAgenType();

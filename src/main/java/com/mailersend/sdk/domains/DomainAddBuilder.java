@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.domains;
 
 import com.google.gson.Gson;
@@ -9,11 +16,15 @@ import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 public class DomainAddBuilder {
   
-    
     private MailerSend apiObjectReference;
     
     private DomainAddRequestBody domainAddBody;
     
+    
+    /**
+     * No instantiation from outside the sdk
+     * @param apiObjectRef
+     */
     protected DomainAddBuilder(MailerSend apiObjectRef) {
         
         apiObjectReference = apiObjectRef;
@@ -21,6 +32,11 @@ public class DomainAddBuilder {
     }
     
     
+    /**
+     * Set the return path subdomain value
+     * @param returnPathSubdomain
+     * @return
+     */
     public DomainAddBuilder returnPathSubdomain(String returnPathSubdomain) {
         
         domainAddBody.returnPathSubdomainValue = returnPathSubdomain;
@@ -29,6 +45,11 @@ public class DomainAddBuilder {
     }
     
     
+    /**
+     * Set the custom tracking domain value
+     * @param customTrackingSubdomain
+     * @return
+     */
     public DomainAddBuilder customTrackingSubdomain(String customTrackingSubdomain) {
         
         domainAddBody.customTrackingSubdomainValue = customTrackingSubdomain;
@@ -37,6 +58,11 @@ public class DomainAddBuilder {
     }
     
     
+    /**
+     * Set the inbound routing subdomain value
+     * @param inboundRoutingSubdomain
+     * @return
+     */
     public DomainAddBuilder inboundRoutingSubdomain(String inboundRoutingSubdomain) {
         
         domainAddBody.inboundRoutingSubdomainValue = inboundRoutingSubdomain;
@@ -45,7 +71,12 @@ public class DomainAddBuilder {
     }
     
     
-    
+    /**
+     * Adds a domain to MailerSend
+     * @param name
+     * @return
+     * @throws MailerSendException
+     */
     public Domain addDomain(String name) throws MailerSendException {
         
         String endpoint = "/domains";

@@ -24,15 +24,30 @@ public class MailerSend {
     private Recipient defaultFrom = null;
       
     
-    public Activities activities = null;
-    public Analytics analytics = null;
-    public Domains domains = null;
+    private Activities activities = null;
+    private Analytics analytics = null;
+    private Domains domains = null;
     
     public MailerSend() {
         
         activities = new Activities(this);
         analytics = new Analytics(this);
         domains = new Domains(this);
+    }
+    
+    public Activities activities() {
+        
+        return activities();
+    }
+    
+    public Analytics analytics() {
+        
+        return analytics;
+    }
+    
+    public Domains domains() {
+        
+        return domains;
     }
     
     /**

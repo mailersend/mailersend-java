@@ -67,7 +67,7 @@ public class ActivitiesList extends MailerSendResponse {
                 limit = meta.limit;
             }
             
-            return this.mailersendObj.activities.getActivities(domainId, page, limit, dateFrom, dateTo, events);
+            return this.mailersendObj.activities().getActivities(domainId, page, limit, dateFrom, dateTo, events);
         }
         
         return null;
@@ -98,7 +98,7 @@ public class ActivitiesList extends MailerSendResponse {
                 page = 1;
             }
             
-            return this.mailersendObj.activities.getActivities(domainId, page, limit, dateFrom, dateTo, events);
+            return this.mailersendObj.activities().getActivities(domainId, page, limit, dateFrom, dateTo, events);
         }
         
         return null;

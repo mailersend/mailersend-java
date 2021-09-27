@@ -48,6 +48,9 @@ public class DomainSettings {
     public String inboundRoutingSubdomain;
     
     
+    /**
+     * Resets the setting values so that it can be reused by the builder
+     */
     protected void reset() {
         
         sendPaused = null;

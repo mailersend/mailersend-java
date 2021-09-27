@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.domains.Domain;
+import com.mailersend.sdk.domains.DomainDnsAttribute;
+import com.mailersend.sdk.domains.DomainDnsRecords;
 import com.mailersend.sdk.domains.DomainsList;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
@@ -23,7 +25,7 @@ public class DomainsTest {
         
         try {
             
-            DomainsList list = ms.domains.getDomains();
+            DomainsList list = ms.domains().getDomains();
             
             for (Domain domain : list.domains) {
                 
@@ -50,7 +52,7 @@ public class DomainsTest {
         
         try {
             
-            Domain domain = ms.domains.getDomain(TestHelper.domainId);
+            Domain domain = ms.domains().getDomain(TestHelper.domainId);
             
             System.out.println(domain.id);
             System.out.println(domain.name);
@@ -74,7 +76,7 @@ public class DomainsTest {
         
         try {
             
-            Domain domain = ms.domains.addDomainBuilder.addDomain(TestHelper.domainToAdd);
+            Domain domain = ms.domains().addDomainBuilder.addDomain(TestHelper.domainToAdd);
             
             System.out.println(domain.id);
             System.out.println(domain.name);
@@ -84,5 +86,36 @@ public class DomainsTest {
             e.printStackTrace();
             fail();
         }
+    }
+    
+    
+    @Test
+    public void DomainDnsTest() {
+        
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        
+        try {
+            
+           DomainDnsRecords records = ms.domains().getDomainDnsRecords(TestHelper.domainId);
+           
+           printDomainDnsAttribute(records.spf);
+           printDomainDnsAttribute(records.dkim);
+           printDomainDnsAttribute(records.customTracking);
+           printDomainDnsAttribute(records.returnPath);
+           printDomainDnsAttribute(records.inboundRouting);
+            
+        } catch (MailerSendException e) {
+            
+            e.printStackTrace();
+            fail();
+        }
+    }
+    
+    private void printDomainDnsAttribute(DomainDnsAttribute attribute) {
+        
+        System.out.println(attribute.hostname);
+        System.out.println(attribute.type);
+        System.out.println(attribute.value);
     }
 }

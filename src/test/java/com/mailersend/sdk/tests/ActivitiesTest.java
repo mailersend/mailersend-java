@@ -45,7 +45,7 @@ public class ActivitiesTest {
         
         try {
             
-            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 25, dateFrom, dateTo, null);
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 25, dateFrom, dateTo, null);
             
         } catch (MailerSendException e) {
 
@@ -69,7 +69,7 @@ public class ActivitiesTest {
         
         try {
             
-            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId);
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId);
             
             assertTrue(activities.activities.length > 0);
             
@@ -92,7 +92,7 @@ public class ActivitiesTest {
         
         try {
             
-            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 10, null, null, null);
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, null, null, null);
          
             assertTrue(activities.activities.length > 0);
             
@@ -125,7 +125,7 @@ public class ActivitiesTest {
         
         try {
             
-            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 100, null, null, new String[] { EventTypes.OPENED });
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 100, null, null, new String[] { EventTypes.OPENED });
          
             assertTrue(activities.activities.length > 0);
             
@@ -152,7 +152,7 @@ public class ActivitiesTest {
         
         try {
             
-            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 10, null, null, null);
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, null, null, null);
          
             assertTrue(activities.activities.length > 0);
             
@@ -190,7 +190,7 @@ public class ActivitiesTest {
         
         try {
             
-            ActivitiesList activities = ms.activities.getActivities(TestHelper.domainId, 1, 10, null, null, null);
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, null, null, null);
             
             assertTrue(activities.activities.length > 0);
             
