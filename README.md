@@ -24,6 +24,15 @@ MailerSend Java SDK
         - [Opens by country](#opens-by-country)
         - [Opens by user-agent name](#opens-by-user-agent-name)
         - [Opens by reading environment](#opens-by-reading-environment)
+    - [Domains](#domains)
+        - [Get a list of domains](#get-a-list-of-domains)
+        - [Get a single domain](#get-a-single-domain)
+        - [Delete a domain](#delete-a-domain)
+        - [Add a Domain](#add-a-domain)
+        - [Get DNS Records](#get-dns-records)
+        - [Verify a Domain](#verify-a-domain)
+        - [Get a list of recipients per domain](#get-a-list-of-recipients-per-domain)
+        - [Update domain settings](#update-domain-settings)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -330,7 +339,7 @@ public void getActivities() {
 
     try {
     
-        ActivitiesList activities = ms.activities.getActivities("domain id");
+        ActivitiesList activities = ms.activities().getActivities("domain id");
 
         for (Activity activity : activities.activities) {
 
@@ -374,7 +383,7 @@ public void getActivities() {
 
         String events[] = {EventTypes.OPENED, EventTypes.SENT}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
 
-        ActivitiesList activities = ms.activities.getActivities("domain id", page, limit, dateFrom, dateTo, events);
+        ActivitiesList activities = ms.activities().getActivities("domain id", page, limit, dateFrom, dateTo, events);
 
         for (Activity activity : activities.activities) {
 
@@ -405,7 +414,7 @@ public void getActivities() {
     try {
     
         // without any filters, the default limit is 25
-        ActivitiesList activities = ms.activities.getActivities("domain id");
+        ActivitiesList activities = ms.activities().getActivities("domain id");
 
         System.out.println(activities.getCurrentPage());
 
@@ -461,9 +470,9 @@ public void getActivities() {
     try {
     
         // without any filters, the default limit is 25
-        ActivitiesList activities = ms.getActivities("domain id");
+        ActivitiesList activities = ms.activities().getActivities("domain id");
 
-        Activity activity = ms.activities.activities[0];
+        Activity activity = ms.activities().activities[0];
 
         Email email = activity.email.toEmail();
 
@@ -501,7 +510,7 @@ public void getAnalyticsByDate() {
         
         Date dateFrom = new Date(); // set your from date normally
         
-        AnalyticsByDateList list = ms.analytics
+        AnalyticsByDateList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
                 .domainId(TestHelper.domainId)
@@ -542,7 +551,7 @@ public void getOpensByCountry() {
         
         Date dateFrom = new Date(); // set your from date normally
         
-        AnalyticsList list = ms.analytics
+        AnalyticsList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
                 .domainId(TestHelper.domainId)
@@ -580,7 +589,7 @@ public void getOpensByUserAgentName() {
         
         Date dateFrom = new Date(); // set your from date normally
         
-        AnalyticsList list = ms.analytics
+        AnalyticsList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
                 .getOpensByUserAgent();
@@ -617,7 +626,7 @@ public void getOpensByUserAgentType() {
         
         Date dateFrom = new Date(); // set your from date normally
         
-        AnalyticsList list = ms.analytics
+        AnalyticsList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
                 .getOpensByUserAgenType();
@@ -636,6 +645,234 @@ public void getOpensByUserAgentType() {
 }
 ```
 
+## Domains
+
+### Get a list of domains
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.domains.Domain;
+import com.mailersend.sdk.domains.DomainsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void DomainsList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("token");
+    
+    try {
+        
+        DomainsList list = ms.domains().getDomains();
+        
+        for (Domain domain : list.domains) {
+            
+            System.out.println(domain.id);
+            System.out.println(domain.name);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single domain
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.domains.Domain;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void SingleDomain() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+    
+    try {
+        
+        Domain domain = ms.domains().getDomain("domain id");
+        
+        System.out.println(domain.id);
+        System.out.println(domain.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a domain
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void DeleteDomain() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+    
+    try {
+        
+        boolean domainDeleted = ms.domains().deleteDomain("domain id");
+        
+        System.out.println("Domain deleted: ".contains(String.valueOf(domainDeleted)));
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Add a domain
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.domains.Domain;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void AddDomain() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+    
+    try {
+        
+        Domain domain = ms.domains().addDomainBuilder().addDomain("domain to add");
+        
+        System.out.println(domain.id);
+        System.out.println(domain.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get DNS Records
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.domains.Domain;
+import com.mailersend.sdk.domains.DomainDnsAttribute;
+import com.mailersend.sdk.domains.DomainDnsRecords;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void DomainDnsRecords() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+    
+    try {
+        
+        DomainDnsRecords records = ms.domains().getDomainDnsRecords("domain id");
+        
+        printDomainDnsAttribute(records.spf);
+        printDomainDnsAttribute(records.dkim);
+        printDomainDnsAttribute(records.customTracking);
+        printDomainDnsAttribute(records.returnPath);
+        printDomainDnsAttribute(records.inboundRouting);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+
+private void printDomainDnsAttribute(DomainDnsAttribute attribute) {
+    
+    System.out.println(attribute.hostname);
+    System.out.println(attribute.type);
+    System.out.println(attribute.value);
+}
+```
+
+### Verify a Domain
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.domains.DomainVerificationStatus;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void VerifyDomain() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+    
+    try {
+        
+        DomainVerificationStatus status = ms.domains().verifyDomain("domain id");
+        
+        System.out.println(status.message);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a list of recipients per domain
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.domains.DomainRecipientsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.ApiRecipient;
+
+public void ReceipientsPerDomain() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+    
+    try {
+        
+        DomainRecipientsList list = ms.domains().getDomainRecipients("domaion id");
+        
+        for (ApiRecipient recipient : list.recipients) {
+            
+            System.out.println(recipient.email);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update domain settings
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.domains.Domain;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void UpdateDomainSettings() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+    
+    try {
+        
+        Domain domain = ms.domains().updateDomainSettingsBuilder()
+            .customnTrackingEnabled(true)
+            .sendPaused(false)
+            .updateDomain("domain id");
+        
+        System.out.println(domain.domainSettings.customTrackingEnabled);
+        System.out.println(domain.domainSettings.sendPaused);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
 # Testing
 
 Change the properties in the `TestHelper` class of the `com.mailersend.sdk.tests` package to correspond to your account details, then simply run

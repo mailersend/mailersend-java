@@ -23,8 +23,8 @@ public class Domains {
     private int limitFilter = 25;
     private int verifiedOnly = -1; // we are using an int instead of a bool because we need 3 states (true - only verified, false - only unverified, ommit - all)
     
-    public DomainAddBuilder addDomainBuilder;
-    public DomainSettingsUpdateBuilder updateDomainSettingsBuilder;
+    private DomainAddBuilder addDomainBuilder;
+    private DomainSettingsUpdateBuilder updateDomainSettingsBuilder;
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.analytics
@@ -37,6 +37,25 @@ public class Domains {
         updateDomainSettingsBuilder = new DomainSettingsUpdateBuilder(ref);
     }
     
+    
+    /**
+     * Get the Add Domain builder
+     * @return
+     */
+    public DomainAddBuilder addDomainBuilder() {
+        
+        return addDomainBuilder;
+    }
+    
+    
+    /**
+     * Get the Update Domain Settings builder
+     * @return
+     */
+    public DomainSettingsUpdateBuilder updateDomainSettingsBuilder() {
+        
+        return updateDomainSettingsBuilder;
+    }
     
     /**
      * Set the page of the request
