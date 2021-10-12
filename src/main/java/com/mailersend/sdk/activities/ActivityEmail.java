@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.activities.attributes;
+package com.mailersend.sdk.activities;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +16,7 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.Email;
 import com.mailersend.sdk.Recipient;
+import com.mailersend.sdk.util.ApiRecipient;
 
 public class ActivityEmail {
 
@@ -45,7 +46,7 @@ public class ActivityEmail {
     public Date updatedAt;
     
     @SerializedName("recipient")
-    public ActivityRecipient recipient;
+    public ApiRecipient recipient;
     
     
     @SerializedName("created_at")

@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.activities.attributes;
+package com.mailersend.sdk.activities;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;

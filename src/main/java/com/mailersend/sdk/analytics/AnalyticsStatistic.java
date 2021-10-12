@@ -5,16 +5,15 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk;
+package com.mailersend.sdk.analytics;
 
-/**
- * Represents a successful email send via MailerSend
- */
-public class MailerSendResponse {
+import com.google.gson.annotations.SerializedName;
 
-    public int responseStatusCode;
-    public String messageId = "";
-    public int rateLimit;
-    public int rateLimitRemaining;
+public class AnalyticsStatistic {
+
+    @SerializedName("name")
+    public String name;
     
+    @SerializedName("count")
+    public int count;
 }

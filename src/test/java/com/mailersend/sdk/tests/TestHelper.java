@@ -34,6 +34,10 @@ public class TestHelper {
     
     public static final String domainId = "A valid domain id for your account";
     
+    public static final String domainIdToDelete = "a domain id that will be deleted";
+    
+    public static final String domainToAdd = "a valid and resolvable domain to add via the sdk";
+    
     /**
      * Creates a basic email with the above configuration
      * @return

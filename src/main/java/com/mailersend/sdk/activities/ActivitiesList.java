@@ -5,16 +5,17 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk;
+package com.mailersend.sdk.activities;
 
 import java.util.Date;
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.activities.attributes.Activity;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.ResponseLinks;
 import com.mailersend.sdk.util.ResponseMeta;
 
-public class Activities extends MailerSendResponse {
+public class ActivitiesList extends MailerSendResponse {
 
     @SerializedName("data")
     public Activity[] activities;
@@ -53,7 +54,7 @@ public class Activities extends MailerSendResponse {
      * @return
      * @throws MailerSendException
      */
-    public Activities nextPage() throws MailerSendException {
+    public ActivitiesList nextPage() throws MailerSendException {
         
         if (this.mailersendObj != null) {
             
@@ -66,7 +67,7 @@ public class Activities extends MailerSendResponse {
                 limit = meta.limit;
             }
             
-            return this.mailersendObj.getActivities(domainId, page, limit, dateFrom, dateTo, events);
+            return this.mailersendObj.activities().getActivities(domainId, page, limit, dateFrom, dateTo, events);
         }
         
         return null;
@@ -78,7 +79,7 @@ public class Activities extends MailerSendResponse {
      * @return
      * @throws MailerSendException
      */
-    public Activities previousPage() throws MailerSendException {
+    public ActivitiesList previousPage() throws MailerSendException {
         
         if (this.mailersendObj != null) {
             
@@ -97,7 +98,7 @@ public class Activities extends MailerSendResponse {
                 page = 1;
             }
             
-            return this.mailersendObj.getActivities(domainId, page, limit, dateFrom, dateTo, events);
+            return this.mailersendObj.activities().getActivities(domainId, page, limit, dateFrom, dateTo, events);
         }
         
         return null;
@@ -107,7 +108,7 @@ public class Activities extends MailerSendResponse {
     /**
      * Protected constructor to prevent creating new instances from outside the SDK
      */
-    protected Activities() {
+    protected ActivitiesList() {
         
         // intentionally left empty
     }
@@ -118,7 +119,7 @@ public class Activities extends MailerSendResponse {
      * to the /activities endpoint 
      * Do not call directly
      */
-    protected void postDeserialize() {
+    public void postDeserialize() {
         
         for (Activity activity : activities) {
             
