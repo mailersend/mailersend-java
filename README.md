@@ -36,6 +36,10 @@ MailerSend Java SDK
     - [Messages](#messages)
         - [Get a list of messages](#get-a-list-of-messages)
         - [Get a single message](#get-a-single-message)
+    - [Tokens](#tokens)
+        - [Create a token](#create-a-token)
+        - [Update token](#update-token)
+        - [Delete token](#delete-token)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -928,6 +932,99 @@ public void SingleMessage() {
         System.out.println(message.id);
         System.out.println(message.createdAt.toString());
         System.out.println(message.domain.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Tokens
+
+### Create a token
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+import com.mailersend.sdk.tokens.TokenAdd;
+import com.mailersend.sdk.tokens.TokenScopes;
+
+public void CreateToken() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+        
+        TokenAdd token = ms.tokens().addBuilder()
+            .name("Test token")
+            .domainId("domain id")
+            .addScope(TokenScopes.activityFull)
+            .addScope(TokenScopes.analyticsFull)
+            .addToken();
+        
+        System.out.println(token.id);
+        System.out.println(token.name);
+        System.out.println(token.accessToken);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update token
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+
+public void CreateToken() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+        
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+
+        // true to pause it, false to unpause it
+        Token token = ms.tokens().updateToken(T"token id", true);
+        
+        System.out.println(token.name);
+        System.out.println(token.status);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+        fail();
+    }
+}
+```
+
+### Delete token
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+
+public void CreateToken() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken(TestHelper.validToken);
+    
+    try {
+        MailerSendResponse response = ms.tokens().deleteToken("token to delete");
+        
+        System.out.println(response.responseStatusCode);
         
     } catch (MailerSendException e) {
         

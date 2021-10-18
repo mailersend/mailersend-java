@@ -38,6 +38,10 @@ public class TestHelper {
     
     public static final String domainToAdd = "a valid and resolvable domain to add via the sdk";
     
+    public static final String tokenIdToPause = "id of token to pause";
+    
+    public static final String tokenIdToDelete = "id of token to delete";
+    
     /**
      * Creates a basic email with the above configuration
      * @return
