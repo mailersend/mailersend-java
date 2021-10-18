@@ -20,6 +20,10 @@ import com.mailersend.sdk.tokens.TokenScopes;
 
 public class TokensTest {
 
+    
+    /**
+     * Test token creation
+     */
     @Test
     public void TestCreateToken() {
         
@@ -46,6 +50,9 @@ public class TokensTest {
     }
     
     
+    /**
+     * Test token update (pause)
+     */
     @Test
     public void UpdateToken() {
         
@@ -66,6 +73,9 @@ public class TokensTest {
     }
     
     
+    /**
+     * Test token deletion
+     */
     @Test
     public void DeleteToken() {
         
