@@ -15,6 +15,7 @@ import com.mailersend.sdk.analytics.Analytics;
 import com.mailersend.sdk.domains.Domains;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.messages.Messages;
+import com.mailersend.sdk.tokens.Tokens;
 
 /**
  * Main SDK Class
@@ -29,6 +30,7 @@ public class MailerSend {
     private Analytics analytics = null;
     private Domains domains = null;
     private Messages messages = null;
+    private Tokens tokens = null;
     
     
     public MailerSend() {
@@ -37,6 +39,7 @@ public class MailerSend {
         analytics = new Analytics(this);
         domains = new Domains(this);
         messages = new Messages(this);
+        tokens = new Tokens(this);
     }
     
     
@@ -77,6 +80,16 @@ public class MailerSend {
     public Messages messages() {
         
         return messages;
+    }
+    
+    
+    /**
+     * Get the tokens object
+     * @return
+     */
+    public Tokens tokens() {
+        
+        return tokens;
     }
     
     
