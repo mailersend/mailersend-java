@@ -33,6 +33,9 @@ MailerSend Java SDK
         - [Verify a Domain](#verify-a-domain)
         - [Get a list of recipients per domain](#get-a-list-of-recipients-per-domain)
         - [Update domain settings](#update-domain-settings)
+    - [Messages](#messages)
+        - [Get a list of messages](#get-a-list-of-messages)
+        - [Get a single message](#get-a-single-message)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -873,6 +876,66 @@ public void UpdateDomainSettings() {
     }
 }
 ```
+## Messages
+
+### Get a list of messages
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.messages.Message;
+import com.mailersend.sdk.messages.MessagesList;
+
+public void MessagesList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("token");
+    
+    try {
+        
+        MessagesList list = ms.messages().getMessages();
+        
+        for (MessageListItem message : list.messages) {
+            
+            System.out.println(message.id);
+            System.out.println(message.createdAt.toString());
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.messages.Message;
+import com.mailersend.sdk.messages.MessagesListItem;
+
+public void SingleMessage() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("token");
+    
+    try {
+        
+        Message message = ms.messages().getMessage("message id");
+        
+        System.out.println(message.id);
+        System.out.println(message.createdAt.toString());
+        System.out.println(message.domain.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
 # Testing
 
 Change the properties in the `TestHelper` class of the `com.mailersend.sdk.tests` package to correspond to your account details, then simply run

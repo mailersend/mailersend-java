@@ -28,4 +28,7 @@ public class ResponseMeta {
     
     @SerializedName("to")
     public int to;
+    
+    @SerializedName("last_page")
+    public int lastPage;
 }
