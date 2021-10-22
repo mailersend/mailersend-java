@@ -5,13 +5,11 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.domains;
+package com.mailersend.sdk.util;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.util.ApiRecipient;
-import com.mailersend.sdk.util.PaginatedResponse;
 
-public class DomainRecipientsList extends PaginatedResponse{
+public class ApiRecipientsList extends PaginatedResponse {
 
     @SerializedName("data")
     public ApiRecipient[] recipients;

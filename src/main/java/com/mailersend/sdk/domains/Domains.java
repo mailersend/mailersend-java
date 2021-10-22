@@ -14,6 +14,7 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.ApiRecipientsList;
 
 public class Domains {
 
@@ -182,14 +183,14 @@ public class Domains {
      * @return
      * @throws MailerSendException
      */
-    public DomainRecipientsList getDomainRecipients(String domainId) throws MailerSendException {
+    public ApiRecipientsList getDomainRecipients(String domainId) throws MailerSendException {
         
         String endpoint = "/domains/".concat(domainId).concat("/recipients").concat(prepareParamsUrl());
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
-        DomainRecipientsList response = api.getRequest(endpoint, DomainRecipientsList.class);
+        ApiRecipientsList response = api.getRequest(endpoint, ApiRecipientsList.class);
         
         response.postProcessing();
         

@@ -8,11 +8,11 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.domains.Domain;
 import com.mailersend.sdk.domains.DomainDnsAttribute;
 import com.mailersend.sdk.domains.DomainDnsRecords;
-import com.mailersend.sdk.domains.DomainRecipientsList;
 import com.mailersend.sdk.domains.DomainVerificationStatus;
 import com.mailersend.sdk.domains.DomainsList;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.ApiRecipient;
+import com.mailersend.sdk.util.ApiRecipientsList;
 
 public class DomainsTest {
 
@@ -79,7 +79,7 @@ public class DomainsTest {
         
         try {
             
-            DomainRecipientsList list = ms.domains().getDomainRecipients(TestHelper.domainId);
+            ApiRecipientsList list = ms.domains().getDomainRecipients(TestHelper.domainId);
            
             for (ApiRecipient recipient : list.recipients) {
                 

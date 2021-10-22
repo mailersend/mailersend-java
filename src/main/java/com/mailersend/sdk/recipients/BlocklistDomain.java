@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.messages;
+package com.mailersend.sdk.recipients;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -13,30 +13,14 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.Recipient;
 
-public class MessageEmail {
+public class BlocklistDomain {
 
     @SerializedName("id")
     public String id;
     
-    @SerializedName("from")
-    public Recipient from;
-
-    @SerializedName("subject")
-    public String subject;
-
-    @SerializedName("text")
-    public String text;
-
-    @SerializedName("html")
-    public String html;
-    
-    @SerializedName("tags")
-    public String[] tags;
-    
-    @SerializedName("status")
-    public String status;
+    @SerializedName("name")
+    public String name;
     
     @SerializedName("created_at")
     private String createdAtString;
@@ -53,7 +37,7 @@ public class MessageEmail {
      * Converts the retrieved dates to java.util.Date
      */
     protected void parseDates() {
-
+        
         TemporalAccessor ta;
         Instant instant;
         
