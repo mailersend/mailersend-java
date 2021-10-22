@@ -42,6 +42,7 @@ public class RecipientsTest {
 
         } catch (MailerSendException e) {
             
+            e.printStackTrace();
             fail();
         }
     }
@@ -73,6 +74,7 @@ public class RecipientsTest {
 
         } catch (MailerSendException e) {
             
+            e.printStackTrace();
             fail();
         }
     }
@@ -104,6 +106,7 @@ public class RecipientsTest {
 
         } catch (MailerSendException e) {
             
+            e.printStackTrace();
             fail();
         }
     }
