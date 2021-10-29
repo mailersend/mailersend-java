@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.messages;
+package com.mailersend.sdk.recipients;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -13,36 +13,37 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.MailerSendResponse;
-import com.mailersend.sdk.domains.Domain;
-import com.mailersend.sdk.util.ApiEmail;
 
-public class Message extends MailerSendResponse {
+public class BlocklistItem {
 
     @SerializedName("id")
     public String id;
     
-    public Date createdAt;
-    public Date updatedAt;
+    @SerializedName("type")
+    public String type;
     
-    @SerializedName("created_at")
-    protected String createdAtString;
-    
-    @SerializedName("updated_at")
-    protected String updatedAtString;
-    
-    @SerializedName("emails")
-    public ApiEmail[] emails;
+    @SerializedName("pattern")
+    public String pattern;
     
     @SerializedName("domain")
-    public Domain domain;
+    public BlocklistDomain domain;
+    
+    @SerializedName("created_at")
+    private String createdAtString;
+    
+    @SerializedName("updated_at")
+    private String updatedAtString;
+    
+    public Date createdAt;
+    
+    public Date updatedAt;
     
     
     /**
      * Converts the retrieved dates to java.util.Date
      */
     protected void parseDates() {
-
+        
         TemporalAccessor ta;
         Instant instant;
         
@@ -61,13 +62,8 @@ public class Message extends MailerSendResponse {
         }
         
         if (domain != null) {
-            
-            domain.postDeserialize();
-        }
         
-        for (ApiEmail email : emails) {
-            
-            email.parseDates();
+            domain.parseDates();
         }
     }
 }

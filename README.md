@@ -40,6 +40,14 @@ MailerSend Java SDK
         - [Create a token](#create-a-token)
         - [Update token](#update-token)
         - [Delete token](#delete-token)
+    - [Recipients](#recipients)
+        - [Get a list of recipients](#get-a-list-of-recipients)
+        - [Get a single recipient](#get-a-single-recipient)
+        - [Delete a recipient](#delete-a-recipient)
+        - [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
+        - [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
+        - [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
+
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -1026,6 +1034,299 @@ public void CreateToken() {
         
         System.out.println(response.responseStatusCode);
         
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Recipients
+
+### Get a list of recipients
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.ApiRecipient;
+import com.mailersend.sdk.util.ApiRecipientsList;
+
+public void GetRecipients() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        ApiRecipientsList list = ms.recipients().getRecipients();
+        
+        for (ApiRecipient recipient : list.recipients) {
+            
+            System.out.println(recipient.id);
+            System.out.println(recipient.email);
+        }
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+
+### Get a single recipient
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.Recipient;
+
+public void GetSingleRecipient() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        Recipient recipient = ms.recipients().getRecipient("recipient id");
+        
+        System.out.println(recipient.email);
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a recipient
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.MailerSendResponse;
+
+public void DeleteRecipient() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        MailerSendResponse response = ms.recipients().deleteRecipient("recipient id");
+        
+        System.out.println(response.responseStatusCode);
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get recpients from a suppression list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.BlocklistItem;
+import com.mailersend.sdk.recipients.BlocklistListResponse;
+import com.mailersend.sdk.recipients.SuppressionItem;
+import com.mailersend.sdk.recipients.SuppressionList;
+
+public void GetRecipientsFromSuppressionList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        BlocklistListResponse blocklist = ms.recipients().suppressions().getBlocklist();
+        
+        for (BlocklistItem item : blocklist.items) {
+            
+            System.out.println(item.id);
+            System.out.println(item.pattern);
+            System.out.println(item.type);
+        }
+        
+        SuppressionList hardBounces = ms.recipients().suppressions().getHardBounces();
+        
+        for (SuppressionItem item : hardBounces.items) {
+            
+            System.out.println(item.id);
+            System.out.println(item.recipient.email);
+        }
+        
+        SuppressionList spamComplaints = ms.recipients().suppressions().getSpamComplaints();
+        
+        for (SuppressionItem item : spamComplaints.items) {
+            
+            System.out.println(item.id);
+            System.out.println(item.recipient.email);
+        }
+        
+        SuppressionList unsubscribes = ms.recipients().suppressions().getUnsubscribes();
+        
+        for (SuppressionItem item : unsubscribes.items) {
+            
+            System.out.println(item.id);
+            System.out.println(item.recipient.email);
+        }
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Add recpients to a suppression list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.BlocklistItem;
+import com.mailersend.sdk.recipients.BlocklistListResponse;
+import com.mailersend.sdk.recipients.SuppressionItem;
+import com.mailersend.sdk.recipients.SuppressionList;
+
+public void AddRecipientsToSuppressionList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        // blocklist
+        ms.recipients().suppressions().addBuilder().pattern(".*@example.com");
+        ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+        BlocklistItem[] items = ms.recipients().suppressions().addBuilder().addToBlocklist();
+        
+        for (BlocklistItem item : items) {
+            
+            System.out.println(item.id);
+        }
+        
+        
+        // hard bounces
+        ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+        SuppressionList list = ms.recipients().suppressions().addBuilder().addRecipientsToHardBounces();
+        
+        for (SuppressionItem item : list.items) {
+            
+            System.out.println(item.id);
+        }
+        
+        
+        // spam complaints
+        ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+        list = ms.recipients().suppressions().addBuilder().addRecipientsToSpamComplaints();
+        
+        for (SuppressionItem item : list.items) {
+            
+            System.out.println(item.id);
+        }
+        
+        
+        // unsubscribes
+        ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+        list = ms.recipients().suppressions().addBuilder().addRecipientsToUnsubscribes();
+        
+        for (SuppressionItem item : list.items) {
+            
+            System.out.println(item.id);
+        }
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete recipients from a suppression list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.BlocklistItem;
+import com.mailersend.sdk.recipients.BlocklistListResponse;
+import com.mailersend.sdk.recipients.SuppressionItem;
+import com.mailersend.sdk.recipients.SuppressionList;
+
+public void AddRecipientsToSuppressionList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        // delete from blocklist
+        BlocklistListResponse blocklist = ms.recipients().suppressions().getBlocklist();
+        
+        if (blocklist.items.length == 0) {
+            
+            fail();
+        }
+        
+        String itemId = blocklist.items[0].id;
+        
+        MailerSendResponse response = ms.recipients().suppressions().deleteBlocklistItems(new String[] { itemId });
+        
+        System.out.println(response.responseStatusCode);
+        
+        
+        // delete from hard bounces
+        SuppressionList hardBounces = ms.recipients().suppressions().getHardBounces();
+        
+        if (hardBounces.items.length == 0) {
+            
+            fail();
+        }
+        
+        itemId = hardBounces.items[0].id;
+        
+        response = ms.recipients().suppressions().deleteHardBouncesItems(new String[] { itemId });
+        
+        System.out.println(response.responseStatusCode);
+        
+        
+        // delete from spam complaints
+        SuppressionList spamComplaints = ms.recipients().suppressions().getSpamComplaints();
+        
+        if (spamComplaints.items.length == 0) {
+            
+            fail();
+        }
+        
+        itemId = spamComplaints.items[0].id;
+        
+        response = ms.recipients().suppressions().deleteSpamComplaintsItems(new String[] { itemId });
+        
+        System.out.println(response.responseStatusCode);
+        
+
+        // delete from unsubscribes
+        SuppressionList unsubscribes = ms.recipients().suppressions().getUnsubscribes();
+        
+        if (unsubscribes.items.length == 0) {
+            
+            fail();
+        }
+        
+        itemId = unsubscribes.items[0].id;
+        
+        response = ms.recipients().suppressions().deleteUnsubscribesItems(new String[] { itemId });
+        
+        System.out.println(response.responseStatusCode);
+
     } catch (MailerSendException e) {
         
         e.printStackTrace();

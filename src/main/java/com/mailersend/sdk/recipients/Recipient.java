@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.messages;
+package com.mailersend.sdk.recipients;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -13,36 +13,42 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.domains.Domain;
-import com.mailersend.sdk.util.ApiEmail;
 
-public class Message extends MailerSendResponse {
+public class Recipient {
+
 
     @SerializedName("id")
     public String id;
-    
-    public Date createdAt;
-    public Date updatedAt;
+
+    @SerializedName("email")
+    public String email;
     
     @SerializedName("created_at")
-    protected String createdAtString;
+    private String createdAtString;
     
     @SerializedName("updated_at")
-    protected String updatedAtString;
+    private String updatedAtString;
     
-    @SerializedName("emails")
-    public ApiEmail[] emails;
+    @SerializedName("deleted_at")
+    private String deletedAtString;
     
     @SerializedName("domain")
     public Domain domain;
+    
+    public Date createdAt;
+    
+    public Date updatedAt;
+    
+    public Date deletedAt;
+    
     
     
     /**
      * Converts the retrieved dates to java.util.Date
      */
     protected void parseDates() {
-
+        
         TemporalAccessor ta;
         Instant instant;
         
@@ -60,14 +66,14 @@ public class Message extends MailerSendResponse {
             updatedAt = Date.from(instant);
         }
         
-        if (domain != null) {
+        if (deletedAtString != null && !deletedAtString.isBlank()) {
             
-            domain.postDeserialize();
+            ta = DateTimeFormatter.ISO_INSTANT.parse(deletedAtString);
+            instant = Instant.from(ta);
+            deletedAt = Date.from(instant);
         }
         
-        for (ApiEmail email : emails) {
-            
-            email.parseDates();
-        }
+        domain.postDeserialize();
     }
+    
 }

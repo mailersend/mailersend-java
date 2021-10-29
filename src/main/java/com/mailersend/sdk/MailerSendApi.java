@@ -153,10 +153,44 @@ public class MailerSendApi {
     
     
     /**
+     * Does a DELETE request to the given endpoint of the MailerSend API
+     * @param <T> The type of what the response will be deserialized to
+     * @param endpoint The MailerSend API endpoint
+     * @param requestBody The body of the DELETE request
+     * @param responseClass The class of the response object
+     * @return T
+     * @throws MailerSendException
+     */
+    public <T extends MailerSendResponse> T deleteRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
+        
+        HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
+                .header("Content-type", "applicateion/json")
+                .header("Authorization", "Bearer ".concat(this.apiToken))
+                .method("DELETE", BodyPublishers.ofString(requestBody))
+                .build();
+        
+        HttpResponse<String> responseObject = null;
+        
+        try {
+            
+            responseObject = this.client.send(request, BodyHandlers.ofString());
+                        
+        } catch (IOException | InterruptedException e) {
+
+            MailerSendException ex = (MailerSendException) e;
+            
+            throw ex;
+        }
+        
+        return this.handleApiResponse(responseObject, responseClass);
+    }
+    
+    
+    /**
      * Does a PUT request to the given endpoint of the MailerSend API
      * @param <T> The type of what the response will be deserialized to
      * @param endpoint The MailerSend API endpoint
-     * @param requestBody The body of the POST request
+     * @param requestBody The body of the PUT request
      * @param responseClass The class of the response object
      * @return T
      * @throws MailerSendException
@@ -203,7 +237,7 @@ public class MailerSendApi {
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
         
-        if (responseObject != null && responseObject.statusCode() != 200 && responseObject.statusCode() != 202) {
+        if (responseObject != null && responseObject.statusCode() != 200 && responseObject.statusCode() != 202 && responseObject.statusCode() != 201) {
             
             stringResponse = responseObject.body().toString();
             
