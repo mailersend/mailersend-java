@@ -47,6 +47,12 @@ MailerSend Java SDK
         - [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
         - [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
         - [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
+    - [Webhooks](#webhooks)
+        - [Get a list of webhooks](#get-a-list-of-webhooks)
+        - [Get a single webhook](#get-a-single-webhook)
+        - [Create a webhook](#create-a-webhook)
+        - [Update a webhook](#update-a-webhook)
+        - [Delete a webhook](#delete-a-webhook)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -1327,6 +1333,145 @@ public void AddRecipientsToSuppressionList() {
         
         System.out.println(response.responseStatusCode);
 
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Webhooks
+
+### Get a list of webhooks
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.webhooks.Webhook;
+import com.mailersend.sdk.webhooks.WebhooksList;
+
+public void GetWebhooks() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        WebhooksList list = ms.webhooks().getWebhooks("domain id");
+        
+        for (Webhook webhook : list.webhooks) {
+            
+            System.out.println(webhook.name);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.webhooks.Webhook;
+
+public void GetSingleWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        Webhook webhook = ms.webhooks().getWebhook("webhook id");
+        
+        System.out.println(webhook.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Create a webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.webhooks.Webhook;
+
+public void CreateWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        Webhook webhook = ms.webhooks().builder()
+            .name("Webhook name")
+            .url("Webhook url")
+            .addEvent(WebhookEvents.ACTIVITY_OPENED)
+            .addEvent(WebhookEvents.ACTIVITY_CLICKED)
+            .createWebhook("domain id");
+        
+        System.out.println(webhook.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.webhooks.Webhook;
+
+public void UpdateWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        Webhook webhook = ms.webhooks()
+                .builder()
+                .name("Updated webhook name")
+                .updateWebhook("webhook id");
+                    
+        System.out.println(webhook.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void DeleteWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        MailerSendResponse response = ms.webhooks().deleteWebhook("webhook id");
+            
+        System.out.println(response.responseStatusCode);
+        
     } catch (MailerSendException e) {
         
         e.printStackTrace();
