@@ -17,6 +17,7 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.messages.Messages;
 import com.mailersend.sdk.recipients.Recipients;
 import com.mailersend.sdk.tokens.Tokens;
+import com.mailersend.sdk.webhooks.Webhooks;
 
 /**
  * Main SDK Class
@@ -33,7 +34,7 @@ public class MailerSend {
     private Messages messages = null;
     private Recipients recipients = null;
     private Tokens tokens = null;
-
+    private Webhooks webhooks = null;
     
     
     public MailerSend() {
@@ -44,6 +45,7 @@ public class MailerSend {
         messages = new Messages(this);
         recipients = new Recipients(this);
         tokens = new Tokens(this);
+        webhooks = new Webhooks(this);
     }
     
     
@@ -97,6 +99,7 @@ public class MailerSend {
     }
     
 
+    /**
      * Get the tokens object
      * @return
      */
@@ -105,6 +108,15 @@ public class MailerSend {
         return tokens;
     }
     
+    
+    /**
+     * Get the webhooks object
+     * @return
+     */
+    public Webhooks webhooks() {
+        
+        return webhooks;
+    }
     
     /**
      * Sets the MailerSend token

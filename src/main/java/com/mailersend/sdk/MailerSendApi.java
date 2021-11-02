@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -237,7 +238,20 @@ public class MailerSendApi {
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
         
-        if (responseObject != null && responseObject.statusCode() != 200 && responseObject.statusCode() != 202 && responseObject.statusCode() != 201) {
+        int[] successCodes = {200, 201, 202, 204};
+        
+        boolean isSuccess = false;
+        
+        for (int code : successCodes) {
+            
+            if (code == responseObject.statusCode()) {
+                
+                isSuccess = true;
+                break;
+            }
+        }
+        
+        if (responseObject != null && !isSuccess) {
             
             stringResponse = responseObject.body().toString();
             

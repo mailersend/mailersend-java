@@ -28,7 +28,7 @@ public class Domains {
     private DomainSettingsUpdateBuilder updateDomainSettingsBuilder;
     
     /**
-     * Do not initialize directly. This should only be accessed from MailerSend.analytics
+     * Do not initialize directly. This should only be accessed from MailerSend.domains
      * @param apiReference
      */
     public Domains(MailerSend ref) {
