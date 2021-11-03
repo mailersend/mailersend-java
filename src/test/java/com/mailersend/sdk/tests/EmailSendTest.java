@@ -15,13 +15,17 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
-import com.mailersend.sdk.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.emails.BulkSendStatus;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
 public class EmailSendTest {
    
+    /**
+     * Test token
+     */
     @Test
     public void TestInvalidTokenFailsWith401() {
         
@@ -32,7 +36,7 @@ public class EmailSendTest {
         
         
         try {
-            ms.send(email);
+            ms.emails().send(email);
         } catch (MailerSendException e) {
 
             assertEquals(e.code, 401);
@@ -44,6 +48,9 @@ public class EmailSendTest {
     }
     
     
+    /**
+     * Test wrong personalization
+     */
     @Test
     public void TestInvalidPersonalization() {
         
@@ -57,7 +64,7 @@ public class EmailSendTest {
         
         try {
             
-            ms.send(email);
+            ms.emails().send(email);
             
         } catch (MailerSendException e) {
             
@@ -72,6 +79,9 @@ public class EmailSendTest {
     }
     
     
+    /**
+     * Test personalization from a POJO
+     */
     @Test
     public void TestPojoPersonalization() {
         
@@ -87,7 +97,7 @@ public class EmailSendTest {
         
         try {
             
-            MailerSendResponse response = ms.send(email);
+            MailerSendResponse response = ms.emails().send(email);
         } catch (MailerSendException e) {
             
             // fail if any error is thrown
@@ -97,6 +107,9 @@ public class EmailSendTest {
     }
     
     
+    /**
+     * Test email with CC
+     */
     @Test
     public void TestCcSend() {
         
@@ -110,7 +123,7 @@ public class EmailSendTest {
         
         try {
             
-            ms.send(email);
+            ms.emails().send(email);
         } catch (MailerSendException e) {
             
             // fail if any error is thrown
@@ -118,6 +131,10 @@ public class EmailSendTest {
         }
     }
     
+    
+    /**
+     * Test email with BCC
+     */
     @Test
     public void TestBccSend() {
         
@@ -130,7 +147,7 @@ public class EmailSendTest {
         
         try {
             
-            ms.send(email);
+            ms.emails().send(email);
         } catch (MailerSendException e) {
             
             // fail if any error is thrown
@@ -139,6 +156,9 @@ public class EmailSendTest {
     }
     
     
+    /**
+     * Test email with attachment
+     */
     @Test
     public void TestEmailWithAttachment() {
        
@@ -150,9 +170,69 @@ public class EmailSendTest {
             MailerSend ms = new MailerSend();
             ms.setToken(TestHelper.validToken);
             
-            ms.send(email);
+            ms.emails().send(email);
             
         } catch (IOException | MailerSendException e) {
+            
+            // fail if any error is thrown
+            fail();
+        }
+    }
+    
+    
+    /**
+     * Test bulk email send
+     */
+    @Test
+    public void TestSendBulkEmail() {
+       
+        Email email = TestHelper.createBasicEmail(true);
+        Email email2 = TestHelper.createBasicEmail(true);
+        
+        email2.setHtml("<b>Test bulk</b>");
+        email2.setPlain("Test bulk");
+        
+        try {
+                        
+            MailerSend ms = new MailerSend();
+            ms.setToken(TestHelper.validToken);
+            
+            String bulkSendId = ms.emails().bulkSend(new Email[] { email, email2 });
+            
+            System.out.println(bulkSendId);
+            
+        } catch (MailerSendException e) {
+            
+            // fail if any error is thrown
+            fail();
+        }
+    }
+    
+    
+    /**
+     * Test retrieving the status for a bulk send
+     */
+    @Test
+    public void TestBulkSendStatus() {
+       
+        Email email = TestHelper.createBasicEmail(true);
+        Email email2 = TestHelper.createBasicEmail(true);
+        
+        email2.setHtml("<b>Test bulk</b>");
+        email2.setPlain("Test bulk");
+        
+        try {
+                        
+            MailerSend ms = new MailerSend();
+            ms.setToken(TestHelper.validToken);
+            
+            String bulkSendId = ms.emails().bulkSend(new Email[] { email, email2 });
+            
+            BulkSendStatus status = ms.emails().bulkSendStatus(bulkSendId);
+            
+            System.out.println(status.state);
+            
+        } catch (MailerSendException e) {
             
             // fail if any error is thrown
             fail();

@@ -61,6 +61,7 @@ public class MailerSendApi {
      * @return T
      * @throws MailerSendException
      */
+    @SuppressWarnings("unchecked")
     public <T extends MailerSendResponse> T getRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
         
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
@@ -81,6 +82,15 @@ public class MailerSendApi {
             
             throw ex;
         }
+        
+        if (responseClass == MailerSendStringResponse.class) {
+            
+            MailerSendStringResponse response = new MailerSendStringResponse();
+            response.responseString = responseObject.body().toString();
+            
+            return (T) response;
+        }
+        
         
         return this.handleApiResponse(responseObject, responseClass);
     }
@@ -269,7 +279,7 @@ public class MailerSendApi {
         
         T response = null;
         
-        if (!stringResponse.equals("")) {
+        if (!stringResponse.equals("") && !stringResponse.equals("[]")) {
             
             response = gson.fromJson(stringResponse, responseClass);
         } else {

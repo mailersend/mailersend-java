@@ -54,7 +54,7 @@ public class JsonSerializationDeserializationStrategy implements ExclusionStrate
             
             return false;
         }
-        
+       
         if (this.deserialize) {
             
             return !field.getAnnotation(Expose.class).deserialize();

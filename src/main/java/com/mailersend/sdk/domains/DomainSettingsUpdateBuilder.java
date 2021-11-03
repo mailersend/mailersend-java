@@ -166,7 +166,7 @@ public class DomainSettingsUpdateBuilder {
         // reset the body object's values so that it can be reused
         settings.reset();
         
-        SingleDomainResponse response = api.postRequest(endpoint, json, SingleDomainResponse.class);
+        SingleDomainResponse response = api.putRequest(endpoint, json, SingleDomainResponse.class);
         
         return response.domain;
     }

@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk;
+package com.mailersend.sdk.emails;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,10 +16,7 @@ import java.util.HashMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.email.attributes.Attachment;
-import com.mailersend.sdk.email.attributes.Personalization;
-import com.mailersend.sdk.email.attributes.Substitution;
-import com.mailersend.sdk.email.attributes.Variable;
+import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 public class Email {
@@ -316,7 +313,7 @@ public class Email {
     /**
      * Adds each entry of the allRecipientsPersonalization hash map as a personalization for each recipient
      */
-    private void preparePersonalizationForAllRecipients() {
+    protected void preparePersonalizationForAllRecipients() {
         
         for (Recipient recipient : this.recipients) {
             
@@ -331,7 +328,7 @@ public class Email {
     /**
      * Adds each entry of the allRecipientsSubstitutions hash map as a substitution for each recipient
      */
-    private void prepareSubstitutionsForAllRecipients() {
+    protected void prepareSubstitutionsForAllRecipients() {
         
         for (Recipient recipient : this.recipients) {
             
@@ -347,7 +344,7 @@ public class Email {
      * Prepares the email for sending and returns it as a serialized JSON string
      * @return String
      */
-    protected String serializeForSending() {
+    public String serializeForSending() {
             
         preparePersonalizationForAllRecipients();
         prepareSubstitutionsForAllRecipients();

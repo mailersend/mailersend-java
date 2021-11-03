@@ -170,7 +170,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteBlocklistItems(String[] ids) throws MailerSendException {
         
-        return this.deleteSuppressionListItems("/recipients/blocklist", ids);
+        return this.deleteSuppressionListItems("/suppressions/blocklist", ids);
     }
     
     
@@ -181,7 +181,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteBlocklistAllItems() throws MailerSendException {
         
-        return this.deleteSuppressionListAllItems("/recipients/blocklist");
+        return this.deleteSuppressionListAllItems("/suppressions/blocklist");
     }
     
     
@@ -193,7 +193,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteHardBouncesItems(String[] ids) throws MailerSendException {
         
-        return this.deleteSuppressionListItems("/recipients/hard-bounces", ids);
+        return this.deleteSuppressionListItems("/suppressions/hard-bounces", ids);
     }
     
     
@@ -204,7 +204,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteHardBouncesAllItems() throws MailerSendException {
         
-        return this.deleteSuppressionListAllItems("/recipients/hard-bounces");
+        return this.deleteSuppressionListAllItems("/suppressions/hard-bounces");
     }
     
     
@@ -216,7 +216,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteSpamComplaintsItems(String[] ids) throws MailerSendException {
         
-        return this.deleteSuppressionListItems("/recipients/spam-complaints", ids);
+        return this.deleteSuppressionListItems("/suppressions/spam-complaints", ids);
     }
     
     
@@ -227,7 +227,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteSpamComplaintsAllItems() throws MailerSendException {
         
-        return this.deleteSuppressionListAllItems("/recipients/spam-complaints");
+        return this.deleteSuppressionListAllItems("/suppressions/spam-complaints");
     }
     
     
@@ -239,7 +239,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteUnsubscribesItems(String[] ids) throws MailerSendException {
         
-        return this.deleteSuppressionListItems("/recipients/unsubscribres", ids);
+        return this.deleteSuppressionListItems("/suppressions/unsubscribres", ids);
     }
     
     
@@ -250,7 +250,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteUnsubscribesAllItems() throws MailerSendException {
         
-        return this.deleteSuppressionListAllItems("/recipients/unsubscribes");
+        return this.deleteSuppressionListAllItems("/suppressions/unsubscribes");
     }
     
     

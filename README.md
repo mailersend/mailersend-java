@@ -14,6 +14,8 @@ MailerSend Java SDK
         - [Advanced personalization](#advanced-personalization)
         - [Simple personalization](#simple-personalization)
         - [Send email with attachment](#send-email-with-attachment)
+        - [Send bulk emails](#send-bulk-emails)
+        - [Get bulk request status](#get-bulk-request-status)
     - [Activities](#activities)
         - [Get a list of Activities](#get-a-list-of-activities)
         - [Activities filters](#activities-filters)
@@ -53,6 +55,10 @@ MailerSend Java SDK
         - [Create a webhook](#create-a-webhook)
         - [Update a webhook](#update-a-webhook)
         - [Delete a webhook](#delete-a-webhook)
+    - [Templates](#templates)
+        - [Get a list of templates](#get-a-list-of-templates)
+        - [Get a single template](#get-a-single-template)
+        - [Delete a template](#delete-a-template)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -118,7 +124,7 @@ public void sendEmail() {
 ### Add CC, BCC recipients
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -149,7 +155,7 @@ public void sendEmail() {
 
     try {
     
-        MailerSendResponse response = ms.send(email);
+        MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
 
@@ -161,7 +167,7 @@ public void sendEmail() {
 ### Send a template-based email
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -190,7 +196,7 @@ public void sendEmail() {
 
     try {
     
-        MailerSendResponse response = ms.send(email);
+        MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
 
@@ -202,7 +208,7 @@ public void sendEmail() {
 ### Advanced personalization
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -240,7 +246,7 @@ public void sendEmail() {
 
     try {
     
-        MailerSendResponse response = ms.send(email);
+        MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
 
@@ -252,7 +258,7 @@ public void sendEmail() {
 ### Simple personalization
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -286,7 +292,7 @@ public void sendEmail() {
 
     try {
     
-        MailerSendResponse response = ms.send(email);
+        MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
 
@@ -298,7 +304,7 @@ public void sendEmail() {
 ### Send email with attachment
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -328,7 +334,7 @@ public void sendEmail() {
 
     try {
     
-        MailerSendResponse response = ms.send(email);
+        MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
 
@@ -336,6 +342,86 @@ public void sendEmail() {
     }
 }
 ```
+
+
+### Send bulk emails
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendBulkEmails() {
+
+    Email email1 = new Email();
+
+    email1.setFrom("name", "your email");
+    email1.addRecipient("name", "your@first-recipient.com");
+   
+    email1.setSubject("Email subject 1");
+
+    email1.setPlain("This is the text content for the first email");
+    email1.setHtml("<p>This is the HTML content for the first email</p>");
+
+    Email email2 = new Email();
+
+    email2.setFrom("name", "your email");
+    email2.addRecipient("name", "your@second-recipient.com");
+   
+    email2.setSubject("Email subject 2");
+
+    email2.setPlain("This is the text content for the second email");
+    email2.setHtml("<p>This is the HTML content for the second email</p>");
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        String bulkSendId = ms.emails().bulkSend(new Email[] { email1, email2 });
+
+        // you can use the bulkSendId to get the status of the emails
+        System.out.println(bulkSendId);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+
+### Get bulk request status
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.emails.BulkSendStatus;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getBulkEmailsStatus() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        BulkSendStatus status = ms.emails().bulkSendStatus("bulk send id");
+
+        System.out.println(status.state);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+
 ## Activities 
 
 The SDK provides a simple interface to retrieve a list of activities for a domain.
@@ -1471,6 +1557,96 @@ public void DeleteWebhook() {
         MailerSendResponse response = ms.webhooks().deleteWebhook("webhook id");
             
         System.out.println(response.responseStatusCode);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Templates
+
+### Get a list of templates
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.templates.TemplateItem;
+import com.mailersend.sdk.templates.TemplatesList;
+
+public void getTemplatesList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+            TemplatesList list = ms.templates().getTemplates();
+            
+            for (TemplateItem item : list.templates) {
+                
+                System.out.println(item.id);
+                System.out.println(item.name);
+            }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single template
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.templates.Template;
+import com.mailersend.sdk.templates.TemplateItem;
+import com.mailersend.sdk.templates.TemplatesList;
+
+public void getTemplate() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+            Template template = ms.templates().getTemplate("template id");
+            
+            System.out.println(template.id);
+            System.out.println(template.name);
+            System.out.println(template.imagePath);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a template
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.templates.Template;
+import com.mailersend.sdk.templates.TemplateItem;
+import com.mailersend.sdk.templates.TemplatesList;
+
+public void deleteTemplate() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+            MailerSendResponse response = ms.templates().deleteTemplate("template id");
+            
+            System.out.println(response.responseStatusCode);
         
     } catch (MailerSendException e) {
         

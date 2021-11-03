@@ -6,7 +6,7 @@
  * https://mailersend.com
  **************************************************/
 
-package com.mailersend.sdk.email.attributes;
+package com.mailersend.sdk.emails;
 
 import java.io.File;
 import java.io.IOException;
