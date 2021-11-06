@@ -5,17 +5,14 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.email.attributes;
-
-import java.util.HashMap;
+package com.mailersend.sdk.templates;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.MailerSendResponse;
 
-public class Personalization {
-
-    @SerializedName("email")
-    public String email;
+class TemplateResponse extends MailerSendResponse{
 
     @SerializedName("data")
-    public HashMap<String, Object> data = new HashMap<String, Object>();
+    public Template template;
+    
 }

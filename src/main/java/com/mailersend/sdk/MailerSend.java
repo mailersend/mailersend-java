@@ -7,27 +7,23 @@
  **************************************************/
 package com.mailersend.sdk;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import com.mailersend.sdk.activities.Activities;
 import com.mailersend.sdk.analytics.Analytics;
 import com.mailersend.sdk.domains.Domains;
-import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.emails.Emails;
 import com.mailersend.sdk.messages.Messages;
 import com.mailersend.sdk.recipients.Recipients;
+import com.mailersend.sdk.templates.Templates;
 import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
 
 /**
  * Main SDK Class
  */
-public class MailerSend {
-
-    protected String token;
-    private Recipient defaultFrom = null;
-      
+public class MailerSend {    
    
+    protected String token;
+    
     private Activities activities = null;
     private Analytics analytics = null;
     private Domains domains = null;
@@ -35,10 +31,13 @@ public class MailerSend {
     private Recipients recipients = null;
     private Tokens tokens = null;
     private Webhooks webhooks = null;
+    private Templates templates = null;
+    private Emails emails = null;
     
     
     public MailerSend() {
         
+        emails = new Emails(this);
         activities = new Activities(this);
         analytics = new Analytics(this);
         domains = new Domains(this);
@@ -46,6 +45,17 @@ public class MailerSend {
         recipients = new Recipients(this);
         tokens = new Tokens(this);
         webhooks = new Webhooks(this);
+        templates = new Templates(this);
+    }
+    
+    
+    /**
+     * Get the emails access object
+     * @return
+     */
+    public Emails emails() {
+        
+        return emails;
     }
     
     
@@ -100,7 +110,7 @@ public class MailerSend {
     
 
     /**
-     * Get the tokens object
+     * Get the tokens access object
      * @return
      */
     public Tokens tokens() {
@@ -110,12 +120,22 @@ public class MailerSend {
     
     
     /**
-     * Get the webhooks object
+     * Get the webhooks access object
      * @return
      */
     public Webhooks webhooks() {
         
         return webhooks;
+    }
+    
+    
+    /**
+     * Get the templates access object
+     * @return
+     */
+    public Templates templates() {
+        
+        return templates;
     }
     
     /**
@@ -137,44 +157,4 @@ public class MailerSend {
         return this.token;
     }
     
-    
-    /**
-     * Sets the default from
-     * @param from
-     */
-    public void setDefaultFrom(Recipient from) {
-        
-        this.defaultFrom = from;
-    }
-    
-    
-    /**
-     * Creates a new email
-     * @return
-     */
-    public Email createEmail() {
-        
-        Email newEmail = new Email();
-        newEmail.from = this.defaultFrom;
-        
-        return newEmail;
-    }
-    
-    
-    /**
-     * Sends the given email
-     * @param email
-     * @throws MailerSendResponseError 
-     */
-    public MailerSendResponse send(Email email) throws MailerSendException {
-        
-        String json = email.serializeForSending();
-        
-        MailerSendApi api = new MailerSendApi();
-        api.setToken(this.token);
-       
-        MailerSendResponse response = api.postRequest("/email", json, MailerSendResponse.class);
-        
-        return response;
-    }
 }

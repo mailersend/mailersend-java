@@ -5,32 +5,40 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.messages;
+package com.mailersend.sdk.templates;
 
 import java.util.ArrayList;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
+import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
-public class Messages {
-
+public class Templates {
+    
     private MailerSend apiObjectReference;
     
     private int pageFilter = 1;
     private int limitFilter = 25;
+    private String domainIdFilter = null;
     
-    public Messages(MailerSend ref) {
+    
+    /**
+     * Do not initialize directly. This should only be accessed from MailerSend.analytics
+     * @param apiReference
+     */
+    public Templates(MailerSend ref) {
         
         apiObjectReference = ref;
     }
+    
     
     /**
      * Set the page of the request
      * @param page
      * @return
      */
-    public Messages page(int page) {
+    public Templates page(int page) {
         
         pageFilter = page;
         
@@ -43,7 +51,7 @@ public class Messages {
      * @param limit
      * @return
      */
-    public Messages limit(int limit) {
+    public Templates limit(int limit) {
         
         limitFilter = limit;
         
@@ -52,46 +60,78 @@ public class Messages {
     
     
     /**
-     * Gets a list of messages
+     * Set the domain ID
+     * @param domainId
+     * @return
+     */
+    public Templates domainId(String domainId) {
+        
+        domainIdFilter = domainId;
+        
+        return this;
+    }
+    
+    
+    /**
+     * Get templates
      * @return
      * @throws MailerSendException
      */
-    public MessagesList getMessages() throws MailerSendException {
+    public TemplatesList getTemplates() throws MailerSendException {
         
-        String endpoint = "/messages".concat(prepareParamsUrl());
+        String endpoint = "/templates".concat(prepareParamsUrl());
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
-        MessagesList response = api.getRequest(endpoint, MessagesList.class);
+        TemplatesList response = api.getRequest(endpoint, TemplatesList.class);
         
-        response.postProcessing();
+        response.postDeserialize();
         
         return response;
     }
     
     
     /**
-     * Gets a single message
-     * @param messageId
+     * Retrieve the template with the given id
+     * @param templateId
      * @return
      * @throws MailerSendException
      */
-    public Message getMessage(String messageId) throws MailerSendException {
+    public Template getTemplate(String templateId) throws MailerSendException {
         
-        String endpoint = "/messages/".concat(messageId);
+        String endpoint = "/templates/".concat(templateId);
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
-        SingleMessageResponse response = api.getRequest(endpoint, SingleMessageResponse.class);
+        TemplateResponse response = api.getRequest(endpoint, TemplateResponse.class);
         
-        if (response.message != null) {
+        if (response.template != null) {
             
-            response.message.parseDates();
+            response.template.postDeserialize();
         }
         
-        return response.message;
+        return response.template;
+    }
+    
+    
+    /**
+     * Delete the template with the given id
+     * @param templateId
+     * @return
+     * @throws MailerSendException
+     */
+    public MailerSendResponse deleteTemplate(String templateId) throws MailerSendException {
+        
+        String endpoint = "/templates/".concat(templateId);
+        
+        MailerSendApi api = new MailerSendApi();
+        api.setToken(apiObjectReference.getToken());
+        
+        MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
+        
+        return response;
     }
     
     
@@ -108,6 +148,11 @@ public class Messages {
         
         params.add("limit=".concat(String.valueOf(limitFilter)));
         
+        if (domainIdFilter != null) {
+            
+            params.add("domain_id=".concat(domainIdFilter));
+        }
+        
         String requestParams = "";
         for (int i = 0; i < params.size(); i++) {
             
@@ -123,4 +168,5 @@ public class Messages {
         
         return requestParams;
     }
+
 }

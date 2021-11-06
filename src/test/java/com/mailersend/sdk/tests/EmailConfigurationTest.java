@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.mailersend.sdk.*;
-import com.mailersend.sdk.email.attributes.Personalization;
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.emails.Personalization;
 
 public class EmailConfigurationTest {
         

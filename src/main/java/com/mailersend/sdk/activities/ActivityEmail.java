@@ -14,8 +14,8 @@ import java.util.Collections;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.Email;
 import com.mailersend.sdk.Recipient;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.util.ApiRecipient;
 
 public class ActivityEmail {

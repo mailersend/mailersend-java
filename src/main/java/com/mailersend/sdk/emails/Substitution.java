@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.email.attributes;
+package com.mailersend.sdk.emails;
 
 import com.google.gson.annotations.SerializedName;
 
