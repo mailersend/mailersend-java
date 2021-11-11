@@ -32,6 +32,9 @@ public class Email {
 
     @SerializedName("bcc")
     public ArrayList<Recipient> bcc = new ArrayList<Recipient>();
+    
+    @SerializedName("reply_to")
+    public Recipient replyTo;
 
     @SerializedName("subject")
     public String subject;
@@ -135,6 +138,27 @@ public class Email {
     public void AddBcc(Recipient recipient) {
         
         this.bcc.add(recipient);
+    }
+    
+    
+    /**
+     * Sets the reply to parameter
+     * @param replyTo
+     */
+    public void AddReplyTo(Recipient replyTo) {
+        
+        this.replyTo = replyTo;
+    }
+    
+    
+    /**
+     * Sets the reply to parameter
+     * @param name
+     * @param email
+     */
+    public void AddReplyTo(String name, String email) {
+        
+        this.replyTo = new Recipient(name, email);
     }
     
     

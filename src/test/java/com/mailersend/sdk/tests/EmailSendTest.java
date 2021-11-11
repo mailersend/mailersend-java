@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.emails.BulkSendStatus;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -76,6 +77,37 @@ public class EmailSendTest {
         
         // fail if it reaches here
         fail();
+    }
+    
+    
+    /**
+     * Simple email send
+     */
+    @Test
+    public void TestSimpleSend() {
+        
+        Email email = new Email();
+        
+        email.subject = TestHelper.subject;
+        email.html = TestHelper.html;
+        email.text = TestHelper.text;
+        
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
+        
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        
+        try {
+            
+            MailerSendResponse response = ms.emails().send(email);
+        } catch (MailerSendException e) {
+            
+            // fail if any error is thrown
+            fail();
+        }
     }
     
     
