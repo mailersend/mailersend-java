@@ -7,7 +7,7 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.emails.Email;
 
 public class TestHelper {
 
