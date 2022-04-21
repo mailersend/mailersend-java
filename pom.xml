@@ -29,6 +29,12 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git:git://github.com/mailersend/mailersend-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com:mailersend/mailersend-java.git</developerConnection>
+        <url>http://github.com/mailersend/mailersend-java/tree/main</url>
+    </scm>
+
 	<build>
 		<plugins>
 			<plugin>
