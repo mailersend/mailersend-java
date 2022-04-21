@@ -65,7 +65,7 @@ public class Emails {
     /**
      * Sends the given email
      * @param email
-     * @throws MailerSendResponseError 
+     * @throws MailerSendException 
      */
     public MailerSendResponse send(Email email) throws MailerSendException {
         

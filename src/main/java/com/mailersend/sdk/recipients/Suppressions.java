@@ -30,7 +30,7 @@ public class Suppressions {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.analytics
-     * @param apiReference
+     * @param ref
      */
     public Suppressions(MailerSend ref) {
         
