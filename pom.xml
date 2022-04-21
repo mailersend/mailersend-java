@@ -1,17 +1,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mailersend</groupId>
-	<artifactId>com.mailersend.java-sdk</artifactId>
+	<artifactId>java-sdk</artifactId>
 	<version>0.0.1</version>
 	<name>MailerSend Java SDK</name>
-	<url>https://mailersend.com</url>
-  
+	<description>An SDK for MailerSend API</description>
+	<url>https://github.com/mailersend/mailersend-java</url>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>
 	</properties>
-	
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>MailerSend</name>
+            <email>info@mailersend.com</email>
+            <organization>MailerSend</organization>
+            <organizationUrl>https://mailersend.com</organizationUrl>
+        </developer>
+    </developers>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -28,7 +45,7 @@
 		</plugins>
 	</build>
 
-  
+
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -52,7 +69,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.7</version>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 </project>
