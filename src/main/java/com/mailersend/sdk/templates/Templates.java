@@ -25,7 +25,7 @@ public class Templates {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.analytics
-     * @param apiReference
+     * @param ref
      */
     public Templates(MailerSend ref) {
         

@@ -26,7 +26,7 @@ public class Webhooks {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.webhooks
-     * @param apiReference
+     * @param apiObjectRef
      */
     public Webhooks(MailerSend apiObjectRef) {
         
@@ -92,7 +92,7 @@ public class Webhooks {
     
     /**
      * Gets a single webhook
-     * @param domainId
+     * @param webhookId
      * @return
      * @throws MailerSendException
      */

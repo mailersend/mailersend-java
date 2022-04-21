@@ -141,7 +141,7 @@ public class WebhooksBuilder {
     
     /**
      * Updates the webhook with the given id
-     * @param domainId
+     * @param webhookId
      * @return
      * @throws MailerSendException
      */

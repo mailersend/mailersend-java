@@ -22,8 +22,7 @@ public class Variable {
     
     /**
      * Adds or replaces a variable substitution
-     * @param variable
-     * @param value
+     * @param substitution
      */
     public void addSubstitution(Substitution substitution) {
         

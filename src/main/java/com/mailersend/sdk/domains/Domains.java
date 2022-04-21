@@ -29,7 +29,7 @@ public class Domains {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.domains
-     * @param apiReference
+     * @param ref
      */
     public Domains(MailerSend ref) {
         
