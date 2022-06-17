@@ -21,7 +21,7 @@ public class ApiEmail {
     public String id;
     
     @SerializedName("from")
-    public Recipient from;
+    public String from;
 
     @SerializedName("subject")
     public String subject;
