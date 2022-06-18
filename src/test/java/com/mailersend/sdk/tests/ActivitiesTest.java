@@ -168,10 +168,6 @@ public class ActivitiesTest {
             assertTrue(activity.email.status != null && !activity.email.status.isBlank());
             assertTrue(activity.email.createdAt != null);
             
-            assertTrue(activity.email.recipient.id != null && !activity.email.recipient.id.isBlank());
-            assertTrue(activity.email.recipient.email != null && !activity.email.recipient.email.isBlank());
-            assertTrue(activity.email.recipient.createdAt != null);
-            
         } catch (MailerSendException e) {
 
           fail();

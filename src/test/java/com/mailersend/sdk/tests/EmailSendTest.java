@@ -13,7 +13,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -21,9 +26,24 @@ import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.emails.BulkSendStatus;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.vcr.VcrRecorder;
+
 
 public class EmailSendTest {
-   
+	
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("EmailSendTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
+	
     /**
      * Test token
      */
@@ -85,7 +105,7 @@ public class EmailSendTest {
      */
     @Test
     public void TestSimpleSend() {
-        
+           	    	
         Email email = new Email();
         
         email.subject = TestHelper.subject;

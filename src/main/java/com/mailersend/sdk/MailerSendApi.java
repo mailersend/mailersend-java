@@ -14,12 +14,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.Arrays;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.exceptions.JsonResponseError;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.MailerSendHttpClientFactory;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 
@@ -39,7 +38,7 @@ public class MailerSendApi {
      */
     public MailerSendApi() {
         
-        this.client = HttpClient.newHttpClient();
+        this.client = MailerSendHttpClientFactory.getInstance().createClient();
     }
     
     
@@ -74,7 +73,7 @@ public class MailerSendApi {
         
         try {
             
-            responseObject = this.client.send(request, BodyHandlers.ofString());
+        	responseObject = this.client.send(request, BodyHandlers.ofString());
                         
         } catch (IOException | InterruptedException e) {
 

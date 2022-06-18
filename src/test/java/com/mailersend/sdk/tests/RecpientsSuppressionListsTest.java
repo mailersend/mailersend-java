@@ -138,12 +138,16 @@ public class RecpientsSuppressionListsTest {
     
     /**
      * Tests deleting items from the suppression lists
+     * @throws MailerSendException 
      */
     @Test
-    public void TestDeleteFromSuppressionList() {
+    public void TestDeleteFromSuppressionList() throws MailerSendException {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
+        
+        ms.recipients().suppressions().addBuilder().pattern(".*@example.com");
+        BlocklistItem[] items = ms.recipients().suppressions().addBuilder().addToBlocklist();
         
         try {
             
@@ -163,6 +167,10 @@ public class RecpientsSuppressionListsTest {
             
             
             // delete from hard bounces
+            ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+            ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+            ms.recipients().suppressions().addBuilder().addRecipientsToHardBounces();
+            
             SuppressionList hardBounces = ms.recipients().suppressions().getHardBounces();
             
             if (hardBounces.items.length == 0) {
@@ -178,6 +186,9 @@ public class RecpientsSuppressionListsTest {
             
             
             // delete from spam complaints
+            ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+            ms.recipients().suppressions().addBuilder().addRecipientsToSpamComplaints();
+            
             SuppressionList spamComplaints = ms.recipients().suppressions().getSpamComplaints();
             
             if (spamComplaints.items.length == 0) {
@@ -193,6 +204,9 @@ public class RecpientsSuppressionListsTest {
             
 
             // delete from unsubscribes
+            ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+            ms.recipients().suppressions().addBuilder().addRecipientsToUnsubscribes();
+            
             SuppressionList unsubscribes = ms.recipients().suppressions().getUnsubscribes();
             
             if (unsubscribes.items.length == 0) {
