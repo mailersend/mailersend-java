@@ -14,8 +14,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.IOException;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -28,14 +31,14 @@ import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class EmailSendTest {
 	
-	@BeforeAll
-	public static void setup() throws IOException
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
 	{
-		VcrRecorder.useRecording("EmailSendTest");
+		VcrRecorder.useRecording("EmailSendTest_" + info.getDisplayName());
 	}
 	
-	@AfterAll
-	public static void finish() throws IOException
+	@AfterEach
+	public void afterEach() throws IOException
 	{
 		VcrRecorder.stopRecording();
 	}
