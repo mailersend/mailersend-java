@@ -11,6 +11,7 @@ import com.mailersend.sdk.activities.Activities;
 import com.mailersend.sdk.analytics.Analytics;
 import com.mailersend.sdk.domains.Domains;
 import com.mailersend.sdk.emails.Emails;
+import com.mailersend.sdk.inboundroutes.InboundRoutes;
 import com.mailersend.sdk.messages.Messages;
 import com.mailersend.sdk.recipients.Recipients;
 import com.mailersend.sdk.templates.Templates;
@@ -33,6 +34,7 @@ public class MailerSend {
     private Webhooks webhooks = null;
     private Templates templates = null;
     private Emails emails = null;
+    private InboundRoutes inboundRoutes = null;
     
     
     public MailerSend() {
@@ -46,6 +48,7 @@ public class MailerSend {
         tokens = new Tokens(this);
         webhooks = new Webhooks(this);
         templates = new Templates(this);
+        inboundRoutes = new InboundRoutes(this);
     }
     
     
@@ -136,6 +139,11 @@ public class MailerSend {
     public Templates templates() {
         
         return templates;
+    }
+    
+    public InboundRoutes inboundRoutes() {
+    	
+    	return inboundRoutes;
     }
     
     /**

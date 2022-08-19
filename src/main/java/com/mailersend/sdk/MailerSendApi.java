@@ -266,7 +266,9 @@ public class MailerSendApi {
             
             JsonResponseError error = gson.fromJson(stringResponse, JsonResponseError.class);
             
-            MailerSendException responseError = new MailerSendException(error.message);            
+            MailerSendException responseError = new MailerSendException(error.message);
+            
+            responseError.responseBody = stringResponse;
             
             responseError.errors = error.errors;
             responseError.code = responseObject.statusCode();

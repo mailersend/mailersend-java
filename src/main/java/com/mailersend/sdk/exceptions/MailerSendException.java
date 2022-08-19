@@ -18,6 +18,8 @@ public class MailerSendException extends Exception {
     
     public String message = "";
     
+    public String responseBody = null;
+    
     public HashMap<String, String[]> errors = new HashMap<String, String[]>();
     
     public MailerSendException(String message) {

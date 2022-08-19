@@ -9,6 +9,7 @@ package com.mailersend.sdk.domains;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
@@ -173,7 +174,7 @@ public class Domains {
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         
         // return true if the response is 200, 204 or 202
-        return Arrays.asList(new int[] {200, 204, 202}).contains(response.responseStatusCode);
+        return IntStream.of(new int[] {200, 204, 202}).anyMatch(x -> x == response.responseStatusCode);
     }
     
     
