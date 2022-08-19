@@ -2,12 +2,16 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.analytics.AnalyticsByDate;
@@ -16,9 +20,23 @@ import com.mailersend.sdk.analytics.AnalyticsList;
 import com.mailersend.sdk.analytics.AnalyticsStatistic;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.EventTypes;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class AnalyticsTest {
 
+	
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("AnalyticsTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     
     /**
      * Gets analytics by date using date filters

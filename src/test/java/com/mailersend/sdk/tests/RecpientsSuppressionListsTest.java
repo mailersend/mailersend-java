@@ -9,7 +9,12 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -18,10 +23,23 @@ import com.mailersend.sdk.recipients.BlocklistItem;
 import com.mailersend.sdk.recipients.BlocklistListResponse;
 import com.mailersend.sdk.recipients.SuppressionItem;
 import com.mailersend.sdk.recipients.SuppressionList;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class RecpientsSuppressionListsTest {
 
     
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("RecpientsSuppressionListsTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     /**
      * Tests retrieving items from the suppression lists
      */
