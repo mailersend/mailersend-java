@@ -14,9 +14,11 @@ import com.mailersend.sdk.emails.Emails;
 import com.mailersend.sdk.inboundroutes.InboundRoutes;
 import com.mailersend.sdk.messages.Messages;
 import com.mailersend.sdk.recipients.Recipients;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessages;
 import com.mailersend.sdk.templates.Templates;
 import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
+import com.mailsend.sdk.emailverification.EmailVerification;
 
 /**
  * Main SDK Class
@@ -35,7 +37,8 @@ public class MailerSend {
     private Templates templates = null;
     private Emails emails = null;
     private InboundRoutes inboundRoutes = null;
-    
+    private ScheduledMessages scheduledMessages = null;
+    private EmailVerification emailVerification = null;
     
     public MailerSend() {
         
@@ -49,6 +52,8 @@ public class MailerSend {
         webhooks = new Webhooks(this);
         templates = new Templates(this);
         inboundRoutes = new InboundRoutes(this);
+        scheduledMessages = new ScheduledMessages(this);
+        emailVerification = new EmailVerification(this);
     }
     
     
@@ -101,6 +106,14 @@ public class MailerSend {
         return messages;
     }
     
+    /**
+     * Get the scheduled messages access object
+     * @return
+     */
+    public ScheduledMessages scheduledMessages() {
+    	return scheduledMessages;
+    }
+    
     
     /**
      * Get the recipients access object
@@ -141,9 +154,23 @@ public class MailerSend {
         return templates;
     }
     
+    
+    /**
+     * Get the inbound routes access object
+     * @return
+     */
     public InboundRoutes inboundRoutes() {
     	
     	return inboundRoutes;
+    }
+    
+    /**
+     * Get the email verification access object
+     * @return
+     */
+    public EmailVerification emailVerification() {
+    	
+    	return emailVerification;
     }
     
     /**

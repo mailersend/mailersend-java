@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -284,6 +286,38 @@ public class EmailSendTest {
             
             System.out.println(status.state);
             
+        } catch (MailerSendException e) {
+            
+            // fail if any error is thrown
+            fail();
+        }
+    }
+    
+    @Test
+    public void ScheduleEmailTest() {
+        Email email = new Email();
+        
+        email.subject = TestHelper.subject;
+        email.html = TestHelper.html;
+        email.text = TestHelper.text;
+        
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
+        
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, 1);
+        
+        email.setSendAt(calendar.getTime());
+        
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        
+        try {
+            
+            MailerSendResponse response = ms.emails().send(email);
         } catch (MailerSendException e) {
             
             // fail if any error is thrown

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -58,12 +59,17 @@ public class Email {
 
     @SerializedName("personalization")
     public ArrayList<Personalization> personalization = new ArrayList<Personalization>();
+    
+    public Date sendAt;
         
     // keeps the global personalizations
     protected transient HashMap<String, Object> allRecipientsPersonalization = new HashMap<String, Object>();
     
     // keeps the global variable substitutions
     protected transient HashMap<String, String> allRecipientsSubstitutions = new HashMap<String, String>();
+    
+    @SerializedName("send_at")
+    protected long sendAtStamp;
     
     /**
      * Adds a recipient to the email
@@ -249,6 +255,10 @@ public class Email {
         }
     }
     
+    public void setSendAt(Date sendAt) {
+    	this.sendAt = sendAt;
+    }
+    
     
     /**
      * Adds personalization to all recipients
@@ -372,6 +382,10 @@ public class Email {
             
         preparePersonalizationForAllRecipients();
         prepareSubstitutionsForAllRecipients();
+        
+        if (sendAt != null) {
+        	sendAtStamp = sendAt.getTime() / 1000;
+        }
         
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))

@@ -14,6 +14,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.NoSuchElementException;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.exceptions.JsonResponseError;
@@ -309,7 +311,7 @@ public class MailerSendApi {
         try {
             
             response.rateLimit = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-limit").get());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NoSuchElementException e) {
             
             // left empty on purpose
         }
@@ -317,7 +319,7 @@ public class MailerSendApi {
         try {
             
             response.rateLimitRemaining = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-remaining").get());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NoSuchElementException e) {
             
             // left empty on purpose
         }
