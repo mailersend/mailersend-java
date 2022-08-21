@@ -15,6 +15,7 @@ import com.mailersend.sdk.inboundroutes.InboundRoutes;
 import com.mailersend.sdk.messages.Messages;
 import com.mailersend.sdk.recipients.Recipients;
 import com.mailersend.sdk.scheduledmessages.ScheduledMessages;
+import com.mailersend.sdk.sms.Sms;
 import com.mailersend.sdk.templates.Templates;
 import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
@@ -39,6 +40,7 @@ public class MailerSend {
     private InboundRoutes inboundRoutes = null;
     private ScheduledMessages scheduledMessages = null;
     private EmailVerification emailVerification = null;
+    private Sms sms = null;
     
     public MailerSend() {
         
@@ -54,6 +56,7 @@ public class MailerSend {
         inboundRoutes = new InboundRoutes(this);
         scheduledMessages = new ScheduledMessages(this);
         emailVerification = new EmailVerification(this);
+        sms = new Sms(this);
     }
     
     
@@ -171,6 +174,14 @@ public class MailerSend {
     public EmailVerification emailVerification() {
     	
     	return emailVerification;
+    }
+    
+    /**
+     * Get the sms access object
+     * @return
+     */
+    public Sms sms() {
+    	return sms;
     }
     
     /**
