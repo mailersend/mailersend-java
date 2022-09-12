@@ -14,8 +14,15 @@ MailerSend Java SDK
         - [Advanced personalization](#advanced-personalization)
         - [Simple personalization](#simple-personalization)
         - [Send email with attachment](#send-email-with-attachment)
+        - [Schedule an email](#schedule-an-email)
         - [Send bulk emails](#send-bulk-emails)
         - [Get bulk request status](#get-bulk-request-status)
+    - [Inbound routes](#inbound-routes)
+        - [Get a list of inbound routes](#get-a-list-of-inbound-routes)
+        - [Get an inbound route](#get-an-inbound-route)
+        - [Create an inbound route](#create-an-inbound-route)
+        - [Update an inbound route](#update-an-inbound-route)
+        - [Delete an inbound route](#delete-an-inbound-route)
     - [Activities](#activities)
         - [Get a list of Activities](#get-a-list-of-activities)
         - [Activities filters](#activities-filters)
@@ -343,6 +350,48 @@ public void sendEmail() {
 }
 ```
 
+### Schedule an email
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import java.util.Calendar;
+import java.util.Date;
+
+public void scheduleEmail() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+   
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    calendar.add(Calendar.DATE, 1);
+
+    email.setSendAt(calendar.getTime());
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
 
 ### Send bulk emails
 
@@ -421,6 +470,167 @@ public void getBulkEmailsStatus() {
 }
 ```
 
+## Inbound routes
+
+### Get a list of inbound routes
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.InboundRoute;
+import com.mailersend.sdk.inboundroutes.InboundRoutesList;
+
+public void getInboundRoutes() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        InboundRoutesList routes = ms.inboundRoutes().getRoutes();
+
+        for (InboundRoute route : routes.routes) {
+            System.out.println(route.id);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Get an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.InboundRoute;
+
+public void getInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        InboundRoute route = ms.inboundRoutes().getRoute("inbound route id");
+
+        System.out.println(route.id);
+        System.out.println(route.name);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Create an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.Forward;
+
+public void createInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        Forward forward = new Forward();
+        forward.type = "webhook";
+        forward.value = "https://example-domain.com";
+        forward.secret = "asdfgh";
+    
+        ms.inboundRoutes().builder()
+            .domainId("domain id")
+            .name("Test inbound name")
+            .domainEnabled(false)
+            .matchFilter("match_all")
+            .forwards(new Forward[] { forward })
+            .addRoute();
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Update an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.Forward;
+import com.mailersend.sdk.inboundroutes.InboundRoute;
+
+public void updateInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        Forward forward = new Forward();
+        forward.type = "webhook";
+        forward.value = "https://example-domain.com";
+        forward.secret = "asdfgh";
+    
+        InboundRoute route = ms.inboundRoutes().builder()
+            .domainId("domain id")
+            .name("Updated route name")
+            .domainEnabled(false)
+            .matchFilter("match_all")
+            .forwards(new Forward[] { forward })
+            .updateRoute("inbound route id");
+
+        System.out.println(route.id);
+        System.out.println(route.name);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Delete an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean result = ms.inboundRoutes().deleteRoute("inbound route id");
+
+        System.out.println(result);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
 
 ## Activities 
 
