@@ -76,7 +76,12 @@ MailerSend Java SDK
         - [Create an email verification list](#create-an-email-verification-list)
         - [Verify an email list](#verify-an-email-list)
         - [Get email verification list results](#get-email-verification-list-results)
-    
+    - [SMS activity](#sms-activity)
+        - [Get a list of SMS activities](#get-a-list-of-sms-activities)
+        - [Get activity of a single message](#get-activity-of-a-single-message)
+    - [SMS messages](#sms-messages)
+        - [Get a list of SMS messages](#get-a-list-of-sms-messages)
+        - [Get info on a SMS message](#get-info-on-a-sms-message)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -2093,6 +2098,120 @@ public void verifyList() {
             System.out.println(result.address);
             System.out.println(result.result);
         }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS activity
+
+### Get a list of SMS activities
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.activities.SmsActivityList;
+import com.mailsend.sdk.sms.activities.SmsActivity;
+
+public void getActivities() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsActivityList list = ms.sms().activities().getActivities();
+            
+        for (SmsActivity activity : lists.smsActivities) {
+            System.out.println(activity.id);
+            System.out.println(activity.content);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get activity of a single message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.activities.SmsActivity;
+
+public void getActivity() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsActivity activity = ms.sms().activities().getMessageActivity("message id");
+            
+        System.out.println(activity.id);
+        System.out.println(activity.content);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS messages
+
+### Get a list of SMS messages
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.messages.SmsMessageList;
+import com.mailsend.sdk.sms.messages.SmsMessage;
+
+public void getSmsMessages() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsMessageList list = ms.sms().messages().getMessages();
+            
+        for (SmsMessage message : list.messages) {
+            System.out.println(message.id);
+            System.out.println(message.text);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get info on a SMS message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.messages.SmsMessage;
+
+public void getSmsMessage() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsMessage message = ms.sms().messages().getMessage("message id");
+
+        System.out.println(message.id);
+        System.out.println(message.text);
         
     } catch (MailerSendException e) {
         
