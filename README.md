@@ -45,6 +45,10 @@ MailerSend Java SDK
     - [Messages](#messages)
         - [Get a list of messages](#get-a-list-of-messages)
         - [Get a single message](#get-a-single-message)
+    - [Scheduled messages](#scheduled-messages)
+        - [Get a list of scheduled messages](#get-a-list-of-scheduled-messages)
+        - [Get a scheduled message](#get-a-scheduled-message)
+        - [Delete a scheduled message](#delete-a-scheduled-message)
     - [Tokens](#tokens)
         - [Create a token](#create-a-token)
         - [Update token](#update-token)
@@ -66,6 +70,13 @@ MailerSend Java SDK
         - [Get a list of templates](#get-a-list-of-templates)
         - [Get a single template](#get-a-single-template)
         - [Delete a template](#delete-a-template)
+    - [Email verification](#email-verification)
+        - [Get all email verification lists](#get-all-email-verification-lists)
+        - [Get an email verification list](#get-an-email-verification-list)
+        - [Create an email verification list](#create-an-email-verification-list)
+        - [Verify an email list](#verify-an-email-list)
+        - [Get email verification list results](#get-email-verification-list-results)
+    
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -1250,6 +1261,91 @@ public void SingleMessage() {
 }
 ```
 
+## Scheduled messages
+
+### Get a list of scheduled messages
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessagesList;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
+
+public void getScheduledMessages() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        ScheduledMessagesList messages = ms.scheduledmessages().getScheduledMessages();
+
+        for (ScheduledMessage message : messages.scheduledMessages) {
+            System.out.println(message.id);
+            System.out.println(message.subject);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a scheduled message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
+
+public void getScheduledMessage() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        ScheduledMessage message = ms.scheduledmessages().getScheduledMessage("message id");
+
+        System.out.println(message.id);
+        System.out.println(message.subject);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a scheduled message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
+
+public void deleteScheduledMessage() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        boolean result = ms.scheduledmessages().deleteScheduledMessage("message id");
+
+        System.out.println(result);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ## Tokens
 
 ### Create a token
@@ -1857,6 +1953,146 @@ public void deleteTemplate() {
             MailerSendResponse response = ms.templates().deleteTemplate("template id");
             
             System.out.println(response.responseStatusCode);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Email verification
+
+### Get all email verification lists
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+import com.mailsend.sdk.emailverification.EmailVerificationLists;
+
+public void getLists() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationLists lists = ms.emailVerification().getLists();
+            
+        for (EmailVerificationList list : lists.lists) {
+            System.out.println(list.id);
+            System.out.println(list.name);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an email verification list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+
+public void getList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationList list = ms.emailVerification().getList("list id");
+
+        System.out.println(list.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Create an email verification list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+
+public void createList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationList list = ms.emailVerification().builder()
+			.name("Test email verification")
+			.addEmail("info@example.com")
+			.addEmail("info1@example.com")
+			.addEmail("info2@example.com")
+			.create();
+
+        System.out.println(list.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Verify an email list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+
+public void verifyList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationList list = ms.emailVerification().verifyList("list id");
+
+        System.out.println(list.status.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get email verification list results
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.ListVerificationResults;
+import com.mailsend.sdk.emailverification.VerificationResult;
+
+public void verifyList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        ListVerificationResults results = ms.emailVerification().verificationResults("list id");
+
+        for (VerificationResult result : results.results) {
+            System.out.println(result.address);
+            System.out.println(result.result);
+        }
         
     } catch (MailerSendException e) {
         
