@@ -104,6 +104,7 @@ public class RecpientsSuppressionListsTest {
         try {
             
             // blocklist
+        	ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
             ms.recipients().suppressions().addBuilder().pattern(".*@example.com");
             ms.recipients().suppressions().addBuilder().recipient("test@example.com");
             BlocklistItem[] items = ms.recipients().suppressions().addBuilder().addToBlocklist();
@@ -164,13 +165,14 @@ public class RecpientsSuppressionListsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
         
+        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
         ms.recipients().suppressions().addBuilder().pattern(".*@example.com");
         BlocklistItem[] items = ms.recipients().suppressions().addBuilder().addToBlocklist();
         
         try {
             
             // delete from blocklist
-            BlocklistListResponse blocklist = ms.recipients().suppressions().getBlocklist();
+            BlocklistListResponse blocklist = ms.recipients().suppressions().domainId(TestHelper.domainId).getBlocklist();
             
             if (blocklist.items.length == 0) {
                 
@@ -179,35 +181,17 @@ public class RecpientsSuppressionListsTest {
             
             String itemId = blocklist.items[0].id;
             
-            MailerSendResponse response = ms.recipients().suppressions().deleteBlocklistItems(new String[] { itemId });
+            MailerSendResponse response = ms.recipients().suppressions().domainId(TestHelper.domainId).deleteBlocklistItems(new String[] { itemId });
             
             System.out.println(response.responseStatusCode);
-            
-            
-            // delete from hard bounces
-            ms.recipients().suppressions().addBuilder().recipient("test@example.com");
-            ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
-            ms.recipients().suppressions().addBuilder().addRecipientsToHardBounces();
-            
-            SuppressionList hardBounces = ms.recipients().suppressions().getHardBounces();
-            
-            if (hardBounces.items.length == 0) {
-                
-                fail();
-            }
-            
-            itemId = hardBounces.items[0].id;
-            
-            response = ms.recipients().suppressions().deleteHardBouncesItems(new String[] { itemId });
-            
-            System.out.println(response.responseStatusCode);
-            
+                      
             
             // delete from spam complaints
+            ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
             ms.recipients().suppressions().addBuilder().recipient("test@example.com");
             ms.recipients().suppressions().addBuilder().addRecipientsToSpamComplaints();
             
-            SuppressionList spamComplaints = ms.recipients().suppressions().getSpamComplaints();
+            SuppressionList spamComplaints = ms.recipients().suppressions().domainId(TestHelper.domainId).getSpamComplaints();
             
             if (spamComplaints.items.length == 0) {
                 
@@ -216,28 +200,10 @@ public class RecpientsSuppressionListsTest {
             
             itemId = spamComplaints.items[0].id;
             
-            response = ms.recipients().suppressions().deleteSpamComplaintsItems(new String[] { itemId });
+            response = ms.recipients().suppressions().domainId(TestHelper.domainId).deleteSpamComplaintsItems(new String[] { itemId });
             
             System.out.println(response.responseStatusCode);
             
-
-            // delete from unsubscribes
-            ms.recipients().suppressions().addBuilder().recipient("test@example.com");
-            ms.recipients().suppressions().addBuilder().addRecipientsToUnsubscribes();
-            
-            SuppressionList unsubscribes = ms.recipients().suppressions().getUnsubscribes();
-            
-            if (unsubscribes.items.length == 0) {
-                
-                fail();
-            }
-            
-            itemId = unsubscribes.items[0].id;
-            
-            response = ms.recipients().suppressions().deleteUnsubscribesItems(new String[] { itemId });
-            
-            System.out.println(response.responseStatusCode);
-
 
         } catch (MailerSendException e) {
             

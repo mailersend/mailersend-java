@@ -120,9 +120,9 @@ public class WebhooksTest {
                 fail();
             }
             
-            MailerSendResponse response = ms.webhooks().deleteWebhook(list.webhooks[0].id);
+            boolean response = ms.webhooks().deleteWebhook(list.webhooks[0].id);
             
-            System.out.println(response.responseStatusCode);
+            System.out.println(response);
 
         } catch (MailerSendException e) {
             

@@ -82,6 +82,29 @@ MailerSend Java SDK
     - [SMS messages](#sms-messages)
         - [Get a list of SMS messages](#get-a-list-of-sms-messages)
         - [Get info on a SMS message](#get-info-on-a-sms-message)
+    - [SMS Phone numbers](#sms-phone-numbers)
+        - [Get a list of SMS phone numbers](#get-a-list-of-sms-phone-numbers)
+        - [Get an SMS phone number](#get-an-sms-phone-number)
+        - [Update a single SMS phone number](#update-a-single-sms-phone-number)
+        - [Delete an SMS phone number](#delete-an-sms-phone-number)
+    - [SMS recipients](#sms-recipients)
+        - [Get a list of SMS recipients](#get-a-list-of-sms-recipients)
+        - [Get an SMS recipient](#get-an-sms-recipient)
+        - [Update a single SMS recipient](#update-a-single-sms-recipient)
+    - [SMS inbounds](#sms-inbounds)
+        - [Get a list of SMS inbound routes](#get-a-list-of-sms-inbound-routes)
+        - [Get a single SMS inbound route](#get-a-single-sms-inbound-route)
+        - [Add an SMS inbound route](#add-an-sms-inbound-route)
+        - [Update an inbound route](#update-an-inbound-route)
+        - [Delete an SMS inbound route](#delete-an-sms-inbound-route)
+    - [SMS webhooks](#sms-webhooks)
+        - [Get a list of SMS webhooks](#get-a-list-of-sms-webhooks)
+        - [Get an SMS webhook](#get-an-sms-webhook)
+        - [Create an SMS webhook](#create-an-sms-webhook)
+        - [Update an SMS webhook](#update-an-sms-webhook)
+        - [Delete an SMS webhook](#delete-an-sms-webhook)
+    - [SMS](#sms)
+        - [Send an SMS with personalization](#send-an-sms-with-personalization)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -2212,6 +2235,508 @@ public void getSmsMessage() {
 
         System.out.println(message.id);
         System.out.println(message.text);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS Phone numbers
+
+### Get a list of SMS phone numbers
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumberList;
+
+public void getSmsPhoneNumbers() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        PhoneNumberList numbers = ms.sms().phoneNumbers().getPhoneNumbers();
+        
+        for (PhoneNumber number : numbers.phoneNumbers) {
+            
+            System.out.println(number.id);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an SMS phone number
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
+
+public void getSmsPhoneNumber() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+                
+        PhoneNumber number = ms.sms().phoneNumbers().getPhoneNumber("phone number id");
+
+        System.out.println(number.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a single SMS phone number
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
+
+public void updateSmsPhoneNumber() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean pausePhoneNumber = false;
+        PhoneNumber number = ms.sms().phoneNumbers().updatePhoneNumber("phone number id", pausePhoneNumber);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMS phone number
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSmsPhoneNumber() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean result = ms.sms().phoneNumbers().deletePhoneNumber("phone number id");
+
+        System.out.println(result);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS recipients
+
+### Get a list of SMS recipients
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.recipients.SmsRecipient;
+import com.mailersend.sdk.sms.recipients.SmsRecipientList;
+
+public void getSmsRecipients() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsRecipientList list = ms.sms().recipients().getRecipients();
+        
+        for (SmsRecipient recipient : list.recipients) {
+            
+            System.out.println(recipient.id);
+        }
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an SMS recipient
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.recipients.SmsRecipient;
+
+public void getSmsRecipient() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsRecipient recipient = ms.sms().recipients().getRecipient("recipient id");
+        
+        System.out.println(recipient.id);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a single SMS recipient
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.recipients.SmsRecipient;
+
+public void updateSmsRecipient() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        String status = "opt_out";
+
+        SmsRecipient recipient = ms.sms().recipients().updateRecipient("recipient id", status);
+        
+        System.out.println(recipient.status);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS inbounds
+
+### Get a list of SMS inbound routes
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRouteList;
+
+public void getSmsInboundRoutes() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRouteList routes = ms.sms().inboundRoutes().getSmsInboundRoutes();
+        
+        for (SmsInboundRoute route : routes.routes) {
+            
+            System.out.println(route.id);
+        }
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single SMS inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void getSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRoute route = ms.sms().inboundRoutes().getSmsInboundRoute("route id");
+        
+        System.out.println(route.id);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Add an SMS inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void addSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRoute route = ms.sms().inboundRoutes().builder()
+                .smsNumberId("sms number id")
+                .name("Test inbound route")
+                .enabled(false)
+                .forwardUrl("https://example.com")
+                .filter("equal", "START")
+                .addSmsInboundRoute();
+        
+        System.out.println(route.id);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void updateSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRoute route = ms.sms().inboundRoutes().builder()
+                .smsNumberId("sms number id")
+                .name("Test inbound route updated")
+                .enabled(false)
+                .forwardUrl("https://example.com")
+                .filter("equal", "START")
+                .updateSmsInboundRoute("route id");
+        
+        System.out.println(route.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMS inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void deleteSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean result = ms.sms().inboundRoutes().deleteSmsInboundRoute("route id");
+        
+        System.out.println(result);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS webhooks
+
+### Get a list of SMS webhooks
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+import com.mailersend.sms.webhooks.SmsWebhookList;
+
+public void getSmsWebhooks() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhookList list = ms.sms().webhooks().getWebhooks("phone number id");
+        
+        for (SmsWebhook webhook : list.webhooks) {
+            
+            System.out.println(webhook.id);
+        }
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+
+public void getSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhook webhook = ms.sms().webhooks().getWebhook("webhook id");
+        
+        System.out.println(webhook.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Create an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+
+public void createSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhook webhook = ms.sms().webhooks().builder()
+            .addEvent("sms.sent")
+            .name("sms webhook")
+            .url("https://example.com")
+            .createWebhook("sms phone number id");
+        
+        System.out.print(webhook.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+
+public void updateSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhook webhook = ms.sms().webhooks().builder()
+        	.name("sms updated webhook")
+        	.updateWebhook("webhook id");
+        	
+        System.out.print(webhook.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean result = ms.sms().webhooks().deleteWebhook("webhook id");
+        	
+        System.out.print(result);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+## SMS
+
+### Send an SMS with personalization
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendSms() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        String messageId = ms.sms().builder().from("from phone number")
+        .addRecipient("to phone number")
+        .text("test sms {{name}}")
+        .addPersonalization("to phone number", "name", "name personalization")
+        .send();
+        
+        System.out.println(messageId);
         
     } catch (MailerSendException e) {
         

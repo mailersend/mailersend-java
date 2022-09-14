@@ -7,6 +7,9 @@
  **************************************************/
 package com.mailersend.sdk;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Represents a successful email send via MailerSend
  */
@@ -17,4 +20,5 @@ public class MailerSendResponse {
     public int rateLimit;
     public int rateLimitRemaining;
     
+    public Map<String, List<String>> headers;
 }

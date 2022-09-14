@@ -1,11 +1,4 @@
-/*************************************************
- * MailerSend Java SDK
- * https://github.com/mailersend/mailersend-java
- * 
- * @author MailerSend <support@mailersend.com>
- * https://mailersend.com
- **************************************************/
-package com.mailersend.sdk.webhooks;
+package com.mailersend.sms.webhooks;
 
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -15,11 +8,11 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
-public class Webhooks {
-    
+public class SmsWebhooks {
+
     private MailerSend apiObjectReference;
     
-    private WebhooksBuilder webhooksBuilder;
+    private SmsWebhooksBuilder webhooksBuilder;
     
     private int pageFilter = 1;
     private int limitFilter = 25;
@@ -29,10 +22,10 @@ public class Webhooks {
      * Do not initialize directly. This should only be accessed from MailerSend.webhooks
      * @param apiObjectRef
      */
-    public Webhooks(MailerSend apiObjectRef) {
+    public SmsWebhooks(MailerSend apiObjectRef) {
         
         apiObjectReference = apiObjectRef;
-        webhooksBuilder = new WebhooksBuilder(apiObjectRef);
+        webhooksBuilder = new SmsWebhooksBuilder(apiObjectRef);
     }
     
     
@@ -41,7 +34,7 @@ public class Webhooks {
      * @param page
      * @return
      */
-    public Webhooks page(int page) {
+    public SmsWebhooks page(int page) {
         
         pageFilter = page;
         
@@ -54,21 +47,11 @@ public class Webhooks {
      * @param limit
      * @return
      */
-    public Webhooks limit(int limit) {
+    public SmsWebhooks limit(int limit) {
         
         limitFilter = limit;
         
         return this;
-    }
-    
-    
-    /**
-     * Gets the builder that can be used to create or update webhooks
-     * @return
-     */
-    public WebhooksBuilder builder() {
-        
-        return webhooksBuilder;
     }
     
     
@@ -78,14 +61,14 @@ public class Webhooks {
      * @return
      * @throws MailerSendException
      */
-    public WebhooksList getWebhooks(String domainId) throws MailerSendException {
+    public SmsWebhookList getWebhooks(String smsNumberId) throws MailerSendException {
         
-        String endpoint = "/webhooks".concat(prepareParamsUrl(domainId));
+        String endpoint = "/sms-webhooks".concat(prepareParamsUrl(smsNumberId));
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
-        WebhooksList response = api.getRequest(endpoint, WebhooksList.class);
+        SmsWebhookList response = api.getRequest(endpoint, SmsWebhookList.class);
         
         response.postDeserialize();
         
@@ -99,14 +82,14 @@ public class Webhooks {
      * @return
      * @throws MailerSendException
      */
-    public Webhook getWebhook(String webhookId) throws MailerSendException {
+    public SmsWebhook getWebhook(String webhookId) throws MailerSendException {
         
-        String endpoint = "/webhooks/".concat(webhookId);
+        String endpoint = "/sms-webhooks/".concat(webhookId);
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
-        WebhookResponse response = api.getRequest(endpoint, WebhookResponse.class);
+        SingleSmsWebhookResponse response = api.getRequest(endpoint, SingleSmsWebhookResponse.class);
         
         response.webhook.postDeserialize();
         
@@ -122,7 +105,7 @@ public class Webhooks {
      */
     public boolean deleteWebhook(String webhookId) throws MailerSendException {
         
-        String endpoint = "/webhooks/".concat(webhookId);
+        String endpoint = "/sms-webhooks/".concat(webhookId);
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
@@ -133,12 +116,26 @@ public class Webhooks {
         return IntStream.of(new int[] {200, 204, 202}).anyMatch(x -> x == response.responseStatusCode);
     }
     
+    /**
+     * Gets the builder that can be used to create or update webhooks
+     * @return
+     */
+    public SmsWebhooksBuilder builder() {
+        
+        return webhooksBuilder;
+    }
+    
+    
+    public SmsWebhooksBuilder newBuilder() {
+    	
+    	return new SmsWebhooksBuilder(apiObjectReference);
+    }
     
     /**
      * Prepares the query part of the request url
      * @return
      */
-    private String prepareParamsUrl(String domainId) {
+    private String prepareParamsUrl(String smsNumberId) {
         
         // prepare the request parameters
         ArrayList<String> params = new ArrayList<String>();
@@ -147,7 +144,7 @@ public class Webhooks {
         
         params.add("limit=".concat(String.valueOf(limitFilter)));
         
-        params.add("domain_id=".concat(domainId));
+        params.add("sms_number_id=".concat(smsNumberId));
         
         String requestParams = "";
         for (int i = 0; i < params.size(); i++) {
