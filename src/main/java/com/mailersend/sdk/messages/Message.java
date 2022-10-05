@@ -17,6 +17,12 @@ import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.domains.Domain;
 import com.mailersend.sdk.util.ApiEmail;
 
+/**
+ * <p>Message class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Message {
 
     @SerializedName("id")

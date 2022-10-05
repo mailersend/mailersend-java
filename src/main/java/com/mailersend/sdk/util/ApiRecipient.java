@@ -15,6 +15,12 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.Recipient;
 
+/**
+ * <p>ApiRecipient class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class ApiRecipient {
 
     @SerializedName("id")
@@ -72,7 +78,8 @@ public class ApiRecipient {
     
     /**
      * Converts this ApiRecipient to a com.mailersend.sdk.Recipient
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.Recipient} object.
      */
     public Recipient toRecipient() {
         

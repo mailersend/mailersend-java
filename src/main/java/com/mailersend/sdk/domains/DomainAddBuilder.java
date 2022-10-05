@@ -14,6 +14,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>DomainAddBuilder class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class DomainAddBuilder {
   
     private MailerSend apiObjectReference;
@@ -23,7 +29,8 @@ public class DomainAddBuilder {
     
     /**
      * No instantiation from outside the sdk
-     * @param apiObjectRef
+     *
+     * @param apiObjectRef a {@link com.mailersend.sdk.MailerSend} object.
      */
     protected DomainAddBuilder(MailerSend apiObjectRef) {
         
@@ -34,8 +41,9 @@ public class DomainAddBuilder {
     
     /**
      * Set the return path subdomain value
-     * @param returnPathSubdomain
-     * @return
+     *
+     * @param returnPathSubdomain a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.domains.DomainAddBuilder} object.
      */
     public DomainAddBuilder returnPathSubdomain(String returnPathSubdomain) {
         
@@ -47,8 +55,9 @@ public class DomainAddBuilder {
     
     /**
      * Set the custom tracking domain value
-     * @param customTrackingSubdomain
-     * @return
+     *
+     * @param customTrackingSubdomain a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.domains.DomainAddBuilder} object.
      */
     public DomainAddBuilder customTrackingSubdomain(String customTrackingSubdomain) {
         
@@ -60,8 +69,9 @@ public class DomainAddBuilder {
     
     /**
      * Set the inbound routing subdomain value
-     * @param inboundRoutingSubdomain
-     * @return
+     *
+     * @param inboundRoutingSubdomain a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.domains.DomainAddBuilder} object.
      */
     public DomainAddBuilder inboundRoutingSubdomain(String inboundRoutingSubdomain) {
         
@@ -73,9 +83,10 @@ public class DomainAddBuilder {
     
     /**
      * Adds a domain to MailerSend
-     * @param name
-     * @return
-     * @throws MailerSendException
+     *
+     * @param name a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.domains.Domain} object.
      */
     public Domain addDomain(String name) throws MailerSendException {
         

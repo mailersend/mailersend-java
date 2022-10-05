@@ -9,6 +9,12 @@ package com.mailersend.sdk.util;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>ApiRecipientsList class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class ApiRecipientsList extends PaginatedResponse {
 
     @SerializedName("data")

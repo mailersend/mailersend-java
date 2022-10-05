@@ -15,6 +15,12 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>Analytics class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Analytics {
 
     // we need a reference to the MailerSend object to get the token and pass it to the responses
@@ -31,7 +37,8 @@ public class Analytics {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.analytics
-     * @param ref
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
      */
     public Analytics(MailerSend ref) {
         
@@ -41,8 +48,9 @@ public class Analytics {
     
     /**
      * Sets the domain id for the request
-     * @param domainId
-     * @return
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.analytics.Analytics} object.
      */
     public Analytics domainId(String domainId) {
         
@@ -54,8 +62,9 @@ public class Analytics {
     
     /**
      * Sets the date from filter for the request
-     * @param dateFrom
-     * @return
+     *
+     * @param dateFrom a {@link java.util.Date} object.
+     * @return a {@link com.mailersend.sdk.analytics.Analytics} object.
      */
     public Analytics dateFrom(Date dateFrom) {
         
@@ -67,8 +76,9 @@ public class Analytics {
     
     /**
      * Sets the date to filter for the request
-     * @param dateTo
-     * @return
+     *
+     * @param dateTo a {@link java.util.Date} object.
+     * @return a {@link com.mailersend.sdk.analytics.Analytics} object.
      */
     public Analytics dateTo(Date dateTo) {
         
@@ -80,8 +90,9 @@ public class Analytics {
     
     /**
      * Sets the tags filters for the request
-     * @param tags
-     * @return
+     *
+     * @param tags an array of {@link java.lang.String} objects.
+     * @return a {@link com.mailersend.sdk.analytics.Analytics} object.
      */
     public Analytics tags(String[] tags) {
         
@@ -94,8 +105,9 @@ public class Analytics {
     
     /**
      * Adds a tag filter to the request
-     * @param tag
-     * @return
+     *
+     * @param tag a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.analytics.Analytics} object.
      */
     public Analytics tag(String tag) {
         
@@ -107,9 +119,10 @@ public class Analytics {
     
     /**
      * Gets the analytics by date
-     * @param events
-     * @return
-     * @throws MailerSendException
+     *
+     * @param events an array of {@link java.lang.String} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.analytics.AnalyticsByDateList} object.
      */
     public AnalyticsByDateList getByDate(String[] events) throws MailerSendException {
         
@@ -119,10 +132,11 @@ public class Analytics {
     
     /**
      * Gets the analytics by date
-     * @param groupBy
-     * @param events
-     * @return
-     * @throws MailerSendException
+     *
+     * @param groupBy a {@link java.lang.String} object.
+     * @param events an array of {@link java.lang.String} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.analytics.AnalyticsByDateList} object.
      */
     public AnalyticsByDateList getByDate(String groupBy, String[] events) throws MailerSendException {
         
@@ -162,8 +176,9 @@ public class Analytics {
     
     /**
      * Gets the opens by country
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.analytics.AnalyticsList} object.
      */
     public AnalyticsList getOpensByCountry() throws MailerSendException {
         
@@ -173,8 +188,9 @@ public class Analytics {
     
     /**
      * Gets the opens by user agent
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.analytics.AnalyticsList} object.
      */
     public AnalyticsList getOpensByUserAgent() throws MailerSendException {
         
@@ -184,8 +200,9 @@ public class Analytics {
     
     /**
      * Gets the opens by the user agent type (by reading environment)
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.analytics.AnalyticsList} object.
      */
     public AnalyticsList getOpensByUserAgenType() throws MailerSendException {
         

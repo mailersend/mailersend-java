@@ -15,14 +15,18 @@ import com.google.gson.annotations.Expose;
  * Handles the serialization and deserialization strategy for all API objects (Email, Activity, etc.).
  * If a field does not have the @Expose annotiation, it gets de/serialized normally.
  * If it has the @Expose annotation, the annotation's parameters determine the behaviour
+ *
+ * @author mailersend
+ * @version $Id: $Id
  */
 public class JsonSerializationDeserializationStrategy implements ExclusionStrategy {
 
     private boolean deserialize = false;
 
     /**
-     * 
-     * @param isDeserialize
+     * <p>Constructor for JsonSerializationDeserializationStrategy.</p>
+     *
+     * @param isDeserialize a boolean.
      */
     public JsonSerializationDeserializationStrategy(boolean isDeserialize) {
         
@@ -31,9 +35,10 @@ public class JsonSerializationDeserializationStrategy implements ExclusionStrate
     
     
     /**
+     * {@inheritDoc}
+     *
      * Just keeping it here because it is required by the ExclusionStrategy interface
      * Always returns false
-     * @return false
      */
     @Override
     public boolean shouldSkipClass(Class<?> sClass) {
@@ -43,6 +48,8 @@ public class JsonSerializationDeserializationStrategy implements ExclusionStrate
 
     
     /**
+     * {@inheritDoc}
+     *
      * Implements the field exclusion strategy
      * If a field does not have the @Expose annotiation, it gets de/serialized normally.
      * If it has the @Expose annotation, the annotation's parameters determine the behaviour

@@ -14,6 +14,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>MessagesListItem class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class MessagesListItem {
 
     @SerializedName("id")

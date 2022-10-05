@@ -16,6 +16,12 @@ import org.apache.commons.io.FileUtils;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>Attachment class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Attachment {
 
     @SerializedName("content")
@@ -30,8 +36,9 @@ public class Attachment {
     
     /**
      * Reads a file, encodes it to base64 and sets it as an attachment
-     * @param path
-     * @throws IOException
+     *
+     * @param path a {@link java.lang.String} object.
+     * @throws java.io.IOException
      */
     public void AddAttachmentFromFile(String path) throws IOException {
         File file = new File(path);
@@ -42,8 +49,9 @@ public class Attachment {
     
     /**
      * Sets an attachments contents and filename
+     *
      * @param content The base64 contents of the attachment
-     * @param filename
+     * @param filename a {@link java.lang.String} object.
      */
     public void setAttachment(String content, String filename) {
         

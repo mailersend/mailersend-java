@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.recipients;
 
 import java.util.ArrayList;
@@ -6,6 +13,12 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>SmsRecipients class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsRecipients {
 
 	private MailerSend apiObjectReference;
@@ -15,31 +28,66 @@ public class SmsRecipients {
     private String statusFilter;
     private String numberIdFilter;
     
+    /**
+     * <p>Constructor for SmsRecipients.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public SmsRecipients(MailerSend ref) {
     	apiObjectReference = ref;
     }
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.sms.recipients.SmsRecipients} object.
+     */
     public SmsRecipients page(int page) {
     	pageFilter = page;
     	return this;
     }
     
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.sms.recipients.SmsRecipients} object.
+     */
     public SmsRecipients limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
+    /**
+     * <p>status.</p>
+     *
+     * @param status a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.recipients.SmsRecipients} object.
+     */
     public SmsRecipients status(String status) {
     	statusFilter = status;
     	return this;
     }
     
+    /**
+     * <p>numberId.</p>
+     *
+     * @param numberId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.recipients.SmsRecipients} object.
+     */
     public SmsRecipients numberId(String numberId) {
     	numberIdFilter = numberId;
     	return this;
     }
     
+    /**
+     * <p>getRecipients.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.recipients.SmsRecipientList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsRecipientList getRecipients() throws MailerSendException {
     	String endpoint = "/sms-recipients".concat(prepareParamsUrl());
     	
@@ -52,6 +100,13 @@ public class SmsRecipients {
         return response;
     }
     
+    /**
+     * <p>getRecipient.</p>
+     *
+     * @param recipientId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.recipients.SmsRecipient} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsRecipient getRecipient(String recipientId) throws MailerSendException {
     	String endpoint = "/sms-recipients/".concat(recipientId);
     	
@@ -65,6 +120,14 @@ public class SmsRecipients {
         return response.recipient;
     }
     
+    /**
+     * <p>updateRecipient.</p>
+     *
+     * @param recipientId a {@link java.lang.String} object.
+     * @param status a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.recipients.SmsRecipient} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsRecipient updateRecipient(String recipientId, String status) throws MailerSendException {
     	String endpoint = "/sms-recipients/".concat(recipientId).concat("?status=").concat(status);
     	

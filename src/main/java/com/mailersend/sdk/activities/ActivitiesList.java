@@ -15,6 +15,12 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.ResponseLinks;
 import com.mailersend.sdk.util.ResponseMeta;
 
+/**
+ * <p>ActivitiesList class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class ActivitiesList extends MailerSendResponse {
 
     @SerializedName("data")
@@ -36,7 +42,8 @@ public class ActivitiesList extends MailerSendResponse {
     
     /**
      * Returns the current results page
-     * @return
+     *
+     * @return a int.
      */
     public int getCurrentPage() {
         
@@ -51,8 +58,9 @@ public class ActivitiesList extends MailerSendResponse {
     
     /**
      * Gets the next activities page using the original filters
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.activities.ActivitiesList} object.
      */
     public ActivitiesList nextPage() throws MailerSendException {
         
@@ -76,8 +84,9 @@ public class ActivitiesList extends MailerSendResponse {
     
     /**
      * Gets the previous activities page using the original filters
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.activities.ActivitiesList} object.
      */
     public ActivitiesList previousPage() throws MailerSendException {
         
@@ -116,7 +125,7 @@ public class ActivitiesList extends MailerSendResponse {
     
     /**
      * Is called to perform any actions after the deserialization of the response
-     * to the /activities endpoint 
+     * to the /activities endpoint
      * Do not call directly
      */
     public void postDeserialize() {

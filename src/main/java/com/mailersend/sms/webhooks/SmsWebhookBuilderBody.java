@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sms.webhooks;
 
 import java.util.ArrayList;

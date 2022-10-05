@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.inboundroutes;
 
 import java.util.ArrayList;
@@ -8,6 +15,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>SmsInboundRoutes class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsInboundRoutes {
 
 	private MailerSend apiObjectReference;
@@ -19,40 +32,85 @@ public class SmsInboundRoutes {
     private String smsNumberIdFilter;
     private Boolean enabledFilter = null;
     
+    /**
+     * <p>Constructor for SmsInboundRoutes.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public SmsInboundRoutes(MailerSend ref) {
     	apiObjectReference = ref;
     	builder = new SmsInboundRouteBuilder(ref);
     }
     
+    /**
+     * <p>builder.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRouteBuilder} object.
+     */
     public SmsInboundRouteBuilder builder() {
     	return builder;
     }
     
+    /**
+     * <p>newBuilder.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRouteBuilder} object.
+     */
     public SmsInboundRouteBuilder newBuilder() {
     	
     	return new SmsInboundRouteBuilder(apiObjectReference);
     }
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRoutes} object.
+     */
     public SmsInboundRoutes page(int page) {
     	pageFilter = page;
     	return this;
     }
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRoutes} object.
+     */
     public SmsInboundRoutes limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
+    /**
+     * <p>smsNumberId.</p>
+     *
+     * @param smsNumberId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRoutes} object.
+     */
     public SmsInboundRoutes smsNumberId(String smsNumberId) {
     	smsNumberIdFilter = smsNumberId;
     	return this;
     }
     
+    /**
+     * <p>enabled.</p>
+     *
+     * @param enabled a boolean.
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRoutes} object.
+     */
     public SmsInboundRoutes enabled(boolean enabled) {
     	enabledFilter = enabled;
     	return this;
     }
     
+    /**
+     * <p>getSmsInboundRoutes.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRouteList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsInboundRouteList getSmsInboundRoutes() throws MailerSendException {
     	
     	String endpoint = "/sms-inbounds".concat(prepareParamsUrl());
@@ -67,6 +125,13 @@ public class SmsInboundRoutes {
         return response;
     }
     
+    /**
+     * <p>getSmsInboundRoute.</p>
+     *
+     * @param routeId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsInboundRoute getSmsInboundRoute(String routeId) throws MailerSendException {
         
     	String endpoint = "/sms-inbounds/".concat(routeId);
@@ -81,6 +146,13 @@ public class SmsInboundRoutes {
         return response.route;
     }
     
+    /**
+     * <p>deleteSmsInboundRoute.</p>
+     *
+     * @param routeId a {@link java.lang.String} object.
+     * @return a boolean.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public boolean deleteSmsInboundRoute(String routeId) throws MailerSendException {
     	
     	String endpoint = "/sms-inbounds/".concat(routeId);

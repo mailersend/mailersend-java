@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.activities;
 
 import java.time.Instant;
@@ -8,6 +15,12 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.sms.SmsInfo;
 
+/**
+ * <p>SmsMessageActivity class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsMessageActivity {
 
 	@SerializedName("id")
@@ -33,6 +46,9 @@ public class SmsMessageActivity {
 	@SerializedName("sms_activity")
 	public SmsActivity[] smsActivity;
 	
+	/**
+	 * <p>postDeserialize.</p>
+	 */
 	public void postDeserialize() {
 		if (createdAtStr != null && !createdAtStr.isBlank()) {
 			

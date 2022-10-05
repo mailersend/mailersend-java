@@ -15,6 +15,12 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
 
+/**
+ * <p>TokenAdd class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class TokenAdd {
 
     @SerializedName("id")

@@ -13,6 +13,12 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>Messages class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Messages {
 
     private MailerSend apiObjectReference;
@@ -20,6 +26,11 @@ public class Messages {
     private int pageFilter = 1;
     private int limitFilter = 25;
     
+    /**
+     * <p>Constructor for Messages.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public Messages(MailerSend ref) {
         
         apiObjectReference = ref;
@@ -27,8 +38,9 @@ public class Messages {
     
     /**
      * Set the page of the request
-     * @param page
-     * @return
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.messages.Messages} object.
      */
     public Messages page(int page) {
         
@@ -40,8 +52,9 @@ public class Messages {
     
     /**
      * Set the results limit (10 - 100)
-     * @param limit
-     * @return
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.messages.Messages} object.
      */
     public Messages limit(int limit) {
         
@@ -53,8 +66,9 @@ public class Messages {
     
     /**
      * Gets a list of messages
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.messages.MessagesList} object.
      */
     public MessagesList getMessages() throws MailerSendException {
         
@@ -73,9 +87,10 @@ public class Messages {
     
     /**
      * Gets a single message
-     * @param messageId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param messageId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.messages.Message} object.
      */
     public Message getMessage(String messageId) throws MailerSendException {
         

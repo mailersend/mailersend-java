@@ -9,6 +9,12 @@ package com.mailersend.sdk.domains;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>DomainDnsRecords class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class DomainDnsRecords {
 
     @SerializedName("id")

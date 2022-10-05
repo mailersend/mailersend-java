@@ -14,6 +14,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>TemplateStats class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class TemplateStats {
     
     @SerializedName("total")

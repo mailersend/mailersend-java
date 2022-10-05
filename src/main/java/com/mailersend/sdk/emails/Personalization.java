@@ -11,6 +11,12 @@ import java.util.HashMap;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>Personalization class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Personalization {
 
     @SerializedName("email")

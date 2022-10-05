@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.phonenumbers;
 
 import java.util.ArrayList;
@@ -8,6 +15,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>PhoneNumbers class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class PhoneNumbers {
 
     private MailerSend apiObjectReference;
@@ -16,25 +29,54 @@ public class PhoneNumbers {
     private int limitFilter = 25;
     private Boolean pausedFilter;
     
+    /**
+     * <p>Constructor for PhoneNumbers.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public PhoneNumbers(MailerSend ref) {
     	apiObjectReference = ref;
     }
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.sms.phonenumbers.PhoneNumbers} object.
+     */
     public PhoneNumbers page(int page) {
     	pageFilter = page;
     	return this;
     }
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.sms.phonenumbers.PhoneNumbers} object.
+     */
     public PhoneNumbers limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
+    /**
+     * <p>paused.</p>
+     *
+     * @param paused a boolean.
+     * @return a {@link com.mailersend.sdk.sms.phonenumbers.PhoneNumbers} object.
+     */
     public PhoneNumbers paused(boolean paused) {
     	pausedFilter = paused;
     	return this;
     }
     
+    /**
+     * <p>getPhoneNumbers.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.phonenumbers.PhoneNumberList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public PhoneNumberList getPhoneNumbers() throws MailerSendException {
     	String endpoint = "/sms-numbers".concat(prepareParamsUrl());
     	
@@ -48,6 +90,13 @@ public class PhoneNumbers {
         return response;
     }
     
+    /**
+     * <p>getPhoneNumber.</p>
+     *
+     * @param phoneNumberId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.phonenumbers.PhoneNumber} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public PhoneNumber getPhoneNumber(String phoneNumberId) throws MailerSendException {
     	String endpoint = "/sms-numbers/".concat(phoneNumberId);
     	
@@ -62,6 +111,14 @@ public class PhoneNumbers {
     }
     
     
+    /**
+     * <p>updatePhoneNumber.</p>
+     *
+     * @param phoneNumberId a {@link java.lang.String} object.
+     * @param paused a boolean.
+     * @return a {@link com.mailersend.sdk.sms.phonenumbers.PhoneNumber} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public PhoneNumber updatePhoneNumber(String phoneNumberId, boolean paused) throws MailerSendException {
     	String endpoint = "/sms-numbers/".concat(phoneNumberId).concat("?paused=").concat(String.valueOf(paused));
     	
@@ -76,6 +133,13 @@ public class PhoneNumbers {
     }
     
     
+    /**
+     * <p>deletePhoneNumber.</p>
+     *
+     * @param phoneNumberId a {@link java.lang.String} object.
+     * @return a boolean.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public boolean deletePhoneNumber(String phoneNumberId) throws MailerSendException {
     	String endpoint = "/sms-numbers/".concat(phoneNumberId);
     	

@@ -11,6 +11,12 @@ import java.util.ArrayList;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>Variable class.</p>
+ *
+ * @author john
+ * @version $Id: $Id
+ */
 public class Variable {
 
     @SerializedName("email")
@@ -22,7 +28,8 @@ public class Variable {
     
     /**
      * Adds or replaces a variable substitution
-     * @param substitution
+     *
+     * @param substitution a {@link com.mailersend.sdk.emails.Substitution} object.
      */
     public void addSubstitution(Substitution substitution) {
         

@@ -20,6 +20,12 @@ import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>Email class.</p>
+ *
+ * @author john
+ * @version $Id: $Id
+ */
 public class Email {
     
     @SerializedName("to")
@@ -76,8 +82,9 @@ public class Email {
     
     /**
      * Adds a recipient to the email
-     * @param name
-     * @param email
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
      */
     public void addRecipient(String name, String email) {
         
@@ -88,7 +95,8 @@ public class Email {
     
     /**
      * Adds a recipient
-     * @param recipient
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      */
     public void AddRecipient(Recipient recipient) {
         
@@ -98,7 +106,8 @@ public class Email {
     
     /**
      * Adds multiple recipients to the email
-     * @param recipients
+     *
+     * @param recipients an array of {@link com.mailersend.sdk.Recipient} objects.
      */
     public void AddRecipients(Recipient[] recipients) {
         
@@ -108,8 +117,9 @@ public class Email {
     
     /**
      * Adds a carbon copy recipient to the email
-     * @param name
-     * @param email
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
      */
     public void AddCc(String name, String email) {
         
@@ -120,7 +130,8 @@ public class Email {
     
     /**
      * Adds a carbon copy recipient to the email
-     * @param recipient
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      */
     public void AddCc(Recipient recipient) {
         
@@ -130,8 +141,9 @@ public class Email {
     
     /**
      * Adds a blind carbon copy recipient to the email
-     * @param name
-     * @param email
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
      */
     public void AddBcc(String name, String email) {
         
@@ -142,7 +154,8 @@ public class Email {
     
     /**
      * Adds a blind carbon copy recipient to the email
-     * @param recipient
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      */
     public void AddBcc(Recipient recipient) {
         
@@ -152,7 +165,8 @@ public class Email {
     
     /**
      * Sets the reply to parameter
-     * @param replyTo
+     *
+     * @param replyTo a {@link com.mailersend.sdk.Recipient} object.
      */
     public void AddReplyTo(Recipient replyTo) {
         
@@ -162,8 +176,9 @@ public class Email {
     
     /**
      * Sets the reply to parameter
-     * @param name
-     * @param email
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
      */
     public void AddReplyTo(String name, String email) {
         
@@ -173,8 +188,9 @@ public class Email {
     
     /**
      * Sets the email from
-     * @param name
-     * @param email
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
      */
     public void setFrom(String name, String email) {
         
@@ -185,7 +201,8 @@ public class Email {
     
     /**
      * Sets the email's subject
-     * @param subject
+     *
+     * @param subject a {@link java.lang.String} object.
      */
     public void setSubject(String subject) {
         
@@ -195,7 +212,8 @@ public class Email {
     
     /**
      * Sets the email's HTML body
-     * @param html
+     *
+     * @param html a {@link java.lang.String} object.
      */
     public void setHtml(String html) {
         
@@ -205,7 +223,8 @@ public class Email {
     
     /**
      * Sets the email's plain text bofy
-     * @param plain
+     *
+     * @param plain a {@link java.lang.String} object.
      */
     public void setPlain(String plain) {
         
@@ -215,7 +234,8 @@ public class Email {
     
     /**
      * Sets the email's template id
-     * @param templateId
+     *
+     * @param templateId a {@link java.lang.String} object.
      */
     public void setTemplateId(String templateId) {
         
@@ -225,9 +245,10 @@ public class Email {
     
     /**
      * Adds a personalization for the given recipient
-     * @param recipient
-     * @param name
-     * @param value
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     * @param name a {@link java.lang.String} object.
+     * @param value a {@link java.lang.Object} object.
      */
     public void addPersonalization(Recipient recipient, String name, Object value) {
         
@@ -258,11 +279,20 @@ public class Email {
         }
     }
     
+    /**
+     * Set the send at date
+     *
+     * @param sendAt a {@link java.util.Date} object.
+     */
     public void setSendAt(Date sendAt) {
     	this.sendAt = sendAt;
     }
     
-    
+    /**
+     * Set in reply to
+     *
+     * @param inReplyTo a {@link java.lang.String} object.
+     */
     public void setInReplyTo(String inReplyTo) {
     	this.inReplyTo = inReplyTo;
     }
@@ -270,8 +300,9 @@ public class Email {
     
     /**
      * Adds personalization to all recipients
-     * @param name
-     * @param value
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param value a {@link java.lang.Object} object.
      */
     public void addPersonalization(String name, Object value) {
         
@@ -281,9 +312,10 @@ public class Email {
     
     /**
      * Adds a variable for the given recipient
-     * @param recipient
-     * @param variable
-     * @param value
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     * @param variable a {@link java.lang.String} object.
+     * @param value a {@link java.lang.String} object.
      */
     public void AddVariable(Recipient recipient, String variable, String value) {
         
@@ -315,8 +347,9 @@ public class Email {
     
     /**
      * Adds a variable to all recipients
-     * @param name
-     * @param value
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param value a {@link java.lang.String} object.
      */
     public void AddVariable(String name, String value) {
         
@@ -326,7 +359,8 @@ public class Email {
     
     /**
      * Add a tag to the email
-     * @param tag
+     *
+     * @param tag a {@link java.lang.String} object.
      */
     public void AddTag(String tag) {
         
@@ -336,8 +370,9 @@ public class Email {
     
     /**
      * Attach a file to the email
-     * @param path
-     * @throws IOException
+     *
+     * @param path a {@link java.lang.String} object.
+     * @throws java.io.IOException
      */
     public void attachFile(String path) throws IOException {
     
@@ -347,6 +382,12 @@ public class Email {
         this.attachments.add(attachment);
     }
     
+    /**
+     * <p>attachFile.</p>
+     *
+     * @param file a {@link java.io.File} object.
+     * @throws java.io.IOException if any.
+     */
     public void attachFile(File file) throws IOException {
         
         attachFile(file.getAbsolutePath());
@@ -385,6 +426,7 @@ public class Email {
     
     /**
      * Prepares the email for sending and returns it as a serialized JSON string
+     *
      * @return String
      */
     public String serializeForSending() {

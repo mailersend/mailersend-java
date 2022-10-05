@@ -30,6 +30,9 @@ class DomainAddRequestBody {
     public String inboundRoutingSubdomainValue = null;
     
     
+    /**
+     * <p>reset.</p>
+     */
     public void reset() {
         
         name = null;

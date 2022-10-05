@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailsend.sdk.emailverification;
 
 import java.time.Instant;
@@ -7,6 +14,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>EmailVerificationList class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class EmailVerificationList {
 
 	@SerializedName("id")
@@ -47,6 +60,9 @@ public class EmailVerificationList {
 	@SerializedName("statistics")
 	public Statistics statistics;
 	
+	/**
+	 * <p>postDeserialize.</p>
+	 */
 	public void postDeserialize() {
 		
         TemporalAccessor ta;

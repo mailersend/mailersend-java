@@ -14,6 +14,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>DomainSettingsUpdateBuilder class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class DomainSettingsUpdateBuilder {
 
     private MailerSend apiObjectReference;
@@ -23,7 +29,8 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Protected constructor, should only be instantiated by the sdk
-     * @param apiObjectRef
+     *
+     * @param apiObjectRef a {@link com.mailersend.sdk.MailerSend} object.
      */
     protected DomainSettingsUpdateBuilder(MailerSend apiObjectRef) {
         
@@ -34,8 +41,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set sendings pause on/off
-     * @param sendPaused
-     * @return
+     *
+     * @param sendPaused a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder sendPaused(boolean sendPaused) {
         
@@ -47,8 +55,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set click tracking on/off
-     * @param trackClicks
-     * @return
+     *
+     * @param trackClicks a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder trackClicks(boolean trackClicks) {
         
@@ -60,8 +69,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set opens tracking on/off
-     * @param trackOpens
-     * @return
+     *
+     * @param trackOpens a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder trackOpens(boolean trackOpens) {
         
@@ -73,8 +83,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set unsubscribe tracking on/off
-     * @param trackUnsubscribe
-     * @return
+     *
+     * @param trackUnsubscribe a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder trackUnsubscribe(boolean trackUnsubscribe) {
         
@@ -86,8 +97,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set the unsubscribe html content
-     * @param html
-     * @return
+     *
+     * @param html a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder trackUnsubscribeHtml(String html) {
         
@@ -99,8 +111,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set the unsubscribe plain content
-     * @param plain
-     * @return
+     *
+     * @param plain a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder trackUnsubscribePlain(String plain) {
         
@@ -112,8 +125,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set content tracking on/off
-     * @param trackContent
-     * @return
+     *
+     * @param trackContent a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder trackContent(boolean trackContent) {
         
@@ -122,6 +136,12 @@ public class DomainSettingsUpdateBuilder {
         return this;
     }
     
+    /**
+     * <p>customnTrackingEnabled.</p>
+     *
+     * @param customTrackingEnabled a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
+     */
     public DomainSettingsUpdateBuilder customnTrackingEnabled(boolean customTrackingEnabled) {
         
         settings.customTrackingEnabled = customTrackingEnabled;
@@ -132,8 +152,9 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Set custom subdomain tracking on/off
-     * @param customTrackingSubdomain
-     * @return
+     *
+     * @param customTrackingSubdomain a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder customTrackingSubdomain(String customTrackingSubdomain) {
         
@@ -145,9 +166,10 @@ public class DomainSettingsUpdateBuilder {
     
     /**
      * Updates a domain's settings
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.domains.Domain} object.
      */
     public Domain updateDomain(String domainId) throws MailerSendException {
         

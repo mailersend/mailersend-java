@@ -2,6 +2,12 @@ package com.mailersend.sdk.inboundroutes;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>InboundRouteBuilderBody class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class InboundRouteBuilderBody {
 
 	@SerializedName("domain_id")
@@ -31,6 +37,9 @@ public class InboundRouteBuilderBody {
 	@SerializedName("forwards")
 	public Forward[] forwards;
 	
+	/**
+	 * <p>reset.</p>
+	 */
 	public void reset() {
 		domainId = null;
 		name = null;

@@ -9,6 +9,12 @@ package com.mailersend.sdk.emails;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>Substitution class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Substitution {
 
     @SerializedName("var")
@@ -20,8 +26,9 @@ public class Substitution {
     
     /**
      * Simple constructor to setup the properties
-     * @param variable
-     * @param value
+     *
+     * @param variable a {@link java.lang.String} object.
+     * @param value a {@link java.lang.String} object.
      */
     public Substitution(String variable, String value) {
         

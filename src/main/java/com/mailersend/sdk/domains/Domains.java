@@ -17,6 +17,12 @@ import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.ApiRecipientsList;
 
+/**
+ * <p>Domains class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Domains {
 
     private MailerSend apiObjectReference;
@@ -30,7 +36,8 @@ public class Domains {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.domains
-     * @param ref
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
      */
     public Domains(MailerSend ref) {
         
@@ -42,7 +49,8 @@ public class Domains {
     
     /**
      * Get the Add Domain builder
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.domains.DomainAddBuilder} object.
      */
     public DomainAddBuilder addDomainBuilder() {
         
@@ -52,7 +60,8 @@ public class Domains {
     
     /**
      * Get the Update Domain Settings builder
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder updateDomainSettingsBuilder() {
         
@@ -61,8 +70,9 @@ public class Domains {
     
     /**
      * Set the page of the request
-     * @param page
-     * @return
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.domains.Domains} object.
      */
     public Domains page(int page) {
         
@@ -74,8 +84,9 @@ public class Domains {
     
     /**
      * Set the results limit (10 - 100)
-     * @param limit
-     * @return
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.domains.Domains} object.
      */
     public Domains limit(int limit) {
         
@@ -87,7 +98,8 @@ public class Domains {
     
     /**
      * Return only verified domains
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.domains.Domains} object.
      */
     public Domains onlyVerified() {
         
@@ -98,8 +110,9 @@ public class Domains {
     
     
     /**
-     * Return only unverified domains 
-     * @return
+     * Return only unverified domains
+     *
+     * @return a {@link com.mailersend.sdk.domains.Domains} object.
      */
     public Domains onlyUnverified() {
         
@@ -111,7 +124,8 @@ public class Domains {
     
     /**
      * Return both unverified and verified domains
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.domains.Domains} object.
      */
     public Domains all() {
         
@@ -123,8 +137,9 @@ public class Domains {
     
     /**
      * Gets a list of domains
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.domains.DomainsList} object.
      */
     public DomainsList getDomains() throws MailerSendException {
         
@@ -141,9 +156,10 @@ public class Domains {
     
     /**
      * Gets a single domain
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.domains.Domain} object.
      */
     public Domain getDomain(String domainId) throws MailerSendException {
         
@@ -160,9 +176,10 @@ public class Domains {
     
     /**
      * Delete a single domain
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a boolean.
      */
     public boolean deleteDomain(String domainId) throws MailerSendException {
         
@@ -180,9 +197,10 @@ public class Domains {
     
     /**
      * Gets the recipients of a domain
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.util.ApiRecipientsList} object.
      */
     public ApiRecipientsList getDomainRecipients(String domainId) throws MailerSendException {
         
@@ -201,9 +219,10 @@ public class Domains {
     
     /**
      * Gets the DNS records of a domain
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.domains.DomainDnsRecords} object.
      */
     public DomainDnsRecords getDomainDnsRecords(String domainId) throws MailerSendException {
         
@@ -220,9 +239,10 @@ public class Domains {
     
     /**
      * Verifies the domain with the given id
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.domains.DomainVerificationStatus} object.
      */
     public DomainVerificationStatus verifyDomain(String domainId) throws MailerSendException {
         

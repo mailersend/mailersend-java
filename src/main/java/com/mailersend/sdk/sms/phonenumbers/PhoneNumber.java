@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.phonenumbers;
 
 import java.time.Instant;
@@ -7,6 +14,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>PhoneNumber class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class PhoneNumber {
 
 	@SerializedName("id")
@@ -24,6 +37,9 @@ public class PhoneNumber {
 	public Date createdAt;
 	
 	
+	/**
+	 * <p>postDeserialize.</p>
+	 */
 	public void postDeserialize() {
 		if (createdAtStr != null && !createdAtStr.isBlank()) {
 			

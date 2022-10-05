@@ -9,6 +9,12 @@ package com.mailersend.sdk.templates;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>TemplateCategory class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class TemplateCategory {
 
     @SerializedName("id")

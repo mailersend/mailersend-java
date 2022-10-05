@@ -16,6 +16,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.recipients.Recipient;
 
+/**
+ * <p>BulkSendStatus class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class BulkSendStatus {
 
     @SerializedName("id")

@@ -10,6 +10,12 @@ package com.mailersend.sdk.analytics;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
 
+/**
+ * <p>AnalyticsByDateResponse class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class AnalyticsByDateResponse extends MailerSendResponse {
 
     @SerializedName("data")
@@ -17,7 +23,7 @@ public class AnalyticsByDateResponse extends MailerSendResponse {
     
     
     /**
-     * Does all the needed actions after deserialization 
+     * Does all the needed actions after deserialization
      */
     public void postDeserialize() {
         

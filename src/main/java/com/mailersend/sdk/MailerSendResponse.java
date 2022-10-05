@@ -12,6 +12,9 @@ import java.util.Map;
 
 /**
  * Represents a successful email send via MailerSend
+ *
+ * @author mailersend
+ * @version $Id: $Id
  */
 public class MailerSendResponse {
 

@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms;
 
 import java.time.Instant;
@@ -7,6 +14,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>SmsInfo class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsInfo {
 
 	@SerializedName("id")
@@ -38,6 +51,9 @@ public class SmsInfo {
 	
 	public Date createdAt;
 	
+	/**
+	 * <p>postDeserialize.</p>
+	 */
 	public void postDeserialize() {
 		if (createdAtStr != null && !createdAtStr.isBlank()) {
 			

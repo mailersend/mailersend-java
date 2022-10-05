@@ -15,6 +15,12 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.Recipient;
 
+/**
+ * <p>ApiEmail class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class ApiEmail {
 
     @SerializedName("id")

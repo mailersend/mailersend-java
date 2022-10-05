@@ -14,6 +14,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>Templates class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Templates {
     
     private MailerSend apiObjectReference;
@@ -25,7 +31,8 @@ public class Templates {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.analytics
-     * @param ref
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
      */
     public Templates(MailerSend ref) {
         
@@ -35,8 +42,9 @@ public class Templates {
     
     /**
      * Set the page of the request
-     * @param page
-     * @return
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.templates.Templates} object.
      */
     public Templates page(int page) {
         
@@ -48,8 +56,9 @@ public class Templates {
     
     /**
      * Set the results limit (10 - 100)
-     * @param limit
-     * @return
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.templates.Templates} object.
      */
     public Templates limit(int limit) {
         
@@ -61,8 +70,9 @@ public class Templates {
     
     /**
      * Set the domain ID
-     * @param domainId
-     * @return
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.templates.Templates} object.
      */
     public Templates domainId(String domainId) {
         
@@ -74,8 +84,9 @@ public class Templates {
     
     /**
      * Get templates
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.templates.TemplatesList} object.
      */
     public TemplatesList getTemplates() throws MailerSendException {
         
@@ -94,9 +105,10 @@ public class Templates {
     
     /**
      * Retrieve the template with the given id
-     * @param templateId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param templateId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.templates.Template} object.
      */
     public Template getTemplate(String templateId) throws MailerSendException {
         
@@ -118,9 +130,10 @@ public class Templates {
     
     /**
      * Delete the template with the given id
-     * @param templateId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param templateId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteTemplate(String templateId) throws MailerSendException {
         

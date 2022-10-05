@@ -18,6 +18,12 @@ import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.util.ApiRecipient;
 
+/**
+ * <p>ActivityEmail class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class ActivityEmail {
 
     @SerializedName("id")
@@ -58,7 +64,7 @@ public class ActivityEmail {
     
     /**
      * Is called to perform any actions after the deserialization of the response
-     * to the /activities endpoint 
+     * to the /activities endpoint
      */
     protected void postDeserialize() {
         
@@ -97,7 +103,8 @@ public class ActivityEmail {
     
     /**
      * Converts this ActivityEmail into a com.mailersend.sdk.Email object
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.emails.Email} object.
      */
     public Email toEmail() {
         

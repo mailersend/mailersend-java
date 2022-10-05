@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.inboundroutes;
 
 import java.time.Instant;
@@ -8,6 +15,12 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
 
+/**
+ * <p>SmsInboundRoute class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsInboundRoute {
 
 	@SerializedName("id")
@@ -36,6 +49,9 @@ public class SmsInboundRoute {
 	@SerializedName("sms_number")
 	public PhoneNumber smsNumber;
 	
+	/**
+	 * <p>postDeserialize.</p>
+	 */
 	public void postDeserialize() {
 		if (createdAtStr != null && !createdAtStr.isBlank()) {
 			

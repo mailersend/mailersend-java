@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailsend.sdk.emailverification;
 
 import java.util.ArrayList;
@@ -6,6 +13,12 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>EmailVerification class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class EmailVerification {
     private MailerSend apiObjectReference;
     
@@ -14,29 +27,62 @@ public class EmailVerification {
     
     private EmailVerificationBuilder builder;
     
+    /**
+     * <p>Constructor for EmailVerification.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public EmailVerification(MailerSend ref) {
     	apiObjectReference = ref;
     	builder = new EmailVerificationBuilder(ref);
     }
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     */
     public EmailVerification page(int page) {
     	pageFilter = page;
     	return this;
     }
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     */
     public EmailVerification limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
+    /**
+     * <p>builder.</p>
+     *
+     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+     */
     public EmailVerificationBuilder builder() {
     	return builder;
     }
     
+    /**
+     * <p>newBuilder.</p>
+     *
+     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+     */
     public EmailVerificationBuilder newBuilder() {
     	return new EmailVerificationBuilder(apiObjectReference);
     }
     
+    /**
+     * <p>getLists.</p>
+     *
+     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationLists} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public EmailVerificationLists getLists() throws MailerSendException {
     	String endpoint = "/email-verification".concat(prepareParamsUrl());
     	
@@ -52,6 +98,13 @@ public class EmailVerification {
         return lists;
     }
     
+    /**
+     * <p>getList.</p>
+     *
+     * @param emailVerificationId a {@link java.lang.String} object.
+     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public EmailVerificationList getList(String emailVerificationId) throws MailerSendException {
     	String endpoint = "/email-verification/".concat(emailVerificationId);
     	
@@ -65,6 +118,13 @@ public class EmailVerification {
         return response.list;
     }
     
+    /**
+     * <p>verifyList.</p>
+     *
+     * @param listId a {@link java.lang.String} object.
+     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public EmailVerificationList verifyList(String listId) throws MailerSendException {
     	String endpoint = "/email-verification/".concat(listId).concat("/verify");
     	
@@ -78,6 +138,13 @@ public class EmailVerification {
         return response.list;
     }
     
+    /**
+     * <p>verificationResults.</p>
+     *
+     * @param listId a {@link java.lang.String} object.
+     * @return a {@link com.mailsend.sdk.emailverification.ListVerificationResults} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public ListVerificationResults verificationResults(String listId) throws MailerSendException {
     	String endpoint = "/email-verification/".concat(listId).concat("/results");
     	

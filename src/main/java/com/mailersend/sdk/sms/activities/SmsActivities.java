@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.activities;
 
 import java.util.ArrayList;
@@ -7,6 +14,12 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>SmsActivities class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsActivities {
 
 	private MailerSend apiObjectReference;
@@ -18,53 +31,105 @@ public class SmsActivities {
     public Date dateFromFilter;
     public Date dateToFilter;
     
+    /**
+     * <p>Constructor for SmsActivities.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public SmsActivities(MailerSend ref) {
     	apiObjectReference = ref;
     }
     
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivities} object.
+     */
     public SmsActivities page(int page) {
     	pageFilter = page;
     	return this;
     }
     
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivities} object.
+     */
     public SmsActivities limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
     
+    /**
+     * <p>addStatusFilter.</p>
+     *
+     * @param status a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivities} object.
+     */
     public SmsActivities addStatusFilter(String status) {
     	statusFilter.add(status);
     	return this;
     }
     
     
+    /**
+     * <p>clearStatusFilter.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivities} object.
+     */
     public SmsActivities clearStatusFilter() {
     	statusFilter.clear();
     	return this;
     }
     
     
+    /**
+     * <p>smsNumberId.</p>
+     *
+     * @param numberId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivities} object.
+     */
     public SmsActivities smsNumberId(String numberId) {
     	numberIdFilter = numberId;
     	return this;
     }
     
     
+    /**
+     * <p>dateFrom.</p>
+     *
+     * @param from a {@link java.util.Date} object.
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivities} object.
+     */
     public SmsActivities dateFrom(Date from) {
     	dateFromFilter = from;
     	return this;
     }
     
     
+    /**
+     * <p>dateTo.</p>
+     *
+     * @param to a {@link java.util.Date} object.
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivities} object.
+     */
     public SmsActivities dateTo(Date to) {
     	dateToFilter = to;
     	return this;
     }
     
     
+    /**
+     * <p>getActivities.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsActivityList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsActivityList getActivities() throws MailerSendException {
     	
     	String endpoint = "/sms-activity".concat(prepareParamsUrl());
@@ -79,6 +144,13 @@ public class SmsActivities {
     }
     
     
+    /**
+     * <p>getMessageActivity.</p>
+     *
+     * @param messageId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.activities.SmsMessageActivity} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsMessageActivity getMessageActivity(String messageId) throws MailerSendException {
     	
     	String endpoint = "/sms-activity/".concat(messageId);

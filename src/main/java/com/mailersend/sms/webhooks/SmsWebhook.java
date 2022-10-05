@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sms.webhooks;
 
 import java.time.Instant;
@@ -8,6 +15,12 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
 
+/**
+ * <p>SmsWebhook class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsWebhook {
 
 	@SerializedName("id")

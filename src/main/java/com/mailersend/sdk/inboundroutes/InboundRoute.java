@@ -7,6 +7,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>InboundRoute class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class InboundRoute {
 	
 	@SerializedName("id")
@@ -39,6 +45,9 @@ public class InboundRoute {
 	public MxValues mxValues;
 
 	
+	/**
+	 * <p>postDeserialize.</p>
+	 */
 	public void postDeserialize() {
 		if (dnsCheckedAtString != null && !dnsCheckedAtString.isBlank()) {
 			

@@ -9,6 +9,12 @@ package com.mailersend.sdk;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>Recipient class.</p>
+ *
+ * @author john
+ * @version $Id: $Id
+ */
 public class Recipient {
 
     @SerializedName("name")
@@ -20,8 +26,9 @@ public class Recipient {
     
     /**
      * Simple constructor to set the properties
-     * @param name
-     * @param email
+     *
+     * @param name The name of the recipient
+     * @param email The email of the recipient
      */
     public Recipient(String name, String email) {
         

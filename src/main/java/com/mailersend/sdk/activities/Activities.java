@@ -14,6 +14,12 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>Activities class.</p>
+ *
+ * @author john
+ * @version $Id: $Id
+ */
 public class Activities {
 
     // we need a reference to the MailerSend object to get the token and pass it to the ActivitiesList
@@ -22,7 +28,8 @@ public class Activities {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.activities
-     * @param apiReference
+     *
+     * @param apiReference a {@link com.mailersend.sdk.MailerSend} object.
      */
     public Activities(MailerSend apiReference)
     {
@@ -33,9 +40,10 @@ public class Activities {
     
     /**
      * Gets the activities for the given domain id
-     * @param domainId
-     * @return 
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.activities.ActivitiesList} object.
      */
     public ActivitiesList getActivities(String domainId) throws MailerSendException {
         
@@ -44,6 +52,7 @@ public class Activities {
     
     /**
      * Gets the activities for the given domain id. Allows for pagination and filtering
+     *
      * @param domainId The id of the domain to get the activities for
      * @param page The results page
      * @param limit How many results to return per page (default 25)
@@ -51,7 +60,7 @@ public class Activities {
      * @param dateTo The to date to filter the results
      * @param events A list of events to filter the results
      * @return the found list of activities
-     * @throws MailerSendException
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
      */
     public ActivitiesList getActivities(String domainId, int page, int limit, Date dateFrom, Date dateTo, String[] events) throws MailerSendException {
         

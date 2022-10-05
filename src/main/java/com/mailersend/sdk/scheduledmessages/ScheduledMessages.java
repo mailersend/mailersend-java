@@ -8,6 +8,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>ScheduledMessages class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class ScheduledMessages {
 
     private MailerSend apiObjectReference;
@@ -17,30 +23,65 @@ public class ScheduledMessages {
     private String domainIdFilter;
     private String statusFilter;
     
+    /**
+     * <p>Constructor for ScheduledMessages.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public ScheduledMessages(MailerSend ref) {
     	apiObjectReference = ref;
     }
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.scheduledmessages.ScheduledMessages} object.
+     */
     public ScheduledMessages page(int page) {
     	pageFilter = page;
     	return this;
     }
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.scheduledmessages.ScheduledMessages} object.
+     */
     public ScheduledMessages limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
+    /**
+     * <p>domainId.</p>
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.scheduledmessages.ScheduledMessages} object.
+     */
     public ScheduledMessages domainId(String domainId) {
     	domainIdFilter = domainId;
     	return this;
     }
     
+    /**
+     * <p>status.</p>
+     *
+     * @param status a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.scheduledmessages.ScheduledMessages} object.
+     */
     public ScheduledMessages status(String status) {
     	statusFilter = status;
     	return this;
     }
     
+    /**
+     * <p>getScheduledMessages.</p>
+     *
+     * @return a {@link com.mailersend.sdk.scheduledmessages.ScheduledMessagesList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public ScheduledMessagesList getScheduledMessages() throws MailerSendException {
     	String endpoint = "/message-schedules".concat(prepareParamsUrl());
     	
@@ -56,6 +97,13 @@ public class ScheduledMessages {
         return response;
     }
     
+    /**
+     * <p>getScheduledMessage.</p>
+     *
+     * @param messageId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.scheduledmessages.ScheduledMessage} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public ScheduledMessage getScheduledMessage(String messageId) throws MailerSendException {
     	String endpoint = "/message-schedules/".concat(messageId);
     	
@@ -70,6 +118,13 @@ public class ScheduledMessages {
     }
     
     
+    /**
+     * <p>deleteScheduledMessage.</p>
+     *
+     * @param messageId a {@link java.lang.String} object.
+     * @return a boolean.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public boolean deleteScheduledMessage(String messageId) throws MailerSendException {
     	String endpoint = "/message-schedules/".concat(messageId);
     	
