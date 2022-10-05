@@ -272,7 +272,14 @@ public class Suppressions {
         
         String requestBody = gson.toJson(ids);
         
-        requestBody = "{\"ids\":".concat(requestBody).concat("}");
+        requestBody = "{\"ids\":".concat(requestBody); 
+        
+        if (domainIdFilter != null) {
+        	
+        	requestBody = requestBody.concat(",\"domain_id\":\"".concat(domainIdFilter).concat("\""));
+        }
+        
+        requestBody = requestBody.concat("}");
         
         MailerSendResponse response = api.deleteRequest(endpoint, requestBody, MailerSendResponse.class);
         
@@ -290,7 +297,14 @@ public class Suppressions {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
-        String requestBody = "{\"all\":true}";
+        String requestBody = "{\"all\":true";
+        
+        if (domainIdFilter != null) {
+        	
+        	requestBody = requestBody.concat(",\"domain_id\":\"".concat(domainIdFilter).concat("\""));
+        }
+        
+        requestBody = requestBody.concat("}");
         
         MailerSendResponse response = api.deleteRequest(endpoint, requestBody, MailerSendResponse.class);
         

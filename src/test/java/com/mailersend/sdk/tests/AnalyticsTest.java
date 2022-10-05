@@ -53,9 +53,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsByDateList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .getByDate(new String[] {EventTypes.DELIVERED, EventTypes.OPENED, EventTypes.CLICKED});
             
             System.out.println("\n\nAnalytics by date:");
@@ -90,9 +93,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsByDateList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .domainId(TestHelper.domainId)
                     .getByDate(new String[] {EventTypes.DELIVERED, EventTypes.OPENED, EventTypes.CLICKED});
             
@@ -129,9 +135,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .domainId(TestHelper.domainId)
                     .getOpensByCountry();
             
@@ -164,9 +173,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .getOpensByUserAgent();
             
             System.out.println("\n\nOpens by user agent:");
@@ -197,9 +209,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .getOpensByUserAgenType();
             
             System.out.println("\n\nOpens by user agent type:");

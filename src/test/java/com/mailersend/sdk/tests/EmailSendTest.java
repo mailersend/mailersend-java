@@ -12,6 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -306,8 +309,11 @@ public class EmailSendTest {
         
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
         
+        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse("2022-10-07T00:00:00.875000Z");
+        Date scheduleDate = Date.from(Instant.from(ta));
+        
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
+        calendar.setTime(scheduleDate);
         calendar.add(Calendar.DATE, 1);
         
         email.setSendAt(calendar.getTime());

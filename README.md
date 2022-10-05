@@ -1687,7 +1687,7 @@ import com.mailersend.sdk.recipients.BlocklistListResponse;
 import com.mailersend.sdk.recipients.SuppressionItem;
 import com.mailersend.sdk.recipients.SuppressionList;
 
-public void AddRecipientsToSuppressionList() {
+public void DeleteRecipientsFromSuppressionList () {
     
     MailerSend ms = new MailerSend();
     ms.setToken("mailersend token");

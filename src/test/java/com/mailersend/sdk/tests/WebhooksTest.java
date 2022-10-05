@@ -50,7 +50,7 @@ public class WebhooksTest {
         
         try {
             
-            String webhookTestUrl = "https://example.com/test-".concat(String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999)));
+            String webhookTestUrl = "https://example.com/test-webhook-creation-123";
             
             Webhook webhook = ms.webhooks().builder()
                 .name("Test webook")
