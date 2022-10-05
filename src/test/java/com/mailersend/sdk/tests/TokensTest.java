@@ -9,7 +9,12 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -17,10 +22,23 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.tokens.Token;
 import com.mailersend.sdk.tokens.TokenAdd;
 import com.mailersend.sdk.tokens.TokenScopes;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class TokensTest {
 
-    
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("TokensTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
+	
     /**
      * Test token creation
      */

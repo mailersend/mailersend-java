@@ -2,12 +2,16 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.analytics.AnalyticsByDate;
@@ -16,9 +20,23 @@ import com.mailersend.sdk.analytics.AnalyticsList;
 import com.mailersend.sdk.analytics.AnalyticsStatistic;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.EventTypes;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class AnalyticsTest {
 
+	
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("AnalyticsTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     
     /**
      * Gets analytics by date using date filters
@@ -35,9 +53,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsByDateList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .getByDate(new String[] {EventTypes.DELIVERED, EventTypes.OPENED, EventTypes.CLICKED});
             
             System.out.println("\n\nAnalytics by date:");
@@ -72,9 +93,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsByDateList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .domainId(TestHelper.domainId)
                     .getByDate(new String[] {EventTypes.DELIVERED, EventTypes.OPENED, EventTypes.CLICKED});
             
@@ -111,9 +135,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .domainId(TestHelper.domainId)
                     .getOpensByCountry();
             
@@ -146,9 +173,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .getOpensByUserAgent();
             
             System.out.println("\n\nOpens by user agent:");
@@ -179,9 +209,12 @@ public class AnalyticsTest {
             Instant instant = Instant.from(ta);
             Date dateFrom = Date.from(instant);
             
+            ta = DateTimeFormatter.ISO_INSTANT.parse("2022-09-09T00:00:00.875000Z");
+            Date dateTo = Date.from(Instant.from(ta));
+            
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
-                    .dateTo(new Date())
+                    .dateTo(dateTo)
                     .getOpensByUserAgenType();
             
             System.out.println("\n\nOpens by user agent type:");

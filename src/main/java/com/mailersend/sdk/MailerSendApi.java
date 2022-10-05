@@ -14,12 +14,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.exceptions.JsonResponseError;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.MailerSendHttpClientFactory;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 
@@ -39,7 +40,7 @@ public class MailerSendApi {
      */
     public MailerSendApi() {
         
-        this.client = HttpClient.newHttpClient();
+        this.client = MailerSendHttpClientFactory.getInstance().createClient();
     }
     
     
@@ -74,7 +75,7 @@ public class MailerSendApi {
         
         try {
             
-            responseObject = this.client.send(request, BodyHandlers.ofString());
+        	responseObject = this.client.send(request, BodyHandlers.ofString());
                         
         } catch (IOException | InterruptedException e) {
 
@@ -208,6 +209,10 @@ public class MailerSendApi {
      */
     public <T extends MailerSendResponse> T putRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
        
+    	if (requestBody == null) {
+    		requestBody = "";
+    	}
+    	
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
                 .header("Content-type", "applicateion/json")
                 .header("Authorization", "Bearer ".concat(this.apiToken))
@@ -265,11 +270,21 @@ public class MailerSendApi {
             
             stringResponse = responseObject.body().toString();
             
-            JsonResponseError error = gson.fromJson(stringResponse, JsonResponseError.class);
+            MailerSendException responseError;
             
-            MailerSendException responseError = new MailerSendException(error.message);            
+            try {
+            	
+	            JsonResponseError error = gson.fromJson(stringResponse, JsonResponseError.class);
+	            
+	            responseError = new MailerSendException(error.message);
+	         
+	            responseError.errors = error.errors;
+            } catch (Exception ex) {
+            	
+            	responseError = new MailerSendException("Error parsing API response");
+            }
             
-            responseError.errors = error.errors;
+            responseError.responseBody = stringResponse;
             responseError.code = responseObject.statusCode();
             
             throw responseError;
@@ -308,7 +323,7 @@ public class MailerSendApi {
         try {
             
             response.rateLimit = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-limit").get());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NoSuchElementException e) {
             
             // left empty on purpose
         }
@@ -316,12 +331,14 @@ public class MailerSendApi {
         try {
             
             response.rateLimitRemaining = Integer.parseInt(responseObject.headers().firstValue("x-ratelimit-remaining").get());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NoSuchElementException e) {
             
             // left empty on purpose
         }
         
         response.responseStatusCode = responseObject.statusCode();
+        
+        response.headers = responseObject.headers().map();
         
         return response;
     }

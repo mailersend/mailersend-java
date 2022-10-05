@@ -9,7 +9,12 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -18,10 +23,23 @@ import com.mailersend.sdk.recipients.BlocklistItem;
 import com.mailersend.sdk.recipients.BlocklistListResponse;
 import com.mailersend.sdk.recipients.SuppressionItem;
 import com.mailersend.sdk.recipients.SuppressionList;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class RecpientsSuppressionListsTest {
 
     
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("RecpientsSuppressionListsTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     /**
      * Tests retrieving items from the suppression lists
      */
@@ -86,6 +104,7 @@ public class RecpientsSuppressionListsTest {
         try {
             
             // blocklist
+        	ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
             ms.recipients().suppressions().addBuilder().pattern(".*@example.com");
             ms.recipients().suppressions().addBuilder().recipient("test@example.com");
             BlocklistItem[] items = ms.recipients().suppressions().addBuilder().addToBlocklist();
@@ -138,17 +157,22 @@ public class RecpientsSuppressionListsTest {
     
     /**
      * Tests deleting items from the suppression lists
+     * @throws MailerSendException 
      */
     @Test
-    public void TestDeleteFromSuppressionList() {
+    public void TestDeleteFromSuppressionList() throws MailerSendException {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
         
+        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+        ms.recipients().suppressions().addBuilder().pattern(".*@example.com");
+        BlocklistItem[] items = ms.recipients().suppressions().addBuilder().addToBlocklist();
+        
         try {
             
             // delete from blocklist
-            BlocklistListResponse blocklist = ms.recipients().suppressions().getBlocklist();
+            BlocklistListResponse blocklist = ms.recipients().suppressions().domainId(TestHelper.domainId).getBlocklist();
             
             if (blocklist.items.length == 0) {
                 
@@ -157,28 +181,17 @@ public class RecpientsSuppressionListsTest {
             
             String itemId = blocklist.items[0].id;
             
-            MailerSendResponse response = ms.recipients().suppressions().deleteBlocklistItems(new String[] { itemId });
+            MailerSendResponse response = ms.recipients().suppressions().domainId(TestHelper.domainId).deleteBlocklistItems(new String[] { itemId });
             
             System.out.println(response.responseStatusCode);
-            
-            
-            // delete from hard bounces
-            SuppressionList hardBounces = ms.recipients().suppressions().getHardBounces();
-            
-            if (hardBounces.items.length == 0) {
-                
-                fail();
-            }
-            
-            itemId = hardBounces.items[0].id;
-            
-            response = ms.recipients().suppressions().deleteHardBouncesItems(new String[] { itemId });
-            
-            System.out.println(response.responseStatusCode);
-            
+                      
             
             // delete from spam complaints
-            SuppressionList spamComplaints = ms.recipients().suppressions().getSpamComplaints();
+            ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+            ms.recipients().suppressions().addBuilder().recipient("test@example.com");
+            ms.recipients().suppressions().addBuilder().addRecipientsToSpamComplaints();
+            
+            SuppressionList spamComplaints = ms.recipients().suppressions().domainId(TestHelper.domainId).getSpamComplaints();
             
             if (spamComplaints.items.length == 0) {
                 
@@ -187,25 +200,10 @@ public class RecpientsSuppressionListsTest {
             
             itemId = spamComplaints.items[0].id;
             
-            response = ms.recipients().suppressions().deleteSpamComplaintsItems(new String[] { itemId });
+            response = ms.recipients().suppressions().domainId(TestHelper.domainId).deleteSpamComplaintsItems(new String[] { itemId });
             
             System.out.println(response.responseStatusCode);
             
-
-            // delete from unsubscribes
-            SuppressionList unsubscribes = ms.recipients().suppressions().getUnsubscribes();
-            
-            if (unsubscribes.items.length == 0) {
-                
-                fail();
-            }
-            
-            itemId = unsubscribes.items[0].id;
-            
-            response = ms.recipients().suppressions().deleteUnsubscribesItems(new String[] { itemId });
-            
-            System.out.println(response.responseStatusCode);
-
 
         } catch (MailerSendException e) {
             

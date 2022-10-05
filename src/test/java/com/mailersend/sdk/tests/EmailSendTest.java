@@ -12,8 +12,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.util.Calendar;
+import java.util.Date;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -21,9 +31,24 @@ import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.emails.BulkSendStatus;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.vcr.VcrRecorder;
+
 
 public class EmailSendTest {
-   
+	
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("EmailSendTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
+	
     /**
      * Test token
      */
@@ -85,7 +110,7 @@ public class EmailSendTest {
      */
     @Test
     public void TestSimpleSend() {
-        
+           	    	
         Email email = new Email();
         
         email.subject = TestHelper.subject;
@@ -264,6 +289,41 @@ public class EmailSendTest {
             
             System.out.println(status.state);
             
+        } catch (MailerSendException e) {
+            
+            // fail if any error is thrown
+            fail();
+        }
+    }
+    
+    @Test
+    public void ScheduleEmailTest() {
+        Email email = new Email();
+        
+        email.subject = TestHelper.subject;
+        email.html = TestHelper.html;
+        email.text = TestHelper.text;
+        
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
+        
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        
+        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse("2022-10-07T00:00:00.875000Z");
+        Date scheduleDate = Date.from(Instant.from(ta));
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(scheduleDate);
+        calendar.add(Calendar.DATE, 1);
+        
+        email.setSendAt(calendar.getTime());
+        
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        
+        try {
+            
+            MailerSendResponse response = ms.emails().send(email);
         } catch (MailerSendException e) {
             
             // fail if any error is thrown

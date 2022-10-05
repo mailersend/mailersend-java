@@ -14,8 +14,15 @@ MailerSend Java SDK
         - [Advanced personalization](#advanced-personalization)
         - [Simple personalization](#simple-personalization)
         - [Send email with attachment](#send-email-with-attachment)
+        - [Schedule an email](#schedule-an-email)
         - [Send bulk emails](#send-bulk-emails)
         - [Get bulk request status](#get-bulk-request-status)
+    - [Inbound routes](#inbound-routes)
+        - [Get a list of inbound routes](#get-a-list-of-inbound-routes)
+        - [Get an inbound route](#get-an-inbound-route)
+        - [Create an inbound route](#create-an-inbound-route)
+        - [Update an inbound route](#update-an-inbound-route)
+        - [Delete an inbound route](#delete-an-inbound-route)
     - [Activities](#activities)
         - [Get a list of Activities](#get-a-list-of-activities)
         - [Activities filters](#activities-filters)
@@ -38,6 +45,10 @@ MailerSend Java SDK
     - [Messages](#messages)
         - [Get a list of messages](#get-a-list-of-messages)
         - [Get a single message](#get-a-single-message)
+    - [Scheduled messages](#scheduled-messages)
+        - [Get a list of scheduled messages](#get-a-list-of-scheduled-messages)
+        - [Get a scheduled message](#get-a-scheduled-message)
+        - [Delete a scheduled message](#delete-a-scheduled-message)
     - [Tokens](#tokens)
         - [Create a token](#create-a-token)
         - [Update token](#update-token)
@@ -59,6 +70,41 @@ MailerSend Java SDK
         - [Get a list of templates](#get-a-list-of-templates)
         - [Get a single template](#get-a-single-template)
         - [Delete a template](#delete-a-template)
+    - [Email verification](#email-verification)
+        - [Get all email verification lists](#get-all-email-verification-lists)
+        - [Get an email verification list](#get-an-email-verification-list)
+        - [Create an email verification list](#create-an-email-verification-list)
+        - [Verify an email list](#verify-an-email-list)
+        - [Get email verification list results](#get-email-verification-list-results)
+    - [SMS activity](#sms-activity)
+        - [Get a list of SMS activities](#get-a-list-of-sms-activities)
+        - [Get activity of a single message](#get-activity-of-a-single-message)
+    - [SMS messages](#sms-messages)
+        - [Get a list of SMS messages](#get-a-list-of-sms-messages)
+        - [Get info on a SMS message](#get-info-on-a-sms-message)
+    - [SMS Phone numbers](#sms-phone-numbers)
+        - [Get a list of SMS phone numbers](#get-a-list-of-sms-phone-numbers)
+        - [Get an SMS phone number](#get-an-sms-phone-number)
+        - [Update a single SMS phone number](#update-a-single-sms-phone-number)
+        - [Delete an SMS phone number](#delete-an-sms-phone-number)
+    - [SMS recipients](#sms-recipients)
+        - [Get a list of SMS recipients](#get-a-list-of-sms-recipients)
+        - [Get an SMS recipient](#get-an-sms-recipient)
+        - [Update a single SMS recipient](#update-a-single-sms-recipient)
+    - [SMS inbounds](#sms-inbounds)
+        - [Get a list of SMS inbound routes](#get-a-list-of-sms-inbound-routes)
+        - [Get a single SMS inbound route](#get-a-single-sms-inbound-route)
+        - [Add an SMS inbound route](#add-an-sms-inbound-route)
+        - [Update an inbound route](#update-an-inbound-route)
+        - [Delete an SMS inbound route](#delete-an-sms-inbound-route)
+    - [SMS webhooks](#sms-webhooks)
+        - [Get a list of SMS webhooks](#get-a-list-of-sms-webhooks)
+        - [Get an SMS webhook](#get-an-sms-webhook)
+        - [Create an SMS webhook](#create-an-sms-webhook)
+        - [Update an SMS webhook](#update-an-sms-webhook)
+        - [Delete an SMS webhook](#delete-an-sms-webhook)
+    - [SMS](#sms)
+        - [Send an SMS with personalization](#send-an-sms-with-personalization)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -343,6 +389,48 @@ public void sendEmail() {
 }
 ```
 
+### Schedule an email
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import java.util.Calendar;
+import java.util.Date;
+
+public void scheduleEmail() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+   
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    calendar.add(Calendar.DATE, 1);
+
+    email.setSendAt(calendar.getTime());
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
 
 ### Send bulk emails
 
@@ -421,6 +509,167 @@ public void getBulkEmailsStatus() {
 }
 ```
 
+## Inbound routes
+
+### Get a list of inbound routes
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.InboundRoute;
+import com.mailersend.sdk.inboundroutes.InboundRoutesList;
+
+public void getInboundRoutes() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        InboundRoutesList routes = ms.inboundRoutes().getRoutes();
+
+        for (InboundRoute route : routes.routes) {
+            System.out.println(route.id);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Get an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.InboundRoute;
+
+public void getInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        InboundRoute route = ms.inboundRoutes().getRoute("inbound route id");
+
+        System.out.println(route.id);
+        System.out.println(route.name);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Create an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.Forward;
+
+public void createInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        Forward forward = new Forward();
+        forward.type = "webhook";
+        forward.value = "https://example-domain.com";
+        forward.secret = "asdfgh";
+    
+        ms.inboundRoutes().builder()
+            .domainId("domain id")
+            .name("Test inbound name")
+            .domainEnabled(false)
+            .matchFilter("match_all")
+            .forwards(new Forward[] { forward })
+            .addRoute();
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Update an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.inboundroutes.Forward;
+import com.mailersend.sdk.inboundroutes.InboundRoute;
+
+public void updateInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        Forward forward = new Forward();
+        forward.type = "webhook";
+        forward.value = "https://example-domain.com";
+        forward.secret = "asdfgh";
+    
+        InboundRoute route = ms.inboundRoutes().builder()
+            .domainId("domain id")
+            .name("Updated route name")
+            .domainEnabled(false)
+            .matchFilter("match_all")
+            .forwards(new Forward[] { forward })
+            .updateRoute("inbound route id");
+
+        System.out.println(route.id);
+        System.out.println(route.name);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
+
+### Delete an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean result = ms.inboundRoutes().deleteRoute("inbound route id");
+
+        System.out.println(result);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+
+```
 
 ## Activities 
 
@@ -1040,6 +1289,91 @@ public void SingleMessage() {
 }
 ```
 
+## Scheduled messages
+
+### Get a list of scheduled messages
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessagesList;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
+
+public void getScheduledMessages() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        ScheduledMessagesList messages = ms.scheduledmessages().getScheduledMessages();
+
+        for (ScheduledMessage message : messages.scheduledMessages) {
+            System.out.println(message.id);
+            System.out.println(message.subject);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a scheduled message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
+
+public void getScheduledMessage() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        ScheduledMessage message = ms.scheduledmessages().getScheduledMessage("message id");
+
+        System.out.println(message.id);
+        System.out.println(message.subject);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a scheduled message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
+
+public void deleteScheduledMessage() {
+    
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        boolean result = ms.scheduledmessages().deleteScheduledMessage("message id");
+
+        System.out.println(result);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ## Tokens
 
 ### Create a token
@@ -1353,7 +1687,7 @@ import com.mailersend.sdk.recipients.BlocklistListResponse;
 import com.mailersend.sdk.recipients.SuppressionItem;
 import com.mailersend.sdk.recipients.SuppressionList;
 
-public void AddRecipientsToSuppressionList() {
+public void DeleteRecipientsFromSuppressionList () {
     
     MailerSend ms = new MailerSend();
     ms.setToken("mailersend token");
@@ -1647,6 +1981,762 @@ public void deleteTemplate() {
             MailerSendResponse response = ms.templates().deleteTemplate("template id");
             
             System.out.println(response.responseStatusCode);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## Email verification
+
+### Get all email verification lists
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+import com.mailsend.sdk.emailverification.EmailVerificationLists;
+
+public void getLists() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationLists lists = ms.emailVerification().getLists();
+            
+        for (EmailVerificationList list : lists.lists) {
+            System.out.println(list.id);
+            System.out.println(list.name);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an email verification list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+
+public void getList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationList list = ms.emailVerification().getList("list id");
+
+        System.out.println(list.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Create an email verification list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+
+public void createList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationList list = ms.emailVerification().builder()
+			.name("Test email verification")
+			.addEmail("info@example.com")
+			.addEmail("info1@example.com")
+			.addEmail("info2@example.com")
+			.create();
+
+        System.out.println(list.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Verify an email list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.EmailVerificationList;
+
+public void verifyList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        EmailVerificationList list = ms.emailVerification().verifyList("list id");
+
+        System.out.println(list.status.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get email verification list results
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.ListVerificationResults;
+import com.mailsend.sdk.emailverification.VerificationResult;
+
+public void verifyList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        ListVerificationResults results = ms.emailVerification().verificationResults("list id");
+
+        for (VerificationResult result : results.results) {
+            System.out.println(result.address);
+            System.out.println(result.result);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS activity
+
+### Get a list of SMS activities
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.activities.SmsActivityList;
+import com.mailsend.sdk.sms.activities.SmsActivity;
+
+public void getActivities() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsActivityList list = ms.sms().activities().getActivities();
+            
+        for (SmsActivity activity : lists.smsActivities) {
+            System.out.println(activity.id);
+            System.out.println(activity.content);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get activity of a single message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.activities.SmsActivity;
+
+public void getActivity() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsActivity activity = ms.sms().activities().getMessageActivity("message id");
+            
+        System.out.println(activity.id);
+        System.out.println(activity.content);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS messages
+
+### Get a list of SMS messages
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.messages.SmsMessageList;
+import com.mailsend.sdk.sms.messages.SmsMessage;
+
+public void getSmsMessages() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsMessageList list = ms.sms().messages().getMessages();
+            
+        for (SmsMessage message : list.messages) {
+            System.out.println(message.id);
+            System.out.println(message.text);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get info on a SMS message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.sms.messages.SmsMessage;
+
+public void getSmsMessage() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsMessage message = ms.sms().messages().getMessage("message id");
+
+        System.out.println(message.id);
+        System.out.println(message.text);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS Phone numbers
+
+### Get a list of SMS phone numbers
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumberList;
+
+public void getSmsPhoneNumbers() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        PhoneNumberList numbers = ms.sms().phoneNumbers().getPhoneNumbers();
+        
+        for (PhoneNumber number : numbers.phoneNumbers) {
+            
+            System.out.println(number.id);
+        }
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an SMS phone number
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
+
+public void getSmsPhoneNumber() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+                
+        PhoneNumber number = ms.sms().phoneNumbers().getPhoneNumber("phone number id");
+
+        System.out.println(number.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a single SMS phone number
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.phonenumbers.PhoneNumber;
+
+public void updateSmsPhoneNumber() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean pausePhoneNumber = false;
+        PhoneNumber number = ms.sms().phoneNumbers().updatePhoneNumber("phone number id", pausePhoneNumber);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMS phone number
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSmsPhoneNumber() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean result = ms.sms().phoneNumbers().deletePhoneNumber("phone number id");
+
+        System.out.println(result);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS recipients
+
+### Get a list of SMS recipients
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.recipients.SmsRecipient;
+import com.mailersend.sdk.sms.recipients.SmsRecipientList;
+
+public void getSmsRecipients() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsRecipientList list = ms.sms().recipients().getRecipients();
+        
+        for (SmsRecipient recipient : list.recipients) {
+            
+            System.out.println(recipient.id);
+        }
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an SMS recipient
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.recipients.SmsRecipient;
+
+public void getSmsRecipient() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsRecipient recipient = ms.sms().recipients().getRecipient("recipient id");
+        
+        System.out.println(recipient.id);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a single SMS recipient
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.recipients.SmsRecipient;
+
+public void updateSmsRecipient() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        String status = "opt_out";
+
+        SmsRecipient recipient = ms.sms().recipients().updateRecipient("recipient id", status);
+        
+        System.out.println(recipient.status);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS inbounds
+
+### Get a list of SMS inbound routes
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRouteList;
+
+public void getSmsInboundRoutes() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRouteList routes = ms.sms().inboundRoutes().getSmsInboundRoutes();
+        
+        for (SmsInboundRoute route : routes.routes) {
+            
+            System.out.println(route.id);
+        }
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single SMS inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void getSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRoute route = ms.sms().inboundRoutes().getSmsInboundRoute("route id");
+        
+        System.out.println(route.id);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Add an SMS inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void addSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRoute route = ms.sms().inboundRoutes().builder()
+                .smsNumberId("sms number id")
+                .name("Test inbound route")
+                .enabled(false)
+                .forwardUrl("https://example.com")
+                .filter("equal", "START")
+                .addSmsInboundRoute();
+        
+        System.out.println(route.id);
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update an inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void updateSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsInboundRoute route = ms.sms().inboundRoutes().builder()
+                .smsNumberId("sms number id")
+                .name("Test inbound route updated")
+                .enabled(false)
+                .forwardUrl("https://example.com")
+                .filter("equal", "START")
+                .updateSmsInboundRoute("route id");
+        
+        System.out.println(route.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMS inbound route
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.sms.inboundroutes.SmsInboundRoute;
+
+public void deleteSmsInboundRoute() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean result = ms.sms().inboundRoutes().deleteSmsInboundRoute("route id");
+        
+        System.out.println(result);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+## SMS webhooks
+
+### Get a list of SMS webhooks
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+import com.mailersend.sms.webhooks.SmsWebhookList;
+
+public void getSmsWebhooks() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhookList list = ms.sms().webhooks().getWebhooks("phone number id");
+        
+        for (SmsWebhook webhook : list.webhooks) {
+            
+            System.out.println(webhook.id);
+        }
+        
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+
+public void getSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhook webhook = ms.sms().webhooks().getWebhook("webhook id");
+        
+        System.out.println(webhook.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Create an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+
+public void createSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhook webhook = ms.sms().webhooks().builder()
+            .addEvent("sms.sent")
+            .name("sms webhook")
+            .url("https://example.com")
+            .createWebhook("sms phone number id");
+        
+        System.out.print(webhook.id);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Update an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sms.webhooks.SmsWebhook;
+
+public void updateSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SmsWebhook webhook = ms.sms().webhooks().builder()
+        	.name("sms updated webhook")
+        	.updateWebhook("webhook id");
+        	
+        System.out.print(webhook.name);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMS webhook
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSmsWebhook() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        boolean result = ms.sms().webhooks().deleteWebhook("webhook id");
+        	
+        System.out.print(result);
+        
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+## SMS
+
+### Send an SMS with personalization
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendSms() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        String messageId = ms.sms().builder().from("from phone number")
+        .addRecipient("to phone number")
+        .text("test sms {{name}}")
+        .addPersonalization("to phone number", "name", "name personalization")
+        .send();
+        
+        System.out.println(messageId);
         
     } catch (MailerSendException e) {
         

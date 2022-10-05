@@ -9,18 +9,36 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.vcr.VcrRecorder;
 import com.mailersend.sdk.webhooks.Webhook;
 import com.mailersend.sdk.webhooks.WebhookEvents;
 import com.mailersend.sdk.webhooks.WebhooksList;
+
+import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WebhooksTest {
 
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("WebhooksTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     /**
      * Tests the creation of a webhook
      */
@@ -32,7 +50,7 @@ public class WebhooksTest {
         
         try {
             
-            String webhookTestUrl = "https://example.com/test-".concat(String.valueOf(ThreadLocalRandom.current().nextInt(100000, 999999)));
+            String webhookTestUrl = "https://example.com/test-webhook-creation-123";
             
             Webhook webhook = ms.webhooks().builder()
                 .name("Test webook")
@@ -102,9 +120,9 @@ public class WebhooksTest {
                 fail();
             }
             
-            MailerSendResponse response = ms.webhooks().deleteWebhook(list.webhooks[0].id);
+            boolean response = ms.webhooks().deleteWebhook(list.webhooks[0].id);
             
-            System.out.println(response.responseStatusCode);
+            System.out.println(response);
 
         } catch (MailerSendException e) {
             

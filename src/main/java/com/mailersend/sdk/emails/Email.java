@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -58,12 +59,20 @@ public class Email {
 
     @SerializedName("personalization")
     public ArrayList<Personalization> personalization = new ArrayList<Personalization>();
+    
+    public Date sendAt;
         
     // keeps the global personalizations
     protected transient HashMap<String, Object> allRecipientsPersonalization = new HashMap<String, Object>();
     
     // keeps the global variable substitutions
     protected transient HashMap<String, String> allRecipientsSubstitutions = new HashMap<String, String>();
+    
+    @SerializedName("send_at")
+    protected String sendAtStamp;
+    
+    @SerializedName("in_reply_to")
+    public String inReplyTo;
     
     /**
      * Adds a recipient to the email
@@ -249,6 +258,15 @@ public class Email {
         }
     }
     
+    public void setSendAt(Date sendAt) {
+    	this.sendAt = sendAt;
+    }
+    
+    
+    public void setInReplyTo(String inReplyTo) {
+    	this.inReplyTo = inReplyTo;
+    }
+    
     
     /**
      * Adds personalization to all recipients
@@ -290,6 +308,7 @@ public class Email {
             var = new Variable();
             var.email = recipient.email;
             var.addSubstitution(new Substitution(variable, value));
+            this.templateVariables.add(var);
         }
     }
     
@@ -372,6 +391,10 @@ public class Email {
             
         preparePersonalizationForAllRecipients();
         prepareSubstitutionsForAllRecipients();
+        
+        if (sendAt != null) {
+        	sendAtStamp = String.valueOf(sendAt.getTime() / 1000);
+        }
         
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))

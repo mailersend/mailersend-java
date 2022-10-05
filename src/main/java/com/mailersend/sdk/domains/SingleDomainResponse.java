@@ -10,7 +10,7 @@ package com.mailersend.sdk.domains;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
 
-public class SingleDomainResponse extends MailerSendResponse{
+public class SingleDomainResponse extends MailerSendResponse {
 
     @SerializedName("data")
     public Domain domain;

@@ -9,16 +9,34 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.messages.Message;
 import com.mailersend.sdk.messages.MessagesList;
 import com.mailersend.sdk.messages.MessagesListItem;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class MessagesTest {
 
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("MessagesTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     /**
      * Gets a lists of messages
      */

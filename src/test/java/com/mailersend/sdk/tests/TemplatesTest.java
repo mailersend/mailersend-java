@@ -2,7 +2,12 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
@@ -10,10 +15,23 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.templates.Template;
 import com.mailersend.sdk.templates.TemplateItem;
 import com.mailersend.sdk.templates.TemplatesList;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class TemplatesTest {
 
     
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("TemplatesTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     /**
      * Tests retrieving a list of templates
      */

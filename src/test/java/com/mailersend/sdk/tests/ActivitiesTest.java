@@ -5,12 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.activities.ActivitiesList;
@@ -18,9 +22,22 @@ import com.mailersend.sdk.activities.Activity;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.EventTypes;
+import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class ActivitiesTest {
 
+	@BeforeEach
+	public void setupEach(TestInfo info) throws IOException
+	{
+		VcrRecorder.useRecording("ActivitiesTest_" + info.getDisplayName());
+	}
+	
+	@AfterEach
+	public void afterEach() throws IOException
+	{
+		VcrRecorder.stopRecording();
+	}
+	
     
     /**
      * Tests that the date of the dateFrom filter can't be after the dateTo filter
@@ -96,15 +113,11 @@ public class ActivitiesTest {
          
             assertTrue(activities.activities.length > 0);
             
-            ActivitiesList secondPage = activities.nextPage();
+            ActivitiesList secondPage = ms.activities().getActivities(TestHelper.domainId, 2, 10, null, null, null);
             
             assertTrue(secondPage.activities.length > 0);
             
             assertNotEquals(secondPage.activities[0].id, activities.activities[0].id); 
-            
-            ActivitiesList previousPage = secondPage.previousPage();
-            
-            assertEquals(previousPage.activities[0].id, activities.activities[0].id);
             
         } catch (MailerSendException e) {
 
@@ -167,10 +180,6 @@ public class ActivitiesTest {
             assertTrue(activity.email.id != null && !activity.email.id.isBlank());
             assertTrue(activity.email.status != null && !activity.email.status.isBlank());
             assertTrue(activity.email.createdAt != null);
-            
-            assertTrue(activity.email.recipient.id != null && !activity.email.recipient.id.isBlank());
-            assertTrue(activity.email.recipient.email != null && !activity.email.recipient.email.isBlank());
-            assertTrue(activity.email.recipient.createdAt != null);
             
         } catch (MailerSendException e) {
 

@@ -126,7 +126,7 @@ public class Emails {
         
         MailerSendStringResponse response = api.getRequest(endpoint, MailerSendStringResponse.class);
         
-        // because the response might include null fields, we'll use a custom deserialier to get the BulkSendStatus object
+        // because the response might include null fields, we'll use a custom deserializer to get the BulkSendStatus object
    
         JsonDeserializer<BulkSendStatus> deserializer = new JsonDeserializer<BulkSendStatus>() {  
 
@@ -150,13 +150,16 @@ public class Emails {
                 
                 newStatus.validationErrorsCount = data.get("validation_errors_count").getAsInt();
                 
-                JsonArray messagesIds = data.get("messages_id").getAsJsonArray();
+                ArrayList<String> messagesIdsList = new ArrayList<String>();
                 
-                ArrayList<String> messagesIdsList = new ArrayList<String>(); 
-                
-                for (JsonElement messageId : messagesIds) {
-                    
-                    messagesIdsList.add(messageId.getAsString());
+                if (!data.get("messages_id").isJsonNull()) {
+                	
+	                JsonArray messagesIds = data.get("messages_id").getAsJsonArray();
+	             	                
+	                for (JsonElement messageId : messagesIds) {
+	                    
+	                    messagesIdsList.add(messageId.getAsString());
+	                }
                 }
                 
                 newStatus.messagesId = messagesIdsList.toArray(new String[0]);

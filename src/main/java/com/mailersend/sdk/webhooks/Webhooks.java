@@ -8,6 +8,7 @@
 package com.mailersend.sdk.webhooks;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
@@ -86,6 +87,8 @@ public class Webhooks {
         
         WebhooksList response = api.getRequest(endpoint, WebhooksList.class);
         
+        response.postDeserialize();
+        
         return response;
     }
     
@@ -105,6 +108,8 @@ public class Webhooks {
         
         WebhookResponse response = api.getRequest(endpoint, WebhookResponse.class);
         
+        response.webhook.postDeserialize();
+        
         return response.webhook;
     }
     
@@ -115,7 +120,7 @@ public class Webhooks {
      * @return
      * @throws MailerSendException
      */
-    public MailerSendResponse deleteWebhook(String webhookId) throws MailerSendException {
+    public boolean deleteWebhook(String webhookId) throws MailerSendException {
         
         String endpoint = "/webhooks/".concat(webhookId);
         
@@ -124,7 +129,8 @@ public class Webhooks {
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         
-        return response;
+        // return true if the response is 200, 204 or 202
+        return IntStream.of(new int[] {200, 204, 202}).anyMatch(x -> x == response.responseStatusCode);
     }
     
     
