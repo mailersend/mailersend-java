@@ -308,6 +308,7 @@ public class Email {
             var = new Variable();
             var.email = recipient.email;
             var.addSubstitution(new Substitution(variable, value));
+            this.templateVariables.add(var);
         }
     }
     
