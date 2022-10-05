@@ -9,6 +9,12 @@ package com.mailersend.sdk.exceptions;
 
 import java.util.HashMap;
 
+/**
+ * <p>JsonResponseError class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class JsonResponseError {
     
     public String message = "";

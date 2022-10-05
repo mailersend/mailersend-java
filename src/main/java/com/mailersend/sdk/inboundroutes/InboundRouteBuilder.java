@@ -7,21 +7,44 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>InboundRouteBuilder class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class InboundRouteBuilder {
 
 	private MailerSend apiObjectReference;
 	private InboundRouteBuilderBody builderBody;
 	
+	/**
+	 * <p>Constructor for InboundRouteBuilder.</p>
+	 *
+	 * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+	 */
 	public InboundRouteBuilder(MailerSend ref) {
 		apiObjectReference = ref;
 		builderBody = new InboundRouteBuilderBody();
 	}
 	
+	/**
+	 * <p>domainId.</p>
+	 *
+	 * @param domainId a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder domainId(String domainId) {
 		builderBody.domainId = domainId;
 		return this;
 	}
 
+	/**
+	 * <p>name.</p>
+	 *
+	 * @param name a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder name(String name) {
 		
 		builderBody.name = name;
@@ -29,28 +52,58 @@ public class InboundRouteBuilder {
 		return this;
 	}
 	
+	/**
+	 * <p>domainEnabled.</p>
+	 *
+	 * @param enabled a boolean.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder domainEnabled(boolean enabled) {
 		builderBody.domainEnabled = enabled;
 		
 		return this;
 	}
 	
+	/**
+	 * <p>inboundDomain.</p>
+	 *
+	 * @param domain a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder inboundDomain(String domain) {
 		builderBody.inboundDomain= domain;
 		return this;
 	}
 	
+	/**
+	 * <p>inboundAddress.</p>
+	 *
+	 * @param address a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder inboundAddress(String address) {
 		builderBody.inboundAddress = address;
 		return this;
 	}
 	
+	/**
+	 * <p>inboundSubdomain.</p>
+	 *
+	 * @param subdomain a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder inboundSubdomain(String subdomain) {
 		builderBody.inboundSubdomain = subdomain;
 		
 		return this;
 	}
 	
+	/**
+	 * <p>matchFilter.</p>
+	 *
+	 * @param type a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder matchFilter(String type) {
 		MatchFilter filter = new MatchFilter();
 		filter.type = type;
@@ -58,17 +111,35 @@ public class InboundRouteBuilder {
 		return this;
 	}
 	
+	/**
+	 * <p>catchFilter.</p>
+	 *
+	 * @param filter a {@link com.mailersend.sdk.inboundroutes.CatchFilter} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder catchFilter(CatchFilter filter) {
 		builderBody.catchFilter = filter;
 		return this;
 	}
 
+	/**
+	 * <p>forwards.</p>
+	 *
+	 * @param forwards an array of {@link com.mailersend.sdk.inboundroutes.Forward} objects.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
 	public InboundRouteBuilder forwards(Forward[] forwards) {
 		builderBody.forwards = forwards;
 		return this;
 	}
 	
 	
+	/**
+	 * <p>addRoute.</p>
+	 *
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRoute} object.
+	 * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+	 */
 	public InboundRoute addRoute() throws MailerSendException {
 		
 		String endpoint = "/inbound";
@@ -90,6 +161,13 @@ public class InboundRouteBuilder {
         return response.route;
 	}
 	
+	/**
+	 * <p>updateRoute.</p>
+	 *
+	 * @param inboundRouteId a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRoute} object.
+	 * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+	 */
 	public InboundRoute updateRoute(String inboundRouteId) throws MailerSendException {
 		String endpoint = "/inbound/" + inboundRouteId;
 		

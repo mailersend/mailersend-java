@@ -11,6 +11,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>AnalyticsList class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class AnalyticsList {
 
     
@@ -30,7 +36,7 @@ public class AnalyticsList {
     
     
     /**
-     * Does all the needed actions after deserialization 
+     * Does all the needed actions after deserialization
      */
     public void postDeserialize() {
      

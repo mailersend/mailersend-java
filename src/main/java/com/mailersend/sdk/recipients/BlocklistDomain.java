@@ -14,6 +14,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>BlocklistDomain class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class BlocklistDomain {
 
     @SerializedName("id")

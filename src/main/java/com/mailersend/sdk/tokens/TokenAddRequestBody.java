@@ -11,6 +11,12 @@ import java.util.ArrayList;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>TokenAddRequestBody class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class TokenAddRequestBody {
 
     @SerializedName("name")

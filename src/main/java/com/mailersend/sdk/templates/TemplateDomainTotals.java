@@ -9,6 +9,12 @@ package com.mailersend.sdk.templates;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>TemplateDomainTotals class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class TemplateDomainTotals {
     
     @SerializedName("hard_bounced")

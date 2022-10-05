@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailsend.sdk.emailverification;
 
 import java.util.ArrayList;
@@ -10,6 +17,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>EmailVerificationBuilder class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class EmailVerificationBuilder {
 
 	private EmailVerificationBuilderBody builderBody;
@@ -18,26 +31,55 @@ public class EmailVerificationBuilder {
 	
 	private ArrayList<String> emails = new ArrayList<String>();
 	
+	/**
+	 * <p>Constructor for EmailVerificationBuilder.</p>
+	 *
+	 * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+	 */
 	public EmailVerificationBuilder(MailerSend ref) {
 		apiObjectReference = ref;
 		builderBody = new EmailVerificationBuilderBody();
 	}
 	
+	/**
+	 * <p>name.</p>
+	 *
+	 * @param name a {@link java.lang.String} object.
+	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 */
 	public EmailVerificationBuilder name(String name) {
 		builderBody.name = name;
 		return this;
 	}
 	
+	/**
+	 * <p>addEmail.</p>
+	 *
+	 * @param email a {@link java.lang.String} object.
+	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 */
 	public EmailVerificationBuilder addEmail(String email) {
 		emails.add(email);
 		return this;
 	}
 	
+	/**
+	 * <p>addEmails.</p>
+	 *
+	 * @param emails an array of {@link java.lang.String} objects.
+	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 */
 	public EmailVerificationBuilder addEmails(String[] emails) {
 		this.emails.addAll(Arrays.asList(emails));
 		return this;
 	}
 	
+	/**
+	 * <p>create.</p>
+	 *
+	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationList} object.
+	 * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+	 */
 	public EmailVerificationList create() throws MailerSendException {
 		
 		String endpoint = "/email-verification";

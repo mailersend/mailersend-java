@@ -10,6 +10,12 @@ package com.mailersend.sdk.emails;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
 
+/**
+ * <p>SendBulkResponse class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SendBulkResponse extends MailerSendResponse {
 
     @SerializedName("message")

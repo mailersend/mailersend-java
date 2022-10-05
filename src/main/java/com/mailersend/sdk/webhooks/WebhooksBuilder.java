@@ -16,6 +16,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>WebhooksBuilder class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class WebhooksBuilder {
 
     private WebhooksBuilderBody builderBody = new WebhooksBuilderBody();
@@ -25,7 +31,8 @@ public class WebhooksBuilder {
     
     /**
      * No instantiation from outside the sdk
-     * @param apiObjectRef
+     *
+     * @param apiObjectRef a {@link com.mailersend.sdk.MailerSend} object.
      */
     protected WebhooksBuilder(MailerSend apiObjectRef) {
         
@@ -36,8 +43,9 @@ public class WebhooksBuilder {
     
     /**
      * Set the webhook's url
-     * @param url
-     * @return
+     *
+     * @param url a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
      */
     public WebhooksBuilder url(String url) {
         
@@ -49,8 +57,9 @@ public class WebhooksBuilder {
     
     /**
      * Set the webhook's name
-     * @param name
-     * @return
+     *
+     * @param name a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
      */
     public WebhooksBuilder name(String name) {
         
@@ -62,8 +71,9 @@ public class WebhooksBuilder {
     
     /**
      * Add an event for the webhook
-     * @param event
-     * @return
+     *
+     * @param event a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
      */
     public WebhooksBuilder addEvent(String event) {
         
@@ -75,7 +85,8 @@ public class WebhooksBuilder {
     
     /**
      * Clears the events of the webhook request
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
      */
     public WebhooksBuilder clearEvents() {
         
@@ -87,9 +98,10 @@ public class WebhooksBuilder {
     
     /**
      * Creates a webhook
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.webhooks.Webhook} object.
      */
     public Webhook createWebhook(String domainId) throws MailerSendException {
         
@@ -141,9 +153,10 @@ public class WebhooksBuilder {
     
     /**
      * Updates the webhook with the given id
-     * @param webhookId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param webhookId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.webhooks.Webhook} object.
      */
     public Webhook updateWebhook(String webhookId) throws MailerSendException {
         

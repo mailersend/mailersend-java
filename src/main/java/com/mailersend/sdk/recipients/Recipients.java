@@ -16,6 +16,12 @@ import com.mailersend.sdk.domains.DomainsList;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.ApiRecipientsList;
 
+/**
+ * <p>Recipients class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Recipients {
 
     
@@ -30,7 +36,8 @@ public class Recipients {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.analytics
-     * @param ref
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
      */
     public Recipients(MailerSend ref) {
         
@@ -41,7 +48,8 @@ public class Recipients {
     
     /**
      * Get the Suppressions object instance to query the suppressions
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.recipients.Suppressions} object.
      */
     public Suppressions suppressions() {
         
@@ -51,8 +59,9 @@ public class Recipients {
     
     /**
      * Set the page of the request
-     * @param page
-     * @return
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.recipients.Recipients} object.
      */
     public Recipients page(int page) {
         
@@ -64,8 +73,9 @@ public class Recipients {
     
     /**
      * Set the results limit (10 - 100)
-     * @param limit
-     * @return
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.recipients.Recipients} object.
      */
     public Recipients limit(int limit) {
         
@@ -77,8 +87,9 @@ public class Recipients {
     
     /**
      * Set the domain ID
-     * @param domainId
-     * @return
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.recipients.Recipients} object.
      */
     public Recipients domainId(String domainId) {
         
@@ -90,8 +101,9 @@ public class Recipients {
     
     /**
      * Get recipients
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.util.ApiRecipientsList} object.
      */
     public ApiRecipientsList getRecipients() throws MailerSendException {
         
@@ -108,9 +120,10 @@ public class Recipients {
     
     /**
      * Get a single recipient
-     * @param recipientId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param recipientId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.Recipient} object.
      */
     public Recipient getRecipient(String recipientId) throws MailerSendException {
         
@@ -127,9 +140,10 @@ public class Recipients {
     
     /**
      * Deletes the recipient with the given id
-     * @param recipientId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param recipientId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteRecipient(String recipientId) throws MailerSendException {
         

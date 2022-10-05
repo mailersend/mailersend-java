@@ -23,6 +23,9 @@ import com.mailsend.sdk.emailverification.EmailVerification;
 
 /**
  * Main SDK Class
+ *
+ * @author john
+ * @version $Id: $Id
  */
 public class MailerSend {    
    
@@ -42,6 +45,9 @@ public class MailerSend {
     private EmailVerification emailVerification = null;
     private Sms sms = null;
     
+    /**
+     * <p>Constructor for MailerSend.</p>
+     */
     public MailerSend() {
         
         emails = new Emails(this);
@@ -62,7 +68,8 @@ public class MailerSend {
     
     /**
      * Get the emails access object
-     * @return
+     *
+     * @return the Emails object
      */
     public Emails emails() {
         
@@ -72,7 +79,8 @@ public class MailerSend {
     
     /**
      * Get the activities access object
-     * @return
+     *
+     * @return the Activities object
      */
     public Activities activities() {
         
@@ -82,7 +90,8 @@ public class MailerSend {
     
     /**
      * Get the analytics access object
-     * @return
+     *
+     * @return the Analytics object
      */
     public Analytics analytics() {
         
@@ -92,7 +101,8 @@ public class MailerSend {
     
     /**
      * Get the domains access object
-     * @return
+     *
+     * @return the Domains object
      */
     public Domains domains() {
         
@@ -102,7 +112,8 @@ public class MailerSend {
     
     /**
      * Get the messages access object
-     * @return
+     *
+     * @return the Messages object
      */
     public Messages messages() {
         
@@ -111,7 +122,8 @@ public class MailerSend {
     
     /**
      * Get the scheduled messages access object
-     * @return
+     *
+     * @return the Scheduled Messages object
      */
     public ScheduledMessages scheduledMessages() {
     	return scheduledMessages;
@@ -120,7 +132,8 @@ public class MailerSend {
     
     /**
      * Get the recipients access object
-     * @return
+     *
+     * @return the Recipients Object
      */
     public Recipients recipients() {
         
@@ -130,7 +143,8 @@ public class MailerSend {
 
     /**
      * Get the tokens access object
-     * @return
+     *
+     * @return the Tokens object
      */
     public Tokens tokens() {
         
@@ -140,7 +154,8 @@ public class MailerSend {
     
     /**
      * Get the webhooks access object
-     * @return
+     *
+     * @return the Webhooks object
      */
     public Webhooks webhooks() {
         
@@ -150,7 +165,8 @@ public class MailerSend {
     
     /**
      * Get the templates access object
-     * @return
+     *
+     * @return the Templates object
      */
     public Templates templates() {
         
@@ -160,7 +176,8 @@ public class MailerSend {
     
     /**
      * Get the inbound routes access object
-     * @return
+     *
+     * @return The Inbound Routes object
      */
     public InboundRoutes inboundRoutes() {
     	
@@ -169,7 +186,8 @@ public class MailerSend {
     
     /**
      * Get the email verification access object
-     * @return
+     *
+     * @return the Email Verification object
      */
     public EmailVerification emailVerification() {
     	
@@ -178,7 +196,8 @@ public class MailerSend {
     
     /**
      * Get the sms access object
-     * @return
+     *
+     * @return The SMS object
      */
     public Sms sms() {
     	return sms;
@@ -186,7 +205,8 @@ public class MailerSend {
     
     /**
      * Sets the MailerSend token
-     * @param token
+     *
+     * @param token your MailerSend token
      */
     public void setToken(String token) {
         
@@ -196,7 +216,8 @@ public class MailerSend {
     
     /**
      * Returns the MailerSend token
-     * @return
+     *
+     * @return the MailerSend token
      */
     public String getToken() {
         

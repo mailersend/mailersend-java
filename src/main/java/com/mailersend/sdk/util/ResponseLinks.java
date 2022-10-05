@@ -11,6 +11,9 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Keeps the links from a returned MailerSend response (e.g. ActivitiesList)
+ *
+ * @author mailersend
+ * @version $Id: $Id
  */
 public class ResponseLinks {
 

@@ -17,6 +17,12 @@ import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>Suppressions class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Suppressions {
     
     private MailerSend apiObjectReference;
@@ -30,7 +36,8 @@ public class Suppressions {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.analytics
-     * @param ref
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
      */
     public Suppressions(MailerSend ref) {
         
@@ -41,7 +48,8 @@ public class Suppressions {
     
     /**
      * Get the suppression add builder
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionAddBuilder} object.
      */
     public SuppressionAddBuilder addBuilder() {
         
@@ -51,8 +59,9 @@ public class Suppressions {
     
     /**
      * Set the page of the request
-     * @param page
-     * @return
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.recipients.Suppressions} object.
      */
     public Suppressions page(int page) {
         
@@ -64,8 +73,9 @@ public class Suppressions {
     
     /**
      * Set the results limit (10 - 100)
-     * @param limit
-     * @return
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.recipients.Suppressions} object.
      */
     public Suppressions limit(int limit) {
         
@@ -77,8 +87,9 @@ public class Suppressions {
     
     /**
      * Set the domain ID
-     * @param domainId
-     * @return
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.recipients.Suppressions} object.
      */
     public Suppressions domainId(String domainId) {
         
@@ -90,8 +101,9 @@ public class Suppressions {
     
     /**
      * Gets the recipients in a blocklist of an account or domain
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.BlocklistListResponse} object.
      */
     public BlocklistListResponse getBlocklist() throws MailerSendException {
         
@@ -108,8 +120,9 @@ public class Suppressions {
     
     /**
      * Gets the recipients that hard bounced
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionList} object.
      */
     public SuppressionList getHardBounces() throws MailerSendException {
         
@@ -121,8 +134,9 @@ public class Suppressions {
     
     /**
      * Gets the spam complaints
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionList} object.
      */
     public SuppressionList getSpamComplaints() throws MailerSendException {
         
@@ -134,8 +148,9 @@ public class Suppressions {
     
     /**
      * Gets the unsubscribes
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionList} object.
      */
     public SuppressionList getUnsubscribes() throws MailerSendException {
         
@@ -164,9 +179,10 @@ public class Suppressions {
     
     /**
      * Deletes the items with the given id from the blocklist
-     * @param ids
-     * @return
-     * @throws MailerSendException
+     *
+     * @param ids an array of {@link java.lang.String} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteBlocklistItems(String[] ids) throws MailerSendException {
         
@@ -176,8 +192,9 @@ public class Suppressions {
     
     /**
      * Deletes all items from the blocklist
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteBlocklistAllItems() throws MailerSendException {
         
@@ -187,9 +204,10 @@ public class Suppressions {
     
     /**
      * Deletes the items with the given id from the hard bounces suppression list
-     * @param ids
-     * @return
-     * @throws MailerSendException
+     *
+     * @param ids an array of {@link java.lang.String} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteHardBouncesItems(String[] ids) throws MailerSendException {
         
@@ -199,8 +217,9 @@ public class Suppressions {
     
     /**
      * Deletes all items from the hard bounces suppression list
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteHardBouncesAllItems() throws MailerSendException {
         
@@ -210,9 +229,10 @@ public class Suppressions {
     
     /**
      * Deletes the items with the given id from the spam complaints suppression list
-     * @param ids
-     * @return
-     * @throws MailerSendException
+     *
+     * @param ids an array of {@link java.lang.String} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteSpamComplaintsItems(String[] ids) throws MailerSendException {
         
@@ -222,8 +242,9 @@ public class Suppressions {
     
     /**
      * Deletes all items from the spam complaints suppression list
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteSpamComplaintsAllItems() throws MailerSendException {
         
@@ -233,9 +254,10 @@ public class Suppressions {
     
     /**
      * Deletes the items with the given id from the unsubscribes suppression list
-     * @param ids
-     * @return
-     * @throws MailerSendException
+     *
+     * @param ids an array of {@link java.lang.String} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteUnsubscribesItems(String[] ids) throws MailerSendException {
         
@@ -245,8 +267,9 @@ public class Suppressions {
     
     /**
      * Deletes all items from the unsubscribes suppression list
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteUnsubscribesAllItems() throws MailerSendException {
         

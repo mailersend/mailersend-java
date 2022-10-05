@@ -14,6 +14,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>SuppressionAddBuilder class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SuppressionAddBuilder {
 
     private MailerSend apiObjectReference;
@@ -23,7 +29,8 @@ public class SuppressionAddBuilder {
     
     /**
      * No instantiation from outside the sdk
-     * @param apiObjectRef
+     *
+     * @param apiObjectRef a {@link com.mailersend.sdk.MailerSend} object.
      */
     protected SuppressionAddBuilder(MailerSend apiObjectRef) {
         
@@ -33,7 +40,8 @@ public class SuppressionAddBuilder {
     
     /**
      * Add a recipient to the blocklist
-     * @param recipient
+     *
+     * @param recipient a {@link java.lang.String} object.
      */
     public void recipient(String recipient) {
         
@@ -44,7 +52,8 @@ public class SuppressionAddBuilder {
     
     /**
      * Add a pattern to the blocklist
-     * @param pattern
+     *
+     * @param pattern a {@link java.lang.String} object.
      */
     public void pattern(String pattern) {
         
@@ -54,7 +63,8 @@ public class SuppressionAddBuilder {
     
     /**
      * Set the domain id
-     * @param domainId
+     *
+     * @param domainId a {@link java.lang.String} object.
      */
     public void domainId(String domainId) {
         
@@ -65,8 +75,9 @@ public class SuppressionAddBuilder {
     
     /**
      * Adds recipients or patterns into the blocklist
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return an array of {@link com.mailersend.sdk.recipients.BlocklistItem} objects.
      */
     public BlocklistItem[] addToBlocklist() throws MailerSendException {
         
@@ -99,8 +110,9 @@ public class SuppressionAddBuilder {
     
     /**
      * Adds recipients to the hard bounces suppression list
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionList} object.
      */
     public SuppressionList addRecipientsToHardBounces() throws MailerSendException {
         
@@ -110,8 +122,9 @@ public class SuppressionAddBuilder {
     
     /**
      * Adds recipients to the spam complaints suppression list
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionList} object.
      */
     public SuppressionList addRecipientsToSpamComplaints() throws MailerSendException {
         
@@ -121,8 +134,9 @@ public class SuppressionAddBuilder {
     
     /**
      * Adds recipients to the unsubscribes suppression list
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionList} object.
      */
     public SuppressionList addRecipientsToUnsubscribes() throws MailerSendException {
         

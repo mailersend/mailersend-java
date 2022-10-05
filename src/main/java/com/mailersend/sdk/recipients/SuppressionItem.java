@@ -9,6 +9,12 @@ package com.mailersend.sdk.recipients;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>SuppressionItem class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SuppressionItem {
 
     @SerializedName("id")

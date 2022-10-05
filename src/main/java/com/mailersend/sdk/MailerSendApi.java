@@ -26,6 +26,9 @@ import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 /**
  * Handles all requests to the MailerSend API
+ *
+ * @author john
+ * @version $Id: $Id
  */
 public class MailerSendApi {
 
@@ -46,7 +49,8 @@ public class MailerSendApi {
     
     /**
      * Sets the MailerSend API token
-     * @param token
+     *
+     * @param token the MailerSend API token
      */
     public void setToken(String token) {
         
@@ -56,11 +60,11 @@ public class MailerSendApi {
 
     /**
      * Does a GET request to the given endpoint of the MailerSend API
-     * @param <T> The type of what the response will be deserialized to
+     *
      * @param endpoint The MailerSend API endpoint
      * @param responseClass The class of the response object
      * @return T
-     * @throws MailerSendException
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if an error is returned from the API this exception will contain the details
      */
     @SuppressWarnings("unchecked")
     public <T extends MailerSendResponse> T getRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
@@ -99,12 +103,12 @@ public class MailerSendApi {
     
     /**
      * Does a POST request to the given endpoint of the MailerSend API
-     * @param <T> The type of what the response will be deserialized to
+     *
      * @param endpoint The MailerSend API endpoint
      * @param requestBody The body of the POST request
      * @param responseClass The class of the response object
      * @return T
-     * @throws MailerSendException
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if an error is returned from the API this exception will contain the details
      */
     public <T extends MailerSendResponse> T postRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
        
@@ -133,11 +137,11 @@ public class MailerSendApi {
     
     /**
      * Does a DELETE request to the given endpoint of the MailerSend API
-     * @param <T> The type of what the response will be deserialized to
+     *
      * @param endpoint The MailerSend API endpoint
      * @param responseClass The class of the response object
      * @return T
-     * @throws MailerSendException
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if an error is returned from the API this exception will contain the details
      */
     public <T extends MailerSendResponse> T deleteRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
         
@@ -166,12 +170,12 @@ public class MailerSendApi {
     
     /**
      * Does a DELETE request to the given endpoint of the MailerSend API
-     * @param <T> The type of what the response will be deserialized to
+     *
      * @param endpoint The MailerSend API endpoint
      * @param requestBody The body of the DELETE request
      * @param responseClass The class of the response object
      * @return T
-     * @throws MailerSendException
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if an error is returned from the API this exception will contain the details
      */
     public <T extends MailerSendResponse> T deleteRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
         
@@ -200,12 +204,12 @@ public class MailerSendApi {
     
     /**
      * Does a PUT request to the given endpoint of the MailerSend API
-     * @param <T> The type of what the response will be deserialized to
+     *
      * @param endpoint The MailerSend API endpoint
      * @param requestBody The body of the PUT request
      * @param responseClass The class of the response object
      * @return T
-     * @throws MailerSendException
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if an error is returned from the API this exception will contain the details
      */
     public <T extends MailerSendResponse> T putRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
        

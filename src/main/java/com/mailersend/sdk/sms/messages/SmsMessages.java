@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sdk.sms.messages;
 
 import java.util.ArrayList;
@@ -6,6 +13,12 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>SmsMessages class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsMessages {
     
 	private MailerSend apiObjectReference;
@@ -13,21 +26,44 @@ public class SmsMessages {
     private int pageFilter = 1;
     private int limitFilter = 25;
     
+    /**
+     * <p>Constructor for SmsMessages.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public SmsMessages(MailerSend ref) {
     	apiObjectReference = ref;
     }
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.sms.messages.SmsMessages} object.
+     */
     public SmsMessages page(int page) {
     	pageFilter = page;
     	return this;
     }
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.sms.messages.SmsMessages} object.
+     */
     public SmsMessages limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
     
+    /**
+     * <p>getMessages.</p>
+     *
+     * @return a {@link com.mailersend.sdk.sms.messages.SmsMessageList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsMessageList getMessages() throws MailerSendException {
     	
     	String endpoint = "/sms-messages".concat(prepareParamsUrl());
@@ -42,6 +78,13 @@ public class SmsMessages {
         return response;
     }
     
+    /**
+     * <p>getMessage.</p>
+     *
+     * @param messageId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.sms.messages.SmsMessage} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public SmsMessage getMessage(String messageId) throws MailerSendException {
     
     	String endpoint = "/sms-messages/".concat(messageId);

@@ -9,6 +9,12 @@ package com.mailersend.sdk.domains;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>DomainVerificationAttributes class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class DomainVerificationAttributes {
 
     @SerializedName("dkim")

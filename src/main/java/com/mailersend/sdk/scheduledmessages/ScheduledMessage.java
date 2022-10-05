@@ -7,6 +7,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>ScheduledMessage class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class ScheduledMessage {
 
 	@SerializedName("message_id")

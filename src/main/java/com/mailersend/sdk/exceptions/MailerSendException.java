@@ -11,6 +11,9 @@ import java.util.HashMap;
 
 /**
  * Is thrown when an error is returned from the MailerSend API
+ *
+ * @author mailersend
+ * @version $Id: $Id
  */
 public class MailerSendException extends Exception {
 
@@ -22,6 +25,11 @@ public class MailerSendException extends Exception {
     
     public HashMap<String, String[]> errors = new HashMap<String, String[]>();
     
+    /**
+     * <p>Constructor for MailerSendException.</p>
+     *
+     * @param message a {@link java.lang.String} object.
+     */
     public MailerSendException(String message) {
         
         super(message);

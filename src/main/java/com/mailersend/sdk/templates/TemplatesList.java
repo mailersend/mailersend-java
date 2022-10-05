@@ -10,6 +10,12 @@ package com.mailersend.sdk.templates;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.util.PaginatedResponse;
 
+/**
+ * <p>TemplatesList class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class TemplatesList extends PaginatedResponse {
 
     @SerializedName("data")

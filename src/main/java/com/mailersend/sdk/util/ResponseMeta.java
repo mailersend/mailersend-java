@@ -11,6 +11,9 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Keeps the meta information of a MailerSend response
+ *
+ * @author mailersend
+ * @version $Id: $Id
  */
 public class ResponseMeta {
 

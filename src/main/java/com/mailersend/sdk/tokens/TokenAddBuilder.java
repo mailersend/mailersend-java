@@ -17,6 +17,12 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 
+/**
+ * <p>TokenAddBuilder class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class TokenAddBuilder {
 
     private MailerSend apiObjectReference;
@@ -38,7 +44,8 @@ public class TokenAddBuilder {
     
     /**
      * No instantiation from outside the sdk
-     * @param apiObjectRef
+     *
+     * @param apiObjectRef a {@link com.mailersend.sdk.MailerSend} object.
      */
     protected TokenAddBuilder(MailerSend apiObjectRef) {
         
@@ -49,7 +56,9 @@ public class TokenAddBuilder {
     
     /**
      * Set the name parameter
-     * @param name
+     *
+     * @param name a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.tokens.TokenAddBuilder} object.
      */
     public TokenAddBuilder name(String name) {
         
@@ -61,7 +70,9 @@ public class TokenAddBuilder {
     
     /**
      * Set the domain id
-     * @param domainId
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.tokens.TokenAddBuilder} object.
      */
     public TokenAddBuilder domainId(String domainId) {
         
@@ -73,8 +84,10 @@ public class TokenAddBuilder {
     
     /**
      * Add a scope
-     * @param scope
-     * @throws MailerSendException 
+     *
+     * @param scope a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.tokens.TokenAddBuilder} object.
      */
     public TokenAddBuilder addScope(String scope) throws MailerSendException {
        
@@ -91,8 +104,9 @@ public class TokenAddBuilder {
     
     /**
      * Creates an API token
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.tokens.TokenAdd} object.
      */
     public TokenAdd addToken() throws MailerSendException {
        

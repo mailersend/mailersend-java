@@ -14,6 +14,12 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * <p>Activity class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Activity {
 
     @SerializedName("id")
@@ -63,7 +69,7 @@ public class Activity {
     
     /**
      * Is called to perform any actions after the deserialization of the response
-     * to the /activities endpoint 
+     * to the /activities endpoint
      */
     public void postDeserialize() {
         

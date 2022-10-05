@@ -1,3 +1,10 @@
+/*************************************************
+ * MailerSend Java SDK
+ * https://github.com/mailersend/mailersend-java
+ * 
+ * @author MailerSend <support@mailersend.com>
+ * https://mailersend.com
+ **************************************************/
 package com.mailersend.sms.webhooks;
 
 import java.util.ArrayList;
@@ -8,6 +15,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>SmsWebhooks class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class SmsWebhooks {
 
     private MailerSend apiObjectReference;
@@ -20,7 +33,8 @@ public class SmsWebhooks {
     
     /**
      * Do not initialize directly. This should only be accessed from MailerSend.webhooks
-     * @param apiObjectRef
+     *
+     * @param apiObjectRef a {@link com.mailersend.sdk.MailerSend} object.
      */
     public SmsWebhooks(MailerSend apiObjectRef) {
         
@@ -31,8 +45,9 @@ public class SmsWebhooks {
     
     /**
      * Set the page of the request
-     * @param page
-     * @return
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sms.webhooks.SmsWebhooks} object.
      */
     public SmsWebhooks page(int page) {
         
@@ -44,8 +59,9 @@ public class SmsWebhooks {
     
     /**
      * Set the results limit (10 - 100)
-     * @param limit
-     * @return
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sms.webhooks.SmsWebhooks} object.
      */
     public SmsWebhooks limit(int limit) {
         
@@ -57,9 +73,10 @@ public class SmsWebhooks {
     
     /**
      * Gets a list of webhooks
-     * @param domainId
-     * @return
-     * @throws MailerSendException
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @param smsNumberId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sms.webhooks.SmsWebhookList} object.
      */
     public SmsWebhookList getWebhooks(String smsNumberId) throws MailerSendException {
         
@@ -78,9 +95,10 @@ public class SmsWebhooks {
     
     /**
      * Gets a single webhook
-     * @param webhookId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param webhookId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sms.webhooks.SmsWebhook} object.
      */
     public SmsWebhook getWebhook(String webhookId) throws MailerSendException {
         
@@ -99,9 +117,10 @@ public class SmsWebhooks {
     
     /**
      * Deletes a webhook
-     * @param webhookId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param webhookId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a boolean.
      */
     public boolean deleteWebhook(String webhookId) throws MailerSendException {
         
@@ -118,7 +137,8 @@ public class SmsWebhooks {
     
     /**
      * Gets the builder that can be used to create or update webhooks
-     * @return
+     *
+     * @return a {@link com.mailersend.sms.webhooks.SmsWebhooksBuilder} object.
      */
     public SmsWebhooksBuilder builder() {
         
@@ -126,6 +146,11 @@ public class SmsWebhooks {
     }
     
     
+    /**
+     * <p>newBuilder.</p>
+     *
+     * @return a {@link com.mailersend.sms.webhooks.SmsWebhooksBuilder} object.
+     */
     public SmsWebhooksBuilder newBuilder() {
     	
     	return new SmsWebhooksBuilder(apiObjectReference);

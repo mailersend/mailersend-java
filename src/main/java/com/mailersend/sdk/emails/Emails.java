@@ -27,12 +27,23 @@ import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
+/**
+ * <p>Emails class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class Emails {
 
     private MailerSend apiObjectReference;
    
     private Recipient defaultFrom = null;
     
+    /**
+     * <p>Constructor for Emails.</p>
+     *
+     * @param objectRef a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public Emails(MailerSend objectRef) {
         
         apiObjectReference = objectRef;
@@ -41,7 +52,8 @@ public class Emails {
     
     /**
      * Sets the default from
-     * @param from
+     *
+     * @param from a {@link com.mailersend.sdk.Recipient} object.
      */
     public void setDefaultFrom(Recipient from) {
         
@@ -51,7 +63,8 @@ public class Emails {
     
     /**
      * Creates a new email
-     * @return
+     *
+     * @return a {@link com.mailersend.sdk.emails.Email} object.
      */
     public Email createEmail() {
         
@@ -64,8 +77,10 @@ public class Emails {
     
     /**
      * Sends the given email
-     * @param email
-     * @throws MailerSendException 
+     *
+     * @param email a {@link com.mailersend.sdk.emails.Email} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse send(Email email) throws MailerSendException {
         
@@ -82,9 +97,10 @@ public class Emails {
     
     /**
      * Sends the given emails in one batch call
-     * @param emails
-     * @return
-     * @throws MailerSendException
+     *
+     * @param emails an array of {@link com.mailersend.sdk.emails.Email} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link java.lang.String} object.
      */
     public String bulkSend(Email[] emails) throws MailerSendException {
         
@@ -112,9 +128,10 @@ public class Emails {
     
     /**
      * Get the status of a bulk email send
-     * @param bulkSendId
-     * @return
-     * @throws MailerSendException
+     *
+     * @param bulkSendId a {@link java.lang.String} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.emails.BulkSendStatus} object.
      */
     public BulkSendStatus bulkSendStatus(String bulkSendId) throws MailerSendException {
         

@@ -8,6 +8,12 @@ import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
+/**
+ * <p>InboundRoutes class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class InboundRoutes {
 
     private MailerSend apiObjectReference;
@@ -18,34 +24,73 @@ public class InboundRoutes {
     
     private InboundRouteBuilder inboundRouteBuilder;
     
+    /**
+     * <p>Constructor for InboundRoutes.</p>
+     *
+     * @param ref a {@link com.mailersend.sdk.MailerSend} object.
+     */
     public InboundRoutes(MailerSend ref) {
     	apiObjectReference = ref;
     	inboundRouteBuilder = new InboundRouteBuilder(ref);
     }
     
+    /**
+     * <p>getNewBuilder.</p>
+     *
+     * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+     */
     public InboundRouteBuilder getNewBuilder() {
     	return new InboundRouteBuilder(apiObjectReference);
     }
     
+    /**
+     * <p>builder.</p>
+     *
+     * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+     */
     public InboundRouteBuilder builder() {
     	return inboundRouteBuilder;
     }
     
+    /**
+     * <p>page.</p>
+     *
+     * @param page a int.
+     * @return a {@link com.mailersend.sdk.inboundroutes.InboundRoutes} object.
+     */
     public InboundRoutes page(int page) {
     	pageFilter = page;
     	return this;
     }
     
+    /**
+     * <p>limit.</p>
+     *
+     * @param limit a int.
+     * @return a {@link com.mailersend.sdk.inboundroutes.InboundRoutes} object.
+     */
     public InboundRoutes limit(int limit) {
     	limitFilter = limit;
     	return this;
     }
     
+    /**
+     * <p>domainId.</p>
+     *
+     * @param domainId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.inboundroutes.InboundRoutes} object.
+     */
     public InboundRoutes domainId(String domainId) {
     	domainIdFilter = domainId;
     	return this;
     }
     
+    /**
+     * <p>getRoutes.</p>
+     *
+     * @return a {@link com.mailersend.sdk.inboundroutes.InboundRoutesList} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public InboundRoutesList getRoutes() throws MailerSendException {
     
     	String endpoint = "/inbound".concat(prepareParamsUrl());
@@ -58,6 +103,13 @@ public class InboundRoutes {
         return response;
     }
     
+    /**
+     * <p>getRoute.</p>
+     *
+     * @param routeId a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.inboundroutes.InboundRoute} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public InboundRoute getRoute(String routeId) throws MailerSendException {
     	String endpoint = "/inbound/".concat(routeId);
     	
@@ -69,6 +121,13 @@ public class InboundRoutes {
         return response.route;
     }
     
+    /**
+     * <p>deleteRoute.</p>
+     *
+     * @param routeId a {@link java.lang.String} object.
+     * @return a boolean.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
+     */
     public boolean deleteRoute(String routeId) throws MailerSendException {
     	String endpoint = "/inbound/".concat(routeId);
     	

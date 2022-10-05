@@ -10,6 +10,12 @@ package com.mailersend.sdk.domains;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
 
+/**
+ * <p>DomainVerificationStatus class.</p>
+ *
+ * @author mailersend
+ * @version $Id: $Id
+ */
 public class DomainVerificationStatus extends MailerSendResponse {
 
     @SerializedName("message")
