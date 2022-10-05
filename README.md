@@ -113,8 +113,19 @@ MailerSend Java SDK
 <a name="installation"></a>
 
 # Installation
-For now please download the latest release from GitHub or download the source and compile it yourself. We plan to release the SDK on Maven Central once it reaches a mature state.
 
+Using Maven:
+
+    <dependency>
+      <groupId>com.mailersend</groupId>
+      <artifactId>java-sdk</artifactId>
+      <version>0.0.1</version>
+    </dependency>
+
+Using Gradle:
+
+    implementation 'com.mailersend:java-sdk:0.0.1'
+    
 # Usage
 
 ## Email 
