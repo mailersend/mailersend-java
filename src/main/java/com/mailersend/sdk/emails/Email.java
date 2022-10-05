@@ -71,6 +71,9 @@ public class Email {
     @SerializedName("send_at")
     protected String sendAtStamp;
     
+    @SerializedName("in_reply_to")
+    public String inReplyTo;
+    
     /**
      * Adds a recipient to the email
      * @param name
@@ -257,6 +260,11 @@ public class Email {
     
     public void setSendAt(Date sendAt) {
     	this.sendAt = sendAt;
+    }
+    
+    
+    public void setInReplyTo(String inReplyTo) {
+    	this.inReplyTo = inReplyTo;
     }
     
     
