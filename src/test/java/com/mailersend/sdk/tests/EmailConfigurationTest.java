@@ -144,10 +144,10 @@ public class EmailConfigurationTest {
         Email email = new Email();
         
         Recipient firstRecipient = new Recipient(TestHelper.toName, TestHelper.toEmail);
-        email.AddRecipient(firstRecipient);
+        email.addRecipient(firstRecipient);
         
         Recipient secondRecipient = new Recipient(recipient2Name, recipient2Email);
-        email.AddRecipient(secondRecipient);
+        email.addRecipient(secondRecipient);
         
         email.addPersonalization(firstRecipient, personalizationName, personalizationValue);
         email.addPersonalization(secondRecipient, secondPName, secondPValue);
@@ -180,7 +180,7 @@ public class EmailConfigurationTest {
         Email email = TestHelper.createBasicEmail(false);
         
         // test adding the recipient directly
-        email.AddCc(ccRecipient1.name, ccRecipient1.email);
+        email.addCc(ccRecipient1.name, ccRecipient1.email);
         
         assertEquals(email.cc.size(), 1);
         
@@ -188,7 +188,7 @@ public class EmailConfigurationTest {
         assertTrue(email.cc.get(0).email.equals(ccRecipient1.email));
         
         // test adding the recipient object
-        email.AddCc(ccRecipient2);
+        email.addCc(ccRecipient2);
         
         assertEquals(email.cc.size(), 2);
         
@@ -209,7 +209,7 @@ public class EmailConfigurationTest {
         Email email = TestHelper.createBasicEmail(false);
         
         // test adding the recipient directly
-        email.AddBcc(bccRecipient1.name, bccRecipient1.email);
+        email.addBcc(bccRecipient1.name, bccRecipient1.email);
         
         assertEquals(email.bcc.size(), 1);
         
@@ -217,7 +217,7 @@ public class EmailConfigurationTest {
         assertTrue(email.bcc.get(0).email.equals(bccRecipient1.email));
         
         // test adding the recipient object
-        email.AddBcc(bccRecipient2);
+        email.addBcc(bccRecipient2);
         
         assertEquals(email.bcc.size(), 2);
         

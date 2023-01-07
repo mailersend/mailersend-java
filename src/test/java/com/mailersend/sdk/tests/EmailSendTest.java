@@ -18,9 +18,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -118,7 +116,7 @@ public class EmailSendTest {
         email.text = TestHelper.text;
         
         email.addRecipient(TestHelper.toName, TestHelper.toEmail);
-        email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
+        email.addReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
         
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
         
@@ -172,7 +170,7 @@ public class EmailSendTest {
         
         Email email = TestHelper.createBasicEmail(false);
         
-        email.AddCc(TestHelper.ccName, TestHelper.ccEmail);
+        email.addCc(TestHelper.ccName, TestHelper.ccEmail);
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -197,7 +195,7 @@ public class EmailSendTest {
         
         Email email = TestHelper.createBasicEmail(false);
         
-        email.AddBcc(TestHelper.bccName, TestHelper.bccEmail);
+        email.addBcc(TestHelper.bccName, TestHelper.bccEmail);
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -305,7 +303,7 @@ public class EmailSendTest {
         email.text = TestHelper.text;
         
         email.addRecipient(TestHelper.toName, TestHelper.toEmail);
-        email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
+        email.addReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
         
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
         
