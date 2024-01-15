@@ -9,6 +9,7 @@ package com.mailersend.sdk.emails;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -446,6 +447,7 @@ public class Email {
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
+                .registerTypeAdapter(Instant.class, new InstantTypeAdapter().nullSafe())
                 .create();
         
         String json = gson.toJson(this);
@@ -469,6 +471,25 @@ public class Email {
         @Override
         public LocalDate read(JsonReader in) throws IOException {
           return LocalDate.parse(in.nextString());
+        }
+    }
+
+    /**
+    * Simple adapter for {@link Instant} type in Gson serialization.
+    *
+    * To use this {@link Instant}, register it into a {@link Gson} serializer using a
+    * {@link GsonBuilder}.
+    */
+    class InstantTypeAdapter extends TypeAdapter<Instant> {
+
+        @Override
+        public void write(JsonWriter out, Instant value) throws IOException {
+          out.value(value.toString());
+        }
+
+        @Override
+        public Instant read(JsonReader in) throws IOException {
+          return Instant.parse(in.nextString());
         }
     }
 }
