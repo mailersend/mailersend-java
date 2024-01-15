@@ -9,6 +9,7 @@ package com.mailersend.sdk.emails;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,7 +17,10 @@ import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
@@ -441,10 +445,30 @@ public class Email {
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
                 .create();
         
         String json = gson.toJson(this);
 
         return json;
+    }
+
+    /**
+    * Simple adapter for {@link LocalDate} type in Gson serialization.
+    *
+    * To use this {@link TypeAdapter}, register it into a {@link Gson} serializer using a
+    * {@link GsonBuilder}.
+    */
+    class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
+
+        @Override
+        public void write(JsonWriter out, LocalDate value) throws IOException {
+          out.value(value.toString());
+        }
+
+        @Override
+        public LocalDate read(JsonReader in) throws IOException {
+          return LocalDate.parse(in.nextString());
+        }
     }
 }
