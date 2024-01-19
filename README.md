@@ -119,7 +119,7 @@ Using Maven:
     <dependency>
       <groupId>com.mailersend</groupId>
       <artifactId>java-sdk</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </dependency>
 
 Using Gradle:
