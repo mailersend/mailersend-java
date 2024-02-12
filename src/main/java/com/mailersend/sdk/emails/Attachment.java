@@ -32,21 +32,19 @@ public class Attachment {
 
     @SerializedName("id")
     public String id;
-    
-    
+
     /**
      * Reads a file, encodes it to base64 and sets it as an attachment
      *
      * @param path a {@link java.lang.String} object.
      * @throws java.io.IOException
      */
-    public void AddAttachmentFromFile(String path) throws IOException {
+    public void addAttachmentFromFile(String path) throws IOException {
         File file = new File(path);
         this.content = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file));
         this.filename = file.getName();
     }
-    
-    
+
     /**
      * Sets an attachments contents and filename
      *

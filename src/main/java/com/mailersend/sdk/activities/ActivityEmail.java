@@ -116,7 +116,7 @@ public class ActivityEmail {
         
         Collections.addAll(email.tags, tags);
         
-        email.AddRecipient(recipient.toRecipient());
+        email.addRecipient(recipient.toRecipient());
         
         return email;
     }

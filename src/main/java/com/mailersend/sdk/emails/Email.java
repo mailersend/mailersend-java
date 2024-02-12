@@ -103,7 +103,7 @@ public class Email {
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      */
-    public void AddRecipient(Recipient recipient) {
+    public void addRecipient(Recipient recipient) {
         
         this.recipients.add(recipient);
     }
@@ -114,7 +114,7 @@ public class Email {
      *
      * @param recipients an array of {@link com.mailersend.sdk.Recipient} objects.
      */
-    public void AddRecipients(Recipient[] recipients) {
+    public void addRecipients(Recipient[] recipients) {
         
         this.recipients.addAll( Arrays.asList( recipients ) );
     }
@@ -126,7 +126,7 @@ public class Email {
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
      */
-    public void AddCc(String name, String email) {
+    public void addCc(String name, String email) {
         
         Recipient recipient = new Recipient(name, email);
         this.cc.add(recipient);
@@ -138,7 +138,7 @@ public class Email {
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      */
-    public void AddCc(Recipient recipient) {
+    public void addCc(Recipient recipient) {
         
         this.cc.add(recipient);
     }
@@ -150,7 +150,7 @@ public class Email {
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
      */
-    public void AddBcc(String name, String email) {
+    public void addBcc(String name, String email) {
         
         Recipient recipient = new Recipient(name, email);
         this.bcc.add(recipient);
@@ -162,7 +162,7 @@ public class Email {
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      */
-    public void AddBcc(Recipient recipient) {
+    public void addBcc(Recipient recipient) {
         
         this.bcc.add(recipient);
     }
@@ -173,7 +173,7 @@ public class Email {
      *
      * @param replyTo a {@link com.mailersend.sdk.Recipient} object.
      */
-    public void AddReplyTo(Recipient replyTo) {
+    public void addReplyTo(Recipient replyTo) {
         
         this.replyTo = replyTo;
     }
@@ -185,7 +185,7 @@ public class Email {
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
      */
-    public void AddReplyTo(String name, String email) {
+    public void addReplyTo(String name, String email) {
         
         this.replyTo = new Recipient(name, email);
     }
@@ -322,7 +322,7 @@ public class Email {
      * @param variable a {@link java.lang.String} object.
      * @param value a {@link java.lang.String} object.
      */
-    public void AddVariable(Recipient recipient, String variable, String value) {
+    public void addVariable(Recipient recipient, String variable, String value) {
         
         // check if there is already a variable object for this recipient
         Variable var = null;
@@ -356,7 +356,7 @@ public class Email {
      * @param name a {@link java.lang.String} object.
      * @param value a {@link java.lang.String} object.
      */
-    public void AddVariable(String name, String value) {
+    public void addVariable(String name, String value) {
         
         this.allRecipientsSubstitutions.put(name, value);
     }
@@ -367,7 +367,7 @@ public class Email {
      *
      * @param tag a {@link java.lang.String} object.
      */
-    public void AddTag(String tag) {
+    public void addTag(String tag) {
         
         tags.add(tag);
     }
@@ -382,7 +382,7 @@ public class Email {
     public void attachFile(String path) throws IOException {
     
         Attachment attachment = new Attachment();
-        attachment.AddAttachmentFromFile(path);
+        attachment.addAttachmentFromFile(path);
         
         this.attachments.add(attachment);
     }
