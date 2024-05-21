@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -448,6 +449,7 @@ public class Email {
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
                 .registerTypeAdapter(Instant.class, new InstantTypeAdapter().nullSafe())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter().nullSafe())
                 .create();
         
         String json = gson.toJson(this);
@@ -471,6 +473,25 @@ public class Email {
         @Override
         public LocalDate read(JsonReader in) throws IOException {
           return LocalDate.parse(in.nextString());
+        }
+    }
+
+    /**
+     * Simple adapter for {@link LocalDateTime} type in Gson serialization.
+     *
+     * To use this {@link TypeAdapter}, register it into a {@link Gson} serializer using a
+     * {@link GsonBuilder}.
+     */
+    class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
+
+        @Override
+        public void write(JsonWriter out, LocalDateTime value) throws IOException {
+            out.value(value.toString());
+        }
+
+        @Override
+        public LocalDateTime read(JsonReader in) throws IOException {
+            return LocalDateTime.parse(in.nextString());
         }
     }
 
