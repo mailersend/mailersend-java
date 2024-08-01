@@ -11,8 +11,7 @@ MailerSend Java SDK
         - [Send an email](#send-an-email)
         - [Add CC, BCC recipients](#add-cc-bcc-recipients)
         - [Send a template-based email](#send-a-template-based-email)
-        - [Advanced personalization](#advanced-personalization)
-        - [Simple personalization](#simple-personalization)
+        - [Personalization](#personalization)
         - [Send email with attachment](#send-email-with-attachment)
         - [Schedule an email](#schedule-an-email)
         - [Send bulk emails](#send-bulk-emails)
@@ -241,12 +240,6 @@ public void sendEmail() {
 
     email.setTemplateId("Your MailerSend template ID");
 
-    // you can add a variable for a specific recipient
-    email.addVariable(recipient, "variable name", "variable value");
-
-    // you can use the addVariable overload to add a variable to all recipients
-    email.addVariable("all recipients variable name", "variable value");
-
     MailerSend ms = new MailerSend();
 
     ms.setToken("Your API token");
@@ -262,7 +255,7 @@ public void sendEmail() {
 }
 ```
 
-### Advanced personalization
+### Personalization
 
 ```java
 import com.mailersend.sdk.emails.Email;
@@ -290,58 +283,12 @@ public void sendEmail() {
     // you can add personalization for each recipient separately
     email.addPersonalization(recipient, "var2 name", "personalization value");
 
-    // you can also add POJOs as advanced personalization provided they can be serialized to JSON via Gson and do not have any object properties
+    // you can also add POJOs as personalization provided they can be serialized to JSON via Gson and do not have any object properties
     MyPojo obj = new MyPojo();
     obj.property1 = "property 1 value";
     obj.array1 = {1, 2, 3, 4};
 
     email.addPersonalization("pojo", obj);
-
-    MailerSend ms = new MailerSend();
-
-    ms.setToken("Your API token");
-
-    try {
-    
-        MailerSendResponse response = ms.emails().send(email);
-        System.out.println(response.messageId);
-    } catch (MailerSendException e) {
-
-        e.printStackTrace();
-    }
-}
-```
-
-### Simple personalization
-
-```java
-import com.mailersend.sdk.emails.Email;
-import com.mailersend.sdk.MailerSend;
-import com.mailersend.sdk.MailerSendResponse;
-import com.mailersend.sdk.exceptions.MailerSendException;
-
-public void sendEmail() {
-
-    Email email = new Email();
-
-    email.setFrom("name", "your email");
-
-    email.setSubject("Subject {$var1} {$var2}");
-
-    email.setPlain("This is the text version with a {$var1} and a {$var2}.")
-    email.setHtml("<p>This is the HTML version with a {$var1} and a {$var2}.</p>");
-
-    Recipient recipient = new Recipient("name", "your@recipient.com");
-    
-    email.addRecipient(recipient);
-
-    email.setTemplateId("Your MailerSend template ID");
-
-    // you can add a variable for a specific recipient
-    email.addVariable(recipient, "var1", "variable");
-
-    // you can use the addVariable overload to add a variable to all recipients
-    email.addVariable("var2", "second variable");
 
     MailerSend ms = new MailerSend();
 
