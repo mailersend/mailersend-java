@@ -11,7 +11,7 @@ MailerSend Java SDK
         - [Send an email](#send-an-email)
         - [Add CC, BCC recipients](#add-cc-bcc-recipients)
         - [Send a template-based email](#send-a-template-based-email)
-        - [Advanced personalization](#advanced-personalization)
+        - [Personalization](#personalization)
         - [Send email with attachment](#send-email-with-attachment)
         - [Schedule an email](#schedule-an-email)
         - [Send bulk emails](#send-bulk-emails)
@@ -255,7 +255,7 @@ public void sendEmail() {
 }
 ```
 
-### Advanced personalization
+### Personalization
 
 ```java
 import com.mailersend.sdk.emails.Email;
@@ -283,7 +283,7 @@ public void sendEmail() {
     // you can add personalization for each recipient separately
     email.addPersonalization(recipient, "var2 name", "personalization value");
 
-    // you can also add POJOs as advanced personalization provided they can be serialized to JSON via Gson and do not have any object properties
+    // you can also add POJOs as personalization provided they can be serialized to JSON via Gson and do not have any object properties
     MyPojo obj = new MyPojo();
     obj.property1 = "property 1 value";
     obj.array1 = {1, 2, 3, 4};
