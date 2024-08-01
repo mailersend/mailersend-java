@@ -65,9 +65,6 @@ public class Email {
     
     public ArrayList<Attachment> attachments = new ArrayList<Attachment>();
 
-    @SerializedName("variables")
-    public ArrayList<Variable> templateVariables = new ArrayList<Variable>();
-
     @SerializedName("personalization")
     public ArrayList<Personalization> personalization = new ArrayList<Personalization>();
     
@@ -313,42 +310,7 @@ public class Email {
         
         this.allRecipientsPersonalization.put(name, value);
     }
-    
-    
-    /**
-     * Adds a variable for the given recipient
-     *
-     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
-     * @param variable a {@link java.lang.String} object.
-     * @param value a {@link java.lang.String} object.
-     */
-    public void AddVariable(Recipient recipient, String variable, String value) {
         
-        // check if there is already a variable object for this recipient
-        Variable var = null;
-        for (Variable v : this.templateVariables) {
-            
-            if (v.email.equals(recipient.email)) {
-                
-                var = v;
-                break;
-            }
-        }
-        
-        if (var != null) {
-            
-            // add the substitution to the existing variable
-            var.addSubstitution(new Substitution(variable, value));
-        } else {
-            
-            // if the variable doesn't exist, create it
-            var = new Variable();
-            var.email = recipient.email;
-            var.addSubstitution(new Substitution(variable, value));
-            this.templateVariables.add(var);
-        }
-    }
-    
     
     /**
      * Adds a variable to all recipients
