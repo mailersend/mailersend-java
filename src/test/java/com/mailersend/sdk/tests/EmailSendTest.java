@@ -309,7 +309,7 @@ public class EmailSendTest {
         
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
         
-        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse("2022-10-07T00:00:00.875000Z");
+        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse("2024-08-03T00:00:00.875000Z");
         Date scheduleDate = Date.from(Instant.from(ta));
         
         Calendar calendar = Calendar.getInstance();
