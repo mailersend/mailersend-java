@@ -155,7 +155,7 @@ public void sendEmail() {
 
     // there's also a recipient object you can use
     Recipient recipient = new Recipient("name", "your@recipient3.com");
-    email.addRecipient(recipient);
+    email.AddRecipient(recipient);
     
     email.setSubject("Email subject");
 
@@ -166,12 +166,10 @@ public void sendEmail() {
 
     ms.setToken("Your API token");
 
-    try {
-    
-        MailerSendResponse response = ms.send(email);
+    try {    
+        MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
-
         e.printStackTrace();
     }
 }
