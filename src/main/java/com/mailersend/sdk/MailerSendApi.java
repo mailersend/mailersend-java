@@ -70,7 +70,7 @@ public class MailerSendApi {
     public <T extends MailerSendResponse> T getRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
         
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
-                .header("Content-type", "applicateion/json")
+                .header("Content-type", "application/json")
                 .header("Authorization", "Bearer ".concat(this.apiToken))
                 .GET()
                 .build();
@@ -113,7 +113,7 @@ public class MailerSendApi {
     public <T extends MailerSendResponse> T postRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
        
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
-                .header("Content-type", "applicateion/json")
+                .header("Content-type", "application/json")
                 .header("Authorization", "Bearer ".concat(this.apiToken))
                 .POST(BodyPublishers.ofString(requestBody))
                 .build();
@@ -146,7 +146,7 @@ public class MailerSendApi {
     public <T extends MailerSendResponse> T deleteRequest(String endpoint, Class<T> responseClass) throws MailerSendException {
         
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
-                .header("Content-type", "applicateion/json")
+                .header("Content-type", "application/json")
                 .header("Authorization", "Bearer ".concat(this.apiToken))
                 .DELETE()
                 .build();
@@ -180,7 +180,7 @@ public class MailerSendApi {
     public <T extends MailerSendResponse> T deleteRequest(String endpoint, String requestBody, Class<T> responseClass) throws MailerSendException {
         
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
-                .header("Content-type", "applicateion/json")
+                .header("Content-type", "application/json")
                 .header("Authorization", "Bearer ".concat(this.apiToken))
                 .method("DELETE", BodyPublishers.ofString(requestBody))
                 .build();
@@ -218,7 +218,7 @@ public class MailerSendApi {
     	}
     	
         HttpRequest request = HttpRequest.newBuilder(URI.create(this.endpointBase.concat(endpoint)))
-                .header("Content-type", "applicateion/json")
+                .header("Content-type", "application/json")
                 .header("Authorization", "Bearer ".concat(this.apiToken))
                 .PUT(BodyPublishers.ofString(requestBody))
                 .build();
