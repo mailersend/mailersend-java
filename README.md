@@ -138,7 +138,7 @@ Through the `MailerSendResponse` object you can get the ID of the sent message, 
 ### Send an email
 
 ```java
-import com.mailersend.sdk.Email;
+import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
