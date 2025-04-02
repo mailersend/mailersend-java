@@ -54,6 +54,9 @@ public class Webhook {
     @SerializedName("domain")
     public Domain domain;
     
+    @SerializedName("secret")
+    public String secret;
+    
     
     /**
      * Is called to perform any actions after the deserialization of the response
