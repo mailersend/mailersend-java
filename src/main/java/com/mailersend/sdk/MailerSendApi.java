@@ -83,8 +83,8 @@ public class MailerSendApi {
                         
         } catch (IOException | InterruptedException e) {
 
-            MailerSendException ex = (MailerSendException) e;
-            
+            MailerSendException ex = new MailerSendException(e.getMessage());
+            ex.setStackTrace(e.getStackTrace());
             throw ex;
         }
         
@@ -126,8 +126,8 @@ public class MailerSendApi {
                         
         } catch (IOException | InterruptedException e) {
 
-            MailerSendException ex = (MailerSendException) e;
-            
+            MailerSendException ex = new MailerSendException(e.getMessage());
+            ex.setStackTrace(e.getStackTrace());
             throw ex;
         }
         
@@ -159,8 +159,8 @@ public class MailerSendApi {
                         
         } catch (IOException | InterruptedException e) {
 
-            MailerSendException ex = (MailerSendException) e;
-            
+            MailerSendException ex = new MailerSendException(e.getMessage());
+            ex.setStackTrace(e.getStackTrace());
             throw ex;
         }
         
@@ -192,9 +192,8 @@ public class MailerSendApi {
             responseObject = this.client.send(request, BodyHandlers.ofString());
                         
         } catch (IOException | InterruptedException e) {
-
-            MailerSendException ex = (MailerSendException) e;
-            
+            MailerSendException ex = new MailerSendException(e.getMessage());
+            ex.setStackTrace(e.getStackTrace());
             throw ex;
         }
         
@@ -230,9 +229,8 @@ public class MailerSendApi {
             responseObject = this.client.send(request, BodyHandlers.ofString());
                         
         } catch (IOException | InterruptedException e) {
-
-            MailerSendException ex = (MailerSendException) e;
-            
+            MailerSendException ex = new MailerSendException(e.getMessage());
+            ex.setStackTrace(e.getStackTrace());
             throw ex;
         }
         
@@ -246,7 +244,7 @@ public class MailerSendApi {
      * @param responseObject The HttpResponse object of the request
      * @param responseClass The class of the response object
      * @return T
-     * @throws MailerSendException
+     * @throws MailerSendException Wraps any errors in this exception.
      */
     private <T extends MailerSendResponse> T handleApiResponse(HttpResponse<String> responseObject, Class<T> responseClass) throws MailerSendException {
         
@@ -307,9 +305,8 @@ public class MailerSendApi {
                 
                 response = responseClass.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
-                
-                MailerSendException ex = (MailerSendException) e;
-                
+                MailerSendException ex = new MailerSendException(e.getMessage());
+                ex.setStackTrace(e.getStackTrace());
                 throw ex;
             }
         }
