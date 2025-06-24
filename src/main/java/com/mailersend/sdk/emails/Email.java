@@ -83,6 +83,9 @@ public class Email {
     @SerializedName("in_reply_to")
     public String inReplyTo;
     
+    @SerializedName("list_unsubscribe")
+    public String listUnsubscribe;
+    
     /**
      * Adds a recipient to the email
      *
@@ -298,6 +301,17 @@ public class Email {
      */
     public void setInReplyTo(String inReplyTo) {
     	this.inReplyTo = inReplyTo;
+    }
+    
+    /**
+     * Sets the list unsubscribe parameter
+     * Accepts a single value that complies with RFC 8058
+     * Note: This feature is available to Professional and Enterprise accounts only
+     *
+     * @param listUnsubscribe a {@link java.lang.String} object.
+     */
+    public void setListUnsubscribe(String listUnsubscribe) {
+    	this.listUnsubscribe = listUnsubscribe;
     }
     
     

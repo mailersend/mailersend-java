@@ -224,4 +224,35 @@ public class EmailConfigurationTest {
         assertTrue(email.bcc.get(1).name.equals(bccRecipient2.name));
         assertTrue(email.bcc.get(1).email.equals(bccRecipient2.email));
     }
+    
+    /**
+     * Tests the email personalization
+     */
+    @Test
+    public void TestEmailPersonalizationConfiguration() {
+        
+        Email email = TestHelper.createBasicEmail(true);
+        
+        Recipient recipient = new Recipient("Test Recipient", "test@recipient.com");
+        
+        email.addPersonalization(recipient, "var name", "personalization value");
+        
+        assertEquals(email.personalization.size(), 1);
+        assertEquals(email.personalization.get(0).email, recipient.email);
+        assertEquals(email.personalization.get(0).data.get("var name"), "personalization value");
+    }
+    
+    /**
+     * Tests the list unsubscribe parameter configuration
+     */
+    @Test
+    public void TestListUnsubscribeConfiguration() {
+        
+        Email email = TestHelper.createBasicEmail(true);
+        
+        String listUnsubscribe = "<mailto:unsubscribe@example.com>";
+        email.setListUnsubscribe(listUnsubscribe);
+        
+        assertEquals(email.listUnsubscribe, listUnsubscribe);
+    }
 }

@@ -330,4 +330,28 @@ public class EmailSendTest {
             fail();
         }
     }
+    
+    /**
+     * Test email with list unsubscribe parameter
+     */
+    @Test
+    public void TestEmailWithListUnsubscribe() {
+        
+        Email email = TestHelper.createBasicEmail(true);
+        
+        // Set list unsubscribe parameter that complies with RFC 8058
+        email.setListUnsubscribe("<mailto:unsubscribe@example.com>");
+        
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        
+        try {
+            
+            MailerSendResponse response = ms.emails().send(email);
+        } catch (MailerSendException e) {
+            
+            // fail if any error is thrown
+            fail();
+        }
+    }
 }
