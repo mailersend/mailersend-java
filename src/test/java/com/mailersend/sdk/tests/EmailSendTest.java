@@ -7,10 +7,6 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -18,20 +14,22 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
 import com.mailersend.sdk.MailerSend;
-import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.Recipient;
-import com.mailersend.sdk.emails.BulkSendStatus;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.vcr.VcrRecorder;
+
+import static com.mailersend.sdk.util.EventTypes.QUEUED;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class EmailSendTest {
@@ -41,7 +39,7 @@ public class EmailSendTest {
 	{
 		VcrRecorder.useRecording("EmailSendTest_" + info.getDisplayName());
 	}
-	
+
 	@AfterEach
 	public void afterEach() throws IOException
 	{
@@ -59,18 +57,11 @@ public class EmailSendTest {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.invalidToken);
-        
-        
-        try {
-            ms.emails().send(email);
-        } catch (MailerSendException e) {
 
-            assertEquals(e.code, 401);
-            return;
-        }
-       
-        // fail if it reaches here
-        fail();
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.emails().send(email);
+        });
+        assertEquals(401, e.code);
     }
     
     
@@ -87,21 +78,12 @@ public class EmailSendTest {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
-        try {
-            
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
             ms.emails().send(email);
-            
-        } catch (MailerSendException e) {
-            
-            assertEquals(e.code, 422);
-            assertTrue(e.errors.containsKey("personalization.0.data"));
-            
-            return;
-        }
-        
-        // fail if it reaches here
-        fail();
+        });
+        assertEquals(422, e.code);
+        assertTrue(e.errors.containsKey("personalization.0.data"));
     }
     
     
@@ -109,7 +91,7 @@ public class EmailSendTest {
      * Simple email send
      */
     @Test
-    public void TestSimpleSend() {
+    public void TestSimpleSend() throws MailerSendException {
            	    	
         Email email = new Email();
         
@@ -124,15 +106,9 @@ public class EmailSendTest {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
-        try {
-            
-            MailerSendResponse response = ms.emails().send(email);
-        } catch (MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
+
     }
     
     
@@ -140,7 +116,7 @@ public class EmailSendTest {
      * Test personalization from a POJO
      */
     @Test
-    public void TestPojoPersonalization() {
+    public void TestPojoPersonalization() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -150,17 +126,8 @@ public class EmailSendTest {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
-        
-        try {
-            
-            MailerSendResponse response = ms.emails().send(email);
-        } catch (MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
-        
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
     }
     
     
@@ -168,7 +135,7 @@ public class EmailSendTest {
      * Test email with CC
      */
     @Test
-    public void TestCcSend() {
+    public void TestCcSend() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -176,16 +143,8 @@ public class EmailSendTest {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
-        
-        try {
-            
-            ms.emails().send(email);
-        } catch (MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
     }
     
     
@@ -193,7 +152,7 @@ public class EmailSendTest {
      * Test email with BCC
      */
     @Test
-    public void TestBccSend() {
+    public void TestBccSend() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -201,15 +160,8 @@ public class EmailSendTest {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
-        try {
-            
-            ms.emails().send(email);
-        } catch (MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
     }
     
     
@@ -217,23 +169,16 @@ public class EmailSendTest {
      * Test email with attachment
      */
     @Test
-    public void TestEmailWithAttachment() {
-       
+    public void TestEmailWithAttachment() throws IOException, MailerSendException {
+
         Email email = TestHelper.createBasicEmail(true);
-        
-        try {
-            email.attachFile("LICENSE");
-            
-            MailerSend ms = new MailerSend();
-            ms.setToken(TestHelper.validToken);
-            
-            ms.emails().send(email);
-            
-        } catch (IOException | MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
+
+        email.attachFile("LICENSE");
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
     }
     
     
@@ -241,28 +186,19 @@ public class EmailSendTest {
      * Test bulk email send
      */
     @Test
-    public void TestSendBulkEmail() {
+    public void TestSendBulkEmail() throws MailerSendException {
        
         Email email = TestHelper.createBasicEmail(true);
         Email email2 = TestHelper.createBasicEmail(true);
         
         email2.setHtml("<b>Test bulk</b>");
         email2.setPlain("Test bulk");
-        
-        try {
-                        
-            MailerSend ms = new MailerSend();
-            ms.setToken(TestHelper.validToken);
-            
-            String bulkSendId = ms.emails().bulkSend(new Email[] { email, email2 });
-            
-            System.out.println(bulkSendId);
-            
-        } catch (MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        String bulkSendId = ms.emails().bulkSend(new Email[] { email, email2 });
+
+        assertNotNull(bulkSendId, "Bulk send ID should not be null");
     }
     
     
@@ -270,34 +206,23 @@ public class EmailSendTest {
      * Test retrieving the status for a bulk send
      */
     @Test
-    public void TestBulkSendStatus() {
+    public void TestBulkSendStatus() throws MailerSendException {
        
         Email email = TestHelper.createBasicEmail(true);
         Email email2 = TestHelper.createBasicEmail(true);
         
         email2.setHtml("<b>Test bulk</b>");
         email2.setPlain("Test bulk");
-        
-        try {
-                        
-            MailerSend ms = new MailerSend();
-            ms.setToken(TestHelper.validToken);
-            
-            String bulkSendId = ms.emails().bulkSend(new Email[] { email, email2 });
-            
-            BulkSendStatus status = ms.emails().bulkSendStatus(bulkSendId);
-            
-            System.out.println(status.state);
-            
-        } catch (MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        String bulkSendId = ms.emails().bulkSend(new Email[] { email, email2 });
+        assertEquals(QUEUED, ms.emails().bulkSendStatus(bulkSendId).state);
     }
     
     @Test
-    public void ScheduleEmailTest() {
+    public void ScheduleEmailTest() throws MailerSendException {
         Email email = new Email();
         
         email.subject = TestHelper.subject;
@@ -308,26 +233,19 @@ public class EmailSendTest {
         email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
         
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
-        
+
         TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse("2024-08-03T00:00:00.875000Z");
         Date scheduleDate = Date.from(Instant.from(ta));
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(scheduleDate);
         calendar.add(Calendar.DATE, 1);
-        
+
         email.setSendAt(calendar.getTime());
-        
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
-        try {
-            
-            MailerSendResponse response = ms.emails().send(email);
-        } catch (MailerSendException e) {
-            
-            // fail if any error is thrown
-            fail();
-        }
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
     }
 }
