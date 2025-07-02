@@ -388,6 +388,45 @@ public void scheduleEmail() {
 }
 ```
 
+### Send email with list unsubscribe
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithListUnsubscribe() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+   
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Set list unsubscribe parameter that complies with RFC 8058
+    // Note: This feature is available to Professional and Enterprise accounts only
+    email.setListUnsubscribe("<mailto:unsubscribe@example.com>");
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+    
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ### Send bulk emails
 
 ```java
