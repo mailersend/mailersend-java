@@ -29,15 +29,36 @@ public class WebhookEvents {
     
     /** Constant <code>ACTIVITY_OPENED="activity.opened"</code> */
     public static String ACTIVITY_OPENED = "activity.opened";
+
+    /** Constant <code>ACTIVITY_OPENED_UNIQUE="activity.opened_unique"</code> */
+    public static String ACTIVITY_OPENED_UNIQUE = "activity.opened_unique";
     
     /** Constant <code>ACTIVITY_CLICKED="activity.clicked"</code> */
     public static String ACTIVITY_CLICKED = "activity.clicked";
+
+    /** Constant <code>ACTIVITY_CLICKED_UNIQUE="activity.clicked_unique"</code> */
+    public static String ACTIVITY_CLICKED_UNIQUE = "activity.clicked_unique";
     
     /** Constant <code>ACTIVITY_UNSUBSCRIBED="activity.unsubscribed"</code> */
     public static String ACTIVITY_UNSUBSCRIBED = "activity.unsubscribed";
     
     /** Constant <code>ACTIVITY_SPAM_COMPLAINT="activity.spam_compaint"</code> */
     public static String ACTIVITY_SPAM_COMPLAINT = "activity.spam_compaint";
+
+    /** Constant <code>ACTIVITY_SURVEY_OPENED="activity.survey_opened"</code> */
+    public static String ACTIVITY_SURVEY_OPENED = "activity.survey_opened";
+
+    /** Constant <code>ACTIVITY_SURVEY_SUBMITTED="activity.survey_submitted"</code> */
+    public static String ACTIVITY_SURVEY_SUBMITTED = "activity.survey_submitted";
+
+    /** Constant <code>IDENTITY_VERIFIED="identity.verified"</code> */
+    public static String IDENTITY_VERIFIED = "sender_identity.verified";
+
+    /** Constant <code>MAINTENANCE_START="maintenance.start"</code> */
+    public static String MAINTENANCE_START = "maintenance.start";
+
+    /** Constant <code>MAINTENANCE_END="maintenance.end"</code> */
+    public static String MAINTENANCE_END = "maintenance.end";
     
     /** Constant <code>events</code> */
     protected static String[] events = {
@@ -46,8 +67,15 @@ public class WebhookEvents {
             "activity.soft_bounced",
             "activity.hard_bounced",
             "activity.opened",
+            "activity.opened_unique",
             "activity.clicked",
+            "activity.clicked_unique",
             "activity.unsubscribed",
-            "activity.spam_complaint"
+            "activity.spam_complaint",
+            "activity.survey_opened",
+            "activity.survey_submitted",
+            "sender_identity.verified",
+            "maintenance.start",
+            "maintenance.end"
     };
 }
