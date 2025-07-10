@@ -97,6 +97,17 @@ public class InboundRouteBuilder {
 		
 		return this;
 	}
+
+	/**
+	 * <p>inboundPriority.</p>
+	 *
+	 * @param priority a int.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
+	public InboundRouteBuilder inboundPriority(int priority) {
+		builderBody.inboundPriority = priority;
+		return this;
+	}
 	
 	/**
 	 * <p>matchFilter.</p>
