@@ -28,6 +28,9 @@ public class InboundRouteBuilderBody {
 	@SerializedName("inbound_subdomain")
 	public String inboundSubdomain;
 	
+	@SerializedName("inbound_priority")
+	public int inboundPriority;
+
 	@SerializedName("match_filter")
 	public MatchFilter matchFilter;
 	
@@ -47,6 +50,7 @@ public class InboundRouteBuilderBody {
 		inboundDomain = null;
 		inboundAddress = null;
 		inboundSubdomain = null;
+		inboundPriority = 0;
 		matchFilter = null;
 		catchFilter = null;
 		forwards = null;

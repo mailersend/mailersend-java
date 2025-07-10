@@ -44,6 +44,9 @@ public class InboundRoute {
 	@SerializedName("mxValues")
 	public MxValues mxValues;
 
+	@SerializedName("priority")
+	public int priority;
+
 	
 	/**
 	 * <p>postDeserialize.</p>
