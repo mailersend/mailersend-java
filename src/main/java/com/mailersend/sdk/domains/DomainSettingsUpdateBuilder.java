@@ -162,8 +162,35 @@ public class DomainSettingsUpdateBuilder {
         
         return this;
     }
-    
-    
+
+    /**
+     * Set precedence bulk on/off
+     *
+     * @param precedenceBulk a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
+     */
+    public DomainSettingsUpdateBuilder precedenceBulk(boolean precedenceBulk) {
+        
+        settings.precedenceBulk = precedenceBulk;
+        
+        return this;
+    }
+
+
+    /**
+     * Set ignore duplicated recipients on/off
+     *
+     * @param ignoreDuplicatedRecipients a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
+     */
+    public DomainSettingsUpdateBuilder ignoreDuplicatedRecipients(boolean ignoreDuplicatedRecipients) {
+        
+        settings.ignoreDuplicatedRecipients = ignoreDuplicatedRecipients;
+        
+        return this;
+    }
+
+
     /**
      * Updates a domain's settings
      *

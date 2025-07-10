@@ -52,7 +52,12 @@ public class DomainSettings {
     
     @SerializedName("inbound_routing_subdomain")
     public String inboundRoutingSubdomain;
-    
+
+    @SerializedName("precedence_bulk")
+    public Boolean precedenceBulk;
+
+    @SerializedName("ignore_duplicated_recipients")
+    public Boolean ignoreDuplicatedRecipients;
     
     /**
      * Resets the setting values so that it can be reused by the builder
@@ -70,6 +75,8 @@ public class DomainSettings {
         returnPathSubdomain = null;
         inboundRoutingEnabled = null;
         inboundRoutingSubdomain = null;
+        precedenceBulk = null;
+        ignoreDuplicatedRecipients = null;
     }
     
 }
