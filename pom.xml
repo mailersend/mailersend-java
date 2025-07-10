@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mailersend</groupId>
 	<artifactId>java-sdk</artifactId>
-	<version>1.3.0</version>
+	<version>1.4.1</version>
 	<name>MailerSend Java SDK</name>
 	<description>An SDK for MailerSend API</description>
 	<url>https://github.com/mailersend/mailersend-java</url>
