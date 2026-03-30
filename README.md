@@ -104,6 +104,16 @@ MailerSend Java SDK
         - [Delete an SMS webhook](#delete-an-sms-webhook)
     - [SMS](#sms)
         - [Send an SMS with personalization](#send-an-sms-with-personalization)
+    - [DMARC Monitoring](#dmarc-monitoring)
+        - [Get a list of monitors](#get-a-list-of-monitors)
+        - [Create a monitor](#create-a-monitor)
+        - [Update a monitor](#update-a-monitor)
+        - [Delete a monitor](#delete-a-monitor)
+        - [Get aggregated reports](#get-aggregated-reports)
+        - [Get IP-specific reports](#get-ip-specific-reports)
+        - [Get report sources](#get-report-sources)
+        - [Mark IP as favorite](#mark-ip-as-favorite)
+        - [Remove IP from favorites](#remove-ip-from-favorites)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -2740,12 +2750,264 @@ public void sendSms() {
 }
 ```
 
+## DMARC Monitoring
+
+### Get a list of monitors
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.dmarcmonitoring.DmarcMonitor;
+import com.mailersend.sdk.dmarcmonitoring.DmarcMonitorsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void listMonitors() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        DmarcMonitorsList list = ms.dmarcMonitoring().getMonitors();
+
+        for (DmarcMonitor monitor : list.monitors) {
+            System.out.println(monitor.id);
+            System.out.println(monitor.dmarcRecord);
+            System.out.println(monitor.spfStatus);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Create a monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.dmarcmonitoring.DmarcMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void createMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        DmarcMonitor monitor = ms.dmarcMonitoring().createMonitorBuilder()
+                .createMonitor("your-domain-id");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.wantedDmarcRecord);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.dmarcmonitoring.DmarcMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void updateMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        DmarcMonitor monitor = ms.dmarcMonitoring().updateMonitorBuilder()
+                .wantedDmarcRecord("v=DMARC1; p=reject; rua=mailto:dmarc@yourdomain.com;")
+                .updateMonitor("your-monitor-id");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.wantedDmarcRecord);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.dmarcMonitoring().deleteMonitor("your-monitor-id");
+
+        System.out.println("Monitor deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Get aggregated reports
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.dmarcmonitoring.DmarcAggregatedReport;
+import com.mailersend.sdk.dmarcmonitoring.DmarcAggregatedReportList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getAggregatedReport() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        DmarcAggregatedReportList list = ms.dmarcMonitoring().getAggregatedReport("your-monitor-id");
+
+        for (DmarcAggregatedReport report : list.reports) {
+            System.out.println(report.ipAddress);
+            System.out.println(report.totalVolume);
+            System.out.println(report.passedDmarc);
+            System.out.println(report.isFavorite);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Get IP-specific reports
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.dmarcmonitoring.DmarcIpReport;
+import com.mailersend.sdk.dmarcmonitoring.DmarcIpReportList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getIpReport() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        DmarcIpReportList list = ms.dmarcMonitoring().getIpReport("your-monitor-id", "1.2.3.4");
+
+        for (DmarcIpReport report : list.reports) {
+            System.out.println(report.ipAddress);
+            System.out.println(report.totalVolume);
+            System.out.println(report.appliedPolicy);
+            System.out.println(report.reportSource);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Get report sources
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.dmarcmonitoring.DmarcReportSource;
+import com.mailersend.sdk.dmarcmonitoring.DmarcReportSourcesList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getReportSources() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        DmarcReportSourcesList list = ms.dmarcMonitoring().getReportSources("your-monitor-id");
+
+        for (DmarcReportSource source : list.sources) {
+            System.out.println(source.reportSource);
+            System.out.println(source.reports);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Mark IP as favorite
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void markIpAsFavorite() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean marked = ms.dmarcMonitoring().markIpAsFavorite("your-monitor-id", "1.2.3.4");
+
+        System.out.println("IP marked as favorite: " + marked);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Remove IP from favorites
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void removeIpFromFavorites() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean removed = ms.dmarcMonitoring().removeIpFromFavorites("your-monitor-id", "1.2.3.4");
+
+        System.out.println("IP removed from favorites: " + removed);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
 # Testing
 
-Change the properties in the `TestHelper` class of the `com.mailersend.sdk.tests` package to correspond to your account details, then simply run
+To run the tests you need **Java 11+** and **Maven 3.6+** installed.
+
+The test suite uses VCR (video cassette recorder) fixtures — pre-recorded HTTP responses stored in `src/test/resources/fixtures/` — so no live API token is required for the existing tests.
+
+To run all tests:
 ```
 mvn test
 ```
+
+To run only the DMARC Monitoring tests:
+```
+mvn test -Dtest=DmarcMonitoringTest
+```
+
+If you want to record new fixtures against the real API, set your token in `TestHelper.validToken` and delete the relevant fixture JSON file before running the tests. The VCR recorder will make the real API call and save the response for future runs.
 
 <a name="support-and-feedback"></a>
 # Support and Feedback
