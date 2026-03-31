@@ -17,6 +17,7 @@ import com.mailersend.sdk.recipients.Recipients;
 import com.mailersend.sdk.scheduledmessages.ScheduledMessages;
 import com.mailersend.sdk.sms.Sms;
 import com.mailersend.sdk.templates.Templates;
+import com.mailersend.sdk.whatsapp.WhatsApp;
 import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
 import com.mailsend.sdk.emailverification.EmailVerification;
@@ -44,7 +45,8 @@ public class MailerSend {
     private ScheduledMessages scheduledMessages = null;
     private EmailVerification emailVerification = null;
     private Sms sms = null;
-    
+    private WhatsApp whatsapp = null;
+
     /**
      * <p>Constructor for MailerSend.</p>
      */
@@ -63,6 +65,7 @@ public class MailerSend {
         scheduledMessages = new ScheduledMessages(this);
         emailVerification = new EmailVerification(this);
         sms = new Sms(this);
+        whatsapp = new WhatsApp(this);
     }
     
     
@@ -202,7 +205,16 @@ public class MailerSend {
     public Sms sms() {
     	return sms;
     }
-    
+
+    /**
+     * Get the whatsapp access object
+     *
+     * @return The WhatsApp object
+     */
+    public WhatsApp whatsapp() {
+        return whatsapp;
+    }
+
     /**
      * Sets the MailerSend token
      *

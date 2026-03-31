@@ -104,6 +104,9 @@ MailerSend Java SDK
         - [Delete an SMS webhook](#delete-an-sms-webhook)
     - [SMS](#sms)
         - [Send an SMS with personalization](#send-an-sms-with-personalization)
+- [WhatsApp](#whatsapp)
+    - [Send a WhatsApp message](#send-a-whatsapp-message)
+    - [Send a WhatsApp message with personalization](#send-a-whatsapp-message-with-personalization)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -2735,6 +2738,77 @@ public void sendSms() {
         
     } catch (MailerSendException e) {
         
+        e.printStackTrace();
+    }
+}
+```
+
+# WhatsApp
+
+### Send a WhatsApp message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendWhatsApp() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        String messageId = ms.whatsapp().builder()
+            .from("12345678901")
+            .addRecipient("19191234567")
+            .templateId("your_template_id")
+            .send();
+
+        System.out.println(messageId);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send a WhatsApp message with personalization
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.WhatsAppPersonalization;
+
+public void sendWhatsAppWithPersonalization() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppPersonalization p1 = new WhatsAppPersonalization("19191234567")
+            .setHeader(new String[]{"John"})
+            .setBody(new String[]{"order #1234", "tomorrow"})
+            .setButtons(new String[]{"https://example.com/track/1234"});
+
+        WhatsAppPersonalization p2 = new WhatsAppPersonalization("19199876543")
+            .setHeader(new String[]{"Jane"})
+            .setBody(new String[]{"order #5678", "Friday"});
+
+        String messageId = ms.whatsapp().builder()
+            .from("12345678901")
+            .addRecipient("19191234567")
+            .addRecipient("19199876543")
+            .templateId("your_template_id")
+            .addPersonalization(p1)
+            .addPersonalization(p2)
+            .send();
+
+        System.out.println(messageId);
+
+    } catch (MailerSendException e) {
+
         e.printStackTrace();
     }
 }
