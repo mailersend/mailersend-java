@@ -20,6 +20,7 @@ import com.mailersend.sdk.templates.Templates;
 import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
 import com.mailsend.sdk.emailverification.EmailVerification;
+import com.mailersend.sdk.dmarcmonitoring.DmarcMonitoring;
 
 /**
  * Main SDK Class
@@ -44,6 +45,7 @@ public class MailerSend {
     private ScheduledMessages scheduledMessages = null;
     private EmailVerification emailVerification = null;
     private Sms sms = null;
+    private DmarcMonitoring dmarcMonitoring = null;
     
     /**
      * <p>Constructor for MailerSend.</p>
@@ -63,6 +65,7 @@ public class MailerSend {
         scheduledMessages = new ScheduledMessages(this);
         emailVerification = new EmailVerification(this);
         sms = new Sms(this);
+        dmarcMonitoring = new DmarcMonitoring(this);
     }
     
     
@@ -203,6 +206,15 @@ public class MailerSend {
     	return sms;
     }
     
+    /**
+     * Get the DMARC monitoring access object
+     *
+     * @return the DmarcMonitoring object
+     */
+    public DmarcMonitoring dmarcMonitoring() {
+        return dmarcMonitoring;
+    }
+
     /**
      * Sets the MailerSend token
      *
