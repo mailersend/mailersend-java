@@ -47,6 +47,11 @@ public class TestHelper {
     public static final String emailVerificationListId = "7z3m5jgroogdpyo6";
     
     public static final String smsPhoneNumberId = "3yxj6lj9x14do2rm";
+
+    public static final String dmarcMonitorId = "dmarc-monitor-id-test";
+    public static final String dmarcMonitorIp = "1.2.3.4";
+    public static final String dmarcDomainId = "jpzkmgq7e5vl059v";
+    public static final String dmarcWantedRecord = "v=DMARC1; p=reject; rua=mailto:dmarc@example.com;";
     
     /**
      * Creates a basic email with the above configuration
