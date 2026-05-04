@@ -14,6 +14,11 @@ MailerSend Java SDK
         - [Personalization](#personalization)
         - [Send email with attachment](#send-email-with-attachment)
         - [Schedule an email](#schedule-an-email)
+        - [Send email with settings](#send-email-with-settings)
+        - [Send email with custom headers](#send-email-with-custom-headers)
+        - [Send email with references](#send-email-with-references)
+        - [Send email with precedence bulk](#send-email-with-precedence-bulk)
+        - [Send an email with RCPT TO recipients](#send-an-email-with-rcpt-to-recipients)
         - [Send bulk emails](#send-bulk-emails)
         - [Get bulk request status](#get-bulk-request-status)
     - [Inbound routes](#inbound-routes)
@@ -428,6 +433,210 @@ public void sendEmailWithListUnsubscribe() {
 
     try {
     
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with settings
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.emails.EmailSettings;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithSettings() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Configure tracking settings
+    EmailSettings settings = new EmailSettings();
+    settings.trackClicks = true;
+    settings.trackOpens = true;
+    settings.trackContent = false;
+
+    email.setSettings(settings);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with custom headers
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithHeaders() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Add custom email headers
+    email.addHeader("X-Custom-Header", "custom-value");
+    email.addHeader("X-Another-Header", "another-value");
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with references
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithReferences() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Add message references (e.g. for threading)
+    email.addReference("<message-id-1@example.com>");
+    email.addReference("<message-id-2@example.com>");
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with precedence bulk
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithPrecedenceBulk() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Mark email as bulk/low-priority
+    email.setPrecedenceBulk(true);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send an email with RCPT TO recipients
+
+`rcptTo` is intended for SMTP source delivery and accepts a list of recipients.
+When `to` is empty and `rcptTo` is provided, the addresses are forwarded as BCC.
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithRcptTo() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Add RCPT TO recipients for SMTP relay delivery
+    email.addRcptTo("name", "rcpt@client.com");
+
+    // you can also add a Recipient object directly
+    Recipient rcptRecipient = new Recipient("name2", "rcpt2@client.com");
+    email.addRcptTo(rcptRecipient);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
         MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
@@ -1301,6 +1510,7 @@ public void SingleMessage() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessages;
 import com.mailersend.sdk.scheduledmessages.ScheduledMessagesList;
 import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
 
@@ -1311,8 +1521,11 @@ public void getScheduledMessages() {
     ms.setToken("Your API token");
 
     try {
-    
-        ScheduledMessagesList messages = ms.scheduledmessages().getScheduledMessages();
+
+        // Use the STATUS_* constants to filter by status
+        ScheduledMessagesList messages = ms.scheduledmessages()
+            .status(ScheduledMessages.STATUS_SCHEDULED)
+            .getScheduledMessages();
 
         for (ScheduledMessage message : messages.scheduledMessages) {
             System.out.println(message.id);
