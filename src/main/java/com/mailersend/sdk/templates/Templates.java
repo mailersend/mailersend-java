@@ -23,7 +23,9 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 public class Templates {
     
     private MailerSend apiObjectReference;
-    
+
+    private TemplateBuilder templateBuilder;
+
     private int pageFilter = 1;
     private int limitFilter = 25;
     private String domainIdFilter = null;
@@ -35,11 +37,23 @@ public class Templates {
      * @param ref a {@link com.mailersend.sdk.MailerSend} object.
      */
     public Templates(MailerSend ref) {
-        
+
         apiObjectReference = ref;
+        templateBuilder = new TemplateBuilder(ref);
     }
     
     
+    /**
+     * Returns a new TemplateBuilder for creating or updating templates.
+     *
+     * @return a {@link com.mailersend.sdk.templates.TemplateBuilder} object.
+     */
+    public TemplateBuilder builder() {
+
+        return templateBuilder;
+    }
+
+
     /**
      * Set the page of the request
      *

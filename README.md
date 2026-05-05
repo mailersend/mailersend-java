@@ -74,6 +74,8 @@ MailerSend Java SDK
     - [Templates](#templates)
         - [Get a list of templates](#get-a-list-of-templates)
         - [Get a single template](#get-a-single-template)
+        - [Create a template](#create-a-template)
+        - [Update a template](#update-a-template)
         - [Delete a template](#delete-a-template)
     - [Email verification](#email-verification)
         - [Get all email verification lists](#get-all-email-verification-lists)
@@ -2220,6 +2222,66 @@ public void getTemplate() {
         
     } catch (MailerSendException e) {
         
+        e.printStackTrace();
+    }
+}
+```
+
+### Create a template
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.templates.Template;
+
+public void createTemplate() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        Template template = ms.templates().builder()
+            .name("My Template")
+            .html("<h1>Hello {{name}}</h1>")
+            .subject("Hello {{name}}")
+            .tags(new String[]{"transactional", "welcome"})
+            .createTemplate();
+
+        System.out.println(template.id);
+        System.out.println(template.name);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a template
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.templates.Template;
+
+public void updateTemplate() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        Template template = ms.templates().builder()
+            .name("Updated Template Name")
+            .html("<h1>Updated content for {{name}}</h1>")
+            .updateTemplate("template id");
+
+        System.out.println(template.id);
+        System.out.println(template.name);
+
+    } catch (MailerSendException e) {
+
         e.printStackTrace();
     }
 }
