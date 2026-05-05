@@ -65,6 +65,8 @@ MailerSend Java SDK
         - [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
         - [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
         - [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
+        - [Get recipients from the on-hold list](#get-recipients-from-the-on-hold-list)
+        - [Delete recipients from the on-hold list](#delete-recipients-from-the-on-hold-list)
     - [Webhooks](#webhooks)
         - [Get a list of webhooks](#get-a-list-of-webhooks)
         - [Get a single webhook](#get-a-single-webhook)
@@ -2016,6 +2018,80 @@ public void DeleteRecipientsFromSuppressionList () {
         itemId = unsubscribes.items[0].id;
         
         response = ms.recipients().suppressions().deleteUnsubscribesItems(new String[] { itemId });
+        
+        System.out.println(response.responseStatusCode);
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Get recipients from the on-hold list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.SuppressionItem;
+import com.mailersend.sdk.recipients.SuppressionList;
+
+public void GetRecipientsFromOnHoldList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SuppressionList onHoldList = ms.recipients().suppressions().getOnHoldList();
+        
+        for (SuppressionItem item : onHoldList.items) {
+            
+            System.out.println(item.id);
+            System.out.println(item.recipient.email);
+            System.out.println(item.readableReason);
+            System.out.println(item.createdAt);
+        }
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete recipients from the on-hold list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.SuppressionItem;
+import com.mailersend.sdk.recipients.SuppressionList;
+
+public void DeleteRecipientsFromOnHoldList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SuppressionList onHoldList = ms.recipients().suppressions().getOnHoldList();
+        
+        if (onHoldList.items.length == 0) {
+            
+            return;
+        }
+        
+        String itemId = onHoldList.items[0].id;
+        
+        // delete specific items by id
+        MailerSendResponse response = ms.recipients().suppressions().deleteOnHoldListItems(new String[] { itemId });
+        
+        System.out.println(response.responseStatusCode);
+        
+        // delete all items
+        response = ms.recipients().suppressions().deleteOnHoldListAllItems();
         
         System.out.println(response.responseStatusCode);
 
