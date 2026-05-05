@@ -3818,6 +3818,152 @@ public void resendSenderIdentityConfirmation() {
     }
 }
 ```
+
+## Blocklist Monitoring
+
+### Get a list of blocklist monitors
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitorsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void listBlocklistMonitors() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitorsList list = ms.blocklistMonitoring().page(1).limit(25).getMonitors();
+
+        for (BlocklistMonitor monitor : list.monitors) {
+            System.out.println(monitor.id);
+            System.out.println(monitor.name);
+            System.out.println(monitor.address);
+            System.out.println(monitor.type);
+            System.out.println(monitor.blocklisted);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitor monitor = ms.blocklistMonitoring().getMonitor("your-monitor-id");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.name);
+        System.out.println(monitor.address);
+        System.out.println(monitor.type);
+        System.out.println(monitor.blocklisted);
+        System.out.println(monitor.notify);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Create a blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void createBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitor monitor = ms.blocklistMonitoring().createMonitorBuilder()
+                .name("My domain monitor")
+                .notify(true)
+                .notifyEmail("alerts@example.com")
+                .notifyAddress("https://example.com/webhook")
+                .createMonitor("example.com");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.name);
+        System.out.println(monitor.address);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void updateBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitor monitor = ms.blocklistMonitoring().updateMonitorBuilder()
+                .name("Updated monitor name")
+                .notify(false)
+                .updateMonitor("your-monitor-id");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.name);
+        System.out.println(monitor.notify);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.blocklistMonitoring().deleteMonitor("your-monitor-id");
+
+        System.out.println("Monitor deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
 ## Users and Invites
 
 ### Get a list of users
