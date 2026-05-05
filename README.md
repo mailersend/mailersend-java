@@ -55,6 +55,8 @@ MailerSend Java SDK
         - [Get a scheduled message](#get-a-scheduled-message)
         - [Delete a scheduled message](#delete-a-scheduled-message)
     - [Tokens](#tokens)
+        - [Get a list of tokens](#get-a-list-of-tokens)
+        - [Get a single token](#get-a-single-token)
         - [Create a token](#create-a-token)
         - [Update token](#update-token)
         - [Delete token](#delete-token)
@@ -1643,6 +1645,66 @@ public void deleteScheduledMessage() {
 ```
 
 ## Tokens
+
+### Get a list of tokens
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+import com.mailersend.sdk.tokens.TokenListResponse;
+
+public void getTokens() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        TokenListResponse response = ms.tokens()
+            .page(1)
+            .limit(25)
+            .getTokens();
+
+        for (Token token : response.tokens) {
+            System.out.println(token.id);
+            System.out.println(token.name);
+            System.out.println(token.status);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single token
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+
+public void getToken() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Token token = ms.tokens().getToken("token id");
+
+        System.out.println(token.id);
+        System.out.println(token.name);
+        System.out.println(token.status);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
 
 ### Create a token
 
