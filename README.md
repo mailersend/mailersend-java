@@ -13,6 +13,7 @@ MailerSend Java SDK
         - [Send a template-based email](#send-a-template-based-email)
         - [Personalization](#personalization)
         - [Send email with attachment](#send-email-with-attachment)
+        - [Send email with inline attachment](#send-email-with-inline-attachment)
         - [Schedule an email](#schedule-an-email)
         - [Send email with settings](#send-email-with-settings)
         - [Send email with custom headers](#send-email-with-custom-headers)
@@ -351,6 +352,51 @@ public void sendEmail() {
 
     try {
     
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with inline attachment
+
+```java
+import com.mailersend.sdk.emails.Attachment;
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmail() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setHtml("<p>This is the HTML content with an inline image <img src=\"cid:image-content-id\"/></p>");
+    email.setPlain("This is the text content");
+
+    // create an inline attachment using a content ID that matches the cid in the HTML
+    Attachment inlineAttachment = new Attachment();
+    try {
+        inlineAttachment.AddImageFromFile("image-content-id", "/path/to/image.png");
+    } catch (java.io.IOException e) {
+        e.printStackTrace();
+    }
+    email.attachments.add(inlineAttachment);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
         MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
