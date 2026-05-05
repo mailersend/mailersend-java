@@ -28,19 +28,25 @@ public class DmarcIpReport extends MailerSendResponse {
     public int totalVolume;
 
     @SerializedName("passed_dmarc")
-    public float passedDmarc;
+    public String passedDmarc;
 
     @SerializedName("passed_spf")
-    public float passedSpf;
+    public String passedSpf;
 
-    @SerializedName("passed_dkim")
-    public float passedDkim;
+    @SerializedName("spf_domain")
+    public String spfDomain;
 
     @SerializedName("aligned_spf")
-    public float alignedSpf;
+    public boolean alignedSpf;
+
+    @SerializedName("passed_dkim")
+    public String passedDkim;
 
     @SerializedName("aligned_dkim")
-    public float alignedDkim;
+    public boolean alignedDkim;
+
+    @SerializedName("dkim_domain")
+    public String dkimDomain;
 
     @SerializedName("applied_policy")
     public String appliedPolicy;
@@ -48,8 +54,20 @@ public class DmarcIpReport extends MailerSendResponse {
     @SerializedName("override_reason")
     public String overrideReason;
 
+    @SerializedName("override_comment")
+    public String overrideComment;
+
+    @SerializedName("domain")
+    public String domain;
+
     @SerializedName("country")
     public String country;
+
+    @SerializedName("country_code")
+    public String countryCode;
+
+    @SerializedName("city")
+    public String city;
 
     @SerializedName("report_source")
     public String reportSource;

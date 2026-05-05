@@ -14,6 +14,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class DmarcDkimAuth {
 
+    @SerializedName("type")
+    public String type;
+
     @SerializedName("domain")
     public String domain;
 
