@@ -51,6 +51,30 @@ public class EmailVerificationBuilder {
 		builderBody.name = name;
 		return this;
 	}
+
+	/**
+	 * <p>listId.</p>
+	 * ID of an existing verification list to append emails to.
+	 *
+	 * @param listId a {@link java.lang.String} object.
+	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 */
+	public EmailVerificationBuilder listId(String listId) {
+		builderBody.listId = listId;
+		return this;
+	}
+
+	/**
+	 * <p>verify.</p>
+	 * If true, immediately starts verification after upload.
+	 *
+	 * @param verify a boolean.
+	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 */
+	public EmailVerificationBuilder verify(boolean verify) {
+		builderBody.verify = verify;
+		return this;
+	}
 	
 	/**
 	 * <p>addEmail.</p>

@@ -82,6 +82,9 @@ MailerSend Java SDK
         - [Update a template](#update-a-template)
         - [Delete a template](#delete-a-template)
     - [Email verification](#email-verification)
+        - [Verify an email (sync)](#verify-an-email-sync)
+        - [Verify an email (async)](#verify-an-email-async)
+        - [Get async email verification status](#get-async-email-verification-status)
         - [Get all email verification lists](#get-all-email-verification-lists)
         - [Get an email verification list](#get-an-email-verification-list)
         - [Create an email verification list](#create-an-email-verification-list)
@@ -2454,6 +2457,83 @@ public void deleteTemplate() {
 ```
 
 ## Email verification
+
+### Verify an email (sync)
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.SingleEmailVerificationResponse;
+
+public void verifyEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        SingleEmailVerificationResponse response = ms.emailVerification().verifyEmail("test@example.com");
+
+        System.out.println(response.status);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Verify an email (async)
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse;
+
+public void verifyEmailAsync() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        AsyncEmailVerificationResponse response = ms.emailVerification().verifyEmailAsync("test@example.com");
+
+        System.out.println(response.id);
+        System.out.println(response.status); // "queued"
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get async email verification status
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse;
+
+public void getVerifyEmailAsyncStatus() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        AsyncEmailVerificationResponse response = ms.emailVerification().getVerifyEmailAsyncStatus("async verification id");
+
+        System.out.println(response.status); // "queued", "completed" or "failed"
+        System.out.println(response.result); // null while processing, result string once completed
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
 
 ### Get all email verification lists
 
