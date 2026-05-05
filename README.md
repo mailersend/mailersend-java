@@ -139,6 +139,23 @@ MailerSend Java SDK
         - [Delete a sender identity](#delete-a-sender-identity)
         - [Delete a sender identity by email](#delete-a-sender-identity-by-email)
         - [Resend sender identity confirmation](#resend-sender-identity-confirmation)
+    - [Users and Invites](#users-and-invites)
+        - [Get a list of users](#get-a-list-of-users)
+        - [Get a single user](#get-a-single-user)
+        - [Invite a user](#invite-a-user)
+        - [Invite a custom user](#invite-a-custom-user)
+        - [Update a user](#update-a-user)
+        - [Delete a user](#delete-a-user)
+        - [Get a list of invites](#get-a-list-of-invites)
+        - [Get a single invite](#get-a-single-invite)
+        - [Resend an invite](#resend-an-invite)
+        - [Delete an invite](#delete-an-invite)
+    - [Blocklist Monitoring](#blocklist-monitoring)
+        - [Get a list of blocklist monitors](#get-a-list-of-blocklist-monitors)
+        - [Get a single blocklist monitor](#get-a-single-blocklist-monitor)
+        - [Create a blocklist monitor](#create-a-blocklist-monitor)
+        - [Update a blocklist monitor](#update-a-blocklist-monitor)
+        - [Delete a blocklist monitor](#delete-a-blocklist-monitor)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -3801,6 +3818,304 @@ public void resendSenderIdentityConfirmation() {
     }
 }
 ```
+## Users and Invites
+
+### Get a list of users
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.User;
+import com.mailersend.sdk.users.UsersList;
+
+public void getUsers() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        UsersList response = ms.users()
+            .page(1)
+            .limit(25)
+            .getUsers();
+
+        for (User user : response.users) {
+            System.out.println(user.id);
+            System.out.println(user.name);
+            System.out.println(user.email);
+            System.out.println(user.role);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.User;
+
+public void getUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        User user = ms.users().getUser("user-id");
+
+        System.out.println(user.id);
+        System.out.println(user.name);
+        System.out.println(user.email);
+        System.out.println(user.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Invite a user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void inviteUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().builder()
+            .email("user@example.com")
+            .role("Admin")
+            .inviteUser();
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+        System.out.println(invite.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Invite a custom user
+
+Invite a user with the `Custom User` role and explicit permissions, domain, and template restrictions.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void inviteCustomUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().builder()
+            .email("custom@example.com")
+            .role("Custom User")
+            .addPermission("read-suppressions")
+            .addPermission("manage-suppressions")
+            .addDomain("domain-id")
+            .addTemplate("template-id")
+            .requiresPeriodicPasswordChange(true)
+            .inviteUser();
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+        System.out.println(invite.role);
+
+        for (String permission : invite.permissions) {
+            System.out.println(permission);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.User;
+
+public void updateUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        User user = ms.users().builder()
+            .role("Manager")
+            .updateUser("user-id");
+
+        System.out.println(user.id);
+        System.out.println(user.name);
+        System.out.println(user.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.users().deleteUser("user-id");
+
+        System.out.println("User deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a list of invites
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+import com.mailersend.sdk.users.InvitesList;
+
+public void getInvites() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        InvitesList response = ms.users()
+            .page(1)
+            .limit(25)
+            .getInvites();
+
+        for (Invite invite : response.invites) {
+            System.out.println(invite.id);
+            System.out.println(invite.email);
+            System.out.println(invite.role);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single invite
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void getInvite() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().getInvite("invite-id");
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+        System.out.println(invite.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Resend an invite
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void resendInvite() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().resendInvite("invite-id");
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an invite
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteInvite() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.users().deleteInvite("invite-id");
+
+        System.out.println("Invite deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 # Testing
 
 To run the tests you need **Java 11+** and **Maven 3.6+** installed.
