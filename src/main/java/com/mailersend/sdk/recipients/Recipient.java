@@ -14,6 +14,7 @@ import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.domains.Domain;
+import com.mailersend.sdk.util.ApiEmail;
 
 /**
  * <p>Recipient class.</p>
@@ -39,9 +40,12 @@ public class Recipient {
     @SerializedName("deleted_at")
     private String deletedAtString;
     
+    @SerializedName("emails")
+    public ApiEmail[] emails;
+
     @SerializedName("domain")
     public Domain domain;
-    
+
     public Date createdAt;
     
     public Date updatedAt;
@@ -73,13 +77,24 @@ public class Recipient {
         }
         
         if (deletedAtString != null && !deletedAtString.isBlank()) {
-            
+
             ta = DateTimeFormatter.ISO_INSTANT.parse(deletedAtString);
             instant = Instant.from(ta);
             deletedAt = Date.from(instant);
         }
-        
-        domain.postDeserialize();
+
+        if (domain != null) {
+
+            domain.postDeserialize();
+        }
+
+        if (emails != null) {
+
+            for (ApiEmail email : emails) {
+
+                email.parseDates();
+            }
+        }
     }
     
 }
