@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailsend.sdk.emailverification;
+package com.mailersend.sdk.emailverification;
 
 import java.util.ArrayList;
 
@@ -54,7 +54,7 @@ public class EmailVerification {
      * <p>page.</p>
      *
      * @param page a int.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification page(int page) {
     	pageFilter = page;
@@ -65,7 +65,7 @@ public class EmailVerification {
      * <p>limit.</p>
      *
      * @param limit a int.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification limit(int limit) {
     	limitFilter = limit;
@@ -76,7 +76,7 @@ public class EmailVerification {
      * When set to true, the getList response will include an emails object with paginated results.
      *
      * @param detailed a boolean.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification detailed(boolean detailed) {
         detailedFilter = detailed;
@@ -87,7 +87,7 @@ public class EmailVerification {
      * Page for getList (only relevant when detailed=true).
      *
      * @param page a int.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification getListPage(int page) {
         getListPageFilter = page;
@@ -98,7 +98,7 @@ public class EmailVerification {
      * Limit for getList (only relevant when detailed=true).
      *
      * @param limit a int.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification getListLimit(int limit) {
         getListLimitFilter = limit;
@@ -109,7 +109,7 @@ public class EmailVerification {
      * Page for verificationResults.
      *
      * @param page a int.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification resultsPage(int page) {
         resultsPageFilter = page;
@@ -120,7 +120,7 @@ public class EmailVerification {
      * Limit for verificationResults.
      *
      * @param limit a int.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification resultsLimit(int limit) {
         resultsLimitFilter = limit;
@@ -131,7 +131,7 @@ public class EmailVerification {
      * Filter verificationResults by result type(s), e.g. "valid", "catch_all".
      *
      * @param results an array of result type strings.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerification} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerification} object.
      */
     public EmailVerification results(String[] results) {
         resultsFilter = results;
@@ -141,7 +141,7 @@ public class EmailVerification {
     /**
      * <p>builder.</p>
      *
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationBuilder} object.
      */
     public EmailVerificationBuilder builder() {
     	return builder;
@@ -150,7 +150,7 @@ public class EmailVerification {
     /**
      * <p>newBuilder.</p>
      *
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationBuilder} object.
      */
     public EmailVerificationBuilder newBuilder() {
     	return new EmailVerificationBuilder(apiObjectReference);
@@ -159,7 +159,7 @@ public class EmailVerification {
     /**
      * <p>getLists.</p>
      *
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationLists} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationLists} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public EmailVerificationLists getLists() throws MailerSendException {
@@ -181,7 +181,7 @@ public class EmailVerification {
      * <p>getList.</p>
      *
      * @param emailVerificationId a {@link java.lang.String} object.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationList} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationList} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public EmailVerificationList getList(String emailVerificationId) throws MailerSendException {
@@ -206,7 +206,7 @@ public class EmailVerification {
      * <p>verifyList.</p>
      *
      * @param listId a {@link java.lang.String} object.
-     * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationList} object.
+     * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationList} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public EmailVerificationList verifyList(String listId) throws MailerSendException {
@@ -226,7 +226,7 @@ public class EmailVerification {
      * <p>verificationResults.</p>
      *
      * @param listId a {@link java.lang.String} object.
-     * @return a {@link com.mailsend.sdk.emailverification.ListVerificationResults} object.
+     * @return a {@link com.mailersend.sdk.emailverification.ListVerificationResults} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public ListVerificationResults verificationResults(String listId) throws MailerSendException {
@@ -250,7 +250,7 @@ public class EmailVerification {
      * POST /v1/email-verification/verify
      *
      * @param email the email address to verify.
-     * @return a {@link com.mailsend.sdk.emailverification.SingleEmailVerificationResponse} object.
+     * @return a {@link com.mailersend.sdk.emailverification.SingleEmailVerificationResponse} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public SingleEmailVerificationResponse verifyEmail(String email) throws MailerSendException {
@@ -274,7 +274,7 @@ public class EmailVerification {
      * POST /v1/email-verification/verify-async
      *
      * @param email the email address to verify.
-     * @return a {@link com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse} object.
+     * @return a {@link com.mailersend.sdk.emailverification.AsyncEmailVerificationResponse} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public AsyncEmailVerificationResponse verifyEmailAsync(String email) throws MailerSendException {
@@ -298,7 +298,7 @@ public class EmailVerification {
      * GET /v1/email-verification/verify-async/{id}
      *
      * @param id the async verification id.
-     * @return a {@link com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse} object.
+     * @return a {@link com.mailersend.sdk.emailverification.AsyncEmailVerificationResponse} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public AsyncEmailVerificationResponse getVerifyEmailAsyncStatus(String id) throws MailerSendException {

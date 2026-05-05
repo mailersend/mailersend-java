@@ -5,19 +5,21 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailsend.sdk.emailverification;
+package com.mailersend.sdk.emailverification;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.MailerSendResponse;
 
 /**
- * <p>SingleEmailVerificationListResponse class.</p>
+ * <p>Status class.</p>
  *
  * @author mailersend
  * @version $Id: $Id
  */
-public class SingleEmailVerificationListResponse extends MailerSendResponse {
+public class Status {
 
-	@SerializedName("data")
-	public EmailVerificationList list;
+	@SerializedName("name")
+	public String name;
+	
+	@SerializedName("count")
+	public int count;
 }

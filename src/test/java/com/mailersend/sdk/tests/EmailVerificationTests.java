@@ -13,9 +13,9 @@ import org.junit.jupiter.api.TestInfo;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.vcr.VcrRecorder;
-import com.mailsend.sdk.emailverification.EmailVerificationList;
-import com.mailsend.sdk.emailverification.EmailVerificationLists;
-import com.mailsend.sdk.emailverification.ListVerificationResults;
+import com.mailersend.sdk.emailverification.EmailVerificationList;
+import com.mailersend.sdk.emailverification.EmailVerificationLists;
+import com.mailersend.sdk.emailverification.ListVerificationResults;
 
 public class EmailVerificationTests {
 

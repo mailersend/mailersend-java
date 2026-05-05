@@ -1,23 +1,25 @@
 /*************************************************
  * MailerSend Java SDK
  * https://github.com/mailersend/mailersend-java
- *
+ * 
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailsend.sdk.emailverification;
+package com.mailersend.sdk.emailverification;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.MailerSendResponse;
 
 /**
- * Response for single email verification (sync POST /v1/email-verification/verify).
+ * <p>VerificationResult class.</p>
  *
  * @author mailersend
  * @version $Id: $Id
  */
-public class SingleEmailVerificationResponse extends MailerSendResponse {
+public class VerificationResult {
 
-    @SerializedName("status")
-    public String status;
+	@SerializedName("address")
+	public String address;
+	
+	@SerializedName("result")
+	public String result;
 }

@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailsend.sdk.emailverification;
+package com.mailersend.sdk.emailverification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ public class EmailVerificationBuilder {
 	 * <p>name.</p>
 	 *
 	 * @param name a {@link java.lang.String} object.
-	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationBuilder} object.
 	 */
 	public EmailVerificationBuilder name(String name) {
 		builderBody.name = name;
@@ -57,7 +57,7 @@ public class EmailVerificationBuilder {
 	 * ID of an existing verification list to append emails to.
 	 *
 	 * @param listId a {@link java.lang.String} object.
-	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationBuilder} object.
 	 */
 	public EmailVerificationBuilder listId(String listId) {
 		builderBody.listId = listId;
@@ -69,7 +69,7 @@ public class EmailVerificationBuilder {
 	 * If true, immediately starts verification after upload.
 	 *
 	 * @param verify a boolean.
-	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationBuilder} object.
 	 */
 	public EmailVerificationBuilder verify(boolean verify) {
 		builderBody.verify = verify;
@@ -80,7 +80,7 @@ public class EmailVerificationBuilder {
 	 * <p>addEmail.</p>
 	 *
 	 * @param email a {@link java.lang.String} object.
-	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationBuilder} object.
 	 */
 	public EmailVerificationBuilder addEmail(String email) {
 		emails.add(email);
@@ -91,7 +91,7 @@ public class EmailVerificationBuilder {
 	 * <p>addEmails.</p>
 	 *
 	 * @param emails an array of {@link java.lang.String} objects.
-	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationBuilder} object.
+	 * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationBuilder} object.
 	 */
 	public EmailVerificationBuilder addEmails(String[] emails) {
 		this.emails.addAll(Arrays.asList(emails));
@@ -101,7 +101,7 @@ public class EmailVerificationBuilder {
 	/**
 	 * <p>create.</p>
 	 *
-	 * @return a {@link com.mailsend.sdk.emailverification.EmailVerificationList} object.
+	 * @return a {@link com.mailersend.sdk.emailverification.EmailVerificationList} object.
 	 * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
 	 */
 	public EmailVerificationList create() throws MailerSendException {

@@ -19,7 +19,7 @@ import com.mailersend.sdk.sms.Sms;
 import com.mailersend.sdk.templates.Templates;
 import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
-import com.mailsend.sdk.emailverification.EmailVerification;
+import com.mailersend.sdk.emailverification.EmailVerification;
 import com.mailersend.sdk.dmarcmonitoring.DmarcMonitoring;
 
 /**
