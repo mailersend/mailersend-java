@@ -129,6 +129,16 @@ MailerSend Java SDK
         - [Get report sources](#get-report-sources)
         - [Mark IP as favorite](#mark-ip-as-favorite)
         - [Remove IP from favorites](#remove-ip-from-favorites)
+    - [Sender Identities](#sender-identities)
+        - [Get a list of sender identities](#get-a-list-of-sender-identities)
+        - [Get a single sender identity](#get-a-single-sender-identity)
+        - [Get a sender identity by email](#get-a-sender-identity-by-email)
+        - [Create a sender identity](#create-a-sender-identity)
+        - [Update a sender identity](#update-a-sender-identity)
+        - [Update a sender identity by email](#update-a-sender-identity-by-email)
+        - [Delete a sender identity](#delete-a-sender-identity)
+        - [Delete a sender identity by email](#delete-a-sender-identity-by-email)
+        - [Resend sender identity confirmation](#resend-sender-identity-confirmation)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -3530,6 +3540,267 @@ public void removeIpFromFavorites() {
 }
 ```
 
+## Sender Identities
+
+### Get a list of sender identities
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentitiesList;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void getSenderIdentities() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentitiesList list = ms.senderIdentities()
+                .page(1)
+                .limit(25)
+                .getIdentities();
+
+        for (SenderIdentity identity : list.identities) {
+            System.out.println(identity.id);
+            System.out.println(identity.email);
+            System.out.println(identity.name);
+            System.out.println(identity.isVerified);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+You can also filter by domain ID, email query, or control ordering:
+
+```java
+SenderIdentitiesList list = ms.senderIdentities()
+        .domainId("your-domain-id")
+        .query("alice")
+        .orderBy("created_at")
+        .order("desc")
+        .getIdentities();
+```
+
+### Get a single sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void getSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().getIdentity("your-identity-id");
+
+        System.out.println(identity.id);
+        System.out.println(identity.email);
+        System.out.println(identity.name);
+        System.out.println(identity.isVerified);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a sender identity by email
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void getSenderIdentityByEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().getIdentityByEmail("sender@yourdomain.com");
+
+        System.out.println(identity.id);
+        System.out.println(identity.email);
+        System.out.println(identity.name);
+        System.out.println(identity.isVerified);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Create a sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void createSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().builder()
+                .domainId("your-domain-id")
+                .email("sender@yourdomain.com")
+                .name("Sender Name")
+                .replyToEmail("reply@yourdomain.com")
+                .replyToName("Reply Name")
+                .addNote(true)
+                .personalNote("Please verify this sender identity.")
+                .createIdentity();
+
+        System.out.println(identity.id);
+        System.out.println(identity.email);
+        System.out.println(identity.isVerified);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void updateSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().builder()
+                .name("Updated Sender Name")
+                .replyToEmail("newreply@yourdomain.com")
+                .replyToName("New Reply Name")
+                .updateIdentity("your-identity-id");
+
+        System.out.println(identity.id);
+        System.out.println(identity.name);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a sender identity by email
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void updateSenderIdentityByEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().builder()
+                .name("Updated Sender Name")
+                .replyToEmail("newreply@yourdomain.com")
+                .replyToName("New Reply Name")
+                .updateIdentityByEmail("sender@yourdomain.com");
+
+        System.out.println(identity.id);
+        System.out.println(identity.name);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.senderIdentities().deleteIdentity("your-identity-id");
+
+        System.out.println("Identity deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a sender identity by email
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSenderIdentityByEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.senderIdentities().deleteIdentityByEmail("sender@yourdomain.com");
+
+        System.out.println("Identity deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Resend sender identity confirmation
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void resendSenderIdentityConfirmation() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().resendConfirmation("your-identity-id");
+
+        System.out.println("Confirmation resent. Resend count: " + identity.resends);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
 # Testing
 
 To run the tests you need **Java 11+** and **Maven 3.6+** installed.
