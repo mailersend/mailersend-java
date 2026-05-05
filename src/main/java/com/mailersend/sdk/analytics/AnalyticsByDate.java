@@ -56,8 +56,23 @@ public class AnalyticsByDate {
     
     @SerializedName("spam_complaints")
     public int spamComplaints;
-    
-    
+
+    @SerializedName("deferred")
+    public int deferred;
+
+    @SerializedName("opened_unique")
+    public int openedUnique;
+
+    @SerializedName("clicked_unique")
+    public int clickedUnique;
+
+    @SerializedName("survey_opened")
+    public int surveyOpened;
+
+    @SerializedName("survey_submitted")
+    public int surveySubmitted;
+
+
     /**
      * <p>postDeserialize.</p>
      */
