@@ -110,6 +110,31 @@ public class InboundRouteBuilder {
 	}
 	
 	/**
+	 * <p>catchFilter.</p>
+	 *
+	 * @param filter a {@link com.mailersend.sdk.inboundroutes.CatchFilter} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
+	public InboundRouteBuilder catchFilter(CatchFilter filter) {
+		builderBody.catchFilter = filter;
+		return this;
+	}
+
+	/**
+	 * <p>catchType.</p>
+	 *
+	 * <p>Sets the catch type. Must be one of: {@code all}, {@code one}.
+	 * Required when the catch filter type is {@code catch_recipient}.</p>
+	 *
+	 * @param catchType a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
+	public InboundRouteBuilder catchType(String catchType) {
+		builderBody.catchType = catchType;
+		return this;
+	}
+
+	/**
 	 * <p>matchFilter.</p>
 	 *
 	 * @param type a {@link java.lang.String} object.
@@ -121,15 +146,34 @@ public class InboundRouteBuilder {
 		builderBody.matchFilter = filter;
 		return this;
 	}
-	
+
 	/**
-	 * <p>catchFilter.</p>
+	 * <p>matchFilter.</p>
 	 *
-	 * @param filter a {@link com.mailersend.sdk.inboundroutes.CatchFilter} object.
+	 * <p>Sets the match filter with a type and an array of sub-filters. The {@code filters}
+	 * array is required when type is not {@code match_all}.</p>
+	 *
+	 * @param type a {@link java.lang.String} object.
+	 * @param filters an array of {@link com.mailersend.sdk.inboundroutes.InboundFilter} objects.
 	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
 	 */
-	public InboundRouteBuilder catchFilter(CatchFilter filter) {
-		builderBody.catchFilter = filter;
+	public InboundRouteBuilder matchFilter(String type, InboundFilter[] filters) {
+		builderBody.matchFilter = new MatchFilter(type, filters);
+		return this;
+	}
+
+	/**
+	 * <p>matchType.</p>
+	 *
+	 * <p>Sets the match type. Must be one of: {@code all}, {@code one}.
+	 * Required when the match filter type is {@code match_sender}, {@code match_domain},
+	 * or {@code match_header}.</p>
+	 *
+	 * @param matchType a {@link java.lang.String} object.
+	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 */
+	public InboundRouteBuilder matchType(String matchType) {
+		builderBody.matchType = matchType;
 		return this;
 	}
 
