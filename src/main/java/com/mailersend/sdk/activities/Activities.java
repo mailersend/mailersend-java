@@ -88,9 +88,14 @@ public class Activities {
      * @throws com.mailersend.sdk.exceptions.MailerSendException
      */
     public ActivitiesList getActivities(String domainId, int page, int limit, Date dateFrom, Date dateTo, String[] events) throws MailerSendException {
-        
+
+        if (dateFrom == null || dateTo == null) {
+
+            throw new MailerSendException("Date from and Date to dates are required.");
+        }
+
         String endpoint = "/activity/".concat(domainId);
-        
+
         // prepare the request parameters
         ArrayList<String> params = new ArrayList<String>();
         

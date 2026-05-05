@@ -24,9 +24,6 @@ public class AnalyticsByDate {
     
     public Date statDate;
     
-    @SerializedName("processed")
-    public int processed;
-    
     @SerializedName("queued")
     public int queued;
     
@@ -41,10 +38,7 @@ public class AnalyticsByDate {
     
     @SerializedName("hard_bounced")
     public int hardBounced;
-    
-    @SerializedName("junk")
-    public int junk;
-    
+
     @SerializedName("opened")
     public int opened;
     

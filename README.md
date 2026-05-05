@@ -30,6 +30,7 @@ MailerSend Java SDK
         - [Delete an inbound route](#delete-an-inbound-route)
     - [Activities](#activities)
         - [Get a list of Activities](#get-a-list-of-activities)
+        - [Get a single Activity](#get-a-single-activity)
         - [Activities filters](#activities-filters)
         - [Activities pagination](#activities-pagination)
         - [Get email for resend](#activity-email-for-resend)
@@ -1011,6 +1012,37 @@ public void getActivities() {
 }
 ```
 
+### Get a single activity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.activities.Activity;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getSingleActivity() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        Activity activity = ms.activities().getSingleActivity("activity id");
+
+        System.out.println(activity.id);
+        System.out.println(activity.type);
+        System.out.println(activity.createdAt.toString());
+
+        System.out.println(activity.email.from);
+        System.out.println(activity.email.subject);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ### Activities filters
 
 ```java
@@ -1281,7 +1313,7 @@ public void getOpensByUserAgentType() {
         AnalyticsList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
-                .getOpensByUserAgenType();
+                .getOpensByUserAgentType();
         
         System.out.println("\n\nOpens by user agent type:");
         

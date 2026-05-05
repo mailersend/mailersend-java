@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
@@ -79,19 +80,24 @@ public class ActivitiesTest {
      */
     @Test
     public void TestGetActivities() {
-        
+
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
-            
-            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId);
-            
+
+            Calendar cal = Calendar.getInstance();
+            Date dateTo = cal.getTime();
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            Date dateFrom = cal.getTime();
+
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 25, dateFrom, dateTo, null);
+
             assertTrue(activities.activities.length > 0);
-            
+
         } catch (MailerSendException e) {
-            
+
             fail();
         }
     }
@@ -103,22 +109,27 @@ public class ActivitiesTest {
      */
     @Test
     public void TestActivitiesPagination() {
-        
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
-            
-            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, null, null, null);
-         
+
+            Calendar cal = Calendar.getInstance();
+            Date dateTo = cal.getTime();
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            Date dateFrom = cal.getTime();
+
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, dateFrom, dateTo, null);
+
             assertTrue(activities.activities.length > 0);
-            
-            ActivitiesList secondPage = ms.activities().getActivities(TestHelper.domainId, 2, 10, null, null, null);
-            
+
+            ActivitiesList secondPage = ms.activities().getActivities(TestHelper.domainId, 2, 10, dateFrom, dateTo, null);
+
             assertTrue(secondPage.activities.length > 0);
-            
-            assertNotEquals(secondPage.activities[0].id, activities.activities[0].id); 
-            
+
+            assertNotEquals(secondPage.activities[0].id, activities.activities[0].id);
+
         } catch (MailerSendException e) {
 
           fail();
@@ -132,21 +143,26 @@ public class ActivitiesTest {
      */
     @Test
     public void TestActivitiesFilterByEvent() {
-        
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
-            
-            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 100, null, null, new String[] { EventTypes.OPENED });
-         
+
+            Calendar cal = Calendar.getInstance();
+            Date dateTo = cal.getTime();
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            Date dateFrom = cal.getTime();
+
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 100, dateFrom, dateTo, new String[] { EventTypes.OPENED });
+
             assertTrue(activities.activities.length > 0);
-            
+
             for (Activity activity : activities.activities) {
-                
+
                 assertTrue(activity.type.equals(EventTypes.OPENED));
             }
-            
+
         } catch (MailerSendException e) {
 
           fail();
@@ -159,28 +175,33 @@ public class ActivitiesTest {
      */
     @Test
     public void TestSingleActivity() {
-        
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
-            
-            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, null, null, null);
-         
+
+            Calendar cal = Calendar.getInstance();
+            Date dateTo = cal.getTime();
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            Date dateFrom = cal.getTime();
+
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, dateFrom, dateTo, null);
+
             assertTrue(activities.activities.length > 0);
-            
+
             Activity activity = activities.activities[0];
-            
+
             assertTrue(activity.id != null && !activity.id.isBlank());
             assertTrue(activity.type != null && !activity.type.isBlank());
-            
+
             assertTrue(activity.email != null);
             assertTrue(activity.email.from != null && !activity.email.from.isBlank());
             assertTrue(activity.email.subject != null && !activity.email.subject.isBlank());
             assertTrue(activity.email.id != null && !activity.email.id.isBlank());
             assertTrue(activity.email.status != null && !activity.email.status.isBlank());
             assertTrue(activity.email.createdAt != null);
-            
+
         } catch (MailerSendException e) {
 
           fail();
@@ -193,28 +214,33 @@ public class ActivitiesTest {
      */
     @Test
     public void TestActivityEmailConversion() {
-        
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
-            
-            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, null, null, null);
-            
+
+            Calendar cal = Calendar.getInstance();
+            Date dateTo = cal.getTime();
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            Date dateFrom = cal.getTime();
+
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 10, dateFrom, dateTo, null);
+
             assertTrue(activities.activities.length > 0);
-            
+
             Activity activity = activities.activities[0];
-            
+
             Email email = activity.email.toEmail();
-            
+
             assertEquals(email.subject, activity.email.subject);
             assertEquals(email.from.email, activity.email.from);
             assertEquals(email.text, activity.email.text);
             assertEquals(email.html, activity.email.html);
-        
+
         } catch (MailerSendException e) {
 
             fail();
-          }
+        }
     }
 }

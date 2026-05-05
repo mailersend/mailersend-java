@@ -215,7 +215,7 @@ public class AnalyticsTest {
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
                     .dateTo(dateTo)
-                    .getOpensByUserAgenType();
+                    .getOpensByUserAgentType();
             
             System.out.println("\n\nOpens by user agent type:");
             
