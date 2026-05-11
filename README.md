@@ -2116,7 +2116,7 @@ public void DeleteRecipient() {
 }
 ```
 
-### Get recpients from a suppression list
+### Get recipients from a suppression list
 
 ```java
 import com.mailersend.sdk.MailerSend;
@@ -2174,7 +2174,7 @@ public void GetRecipientsFromSuppressionList() {
 }
 ```
 
-### Add recpients to a suppression list
+### Add recipients to a suppression list
 
 ```java
 import com.mailersend.sdk.MailerSend;
