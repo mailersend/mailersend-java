@@ -1,5 +1,7 @@
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -234,6 +236,46 @@ public class DomainsTest {
     }
     
     
+    /**
+     * Tests updating a domain's settings with all available fields set
+     */
+    @Test
+    public void test_update_domain_settings_all_fields() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            Domain domain = ms.domains().updateDomainSettingsBuilder()
+                .sendPaused(true)
+                .trackClicks(true)
+                .trackOpens(true)
+                .trackUnsubscribe(true)
+                .trackUnsubscribeHtml("<p>Unsubscribe</p>")
+                .trackUnsubscribeHtmlEnabled(true)
+                .trackUnsubscribePlain("Click here to unsubscribe")
+                .trackUnsubscribePlainEnabled(true)
+                .trackContent(true)
+                .customnTrackingEnabled(true)
+                .customTrackingSubdomain("email")
+                .precedenceBulk(false)
+                .ignoreDuplicatedRecipients(true)
+                .updateDomain(TestHelper.domainId);
+
+            assertNotNull(domain.domainSettings);
+            assertEquals(true, domain.domainSettings.sendPaused);
+            assertEquals(true, domain.domainSettings.trackClicks);
+            assertEquals(true, domain.domainSettings.ignoreDuplicatedRecipients);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
     /**
      * Simple helper method to print the DomainDnsAttribute properties
      * @param attribute

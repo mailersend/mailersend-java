@@ -79,6 +79,7 @@ public class DomainSettings {
         trackUnsubscribePlain = null;
         trackUnsubscribePlainEnabled = null;
         trackContent = null;
+        customTrackingEnabled = null;
         customTrackingSubdomain = null;
         returnPathSubdomain = null;
         inboundRoutingEnabled = null;

@@ -1557,6 +1557,180 @@ public void UpdateDomainSettings() {
     }
 }
 ```
+
+## SMTP Users
+
+### Get a list of SMTP users
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.smtpusers.SmtpUsersList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void ListSmtpUsers() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUsersList list = ms.smtpUsers().getSmtpUsers("domain id");
+
+        for (SmtpUser smtpUser : list.smtpUsers) {
+
+            System.out.println(smtpUser.id);
+            System.out.println(smtpUser.name);
+            System.out.println(smtpUser.username);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a list of SMTP users with pagination
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUsersList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void ListSmtpUsersWithPagination() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUsersList list = ms.smtpUsers()
+            .page(1)
+            .limit(25)
+            .getSmtpUsers("domain id");
+
+        System.out.println(list.smtpUsers.length);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void GetSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUser smtpUser = ms.smtpUsers().getSmtpUser("domain id", "smtp user id");
+
+        System.out.println(smtpUser.id);
+        System.out.println(smtpUser.name);
+        System.out.println(smtpUser.username);
+        System.out.println(smtpUser.enabled);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Create an SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void CreateSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUser smtpUser = ms.smtpUsers().smtpUserBuilder()
+            .name("Support SMTP")
+            .enabled(true)
+            .createSmtpUser("domain id");
+
+        System.out.println(smtpUser.id);
+        System.out.println(smtpUser.username);
+        System.out.println(smtpUser.password);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Update an SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void UpdateSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUser smtpUser = ms.smtpUsers().smtpUserBuilder()
+            .name("Updated Name")
+            .enabled(false)
+            .updateSmtpUser("domain id", "smtp user id");
+
+        System.out.println(smtpUser.id);
+        System.out.println(smtpUser.name);
+        System.out.println(smtpUser.enabled);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void DeleteSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        boolean deleted = ms.smtpUsers().deleteSmtpUser("domain id", "smtp user id");
+
+        System.out.println("Deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ## Messages
 
 ### Get a list of messages
