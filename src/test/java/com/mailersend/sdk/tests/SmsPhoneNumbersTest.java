@@ -36,7 +36,7 @@ public class SmsPhoneNumbersTest {
      * Gets a lists of phone numbers
      */
     @Test
-    public void TestPhoneNumbersRetrieval() {
+    public void testPhoneNumbersRetrieval() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -60,7 +60,7 @@ public class SmsPhoneNumbersTest {
      * Gets a single phone number
      */
     @Test
-    public void TestSinglePhoneNumberRetrieval() {
+    public void testSinglePhoneNumberRetrieval() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -85,7 +85,7 @@ public class SmsPhoneNumbersTest {
      * Tests that a phone number can be updated (paused=true) and the response reflects the change
      */
     @Test
-    public void TestUpdatePhoneNumber() {
+    public void testUpdatePhoneNumber() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -109,7 +109,7 @@ public class SmsPhoneNumbersTest {
      * Tests that a phone number can be deleted and returns true on success
      */
     @Test
-    public void TestDeletePhoneNumber() {
+    public void testDeletePhoneNumber() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -130,7 +130,7 @@ public class SmsPhoneNumbersTest {
      * Tests that the paused filter is included in the request URL when set
      */
     @Test
-    public void TestPhoneNumbersWithPausedFilter() {
+    public void testPhoneNumbersWithPausedFilter() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

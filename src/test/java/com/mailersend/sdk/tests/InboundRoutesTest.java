@@ -42,7 +42,7 @@ public class InboundRoutesTest {
     }
 
     @Test
-    public void AddInboundRouteTest() {
+    public void addInboundRouteTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -68,7 +68,7 @@ public class InboundRoutesTest {
     }
 
     @Test
-    public void InboundRoutesListTest() {
+    public void inboundRoutesListTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -88,7 +88,7 @@ public class InboundRoutesTest {
     }
 
     @Test
-    public void SingleInboundRouteTest() {
+    public void singleInboundRouteTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -105,7 +105,7 @@ public class InboundRoutesTest {
     }
 
     @Test
-    public void UpdateInboundRouteTest() {
+    public void updateInboundRouteTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -132,7 +132,7 @@ public class InboundRoutesTest {
     }
 
     @Test
-    public void DeleteInboundRouteTest() {
+    public void deleteInboundRouteTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

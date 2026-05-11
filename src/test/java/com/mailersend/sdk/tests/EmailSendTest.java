@@ -55,7 +55,7 @@ public class EmailSendTest {
      * Test token
      */
     @Test
-    public void TestInvalidTokenFailsWith401() {
+    public void testInvalidTokenFailsWith401() {
         
         Email email = new Email();
         
@@ -73,7 +73,7 @@ public class EmailSendTest {
      * Test wrong personalization
      */
     @Test
-    public void TestInvalidPersonalization() {
+    public void testInvalidPersonalization() {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -95,7 +95,7 @@ public class EmailSendTest {
      * Simple email send
      */
     @Test
-    public void TestSimpleSend() throws MailerSendException {
+    public void testSimpleSend() throws MailerSendException {
            	    	
         Email email = new Email();
         
@@ -120,7 +120,7 @@ public class EmailSendTest {
      * Test personalization from a POJO
      */
     @Test
-    public void TestPojoPersonalization() throws MailerSendException {
+    public void testPojoPersonalization() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -139,7 +139,7 @@ public class EmailSendTest {
      * Test email with CC
      */
     @Test
-    public void TestCcSend() throws MailerSendException {
+    public void testCcSend() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -156,7 +156,7 @@ public class EmailSendTest {
      * Test email with BCC
      */
     @Test
-    public void TestBccSend() throws MailerSendException {
+    public void testBccSend() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -173,7 +173,7 @@ public class EmailSendTest {
      * Test email with attachment
      */
     @Test
-    public void TestEmailWithAttachment() throws IOException, MailerSendException {
+    public void testEmailWithAttachment() throws IOException, MailerSendException {
 
         Email email = TestHelper.createBasicEmail(true);
 
@@ -190,7 +190,7 @@ public class EmailSendTest {
      * Test bulk email send
      */
     @Test
-    public void TestSendBulkEmail() throws MailerSendException {
+    public void testSendBulkEmail() throws MailerSendException {
        
         Email email = TestHelper.createBasicEmail(true);
         Email email2 = TestHelper.createBasicEmail(true);
@@ -210,7 +210,7 @@ public class EmailSendTest {
      * Test retrieving the status for a bulk send
      */
     @Test
-    public void TestBulkSendStatus() throws MailerSendException {
+    public void testBulkSendStatus() throws MailerSendException {
        
         Email email = TestHelper.createBasicEmail(true);
         Email email2 = TestHelper.createBasicEmail(true);
@@ -352,7 +352,7 @@ public class EmailSendTest {
 
 
     @Test
-    public void ScheduleEmailTest() throws MailerSendException {
+    public void scheduleEmailTest() throws MailerSendException {
         Email email = new Email();
 
         email.subject = TestHelper.subject;

@@ -33,7 +33,7 @@ public class SmsRecipientsTest {
 	
 
     @Test
-    public void TestSmsRecipientsRetrieval() {
+    public void testSmsRecipientsRetrieval() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -54,7 +54,7 @@ public class SmsRecipientsTest {
     
     
     @Test
-    public void TestSmsSingleRecipientRetrieval() {
+    public void testSmsSingleRecipientRetrieval() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -73,7 +73,7 @@ public class SmsRecipientsTest {
     }
     
     @Test
-    public void TestSmsRecipientUpdate() {
+    public void testSmsRecipientUpdate() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -95,7 +95,7 @@ public class SmsRecipientsTest {
      * Tests that the status filter is included in the request URL when set
      */
     @Test
-    public void TestSmsRecipientsWithStatusFilter() {
+    public void testSmsRecipientsWithStatusFilter() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -117,7 +117,7 @@ public class SmsRecipientsTest {
      * Tests that the sms_number_id filter is included in the request URL when set
      */
     @Test
-    public void TestSmsRecipientsWithSmsNumberIdFilter() {
+    public void testSmsRecipientsWithSmsNumberIdFilter() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

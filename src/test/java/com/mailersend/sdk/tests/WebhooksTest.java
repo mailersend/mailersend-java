@@ -49,7 +49,7 @@ public class WebhooksTest {
      * Tests the creation of a webhook
      */
     @Test
-    public void TestWebhookCreation() {
+    public void testWebhookCreation() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -79,7 +79,7 @@ public class WebhooksTest {
      * Tests updating a webhook
      */
     @Test
-    public void TestUpdateWebhook() {
+    public void testUpdateWebhook() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -112,7 +112,7 @@ public class WebhooksTest {
      * Tests deleting a webhook
      */
     @Test
-    public void TestDeleteWebhook() {
+    public void testDeleteWebhook() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -142,7 +142,7 @@ public class WebhooksTest {
      * Tests retrieving a single webhook
      */
     @Test
-    public void TestGetWebhook() {
+    public void testGetWebhook() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -172,7 +172,7 @@ public class WebhooksTest {
      * Tests the retrieval of the webhooks
      */
     @Test
-    public void TestWebhooksList() {
+    public void testWebhooksList() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

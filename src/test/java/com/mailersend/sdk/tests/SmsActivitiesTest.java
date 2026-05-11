@@ -42,7 +42,7 @@ public class SmsActivitiesTest {
      * Tests that a list of SMS activities can be retrieved
      */
     @Test
-    public void TestGetSmsActivities() {
+    public void testGetSmsActivities() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -64,7 +64,7 @@ public class SmsActivitiesTest {
      * Tests that SMS activity for a specific message can be retrieved
      */
     @Test
-    public void TestGetSmsMessageActivity() {
+    public void testGetSmsMessageActivity() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -87,7 +87,7 @@ public class SmsActivitiesTest {
      * Tests that the status filter is included in the request URL when set
      */
     @Test
-    public void TestGetActivitiesWithStatusFilter() {
+    public void testGetActivitiesWithStatusFilter() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -111,7 +111,7 @@ public class SmsActivitiesTest {
      * Tests that the sms_number_id filter is included in the request URL when set
      */
     @Test
-    public void TestGetActivitiesWithSmsNumberIdFilter() {
+    public void testGetActivitiesWithSmsNumberIdFilter() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

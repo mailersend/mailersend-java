@@ -21,7 +21,7 @@ public class EmailConfigurationTest {
      * Tests the from name and email
      */
     @Test
-    public void TestEmailFromConfiguration() {
+    public void testEmailFromConfiguration() {
         
         Email email = TestHelper.createBasicEmail(true);
         
@@ -36,7 +36,7 @@ public class EmailConfigurationTest {
      * Tests that a single recipient can be added
      */
     @Test
-    public void TestSingleRecipientConfiguration() {
+    public void testSingleRecipientConfiguration() {
         
         Email email = TestHelper.createBasicEmail(true);
         
@@ -52,7 +52,7 @@ public class EmailConfigurationTest {
      * Tests that multiple recipients can be added
      */
     @Test
-    public void TestMultipleRecipientsConfiguration() {
+    public void testMultipleRecipientsConfiguration() {
         
         String secondRecipientName = "Test Recipient 2";
         String secondRecipientEmail = "test@recipient2.com";
@@ -72,7 +72,7 @@ public class EmailConfigurationTest {
      * Tests that the subject, and html and plain bodies are added to the email
      */
     @Test
-    public void TestEmailContentsConfiguration() {
+    public void testEmailContentsConfiguration() {
         
         Email email = TestHelper.createBasicEmail(true);
         
@@ -86,7 +86,7 @@ public class EmailConfigurationTest {
      * Tests the email personalization
      */
     @Test
-    public void TestEmailPersonalization() {
+    public void testEmailPersonalization() {
         
         String personalizationName = "test_personalization";
         String personalizationValue = "test_personalization_value";
@@ -130,7 +130,7 @@ public class EmailConfigurationTest {
      * Tests that different recipients can have different personalization
      */
     @Test
-    public void TestMultipleRecipientsPersonalization() {
+    public void testMultipleRecipientsPersonalization() {
         
         String personalizationName = "test_personalization";
         String personalizationValue = "test_personalization_value";
@@ -172,7 +172,7 @@ public class EmailConfigurationTest {
      * Tests that carbon copy recipients can be added to the email
      */
     @Test
-    public void TestCcRecipients() {
+    public void testCcRecipients() {
         
         Recipient ccRecipient1 = new Recipient("name1", "test1@cc.com");
         Recipient ccRecipient2 = new Recipient("name2", "test2@cc.com");
@@ -201,7 +201,7 @@ public class EmailConfigurationTest {
      * Tests that blind carbon copy recipients can be added to the email
      */
     @Test
-    public void TestBccRecipients() {
+    public void testBccRecipients() {
 
         Recipient bccRecipient1 = new Recipient("name1", "test1@bcc.com");
         Recipient bccRecipient2 = new Recipient("name2", "test2@bcc.com");
@@ -230,7 +230,7 @@ public class EmailConfigurationTest {
      * Tests that RCPT TO recipients can be added to the email via name/email strings
      */
     @Test
-    public void TestRcptToRecipientsWithStrings() {
+    public void testRcptToRecipientsWithStrings() {
 
         Email email = TestHelper.createBasicEmail(false);
 
@@ -252,7 +252,7 @@ public class EmailConfigurationTest {
      * Tests that RCPT TO recipients can be added to the email via Recipient objects
      */
     @Test
-    public void TestRcptToRecipientsWithObjects() {
+    public void testRcptToRecipientsWithObjects() {
 
         Recipient rcpt1 = new Recipient("rcpt name 1", "rcpt1@client.com");
         Recipient rcpt2 = new Recipient("rcpt name 2", "rcpt2@client.com");
@@ -277,7 +277,7 @@ public class EmailConfigurationTest {
      * Tests that rcptTo field serializes correctly as "rcpt_to" in JSON
      */
     @Test
-    public void TestRcptToSerialization() {
+    public void testRcptToSerialization() {
 
         Email email = TestHelper.createBasicEmail(true);
 
@@ -294,7 +294,7 @@ public class EmailConfigurationTest {
      * Tests that the camelCase addCc method works the same as AddCc
      */
     @Test
-    public void TestCamelCaseAddCc() {
+    public void testCamelCaseAddCc() {
 
         Recipient ccRecipient = new Recipient("cc name", "cc@test.com");
 
@@ -318,7 +318,7 @@ public class EmailConfigurationTest {
      * Tests that the camelCase addBcc method works the same as AddBcc
      */
     @Test
-    public void TestCamelCaseAddBcc() {
+    public void testCamelCaseAddBcc() {
 
         Recipient bccRecipient = new Recipient("bcc name", "bcc@test.com");
 
@@ -342,7 +342,7 @@ public class EmailConfigurationTest {
      * Tests that the camelCase addReplyTo method works correctly
      */
     @Test
-    public void TestCamelCaseAddReplyTo() {
+    public void testCamelCaseAddReplyTo() {
 
         Email email = TestHelper.createBasicEmail(false);
 

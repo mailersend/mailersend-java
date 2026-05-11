@@ -46,7 +46,7 @@ public class SenderIdentitiesTest {
      * Test retrieving a list of sender identities - behavior: GET /identities
      */
     @Test
-    public void TestGetIdentities() {
+    public void testGetIdentities() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -73,7 +73,7 @@ public class SenderIdentitiesTest {
      * Test retrieving a single sender identity by ID - behavior: GET /identities/{id}
      */
     @Test
-    public void TestGetIdentity() {
+    public void testGetIdentity() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -98,7 +98,7 @@ public class SenderIdentitiesTest {
      * Test retrieving a sender identity by email - behavior: GET /identities/email/{email}
      */
     @Test
-    public void TestGetIdentityByEmail() {
+    public void testGetIdentityByEmail() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -122,7 +122,7 @@ public class SenderIdentitiesTest {
      * Test creating a sender identity - behavior: POST /identities with all fields
      */
     @Test
-    public void TestCreateIdentity() {
+    public void testCreateIdentity() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -151,7 +151,7 @@ public class SenderIdentitiesTest {
      * Test that creating an identity without domain ID throws an exception - validation
      */
     @Test
-    public void TestCreateIdentityWithoutDomainId() {
+    public void testCreateIdentityWithoutDomainId() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -171,7 +171,7 @@ public class SenderIdentitiesTest {
      * Test that creating an identity without email throws an exception - validation
      */
     @Test
-    public void TestCreateIdentityWithoutEmail() {
+    public void testCreateIdentityWithoutEmail() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -192,7 +192,7 @@ public class SenderIdentitiesTest {
      * Only name, reply_to_email, reply_to_name should be sent
      */
     @Test
-    public void TestUpdateIdentity() {
+    public void testUpdateIdentity() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -221,7 +221,7 @@ public class SenderIdentitiesTest {
      * Test updating a sender identity by email - behavior: PUT /identities/email/{email}
      */
     @Test
-    public void TestUpdateIdentityByEmail() {
+    public void testUpdateIdentityByEmail() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -249,7 +249,7 @@ public class SenderIdentitiesTest {
      * Test that updating an identity with a blank ID throws an exception - validation
      */
     @Test
-    public void TestUpdateIdentityWithoutId() {
+    public void testUpdateIdentityWithoutId() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -268,7 +268,7 @@ public class SenderIdentitiesTest {
      * Test that updating an identity by email with a blank email throws an exception - validation
      */
     @Test
-    public void TestUpdateIdentityByEmailWithoutEmail() {
+    public void testUpdateIdentityByEmailWithoutEmail() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -287,7 +287,7 @@ public class SenderIdentitiesTest {
      * Test deleting a sender identity by ID - behavior: DELETE /identities/{id} returns true
      */
     @Test
-    public void TestDeleteIdentity() {
+    public void testDeleteIdentity() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -310,7 +310,7 @@ public class SenderIdentitiesTest {
      * Test deleting a sender identity by email - behavior: DELETE /identities/email/{email} returns true
      */
     @Test
-    public void TestDeleteIdentityByEmail() {
+    public void testDeleteIdentityByEmail() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -333,7 +333,7 @@ public class SenderIdentitiesTest {
      * Test resending confirmation for a sender identity - behavior: POST /identities/{id}/resend
      */
     @Test
-    public void TestResendConfirmation() {
+    public void testResendConfirmation() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

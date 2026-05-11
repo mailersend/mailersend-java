@@ -47,7 +47,7 @@ public class RecpientsSuppressionListsTest {
      * Tests retrieving items from the suppression lists
      */
     @Test
-    public void TestGetFromSuppressionLists() {
+    public void testGetFromSuppressionLists() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -99,7 +99,7 @@ public class RecpientsSuppressionListsTest {
      * Tests adding items to the suppression lists
      */
     @Test
-    public void TestAddToSuppressionList() {
+    public void testAddToSuppressionList() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -163,7 +163,7 @@ public class RecpientsSuppressionListsTest {
      * @throws MailerSendException 
      */
     @Test
-    public void TestDeleteFromSuppressionList() throws MailerSendException {
+    public void testDeleteFromSuppressionList() throws MailerSendException {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

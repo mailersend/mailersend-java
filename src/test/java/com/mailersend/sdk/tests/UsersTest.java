@@ -49,7 +49,7 @@ public class UsersTest {
      * Test retrieving a list of users - behavior: GET /users
      */
     @Test
-    public void TestGetUsers() {
+    public void testGetUsers() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -75,7 +75,7 @@ public class UsersTest {
      * Test retrieving a single user by ID - behavior: GET /users/{id}
      */
     @Test
-    public void TestGetUser() {
+    public void testGetUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -101,7 +101,7 @@ public class UsersTest {
      * Test inviting a user - behavior: POST /users with all fields
      */
     @Test
-    public void TestInviteUser() {
+    public void testInviteUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -129,7 +129,7 @@ public class UsersTest {
      * Test that inviting a user without email throws an exception - validation
      */
     @Test
-    public void TestInviteUserWithoutEmail() {
+    public void testInviteUserWithoutEmail() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -148,7 +148,7 @@ public class UsersTest {
      * Test that inviting a user without a role throws an exception - validation
      */
     @Test
-    public void TestInviteUserWithoutRole() {
+    public void testInviteUserWithoutRole() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -167,7 +167,7 @@ public class UsersTest {
      * Test that inviting a Custom User without permissions throws an exception - validation
      */
     @Test
-    public void TestInviteCustomUserWithoutPermissions() {
+    public void testInviteCustomUserWithoutPermissions() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -187,7 +187,7 @@ public class UsersTest {
      * Test updating a user - behavior: PUT /users/{id}
      */
     @Test
-    public void TestUpdateUser() {
+    public void testUpdateUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -214,7 +214,7 @@ public class UsersTest {
      * Test that updating a user without an ID throws an exception - validation
      */
     @Test
-    public void TestUpdateUserWithoutId() {
+    public void testUpdateUserWithoutId() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -233,7 +233,7 @@ public class UsersTest {
      * Test that updating a Custom User without permissions throws an exception - validation
      */
     @Test
-    public void TestUpdateCustomUserWithoutPermissions() {
+    public void testUpdateCustomUserWithoutPermissions() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -252,7 +252,7 @@ public class UsersTest {
      * Test deleting a user - behavior: DELETE /users/{id} returns true
      */
     @Test
-    public void TestDeleteUser() {
+    public void testDeleteUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -275,7 +275,7 @@ public class UsersTest {
      * Test retrieving a list of invites - behavior: GET /invites
      */
     @Test
-    public void TestGetInvites() {
+    public void testGetInvites() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -301,7 +301,7 @@ public class UsersTest {
      * Test retrieving a single invite by ID - behavior: GET /invites/{id}
      */
     @Test
-    public void TestGetInvite() {
+    public void testGetInvite() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -325,7 +325,7 @@ public class UsersTest {
      * Test resending an invite - behavior: POST /invites/{id}/resend
      */
     @Test
-    public void TestResendInvite() {
+    public void testResendInvite() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -349,7 +349,7 @@ public class UsersTest {
      * Test cancelling (deleting) an invite - behavior: DELETE /invites/{id} returns true
      */
     @Test
-    public void TestDeleteInvite() {
+    public void testDeleteInvite() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

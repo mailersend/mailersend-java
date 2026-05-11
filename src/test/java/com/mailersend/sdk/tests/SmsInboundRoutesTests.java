@@ -31,7 +31,7 @@ public class SmsInboundRoutesTests {
 	}
 	
 	@Test
-	public void TestGetSmsInboundRoutes() {
+	public void testGetSmsInboundRoutes() {
 		
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -53,7 +53,7 @@ public class SmsInboundRoutesTests {
 	}
 	
     @Test
-    public void TestUpdateSmsInboundRoute() {
+    public void testUpdateSmsInboundRoute() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -80,7 +80,7 @@ public class SmsInboundRoutesTests {
 	
 	
 	@Test
-	public void TestGetSingleSmsInboundRoute() {
+	public void testGetSingleSmsInboundRoute() {
 		
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -100,7 +100,7 @@ public class SmsInboundRoutesTests {
 	}
 
     @Test
-    public void TestAddSmsInboundRoute() {
+    public void testAddSmsInboundRoute() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -124,7 +124,7 @@ public class SmsInboundRoutesTests {
     }
     
     @Test
-    public void TestDeleteSmsInboundRoute() {
+    public void testDeleteSmsInboundRoute() {
     	
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

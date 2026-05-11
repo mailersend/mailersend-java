@@ -42,7 +42,7 @@ public class SmsMessagesTest {
      * Tests that a list of SMS messages can be retrieved and contains expected data
      */
     @Test
-    public void TestGetSmsMessages() {
+    public void testGetSmsMessages() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -64,7 +64,7 @@ public class SmsMessagesTest {
      * Tests that a single SMS message can be retrieved by ID
      */
     @Test
-    public void TestGetSingleSmsMessage() {
+    public void testGetSingleSmsMessage() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

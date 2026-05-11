@@ -48,7 +48,7 @@ public class TokensTest {
      * Test token creation
      */
     @Test
-    public void TestCreateToken() {
+    public void testCreateToken() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -77,7 +77,7 @@ public class TokensTest {
      * Test token update (pause)
      */
     @Test
-    public void UpdateToken() {
+    public void updateToken() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -100,7 +100,7 @@ public class TokensTest {
      * Test token deletion
      */
     @Test
-    public void DeleteToken() {
+    public void deleteToken() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -122,7 +122,7 @@ public class TokensTest {
      * Test retrieving a list of tokens - behavior: GET /token returns list
      */
     @Test
-    public void TestGetTokens() {
+    public void testGetTokens() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -148,7 +148,7 @@ public class TokensTest {
      * Test retrieving a single token - behavior: GET /token/{id} returns token with scopes
      */
     @Test
-    public void TestGetToken() {
+    public void testGetToken() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -174,7 +174,7 @@ public class TokensTest {
      * Test updating token name and status - behavior: PUT /token/{id}
      */
     @Test
-    public void TestUpdateTokenNameAndStatus() {
+    public void testUpdateTokenNameAndStatus() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -199,7 +199,7 @@ public class TokensTest {
      * Test that updating token without name or status throws an exception
      */
     @Test
-    public void TestUpdateTokenWithoutNameOrStatus() {
+    public void testUpdateTokenWithoutNameOrStatus() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -216,7 +216,7 @@ public class TokensTest {
      * Test that creating a token with a null name throws an exception
      */
     @Test
-    public void TestCreateTokenWithNullName() {
+    public void testCreateTokenWithNullName() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -236,7 +236,7 @@ public class TokensTest {
      * Test that creating a token with an empty name throws an exception
      */
     @Test
-    public void TestCreateTokenWithEmptyName() {
+    public void testCreateTokenWithEmptyName() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -257,7 +257,7 @@ public class TokensTest {
      * Test that creating a token with a name longer than 50 chars throws an exception
      */
     @Test
-    public void TestCreateTokenWithLongName() {
+    public void testCreateTokenWithLongName() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -278,7 +278,7 @@ public class TokensTest {
      * Test that creating a token with no scopes throws an exception
      */
     @Test
-    public void TestCreateTokenWithNoScopes() {
+    public void testCreateTokenWithNoScopes() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -298,7 +298,7 @@ public class TokensTest {
      * Test that adding an invalid scope throws an exception
      */
     @Test
-    public void TestCreateTokenWithInvalidScope() {
+    public void testCreateTokenWithInvalidScope() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

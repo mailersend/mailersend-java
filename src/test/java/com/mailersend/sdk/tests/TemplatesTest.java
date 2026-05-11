@@ -41,7 +41,7 @@ public class TemplatesTest {
      * Tests retrieving a list of templates
      */
     @Test
-    public void TestGetTemplates() {
+    public void testGetTemplates() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -70,7 +70,7 @@ public class TemplatesTest {
      * Tests the retrieval of a single template
      */
     @Test
-    public void TestGetSingleTemplate() {
+    public void testGetSingleTemplate() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -102,7 +102,7 @@ public class TemplatesTest {
      * Tests deleting a template
      */
     @Test
-    public void TestDeleteTemplate() {
+    public void testDeleteTemplate() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

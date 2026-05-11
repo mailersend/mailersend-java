@@ -40,7 +40,7 @@ public class DomainsTest {
      * Tests domains retrieval
      */
     @Test
-    public void DomainsListTest() {
+    public void domainsListTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -67,7 +67,7 @@ public class DomainsTest {
      * Tests the retrieval of a single domain
      */
     @Test
-    public void SingleDomainTest() {
+    public void singleDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -91,7 +91,7 @@ public class DomainsTest {
      * Tests the retrival of recipients per domain
      */
     @Test
-    public void ReceipientsPerDomainTest() {
+    public void receipientsPerDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -116,7 +116,7 @@ public class DomainsTest {
      * Tests adding a domain
      */
     @Test
-    public void AddDomainTest() {
+    public void addDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -140,7 +140,7 @@ public class DomainsTest {
      * Tests deleting a domain
      */
     @Test
-    public void DeleteDomainTest() {
+    public void deleteDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -163,7 +163,7 @@ public class DomainsTest {
      * Tests the domain dns records retrieval
      */
     @Test
-    public void DomainDnsRecordsTest() {
+    public void domainDnsRecordsTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -190,7 +190,7 @@ public class DomainsTest {
      * Tests domain verification
      */
     @Test
-    public void VerifyDomainTest() {
+    public void verifyDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -213,7 +213,7 @@ public class DomainsTest {
      * Tests updating a domain's settings
      */
     @Test
-    public void UpdateDomainSettingsTest() {
+    public void updateDomainSettingsTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

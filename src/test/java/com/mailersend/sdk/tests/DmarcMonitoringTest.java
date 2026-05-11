@@ -46,7 +46,7 @@ public class DmarcMonitoringTest {
      * Tests listing DMARC monitors
      */
     @Test
-    public void ListMonitorsTest() {
+    public void listMonitorsTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -71,7 +71,7 @@ public class DmarcMonitoringTest {
      * Tests creating a DMARC monitor
      */
     @Test
-    public void CreateMonitorTest() {
+    public void createMonitorTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -94,7 +94,7 @@ public class DmarcMonitoringTest {
      * Tests updating a DMARC monitor
      */
     @Test
-    public void UpdateMonitorTest() {
+    public void updateMonitorTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -118,7 +118,7 @@ public class DmarcMonitoringTest {
      * Tests deleting a DMARC monitor
      */
     @Test
-    public void DeleteMonitorTest() {
+    public void deleteMonitorTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -139,7 +139,7 @@ public class DmarcMonitoringTest {
      * Tests retrieving aggregated DMARC reports
      */
     @Test
-    public void GetAggregatedReportTest() {
+    public void getAggregatedReportTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -164,7 +164,7 @@ public class DmarcMonitoringTest {
      * Tests retrieving IP-specific DMARC reports
      */
     @Test
-    public void GetIpReportTest() {
+    public void getIpReportTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -189,7 +189,7 @@ public class DmarcMonitoringTest {
      * Tests retrieving DMARC report sources
      */
     @Test
-    public void GetReportSourcesTest() {
+    public void getReportSourcesTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -216,7 +216,7 @@ public class DmarcMonitoringTest {
      * Tests marking an IP as favorite
      */
     @Test
-    public void MarkIpAsFavoriteTest() {
+    public void markIpAsFavoriteTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -237,7 +237,7 @@ public class DmarcMonitoringTest {
      * Tests removing an IP from favorites
      */
     @Test
-    public void RemoveIpFromFavoritesTest() {
+    public void removeIpFromFavoritesTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

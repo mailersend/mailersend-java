@@ -36,7 +36,7 @@ public class EmailVerificationTests {
 	}
 	
 	@Test
-	public void CreateVerificationListTest() {
+	public void createVerificationListTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
         
@@ -60,7 +60,7 @@ public class EmailVerificationTests {
 	}
 	
 	@Test
-	public void VerifyListTest() {
+	public void verifyListTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
         
@@ -79,7 +79,7 @@ public class EmailVerificationTests {
 	}
 	
 	@Test
-	public void GetListTest() {
+	public void getListTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
         
@@ -99,7 +99,7 @@ public class EmailVerificationTests {
 	
 	
 	@Test
-	public void GetListResultsTest() {
+	public void getListResultsTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
         
@@ -115,7 +115,7 @@ public class EmailVerificationTests {
 	
 	
 	@Test
-	public void GetListsTest() {
+	public void getListsTest() {
        MailerSend ms = new MailerSend();
        ms.setToken(TestHelper.validToken);
 

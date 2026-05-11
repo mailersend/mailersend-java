@@ -44,7 +44,7 @@ public class ActivitiesTest {
      * Tests that the date of the dateFrom filter can't be after the dateTo filter
      */
     @Test
-    public void TestDateFromAfterDateTo() {
+    public void testDateFromAfterDateTo() {
         
         TemporalAccessor ta;
         Instant instant;
@@ -79,7 +79,7 @@ public class ActivitiesTest {
      * Make sure your account has some activities
      */
     @Test
-    public void TestGetActivities() {
+    public void testGetActivities() {
 
 
         MailerSend ms = new MailerSend();
@@ -108,7 +108,7 @@ public class ActivitiesTest {
      * Make sure your account has more than 10 activities
      */
     @Test
-    public void TestActivitiesPagination() {
+    public void testActivitiesPagination() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -142,7 +142,7 @@ public class ActivitiesTest {
      * Make sure you have some activities with status opened
      */
     @Test
-    public void TestActivitiesFilterByEvent() {
+    public void testActivitiesFilterByEvent() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -174,7 +174,7 @@ public class ActivitiesTest {
      * Tests the contents of a single activity
      */
     @Test
-    public void TestSingleActivity() {
+    public void testSingleActivity() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -213,7 +213,7 @@ public class ActivitiesTest {
      * Tests the conversion of an activity to an email ready to be sent
      */
     @Test
-    public void TestActivityEmailConversion() {
+    public void testActivityEmailConversion() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
