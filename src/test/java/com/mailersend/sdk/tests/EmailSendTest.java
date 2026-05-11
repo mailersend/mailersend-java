@@ -13,11 +13,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.Recipient;
@@ -222,16 +226,11 @@ public class EmailSendTest {
     }
     
     /**
-     * Test send email without from fails with 422
+     * Tests that sending an email missing a required field fails with 422
      */
-    @Test
-    public void test_send_email_without_from_fails() {
-        Email email = new Email();
-        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
-        email.setSubject(TestHelper.subject);
-        email.setHtml(TestHelper.html);
-        email.setPlain(TestHelper.text);
-
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("missingRequiredFieldEmails")
+    public void test_send_email_missing_required_field_fails(String label, Email email) {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -241,66 +240,36 @@ public class EmailSendTest {
         assertEquals(422, e.code);
     }
 
+    static Stream<Arguments> missingRequiredFieldEmails() {
+        Email withoutFrom = new Email();
+        withoutFrom.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        withoutFrom.setSubject(TestHelper.subject);
+        withoutFrom.setHtml(TestHelper.html);
+        withoutFrom.setPlain(TestHelper.text);
 
-    /**
-     * Test send email without to fails with 422
-     */
-    @Test
-    public void test_send_email_without_to_fails() {
-        Email email = new Email();
-        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
-        email.setSubject(TestHelper.subject);
-        email.setHtml(TestHelper.html);
-        email.setPlain(TestHelper.text);
+        Email withoutTo = new Email();
+        withoutTo.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        withoutTo.setSubject(TestHelper.subject);
+        withoutTo.setHtml(TestHelper.html);
+        withoutTo.setPlain(TestHelper.text);
 
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
+        Email withoutSubject = new Email();
+        withoutSubject.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        withoutSubject.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        withoutSubject.setHtml(TestHelper.html);
+        withoutSubject.setPlain(TestHelper.text);
 
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.emails().send(email);
-        });
-        assertEquals(422, e.code);
-    }
+        Email withoutBody = new Email();
+        withoutBody.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        withoutBody.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        withoutBody.setSubject(TestHelper.subject);
 
-
-    /**
-     * Test send email without subject fails with 422
-     */
-    @Test
-    public void test_send_email_without_subject_fails() {
-        Email email = new Email();
-        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
-        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
-        email.setHtml(TestHelper.html);
-        email.setPlain(TestHelper.text);
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.emails().send(email);
-        });
-        assertEquals(422, e.code);
-    }
-
-
-    /**
-     * Test send email without html and text body fails with 422
-     */
-    @Test
-    public void test_send_email_without_body_fails() {
-        Email email = new Email();
-        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
-        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
-        email.setSubject(TestHelper.subject);
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.emails().send(email);
-        });
-        assertEquals(422, e.code);
+        return Stream.of(
+            Arguments.of("missing from", withoutFrom),
+            Arguments.of("missing to", withoutTo),
+            Arguments.of("missing subject", withoutSubject),
+            Arguments.of("missing body", withoutBody)
+        );
     }
 
 

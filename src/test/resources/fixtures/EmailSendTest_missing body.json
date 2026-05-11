@@ -1,0 +1,1 @@
+{"8346b720b117bb750c79c5cccee220790ef994f2":{"body":"{\"message\":\"The given data was invalid.\",\"errors\":{\"html\":[\"The html field is required when text is not present.\"],\"text\":[\"The text field is required when html is not present.\"]}}","headers":{":status":["422"],"content-type":["application/json"]},"statusCode":422}}

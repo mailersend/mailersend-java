@@ -2417,7 +2417,7 @@ public void GetWebhooks() {
     
     try {
         
-        WebhooksList list = ms.webhooks().getWebhooks("domain id");
+        WebhooksList list = ms.webhooks().page(1).limit(25).getWebhooks("domain id");
         
         for (Webhook webhook : list.webhooks) {
             
@@ -2473,6 +2473,7 @@ public void CreateWebhook() {
         Webhook webhook = ms.webhooks().builder()
             .name("Webhook name")
             .url("Webhook url")
+            .enabled(true)
             .addEvent(WebhookEvents.ACTIVITY_OPENED)
             .addEvent(WebhookEvents.ACTIVITY_CLICKED)
             .createWebhook("domain id");
@@ -2503,6 +2504,7 @@ public void UpdateWebhook() {
         Webhook webhook = ms.webhooks()
                 .builder()
                 .name("Updated webhook name")
+                .enabled(false)
                 .updateWebhook("webhook id");
                     
         System.out.println(webhook.name);
@@ -2518,7 +2520,6 @@ public void UpdateWebhook() {
 
 ```java
 import com.mailersend.sdk.MailerSend;
-import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
 public void DeleteWebhook() {
@@ -2528,9 +2529,9 @@ public void DeleteWebhook() {
     
     try {
         
-        MailerSendResponse response = ms.webhooks().deleteWebhook("webhook id");
+        boolean deleted = ms.webhooks().deleteWebhook("webhook id");
             
-        System.out.println(response.responseStatusCode);
+        System.out.println(deleted);
         
     } catch (MailerSendException e) {
         
@@ -2556,7 +2557,7 @@ public void getTemplatesList() {
     
     try {
         
-            TemplatesList list = ms.templates().getTemplates();
+            TemplatesList list = ms.templates().domainId("domain-id").page(1).limit(25).getTemplates();
             
             for (TemplateItem item : list.templates) {
                 
@@ -2618,7 +2619,7 @@ public void createTemplate() {
         Template template = ms.templates().builder()
             .name("My Template")
             .html("<h1>Hello {{name}}</h1>")
-            .subject("Hello {{name}}")
+            .text("Hello {{name}}")
             .tags(new String[]{"transactional", "welcome"})
             .createTemplate();
 

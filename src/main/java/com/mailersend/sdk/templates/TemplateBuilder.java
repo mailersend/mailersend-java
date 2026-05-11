@@ -44,8 +44,14 @@ public class TemplateBuilder {
      *
      * @param name a {@link java.lang.String} object.
      * @return a {@link com.mailersend.sdk.templates.TemplateBuilder} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if the name exceeds 50 characters.
      */
-    public TemplateBuilder name(String name) {
+    public TemplateBuilder name(String name) throws MailerSendException {
+
+        if (name != null && name.length() > 50) {
+
+            throw new MailerSendException("Template name cannot be longer than 50 characters");
+        }
 
         builderBody.name = name;
 
@@ -128,8 +134,25 @@ public class TemplateBuilder {
      *
      * @param tags an array of tag strings.
      * @return a {@link com.mailersend.sdk.templates.TemplateBuilder} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if tags exceed 5 items or any tag exceeds 191 characters.
      */
-    public TemplateBuilder tags(String[] tags) {
+    public TemplateBuilder tags(String[] tags) throws MailerSendException {
+
+        if (tags != null && tags.length > 5) {
+
+            throw new MailerSendException("Template tags cannot have more than 5 items");
+        }
+
+        if (tags != null) {
+
+            for (String tag : tags) {
+
+                if (tag.length() > 191) {
+
+                    throw new MailerSendException("Each template tag cannot be longer than 191 characters");
+                }
+            }
+        }
 
         builderBody.tags = tags;
 
@@ -158,6 +181,16 @@ public class TemplateBuilder {
      * @return a {@link com.mailersend.sdk.templates.Template} object.
      */
     public Template createTemplate() throws MailerSendException {
+
+        if (builderBody.html == null || builderBody.html.isBlank()) {
+
+            throw new MailerSendException("Template html cannot be empty");
+        }
+
+        if (builderBody.text == null || builderBody.text.isBlank()) {
+
+            throw new MailerSendException("Template text cannot be empty");
+        }
 
         String endpoint = "/templates";
 
@@ -193,6 +226,11 @@ public class TemplateBuilder {
      * @return a {@link com.mailersend.sdk.templates.Template} object.
      */
     public Template updateTemplate(String templateId) throws MailerSendException {
+
+        if (templateId == null || templateId.isBlank()) {
+
+            throw new MailerSendException("Template ID cannot be empty");
+        }
 
         String endpoint = "/templates/" + templateId;
 

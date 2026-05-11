@@ -59,25 +59,37 @@ public class Templates {
      *
      * @param page a int.
      * @return a {@link com.mailersend.sdk.templates.Templates} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if page is less than 1.
      */
-    public Templates page(int page) {
-        
+    public Templates page(int page) throws MailerSendException {
+
+        if (page < 1) {
+
+            throw new MailerSendException("Page must be at least 1");
+        }
+
         pageFilter = page;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * Set the results limit (10 - 100)
      *
      * @param limit a int.
      * @return a {@link com.mailersend.sdk.templates.Templates} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if limit is not between 10 and 100.
      */
-    public Templates limit(int limit) {
-        
+    public Templates limit(int limit) throws MailerSendException {
+
+        if (limit < 10 || limit > 100) {
+
+            throw new MailerSendException("Limit must be between 10 and 100");
+        }
+
         limitFilter = limit;
-        
+
         return this;
     }
     
@@ -125,7 +137,12 @@ public class Templates {
      * @return a {@link com.mailersend.sdk.templates.Template} object.
      */
     public Template getTemplate(String templateId) throws MailerSendException {
-        
+
+        if (templateId == null || templateId.isBlank()) {
+
+            throw new MailerSendException("Template ID cannot be empty");
+        }
+
         String endpoint = "/templates/".concat(templateId);
         
         MailerSendApi api = new MailerSendApi();
@@ -150,7 +167,12 @@ public class Templates {
      * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteTemplate(String templateId) throws MailerSendException {
-        
+
+        if (templateId == null || templateId.isBlank()) {
+
+            throw new MailerSendException("Template ID cannot be empty");
+        }
+
         String endpoint = "/templates/".concat(templateId);
         
         MailerSendApi api = new MailerSendApi();
