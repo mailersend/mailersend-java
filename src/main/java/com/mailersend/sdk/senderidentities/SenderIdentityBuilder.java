@@ -218,18 +218,24 @@ public class SenderIdentityBuilder {
 
     /**
      * Shared PUT logic for update methods.
+     * Only name, reply_to_email, and reply_to_name are sent to the API on update.
      */
     private SenderIdentity performUpdate(String endpoint) throws MailerSendException {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
+        SenderIdentityUpdateBody updateBody = new SenderIdentityUpdateBody();
+        updateBody.name = builderBody.name;
+        updateBody.replyToEmail = builderBody.replyToEmail;
+        updateBody.replyToName = builderBody.replyToName;
+
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
 
-        String json = gson.toJson(builderBody);
+        String json = gson.toJson(updateBody);
 
         builderBody.reset();
 

@@ -30,7 +30,10 @@ public class Token {
     
     @SerializedName("status")
     public String status;
-    
+
+    @SerializedName("scopes")
+    public String[] scopes;
+
     @SerializedName("created_at")
     private String createdAtStr;
     

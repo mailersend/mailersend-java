@@ -155,6 +155,11 @@ public class UserBuilder {
             throw new MailerSendException("User role cannot be null or empty");
         }
 
+        if ("Custom User".equals(builderBody.role) && builderBody.permissions.isEmpty()) {
+
+            throw new MailerSendException("Permissions are required for Custom User role");
+        }
+
         String endpoint = "/users";
 
         MailerSendApi api = new MailerSendApi();
@@ -194,6 +199,11 @@ public class UserBuilder {
         if (builderBody.role == null || builderBody.role.isBlank()) {
 
             throw new MailerSendException("User role cannot be null or empty");
+        }
+
+        if ("Custom User".equals(builderBody.role) && builderBody.permissions.isEmpty()) {
+
+            throw new MailerSendException("Permissions are required for Custom User role");
         }
 
         String endpoint = "/users/".concat(userId);

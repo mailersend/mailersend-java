@@ -59,8 +59,7 @@ public class TokenAddBuilder {
          "dmarc_monitoring_full",
          "blocklist_monitoring_read",
          "blocklist_monitoring_full",
-         "whatsapp_full",
-         "ifttt"
+         "whatsapp_full"
     };
     
     /**
@@ -132,10 +131,15 @@ public class TokenAddBuilder {
     public TokenAdd addToken() throws MailerSendException {
        
         if (tokenAddBody.name == null || tokenAddBody.name.isBlank()) {
-            
+
             throw new MailerSendException("Token name cannot be null or empty");
         }
-        
+
+        if (tokenAddBody.name.length() > 50) {
+
+            throw new MailerSendException("Token name cannot be longer than 50 characters");
+        }
+
         if (tokenAddBody.scopes.size() == 0) {
             
             throw new MailerSendException("At least one scope is required");

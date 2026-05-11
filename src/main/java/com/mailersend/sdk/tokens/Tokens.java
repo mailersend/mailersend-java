@@ -163,6 +163,14 @@ public class Tokens {
      */
     public Token updateToken(String tokenId, String name, String status) throws MailerSendException {
 
+        boolean nameBlank = (name == null || name.isBlank());
+        boolean statusBlank = (status == null || status.isBlank());
+
+        if (nameBlank && statusBlank) {
+
+            throw new MailerSendException("At least one of name or status must be provided");
+        }
+
         String endpoint = "/token/".concat(tokenId);
 
         MailerSendApi api = new MailerSendApi();

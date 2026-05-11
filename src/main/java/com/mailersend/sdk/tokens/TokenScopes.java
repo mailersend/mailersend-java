@@ -104,7 +104,4 @@ public class TokenScopes {
 
     /** Constant <code>whatsappFull="whatsapp_full"</code> */
     public static final String whatsappFull = "whatsapp_full";
-
-    /** Constant <code>ifttt="ifttt"</code> */
-    public static final String ifttt = "ifttt";
 }

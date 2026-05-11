@@ -21,7 +21,9 @@ import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
 import com.mailersend.sdk.emailverification.EmailVerification;
 import com.mailersend.sdk.dmarcmonitoring.DmarcMonitoring;
+import com.mailersend.sdk.senderidentities.SenderIdentities;
 import com.mailersend.sdk.smtpusers.SmtpUsers;
+import com.mailersend.sdk.users.Users;
 
 /**
  * Main SDK Class
@@ -48,6 +50,8 @@ public class MailerSend {
     private Sms sms = null;
     private DmarcMonitoring dmarcMonitoring = null;
     private SmtpUsers smtpUsers = null;
+    private SenderIdentities senderIdentities = null;
+    private Users users = null;
     
     /**
      * <p>Constructor for MailerSend.</p>
@@ -69,6 +73,8 @@ public class MailerSend {
         sms = new Sms(this);
         dmarcMonitoring = new DmarcMonitoring(this);
         smtpUsers = new SmtpUsers(this);
+        senderIdentities = new SenderIdentities(this);
+        users = new Users(this);
     }
     
     
@@ -225,6 +231,24 @@ public class MailerSend {
      */
     public SmtpUsers smtpUsers() {
         return smtpUsers;
+    }
+
+    /**
+     * Get the sender identities access object
+     *
+     * @return the SenderIdentities object
+     */
+    public SenderIdentities senderIdentities() {
+        return senderIdentities;
+    }
+
+    /**
+     * Get the users access object
+     *
+     * @return the Users object
+     */
+    public Users users() {
+        return users;
     }
 
     /**

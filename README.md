@@ -1976,35 +1976,59 @@ public void CreateToken() {
 }
 ```
 
-### Update token
+### Update token (pause / unpause)
+
+Pause or unpause a token by passing `true` or `false`:
 
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.tokens.Token;
 
-public void CreateToken() {
-    
+public void updateToken() {
+
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
-    
-    try {
-        
-    MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
-    
+    ms.setToken("Your API token");
+
     try {
 
         // true to pause it, false to unpause it
-        Token token = ms.tokens().updateToken(T"token id", true);
-        
+        Token token = ms.tokens().updateToken("token id", true);
+
         System.out.println(token.name);
         System.out.println(token.status);
-        
+
     } catch (MailerSendException e) {
-        
+
         e.printStackTrace();
-        fail();
+    }
+}
+```
+
+### Update token name and/or status
+
+Update a token's name and status in a single call (both are optional; at least one must be provided):
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+
+public void updateTokenNameAndStatus() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Token token = ms.tokens().updateToken("token id", "New Name", "pause");
+
+        System.out.println(token.name);
+        System.out.println(token.status);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
     }
 }
 ```
