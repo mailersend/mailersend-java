@@ -134,7 +134,7 @@ public class EmailVerificationTests {
 	 * Behavior: POST /email-verification/verify returns the status field.
 	 */
 	@Test
-	public void test_verify_email_returns_status() {
+	public void testVerifyEmailReturnsStatus() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -157,7 +157,7 @@ public class EmailVerificationTests {
 	 * Validation: null email rejected before any HTTP call is made.
 	 */
 	@Test
-	public void test_verify_email_with_null_throws_exception() {
+	public void testVerifyEmailWithNullThrowsException() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -173,7 +173,7 @@ public class EmailVerificationTests {
 	 * Validation: empty email rejected before any HTTP call is made.
 	 */
 	@Test
-	public void test_verify_email_with_empty_string_throws_exception() {
+	public void testVerifyEmailWithEmptyStringThrowsException() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -189,7 +189,7 @@ public class EmailVerificationTests {
 	 * Failure mode: invalid token results in a 401 exception for verifyEmail.
 	 */
 	@Test
-	public void test_verify_email_with_invalid_token_throws_401() {
+	public void testVerifyEmailWithInvalidTokenThrows401() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.invalidToken);
@@ -205,7 +205,7 @@ public class EmailVerificationTests {
 	 * Behavior: POST /email-verification/verify-async returns id, address, status, result, error.
 	 */
 	@Test
-	public void test_verify_email_async_returns_response_fields() {
+	public void testVerifyEmailAsyncReturnsResponseFields() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -230,7 +230,7 @@ public class EmailVerificationTests {
 	 * Validation: null email rejected before any HTTP call is made for async verify.
 	 */
 	@Test
-	public void test_verify_email_async_with_null_throws_exception() {
+	public void testVerifyEmailAsyncWithNullThrowsException() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -246,7 +246,7 @@ public class EmailVerificationTests {
 	 * Validation: empty email rejected before any HTTP call is made for async verify.
 	 */
 	@Test
-	public void test_verify_email_async_with_empty_string_throws_exception() {
+	public void testVerifyEmailAsyncWithEmptyStringThrowsException() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -262,7 +262,7 @@ public class EmailVerificationTests {
 	 * Failure mode: invalid token results in a 401 exception for verifyEmailAsync.
 	 */
 	@Test
-	public void test_verify_email_async_with_invalid_token_throws_401() {
+	public void testVerifyEmailAsyncWithInvalidTokenThrows401() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.invalidToken);
@@ -278,7 +278,7 @@ public class EmailVerificationTests {
 	 * Behavior: GET /email-verification/verify-async/{id} returns id, address, status, result, error.
 	 */
 	@Test
-	public void test_get_verify_email_async_status_returns_response_fields() {
+	public void testGetVerifyEmailAsyncStatusReturnsResponseFields() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -304,7 +304,7 @@ public class EmailVerificationTests {
 	 * Validation: null id rejected before any HTTP call is made.
 	 */
 	@Test
-	public void test_get_verify_email_async_status_with_null_throws_exception() {
+	public void testGetVerifyEmailAsyncStatusWithNullThrowsException() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -320,7 +320,7 @@ public class EmailVerificationTests {
 	 * Validation: empty id rejected before any HTTP call is made.
 	 */
 	@Test
-	public void test_get_verify_email_async_status_with_empty_string_throws_exception() {
+	public void testGetVerifyEmailAsyncStatusWithEmptyStringThrowsException() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
@@ -336,7 +336,7 @@ public class EmailVerificationTests {
 	 * Failure mode: invalid id results in a 404 exception for getVerifyEmailAsyncStatus.
 	 */
 	@Test
-	public void test_get_verify_email_async_status_with_invalid_id_throws_404() {
+	public void testGetVerifyEmailAsyncStatusWithInvalidIdThrows404() {
 
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);

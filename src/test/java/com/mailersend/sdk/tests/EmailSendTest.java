@@ -230,7 +230,7 @@ public class EmailSendTest {
      */
     @ParameterizedTest(name = "{0}")
     @MethodSource("missingRequiredFieldEmails")
-    public void test_send_email_missing_required_field_fails(String label, Email email) {
+    public void testSendEmailMissingRequiredFieldFails(String label, Email email) {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -277,7 +277,7 @@ public class EmailSendTest {
      * Test send email with custom headers returns 202
      */
     @Test
-    public void test_send_email_with_headers() throws MailerSendException {
+    public void testSendEmailWithHeaders() throws MailerSendException {
         Email email = new Email();
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
         email.addRecipient(TestHelper.toName, TestHelper.toEmail);
@@ -297,7 +297,7 @@ public class EmailSendTest {
      * Test send email with precedence_bulk set to true returns 202
      */
     @Test
-    public void test_send_email_with_precedence_bulk() throws MailerSendException {
+    public void testSendEmailWithPrecedenceBulk() throws MailerSendException {
         Email email = new Email();
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
         email.addRecipient(TestHelper.toName, TestHelper.toEmail);
@@ -317,7 +317,7 @@ public class EmailSendTest {
      * Test send email with list_unsubscribe returns 202
      */
     @Test
-    public void test_send_email_with_list_unsubscribe() throws MailerSendException {
+    public void testSendEmailWithListUnsubscribe() throws MailerSendException {
         Email email = new Email();
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
         email.addRecipient(TestHelper.toName, TestHelper.toEmail);
@@ -337,7 +337,7 @@ public class EmailSendTest {
      * Test bulk send status response has all expected fields
      */
     @Test
-    public void test_bulk_send_status_has_all_fields() throws MailerSendException {
+    public void testBulkSendStatusHasAllFields() throws MailerSendException {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 

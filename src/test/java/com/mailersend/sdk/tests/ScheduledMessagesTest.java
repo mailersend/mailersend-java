@@ -45,7 +45,7 @@ public class ScheduledMessagesTest {
      * GET /v1/message-schedules returns a list with pagination
      */
     @Test
-    public void test_can_get_scheduled_messages() throws MailerSendException {
+    public void testCanGetScheduledMessages() throws MailerSendException {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -61,7 +61,7 @@ public class ScheduledMessagesTest {
      * GET /v1/message-schedules with domainId, page, limit, and status filters applied
      */
     @Test
-    public void test_can_get_scheduled_messages_with_filters() throws MailerSendException {
+    public void testCanGetScheduledMessagesWithFilters() throws MailerSendException {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -82,7 +82,7 @@ public class ScheduledMessagesTest {
      * GET /v1/message-schedules/{id} returns a single scheduled message with parsed dates
      */
     @Test
-    public void test_can_get_single_scheduled_message() throws MailerSendException {
+    public void testCanGetSingleScheduledMessage() throws MailerSendException {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -99,7 +99,7 @@ public class ScheduledMessagesTest {
      * DELETE /v1/message-schedules/{id} returns true on success
      */
     @Test
-    public void test_can_delete_scheduled_message() throws MailerSendException {
+    public void testCanDeleteScheduledMessage() throws MailerSendException {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -113,7 +113,7 @@ public class ScheduledMessagesTest {
      * GET /v1/message-schedules/{id} with invalid ID returns 404
      */
     @Test
-    public void test_get_scheduled_message_with_invalid_id_fails() {
+    public void testGetScheduledMessageWithInvalidIdFails() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -128,7 +128,7 @@ public class ScheduledMessagesTest {
      * DELETE /v1/message-schedules/{id} with invalid ID returns 404
      */
     @Test
-    public void test_delete_scheduled_message_with_invalid_id_fails() {
+    public void testDeleteScheduledMessageWithInvalidIdFails() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
@@ -143,7 +143,7 @@ public class ScheduledMessagesTest {
      * GET /v1/message-schedules with an invalid token returns 401
      */
     @Test
-    public void test_invalid_token_fails_with_401_on_get_scheduled_messages() {
+    public void testInvalidTokenFailsWith401OnGetScheduledMessages() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.invalidToken);
 

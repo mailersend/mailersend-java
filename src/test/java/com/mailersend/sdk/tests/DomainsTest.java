@@ -240,7 +240,7 @@ public class DomainsTest {
      * Tests updating a domain's settings with all available fields set
      */
     @Test
-    public void test_update_domain_settings_all_fields() {
+    public void testUpdateDomainSettingsAllFields() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

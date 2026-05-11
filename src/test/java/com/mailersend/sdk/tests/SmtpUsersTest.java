@@ -42,7 +42,7 @@ public class SmtpUsersTest {
      * Tests retrieval of SMTP users list
      */
     @Test
-    public void test_can_get_smtp_users() {
+    public void testCanGetSmtpUsers() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -65,7 +65,7 @@ public class SmtpUsersTest {
      * Tests retrieval of SMTP users list with pagination parameters
      */
     @Test
-    public void test_can_get_smtp_users_with_pagination() {
+    public void testCanGetSmtpUsersWithPagination() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -91,7 +91,7 @@ public class SmtpUsersTest {
      * Tests creating an SMTP user
      */
     @Test
-    public void test_can_create_smtp_user() {
+    public void testCanCreateSmtpUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -117,7 +117,7 @@ public class SmtpUsersTest {
      * Tests retrieval of a single SMTP user
      */
     @Test
-    public void test_can_get_single_smtp_user() {
+    public void testCanGetSingleSmtpUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -141,7 +141,7 @@ public class SmtpUsersTest {
      * Tests updating an SMTP user
      */
     @Test
-    public void test_can_update_smtp_user() {
+    public void testCanUpdateSmtpUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -168,7 +168,7 @@ public class SmtpUsersTest {
      * Tests deleting an SMTP user
      */
     @Test
-    public void test_can_delete_smtp_user() {
+    public void testCanDeleteSmtpUser() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -190,7 +190,7 @@ public class SmtpUsersTest {
      * Tests that retrieving an SMTP user with an invalid ID throws a 404 exception
      */
     @Test
-    public void test_get_smtp_user_with_invalid_id_fails() {
+    public void testGetSmtpUserWithInvalidIdFails() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -206,7 +206,7 @@ public class SmtpUsersTest {
      * Tests that deleting an SMTP user with an invalid ID throws a 404 exception
      */
     @Test
-    public void test_delete_smtp_user_with_invalid_id_fails() {
+    public void testDeleteSmtpUserWithInvalidIdFails() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -222,7 +222,7 @@ public class SmtpUsersTest {
      * Tests that an invalid token results in a 401 exception when listing SMTP users
      */
     @Test
-    public void test_invalid_token_fails_with_401_on_list_smtp_users() {
+    public void testInvalidTokenFailsWith401OnListSmtpUsers() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.invalidToken);
