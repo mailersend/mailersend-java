@@ -221,17 +221,178 @@ public class EmailSendTest {
         assertEquals(QUEUED, ms.emails().bulkSendStatus(bulkSendId).state);
     }
     
+    /**
+     * Test send email without from fails with 422
+     */
+    @Test
+    public void test_send_email_without_from_fails() {
+        Email email = new Email();
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.emails().send(email);
+        });
+        assertEquals(422, e.code);
+    }
+
+
+    /**
+     * Test send email without to fails with 422
+     */
+    @Test
+    public void test_send_email_without_to_fails() {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.emails().send(email);
+        });
+        assertEquals(422, e.code);
+    }
+
+
+    /**
+     * Test send email without subject fails with 422
+     */
+    @Test
+    public void test_send_email_without_subject_fails() {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.emails().send(email);
+        });
+        assertEquals(422, e.code);
+    }
+
+
+    /**
+     * Test send email without html and text body fails with 422
+     */
+    @Test
+    public void test_send_email_without_body_fails() {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.emails().send(email);
+        });
+        assertEquals(422, e.code);
+    }
+
+
+    /**
+     * Test send email with custom headers returns 202
+     */
+    @Test
+    public void test_send_email_with_headers() throws MailerSendException {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+        email.addHeader("X-Custom-Header", "custom-value");
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
+    }
+
+
+    /**
+     * Test send email with precedence_bulk set to true returns 202
+     */
+    @Test
+    public void test_send_email_with_precedence_bulk() throws MailerSendException {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+        email.setPrecedenceBulk(true);
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
+    }
+
+
+    /**
+     * Test send email with list_unsubscribe returns 202
+     */
+    @Test
+    public void test_send_email_with_list_unsubscribe() throws MailerSendException {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+        email.setListUnsubscribe("https://unsubscribe.example.com");
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
+    }
+
+
+    /**
+     * Test bulk send status response has all expected fields
+     */
+    @Test
+    public void test_bulk_send_status_has_all_fields() throws MailerSendException {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        com.mailersend.sdk.emails.BulkSendStatus status = ms.emails().bulkSendStatus("known-bulk-send-id");
+
+        assertNotNull(status.state);
+        assertNotNull(status.id);
+        assertTrue(status.id.length() > 0);
+        assertTrue(status.totalRecipientsCount >= 0);
+        assertNotNull(status.createdAt);
+    }
+
+
     @Test
     public void ScheduleEmailTest() throws MailerSendException {
         Email email = new Email();
-        
+
         email.subject = TestHelper.subject;
         email.html = TestHelper.html;
         email.text = TestHelper.text;
-        
+
         email.addRecipient(TestHelper.toName, TestHelper.toEmail);
         email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
-        
+
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
 
         TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse("2024-08-03T00:00:00.875000Z");
