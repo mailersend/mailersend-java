@@ -254,6 +254,10 @@ public class EmailVerification {
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public SingleEmailVerificationResponse verifyEmail(String email) throws MailerSendException {
+        if (email == null || email.isEmpty()) {
+            throw new MailerSendException("Email cannot be null or empty");
+        }
+
         String endpoint = "/email-verification/verify";
 
         MailerSendApi api = new MailerSendApi();
@@ -278,6 +282,10 @@ public class EmailVerification {
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public AsyncEmailVerificationResponse verifyEmailAsync(String email) throws MailerSendException {
+        if (email == null || email.isEmpty()) {
+            throw new MailerSendException("Email cannot be null or empty");
+        }
+
         String endpoint = "/email-verification/verify-async";
 
         MailerSendApi api = new MailerSendApi();
@@ -302,6 +310,10 @@ public class EmailVerification {
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public AsyncEmailVerificationResponse getVerifyEmailAsyncStatus(String id) throws MailerSendException {
+        if (id == null || id.isEmpty()) {
+            throw new MailerSendException("Verification ID cannot be null or empty");
+        }
+
         String endpoint = "/email-verification/verify-async/".concat(id);
 
         MailerSendApi api = new MailerSendApi();

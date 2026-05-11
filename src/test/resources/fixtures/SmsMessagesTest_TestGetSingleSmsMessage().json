@@ -1,0 +1,1 @@
+{"9e908c321317359dc1132fcf29e8c1706d19b81c":{"body":"{\"data\":{\"id\":\"sms-msg-id-test-1\",\"from\":\"+18133657349\",\"to\":[\"+18332552485\"],\"text\":\"test sms\",\"paused\":false,\"created_at\":\"2022-09-14T08:00:00.000000Z\",\"sms\":null}}","headers":{":status":["200"],"content-type":["application/json"]},"statusCode":200}}
