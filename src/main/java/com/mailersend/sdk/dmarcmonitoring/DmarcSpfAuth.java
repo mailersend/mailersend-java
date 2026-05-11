@@ -20,6 +20,9 @@ public class DmarcSpfAuth {
     @SerializedName("domain")
     public String domain;
 
+    @SerializedName("selector")
+    public String selector;
+
     @SerializedName("result")
     public String result;
 }

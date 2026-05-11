@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -194,7 +196,10 @@ public class DmarcMonitoringTest {
 
         try {
 
-            DmarcReportSourcesList list = ms.dmarcMonitoring().getReportSources(TestHelper.dmarcMonitorId);
+            DmarcReportSourcesList list = ms.dmarcMonitoring()
+                    .dateFrom("2023-01-01")
+                    .dateTo("2023-12-31")
+                    .getReportSources(TestHelper.dmarcMonitorId);
 
             for (DmarcReportSource source : list.sources) {
                 System.out.println(source.reportSource);
@@ -242,6 +247,70 @@ public class DmarcMonitoringTest {
             boolean removed = ms.dmarcMonitoring().removeIpFromFavorites(TestHelper.dmarcMonitorId, TestHelper.dmarcMonitorIp);
 
             System.out.println("IP removed from favorites: " + removed);
+
+        } catch (MailerSendException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    /**
+     * Tests that getReportSources() throws when dateFrom is not set
+     */
+    @Test
+    public void getReportSourcesMissingDateFromTest() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException ex = assertThrows(MailerSendException.class, () ->
+                ms.dmarcMonitoring()
+                        .dateTo("2023-12-31")
+                        .getReportSources(TestHelper.dmarcMonitorId)
+        );
+
+        assertEquals("dateFrom and dateTo are required for getReportSources.", ex.getMessage());
+    }
+
+    /**
+     * Tests that getReportSources() throws when dateTo is not set
+     */
+    @Test
+    public void getReportSourcesMissingDateToTest() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException ex = assertThrows(MailerSendException.class, () ->
+                ms.dmarcMonitoring()
+                        .dateFrom("2023-01-01")
+                        .getReportSources(TestHelper.dmarcMonitorId)
+        );
+
+        assertEquals("dateFrom and dateTo are required for getReportSources.", ex.getMessage());
+    }
+
+    /**
+     * Tests retrieving DMARC report sources with the status filter
+     */
+    @Test
+    public void getReportSourcesWithStatusTest() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            DmarcReportSourcesList list = ms.dmarcMonitoring()
+                    .dateFrom("2023-01-01")
+                    .dateTo("2023-12-31")
+                    .status("accepted")
+                    .getReportSources(TestHelper.dmarcMonitorId);
+
+            for (DmarcReportSource source : list.sources) {
+                System.out.println(source.reportSource);
+                System.out.println(source.reports);
+            }
 
         } catch (MailerSendException e) {
             e.printStackTrace();

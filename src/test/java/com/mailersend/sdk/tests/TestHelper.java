@@ -57,6 +57,9 @@ public class TestHelper {
     public static final String dmarcMonitorIp = "1.2.3.4";
     public static final String dmarcDomainId = "jpzkmgq7e5vl059v";
     public static final String dmarcWantedRecord = "v=DMARC1; p=reject; rua=mailto:dmarc@example.com;";
+
+    public static final String blocklistMonitorId = "blocklist-monitor-id-test";
+    public static final String blocklistMonitorAddress = "test-domain.com";
     
     /**
      * Creates a basic email with the above configuration

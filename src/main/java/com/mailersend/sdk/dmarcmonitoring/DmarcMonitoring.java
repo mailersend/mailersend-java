@@ -38,6 +38,7 @@ public class DmarcMonitoring {
     private String searchFilter = null;
     private String categoryFilter = null;
     private String reportSourceFilter = null;
+    private String statusFilter = null;
 
     private DmarcMonitorCreateBuilder createBuilder;
     private DmarcMonitorUpdateBuilder updateBuilder;
@@ -179,6 +180,18 @@ public class DmarcMonitoring {
      */
     public DmarcMonitoring reportSource(String reportSource) {
         reportSourceFilter = reportSource;
+        return this;
+    }
+
+    /**
+     * Filter report sources by DMARC disposition status.
+     * Allowed values: {@code accepted}, {@code rejected}, {@code quarantined}.
+     *
+     * @param status a {@link java.lang.String} object.
+     * @return a {@link DmarcMonitoring} object.
+     */
+    public DmarcMonitoring status(String status) {
+        statusFilter = status;
         return this;
     }
 
@@ -372,13 +385,17 @@ public class DmarcMonitoring {
 
     /**
      * Builds the query string for the report-sources endpoint.
-     * Includes: date_from, date_to (both required).
+     * Includes: date_from, date_to (both required), status (optional).
      */
     private String prepareReportSourcesParamsUrl() {
         ArrayList<String> params = new ArrayList<String>();
 
         params.add("date_from=".concat(dateFromFilter));
         params.add("date_to=".concat(dateToFilter));
+
+        if (statusFilter != null) {
+            params.add("status=".concat(statusFilter));
+        }
 
         return buildQueryString(params);
     }

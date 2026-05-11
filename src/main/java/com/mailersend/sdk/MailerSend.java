@@ -21,6 +21,7 @@ import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
 import com.mailersend.sdk.emailverification.EmailVerification;
 import com.mailersend.sdk.dmarcmonitoring.DmarcMonitoring;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitoring;
 import com.mailersend.sdk.senderidentities.SenderIdentities;
 import com.mailersend.sdk.smtpusers.SmtpUsers;
 import com.mailersend.sdk.users.Users;
@@ -49,6 +50,7 @@ public class MailerSend {
     private EmailVerification emailVerification = null;
     private Sms sms = null;
     private DmarcMonitoring dmarcMonitoring = null;
+    private BlocklistMonitoring blocklistMonitoring = null;
     private SmtpUsers smtpUsers = null;
     private SenderIdentities senderIdentities = null;
     private Users users = null;
@@ -72,6 +74,7 @@ public class MailerSend {
         emailVerification = new EmailVerification(this);
         sms = new Sms(this);
         dmarcMonitoring = new DmarcMonitoring(this);
+        blocklistMonitoring = new BlocklistMonitoring(this);
         smtpUsers = new SmtpUsers(this);
         senderIdentities = new SenderIdentities(this);
         users = new Users(this);
@@ -222,6 +225,15 @@ public class MailerSend {
      */
     public DmarcMonitoring dmarcMonitoring() {
         return dmarcMonitoring;
+    }
+
+    /**
+     * Get the blocklist monitoring access object
+     *
+     * @return the BlocklistMonitoring object
+     */
+    public BlocklistMonitoring blocklistMonitoring() {
+        return blocklistMonitoring;
     }
 
     /**
