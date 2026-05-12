@@ -22,19 +22,25 @@ public class DmarcAggregatedReport extends MailerSendResponse {
     public int totalVolume;
 
     @SerializedName("passed_dmarc")
-    public float passedDmarc;
+    public String passedDmarc;
 
     @SerializedName("passed_spf")
-    public float passedSpf;
+    public String passedSpf;
 
     @SerializedName("passed_dkim")
-    public float passedDkim;
+    public String passedDkim;
 
     @SerializedName("domain")
     public String domain;
 
     @SerializedName("country")
     public String country;
+
+    @SerializedName("country_code")
+    public String countryCode;
+
+    @SerializedName("city")
+    public String city;
 
     @SerializedName("is_favorite")
     public boolean isFavorite;

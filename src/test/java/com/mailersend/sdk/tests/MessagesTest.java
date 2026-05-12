@@ -41,7 +41,7 @@ public class MessagesTest {
      * Gets a lists of messages
      */
     @Test
-    public void TestMessagesRetrieval() {
+    public void testMessagesRetrieval() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -67,7 +67,7 @@ public class MessagesTest {
      * Tests a single message retrieval
      */
     @Test
-    public void TestSingleMessage() {
+    public void testSingleMessage() {
         
         // get a single message first
         MailerSend ms = new MailerSend();

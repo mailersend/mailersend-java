@@ -42,7 +42,7 @@ public class AnalyticsTest {
      * Gets analytics by date using date filters
      */
     @Test
-    public void TestAnalyticsByDate() {
+    public void testAnalyticsByDate() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -82,7 +82,7 @@ public class AnalyticsTest {
      * Tests analytics by date for a domain
      */
     @Test
-    public void TestAnalyticsByDateDomain() {
+    public void testAnalyticsByDateDomain() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -123,7 +123,7 @@ public class AnalyticsTest {
      * Tests opens by country
      */
     @Test
-    public void TestAnalyticsOpensByCountry() {
+    public void testAnalyticsOpensByCountry() {
         
         
         MailerSend ms = new MailerSend();
@@ -162,7 +162,7 @@ public class AnalyticsTest {
      * Tests opens by user agent
      */
     @Test
-    public void TestAnalyticsOpensByUa() {
+    public void testAnalyticsOpensByUa() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -198,7 +198,7 @@ public class AnalyticsTest {
      * Tests opens by reading environment
      */
     @Test
-    public void TestAnalyticsOpensByUaType() {
+    public void testAnalyticsOpensByUaType() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -215,7 +215,7 @@ public class AnalyticsTest {
             AnalyticsList list = ms.analytics()
                     .dateFrom(dateFrom)
                     .dateTo(dateTo)
-                    .getOpensByUserAgenType();
+                    .getOpensByUserAgentType();
             
             System.out.println("\n\nOpens by user agent type:");
             

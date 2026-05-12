@@ -13,11 +13,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.Recipient;
@@ -51,7 +55,7 @@ public class EmailSendTest {
      * Test token
      */
     @Test
-    public void TestInvalidTokenFailsWith401() {
+    public void testInvalidTokenFailsWith401() {
         
         Email email = new Email();
         
@@ -69,7 +73,7 @@ public class EmailSendTest {
      * Test wrong personalization
      */
     @Test
-    public void TestInvalidPersonalization() {
+    public void testInvalidPersonalization() {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -91,7 +95,7 @@ public class EmailSendTest {
      * Simple email send
      */
     @Test
-    public void TestSimpleSend() throws MailerSendException {
+    public void testSimpleSend() throws MailerSendException {
            	    	
         Email email = new Email();
         
@@ -116,7 +120,7 @@ public class EmailSendTest {
      * Test personalization from a POJO
      */
     @Test
-    public void TestPojoPersonalization() throws MailerSendException {
+    public void testPojoPersonalization() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -135,7 +139,7 @@ public class EmailSendTest {
      * Test email with CC
      */
     @Test
-    public void TestCcSend() throws MailerSendException {
+    public void testCcSend() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -152,7 +156,7 @@ public class EmailSendTest {
      * Test email with BCC
      */
     @Test
-    public void TestBccSend() throws MailerSendException {
+    public void testBccSend() throws MailerSendException {
         
         Email email = TestHelper.createBasicEmail(false);
         
@@ -169,7 +173,7 @@ public class EmailSendTest {
      * Test email with attachment
      */
     @Test
-    public void TestEmailWithAttachment() throws IOException, MailerSendException {
+    public void testEmailWithAttachment() throws IOException, MailerSendException {
 
         Email email = TestHelper.createBasicEmail(true);
 
@@ -186,7 +190,7 @@ public class EmailSendTest {
      * Test bulk email send
      */
     @Test
-    public void TestSendBulkEmail() throws MailerSendException {
+    public void testSendBulkEmail() throws MailerSendException {
        
         Email email = TestHelper.createBasicEmail(true);
         Email email2 = TestHelper.createBasicEmail(true);
@@ -206,7 +210,7 @@ public class EmailSendTest {
      * Test retrieving the status for a bulk send
      */
     @Test
-    public void TestBulkSendStatus() throws MailerSendException {
+    public void testBulkSendStatus() throws MailerSendException {
        
         Email email = TestHelper.createBasicEmail(true);
         Email email2 = TestHelper.createBasicEmail(true);
@@ -221,17 +225,143 @@ public class EmailSendTest {
         assertEquals(QUEUED, ms.emails().bulkSendStatus(bulkSendId).state);
     }
     
+    /**
+     * Tests that sending an email missing a required field fails with 422
+     */
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("missingRequiredFieldEmails")
+    public void testSendEmailMissingRequiredFieldFails(String label, Email email) {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.emails().send(email);
+        });
+        assertEquals(422, e.code);
+    }
+
+    static Stream<Arguments> missingRequiredFieldEmails() {
+        Email withoutFrom = new Email();
+        withoutFrom.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        withoutFrom.setSubject(TestHelper.subject);
+        withoutFrom.setHtml(TestHelper.html);
+        withoutFrom.setPlain(TestHelper.text);
+
+        Email withoutTo = new Email();
+        withoutTo.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        withoutTo.setSubject(TestHelper.subject);
+        withoutTo.setHtml(TestHelper.html);
+        withoutTo.setPlain(TestHelper.text);
+
+        Email withoutSubject = new Email();
+        withoutSubject.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        withoutSubject.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        withoutSubject.setHtml(TestHelper.html);
+        withoutSubject.setPlain(TestHelper.text);
+
+        Email withoutBody = new Email();
+        withoutBody.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        withoutBody.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        withoutBody.setSubject(TestHelper.subject);
+
+        return Stream.of(
+            Arguments.of("missing from", withoutFrom),
+            Arguments.of("missing to", withoutTo),
+            Arguments.of("missing subject", withoutSubject),
+            Arguments.of("missing body", withoutBody)
+        );
+    }
+
+
+    /**
+     * Test send email with custom headers returns 202
+     */
     @Test
-    public void ScheduleEmailTest() throws MailerSendException {
+    public void testSendEmailWithHeaders() throws MailerSendException {
         Email email = new Email();
-        
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+        email.addHeader("X-Custom-Header", "custom-value");
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
+    }
+
+
+    /**
+     * Test send email with precedence_bulk set to true returns 202
+     */
+    @Test
+    public void testSendEmailWithPrecedenceBulk() throws MailerSendException {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+        email.setPrecedenceBulk(true);
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
+    }
+
+
+    /**
+     * Test send email with list_unsubscribe returns 202
+     */
+    @Test
+    public void testSendEmailWithListUnsubscribe() throws MailerSendException {
+        Email email = new Email();
+        email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
+        email.addRecipient(TestHelper.toName, TestHelper.toEmail);
+        email.setSubject(TestHelper.subject);
+        email.setHtml(TestHelper.html);
+        email.setPlain(TestHelper.text);
+        email.setListUnsubscribe("https://unsubscribe.example.com");
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        assertEquals(202, ms.emails().send(email).responseStatusCode);
+    }
+
+
+    /**
+     * Test bulk send status response has all expected fields
+     */
+    @Test
+    public void testBulkSendStatusHasAllFields() throws MailerSendException {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        com.mailersend.sdk.emails.BulkSendStatus status = ms.emails().bulkSendStatus("known-bulk-send-id");
+
+        assertNotNull(status.state);
+        assertNotNull(status.id);
+        assertTrue(status.id.length() > 0);
+        assertTrue(status.totalRecipientsCount >= 0);
+        assertNotNull(status.createdAt);
+    }
+
+
+    @Test
+    public void scheduleEmailTest() throws MailerSendException {
+        Email email = new Email();
+
         email.subject = TestHelper.subject;
         email.html = TestHelper.html;
         email.text = TestHelper.text;
-        
+
         email.addRecipient(TestHelper.toName, TestHelper.toEmail);
         email.AddReplyTo(new Recipient(TestHelper.fromName, TestHelper.emailFrom));
-        
+
         email.setFrom(TestHelper.fromName, TestHelper.emailFrom);
 
         TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse("2024-08-03T00:00:00.875000Z");

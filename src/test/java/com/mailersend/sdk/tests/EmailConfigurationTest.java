@@ -21,7 +21,7 @@ public class EmailConfigurationTest {
      * Tests the from name and email
      */
     @Test
-    public void TestEmailFromConfiguration() {
+    public void testEmailFromConfiguration() {
         
         Email email = TestHelper.createBasicEmail(true);
         
@@ -36,7 +36,7 @@ public class EmailConfigurationTest {
      * Tests that a single recipient can be added
      */
     @Test
-    public void TestSingleRecipientConfiguration() {
+    public void testSingleRecipientConfiguration() {
         
         Email email = TestHelper.createBasicEmail(true);
         
@@ -52,7 +52,7 @@ public class EmailConfigurationTest {
      * Tests that multiple recipients can be added
      */
     @Test
-    public void TestMultipleRecipientsConfiguration() {
+    public void testMultipleRecipientsConfiguration() {
         
         String secondRecipientName = "Test Recipient 2";
         String secondRecipientEmail = "test@recipient2.com";
@@ -72,7 +72,7 @@ public class EmailConfigurationTest {
      * Tests that the subject, and html and plain bodies are added to the email
      */
     @Test
-    public void TestEmailContentsConfiguration() {
+    public void testEmailContentsConfiguration() {
         
         Email email = TestHelper.createBasicEmail(true);
         
@@ -86,7 +86,7 @@ public class EmailConfigurationTest {
      * Tests the email personalization
      */
     @Test
-    public void TestEmailPersonalization() {
+    public void testEmailPersonalization() {
         
         String personalizationName = "test_personalization";
         String personalizationValue = "test_personalization_value";
@@ -130,7 +130,7 @@ public class EmailConfigurationTest {
      * Tests that different recipients can have different personalization
      */
     @Test
-    public void TestMultipleRecipientsPersonalization() {
+    public void testMultipleRecipientsPersonalization() {
         
         String personalizationName = "test_personalization";
         String personalizationValue = "test_personalization_value";
@@ -172,7 +172,7 @@ public class EmailConfigurationTest {
      * Tests that carbon copy recipients can be added to the email
      */
     @Test
-    public void TestCcRecipients() {
+    public void testCcRecipients() {
         
         Recipient ccRecipient1 = new Recipient("name1", "test1@cc.com");
         Recipient ccRecipient2 = new Recipient("name2", "test2@cc.com");
@@ -201,27 +201,160 @@ public class EmailConfigurationTest {
      * Tests that blind carbon copy recipients can be added to the email
      */
     @Test
-    public void TestBccRecipients() {
-        
+    public void testBccRecipients() {
+
         Recipient bccRecipient1 = new Recipient("name1", "test1@bcc.com");
         Recipient bccRecipient2 = new Recipient("name2", "test2@bcc.com");
-        
+
         Email email = TestHelper.createBasicEmail(false);
-        
+
         // test adding the recipient directly
         email.AddBcc(bccRecipient1.name, bccRecipient1.email);
-        
+
         assertEquals(email.bcc.size(), 1);
-        
+
         assertTrue(email.bcc.get(0).name.equals(bccRecipient1.name));
         assertTrue(email.bcc.get(0).email.equals(bccRecipient1.email));
-        
+
         // test adding the recipient object
         email.AddBcc(bccRecipient2);
-        
+
         assertEquals(email.bcc.size(), 2);
-        
+
         assertTrue(email.bcc.get(1).name.equals(bccRecipient2.name));
         assertTrue(email.bcc.get(1).email.equals(bccRecipient2.email));
+    }
+
+
+    /**
+     * Tests that RCPT TO recipients can be added to the email via name/email strings
+     */
+    @Test
+    public void testRcptToRecipientsWithStrings() {
+
+        Email email = TestHelper.createBasicEmail(false);
+
+        email.addRcptTo("rcpt name 1", "rcpt1@client.com");
+
+        assertEquals(1, email.rcptTo.size());
+        assertEquals("rcpt name 1", email.rcptTo.get(0).name);
+        assertEquals("rcpt1@client.com", email.rcptTo.get(0).email);
+
+        email.addRcptTo("rcpt name 2", "rcpt2@client.com");
+
+        assertEquals(2, email.rcptTo.size());
+        assertEquals("rcpt name 2", email.rcptTo.get(1).name);
+        assertEquals("rcpt2@client.com", email.rcptTo.get(1).email);
+    }
+
+
+    /**
+     * Tests that RCPT TO recipients can be added to the email via Recipient objects
+     */
+    @Test
+    public void testRcptToRecipientsWithObjects() {
+
+        Recipient rcpt1 = new Recipient("rcpt name 1", "rcpt1@client.com");
+        Recipient rcpt2 = new Recipient("rcpt name 2", "rcpt2@client.com");
+
+        Email email = TestHelper.createBasicEmail(false);
+
+        email.addRcptTo(rcpt1);
+
+        assertEquals(1, email.rcptTo.size());
+        assertEquals(rcpt1.name, email.rcptTo.get(0).name);
+        assertEquals(rcpt1.email, email.rcptTo.get(0).email);
+
+        email.addRcptTo(rcpt2);
+
+        assertEquals(2, email.rcptTo.size());
+        assertEquals(rcpt2.name, email.rcptTo.get(1).name);
+        assertEquals(rcpt2.email, email.rcptTo.get(1).email);
+    }
+
+
+    /**
+     * Tests that rcptTo field serializes correctly as "rcpt_to" in JSON
+     */
+    @Test
+    public void testRcptToSerialization() {
+
+        Email email = TestHelper.createBasicEmail(true);
+
+        email.addRcptTo("rcpt name", "rcpt@client.com");
+
+        String json = email.serializeForSending();
+
+        assertTrue(json.contains("\"rcpt_to\""));
+        assertTrue(json.contains("rcpt@client.com"));
+    }
+
+
+    /**
+     * Tests that the camelCase addCc method works the same as AddCc
+     */
+    @Test
+    public void testCamelCaseAddCc() {
+
+        Recipient ccRecipient = new Recipient("cc name", "cc@test.com");
+
+        Email email = TestHelper.createBasicEmail(false);
+
+        email.addCc(ccRecipient.name, ccRecipient.email);
+
+        assertEquals(1, email.cc.size());
+        assertEquals(ccRecipient.name, email.cc.get(0).name);
+        assertEquals(ccRecipient.email, email.cc.get(0).email);
+
+        Email email2 = TestHelper.createBasicEmail(false);
+        email2.addCc(ccRecipient);
+
+        assertEquals(1, email2.cc.size());
+        assertEquals(ccRecipient.name, email2.cc.get(0).name);
+    }
+
+
+    /**
+     * Tests that the camelCase addBcc method works the same as AddBcc
+     */
+    @Test
+    public void testCamelCaseAddBcc() {
+
+        Recipient bccRecipient = new Recipient("bcc name", "bcc@test.com");
+
+        Email email = TestHelper.createBasicEmail(false);
+
+        email.addBcc(bccRecipient.name, bccRecipient.email);
+
+        assertEquals(1, email.bcc.size());
+        assertEquals(bccRecipient.name, email.bcc.get(0).name);
+        assertEquals(bccRecipient.email, email.bcc.get(0).email);
+
+        Email email2 = TestHelper.createBasicEmail(false);
+        email2.addBcc(bccRecipient);
+
+        assertEquals(1, email2.bcc.size());
+        assertEquals(bccRecipient.name, email2.bcc.get(0).name);
+    }
+
+
+    /**
+     * Tests that the camelCase addReplyTo method works correctly
+     */
+    @Test
+    public void testCamelCaseAddReplyTo() {
+
+        Email email = TestHelper.createBasicEmail(false);
+
+        email.addReplyTo("reply name", "reply@test.com");
+
+        assertEquals("reply name", email.replyTo.name);
+        assertEquals("reply@test.com", email.replyTo.email);
+
+        Recipient replyToRecipient = new Recipient("reply name 2", "reply2@test.com");
+        email.addReplyTo(replyToRecipient);
+
+        assertEquals("reply name 2", email.replyTo.name);
+        assertEquals("reply2@test.com", email.replyTo.email);
     }
 }

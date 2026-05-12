@@ -40,4 +40,19 @@ public class EventTypes {
     
     /** Constant <code>SPAM_COMPLAINTS="spam_complaints"</code> */
     public static final String SPAM_COMPLAINTS = "spam_complaints";
+
+    /** Constant <code>DEFERRED="deferred"</code> */
+    public static final String DEFERRED = "deferred";
+
+    /** Constant <code>OPENED_UNIQUE="opened_unique"</code> */
+    public static final String OPENED_UNIQUE = "opened_unique";
+
+    /** Constant <code>CLICKED_UNIQUE="clicked_unique"</code> */
+    public static final String CLICKED_UNIQUE = "clicked_unique";
+
+    /** Constant <code>SURVEY_OPENED="survey_opened"</code> */
+    public static final String SURVEY_OPENED = "survey_opened";
+
+    /** Constant <code>SURVEY_SUBMITTED="survey_submitted"</code> */
+    public static final String SURVEY_SUBMITTED = "survey_submitted";
 }

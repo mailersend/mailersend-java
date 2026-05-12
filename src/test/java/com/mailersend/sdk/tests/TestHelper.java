@@ -48,10 +48,18 @@ public class TestHelper {
     
     public static final String smsPhoneNumberId = "3yxj6lj9x14do2rm";
 
+    public static final String smtpUserId = "0wkg2zj19ovx5py7";
+    public static final String smtpUserIdToDelete = "0wkg2zj19ovx5py7";
+    public static final String invalidSmtpUserId = "invalid-smtp-user-id";
+    public static final String invalidTokenDomainId = "invalid-domain-id";
+
     public static final String dmarcMonitorId = "dmarc-monitor-id-test";
     public static final String dmarcMonitorIp = "1.2.3.4";
     public static final String dmarcDomainId = "jpzkmgq7e5vl059v";
     public static final String dmarcWantedRecord = "v=DMARC1; p=reject; rua=mailto:dmarc@example.com;";
+
+    public static final String blocklistMonitorId = "blocklist-monitor-id-test";
+    public static final String blocklistMonitorAddress = "test-domain.com";
     
     /**
      * Creates a basic email with the above configuration

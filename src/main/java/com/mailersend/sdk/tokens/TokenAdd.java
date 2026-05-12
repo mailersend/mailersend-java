@@ -31,7 +31,13 @@ public class TokenAdd {
     
     @SerializedName("name")
     public String name;
-    
+
+    @SerializedName("scopes")
+    public String[] scopes;
+
+    @SerializedName("domain")
+    public TokenDomain domain;
+
     @SerializedName("created_at")
     private String createdAtStr;
     

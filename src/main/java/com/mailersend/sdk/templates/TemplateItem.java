@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
+import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -33,11 +34,25 @@ public class TemplateItem {
     
     @SerializedName("image_path")
     public String imagePath;
-    
+
+    @SerializedName("description")
+    public String description;
+
+    @SerializedName("tags")
+    public String[] tags;
+
+    @SerializedName("variables")
+    public Map<String, Object> variables;
+
     public Date createdAt;
-    
+
     @SerializedName("created_at")
     private String createdAtStr;
+
+    public Date updatedAt;
+
+    @SerializedName("updated_at")
+    private String updatedAtStr;
     
     
     /**
@@ -59,11 +74,18 @@ public class TemplateItem {
         Instant instant;
         
         if (createdAtStr != null && !createdAtStr.isBlank()) {
-            
+
             ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtStr);
             instant = Instant.from(ta);
             createdAt = Date.from(instant);
         }
-        
+
+        if (updatedAtStr != null && !updatedAtStr.isBlank()) {
+
+            ta = DateTimeFormatter.ISO_INSTANT.parse(updatedAtStr);
+            instant = Instant.from(ta);
+            updatedAt = Date.from(instant);
+        }
+
     }
 }

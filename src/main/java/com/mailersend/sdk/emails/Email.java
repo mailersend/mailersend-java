@@ -49,6 +49,9 @@ public class Email {
     @SerializedName("reply_to")
     public Recipient replyTo;
 
+    @SerializedName("rcpt_to")
+    public ArrayList<Recipient> rcptTo = new ArrayList<Recipient>();
+
     @SerializedName("subject")
     public String subject;
 
@@ -82,9 +85,21 @@ public class Email {
     
     @SerializedName("in_reply_to")
     public String inReplyTo;
-    
+
     @SerializedName("list_unsubscribe")
     public String listUnsubscribe;
+
+    @SerializedName("settings")
+    public EmailSettings settings;
+
+    @SerializedName("headers")
+    public ArrayList<EmailHeader> headers = new ArrayList<EmailHeader>();
+
+    @SerializedName("references")
+    public ArrayList<String> references = new ArrayList<String>();
+
+    @SerializedName("precedence_bulk")
+    public Boolean precedenceBulk;
     
     /**
      * Adds a recipient to the email
@@ -93,102 +108,227 @@ public class Email {
      * @param email a {@link java.lang.String} object.
      */
     public void addRecipient(String name, String email) {
-        
+
         Recipient recipient = new Recipient(name, email);
         this.recipients.add(recipient);
     }
-    
-    
+
+
+    /**
+     * Adds a recipient to the email
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     */
+    public void addRecipient(Recipient recipient) {
+
+        this.recipients.add(recipient);
+    }
+
+
     /**
      * Adds a recipient
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     * @deprecated Use {@link #addRecipient(Recipient)} instead.
      */
     public void AddRecipient(Recipient recipient) {
-        
-        this.recipients.add(recipient);
+
+        addRecipient(recipient);
     }
-    
-    
+
+
     /**
      * Adds multiple recipients to the email
      *
      * @param recipients an array of {@link com.mailersend.sdk.Recipient} objects.
      */
-    public void AddRecipients(Recipient[] recipients) {
-        
+    public void addRecipients(Recipient[] recipients) {
+
         this.recipients.addAll( Arrays.asList( recipients ) );
     }
-    
-    
+
+
+    /**
+     * Adds multiple recipients to the email
+     *
+     * @param recipients an array of {@link com.mailersend.sdk.Recipient} objects.
+     * @deprecated Use {@link #addRecipients(Recipient[])} instead.
+     */
+    public void AddRecipients(Recipient[] recipients) {
+
+        addRecipients(recipients);
+    }
+
+
     /**
      * Adds a carbon copy recipient to the email
      *
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
+     */
+    public void addCc(String name, String email) {
+
+        Recipient recipient = new Recipient(name, email);
+        this.cc.add(recipient);
+    }
+
+
+    /**
+     * Adds a carbon copy recipient to the email
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     */
+    public void addCc(Recipient recipient) {
+
+        this.cc.add(recipient);
+    }
+
+
+    /**
+     * Adds a carbon copy recipient to the email
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
+     * @deprecated Use {@link #addCc(String, String)} instead.
      */
     public void AddCc(String name, String email) {
-        
-        Recipient recipient = new Recipient(name, email);
-        this.cc.add(recipient);
+
+        addCc(name, email);
     }
-    
-    
+
+
     /**
      * Adds a carbon copy recipient to the email
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     * @deprecated Use {@link #addCc(Recipient)} instead.
      */
     public void AddCc(Recipient recipient) {
-        
-        this.cc.add(recipient);
+
+        addCc(recipient);
     }
-    
-    
+
+
     /**
      * Adds a blind carbon copy recipient to the email
      *
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
      */
-    public void AddBcc(String name, String email) {
-        
+    public void addBcc(String name, String email) {
+
         Recipient recipient = new Recipient(name, email);
         this.bcc.add(recipient);
     }
-    
-    
+
+
     /**
      * Adds a blind carbon copy recipient to the email
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      */
-    public void AddBcc(Recipient recipient) {
-        
+    public void addBcc(Recipient recipient) {
+
         this.bcc.add(recipient);
     }
-    
-    
+
+
+    /**
+     * Adds a blind carbon copy recipient to the email
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
+     * @deprecated Use {@link #addBcc(String, String)} instead.
+     */
+    public void AddBcc(String name, String email) {
+
+        addBcc(name, email);
+    }
+
+
+    /**
+     * Adds a blind carbon copy recipient to the email
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     * @deprecated Use {@link #addBcc(Recipient)} instead.
+     */
+    public void AddBcc(Recipient recipient) {
+
+        addBcc(recipient);
+    }
+
+
     /**
      * Sets the reply to parameter
      *
      * @param replyTo a {@link com.mailersend.sdk.Recipient} object.
      */
-    public void AddReplyTo(Recipient replyTo) {
-        
+    public void addReplyTo(Recipient replyTo) {
+
         this.replyTo = replyTo;
     }
-    
-    
+
+
     /**
      * Sets the reply to parameter
      *
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
      */
-    public void AddReplyTo(String name, String email) {
-        
+    public void addReplyTo(String name, String email) {
+
         this.replyTo = new Recipient(name, email);
+    }
+
+
+    /**
+     * Sets the reply to parameter
+     *
+     * @param replyTo a {@link com.mailersend.sdk.Recipient} object.
+     * @deprecated Use {@link #addReplyTo(Recipient)} instead.
+     */
+    public void AddReplyTo(Recipient replyTo) {
+
+        addReplyTo(replyTo);
+    }
+
+
+    /**
+     * Sets the reply to parameter
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
+     * @deprecated Use {@link #addReplyTo(String, String)} instead.
+     */
+    public void AddReplyTo(String name, String email) {
+
+        addReplyTo(name, email);
+    }
+
+
+    /**
+     * Adds an RCPT TO recipient for SMTP relay delivery.
+     * When {@code to} is empty and {@code rcptTo} is provided, addresses are forwarded as BCC.
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param email a {@link java.lang.String} object.
+     */
+    public void addRcptTo(String name, String email) {
+
+        Recipient recipient = new Recipient(name, email);
+        this.rcptTo.add(recipient);
+    }
+
+
+    /**
+     * Adds an RCPT TO recipient for SMTP relay delivery.
+     * When {@code to} is empty and {@code rcptTo} is provided, addresses are forwarded as BCC.
+     *
+     * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     */
+    public void addRcptTo(Recipient recipient) {
+
+        this.rcptTo.add(recipient);
     }
     
     
@@ -313,8 +453,45 @@ public class Email {
     public void setListUnsubscribe(String listUnsubscribe) {
     	this.listUnsubscribe = listUnsubscribe;
     }
-    
-    
+
+    /**
+     * Sets the email tracking settings
+     *
+     * @param settings a {@link com.mailersend.sdk.emails.EmailSettings} object.
+     */
+    public void setSettings(EmailSettings settings) {
+        this.settings = settings;
+    }
+
+    /**
+     * Adds a custom email header
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param value a {@link java.lang.String} object.
+     */
+    public void addHeader(String name, String value) {
+        this.headers.add(new EmailHeader(name, value));
+    }
+
+    /**
+     * Adds a reference to the email
+     *
+     * @param reference a {@link java.lang.String} object.
+     */
+    public void addReference(String reference) {
+        this.references.add(reference);
+    }
+
+    /**
+     * Sets the precedence bulk flag
+     *
+     * @param precedenceBulk a boolean.
+     */
+    public void setPrecedenceBulk(boolean precedenceBulk) {
+        this.precedenceBulk = precedenceBulk;
+    }
+
+
     /**
      * Adds personalization to all recipients
      *
@@ -333,20 +510,45 @@ public class Email {
      * @param name a {@link java.lang.String} object.
      * @param value a {@link java.lang.String} object.
      */
-    public void AddVariable(String name, String value) {
-        
+    public void addVariable(String name, String value) {
+
         this.allRecipientsSubstitutions.put(name, value);
     }
-    
-    
+
+
+    /**
+     * Adds a variable to all recipients
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param value a {@link java.lang.String} object.
+     * @deprecated Use {@link #addVariable(String, String)} instead.
+     */
+    public void AddVariable(String name, String value) {
+
+        addVariable(name, value);
+    }
+
+
     /**
      * Add a tag to the email
      *
      * @param tag a {@link java.lang.String} object.
      */
-    public void AddTag(String tag) {
-        
+    public void addTag(String tag) {
+
         tags.add(tag);
+    }
+
+
+    /**
+     * Add a tag to the email
+     *
+     * @param tag a {@link java.lang.String} object.
+     * @deprecated Use {@link #addTag(String)} instead.
+     */
+    public void AddTag(String tag) {
+
+        addTag(tag);
     }
     
     

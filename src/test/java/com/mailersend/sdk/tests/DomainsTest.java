@@ -1,5 +1,7 @@
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -38,7 +40,7 @@ public class DomainsTest {
      * Tests domains retrieval
      */
     @Test
-    public void DomainsListTest() {
+    public void domainsListTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -65,7 +67,7 @@ public class DomainsTest {
      * Tests the retrieval of a single domain
      */
     @Test
-    public void SingleDomainTest() {
+    public void singleDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -89,7 +91,7 @@ public class DomainsTest {
      * Tests the retrival of recipients per domain
      */
     @Test
-    public void ReceipientsPerDomainTest() {
+    public void receipientsPerDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -114,7 +116,7 @@ public class DomainsTest {
      * Tests adding a domain
      */
     @Test
-    public void AddDomainTest() {
+    public void addDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -138,7 +140,7 @@ public class DomainsTest {
      * Tests deleting a domain
      */
     @Test
-    public void DeleteDomainTest() {
+    public void deleteDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -161,7 +163,7 @@ public class DomainsTest {
      * Tests the domain dns records retrieval
      */
     @Test
-    public void DomainDnsRecordsTest() {
+    public void domainDnsRecordsTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -188,7 +190,7 @@ public class DomainsTest {
      * Tests domain verification
      */
     @Test
-    public void VerifyDomainTest() {
+    public void verifyDomainTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -211,7 +213,7 @@ public class DomainsTest {
      * Tests updating a domain's settings
      */
     @Test
-    public void UpdateDomainSettingsTest() {
+    public void updateDomainSettingsTest() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -234,6 +236,46 @@ public class DomainsTest {
     }
     
     
+    /**
+     * Tests updating a domain's settings with all available fields set
+     */
+    @Test
+    public void testUpdateDomainSettingsAllFields() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            Domain domain = ms.domains().updateDomainSettingsBuilder()
+                .sendPaused(true)
+                .trackClicks(true)
+                .trackOpens(true)
+                .trackUnsubscribe(true)
+                .trackUnsubscribeHtml("<p>Unsubscribe</p>")
+                .trackUnsubscribeHtmlEnabled(true)
+                .trackUnsubscribePlain("Click here to unsubscribe")
+                .trackUnsubscribePlainEnabled(true)
+                .trackContent(true)
+                .customnTrackingEnabled(true)
+                .customTrackingSubdomain("email")
+                .precedenceBulk(false)
+                .ignoreDuplicatedRecipients(true)
+                .updateDomain(TestHelper.domainId);
+
+            assertNotNull(domain.domainSettings);
+            assertEquals(true, domain.domainSettings.sendPaused);
+            assertEquals(true, domain.domainSettings.trackClicks);
+            assertEquals(true, domain.domainSettings.ignoreDuplicatedRecipients);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
     /**
      * Simple helper method to print the DomainDnsAttribute properties
      * @param attribute

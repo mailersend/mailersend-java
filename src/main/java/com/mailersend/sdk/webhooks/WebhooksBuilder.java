@@ -89,9 +89,57 @@ public class WebhooksBuilder {
      * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
      */
     public WebhooksBuilder clearEvents() {
-        
+
         builderBody.events.clear();
-        
+
+        return this;
+    }
+
+
+    /**
+     * Set whether the webhook is editable
+     *
+     * @param editable a boolean.
+     * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
+     */
+    public WebhooksBuilder editable(boolean editable) {
+
+        builderBody.editable = editable;
+
+        return this;
+    }
+
+
+    /**
+     * Set whether the webhook is enabled
+     *
+     * @param enabled a boolean.
+     * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
+     */
+    public WebhooksBuilder enabled(boolean enabled) {
+
+        builderBody.enabled = enabled;
+
+        return this;
+    }
+
+
+    /**
+     * Set the webhook version (1 or 2)
+     *
+     * @param version an int (valid values: 1 or 2).
+     * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if the version is not 1 or 2.
+     */
+    public WebhooksBuilder version(int version) throws MailerSendException {
+
+        if (version != 1 && version != 2) {
+
+            throw new MailerSendException("Webhook version must be 1 or 2");
+        }
+
+        builderBody.version = version;
+
         return this;
     }
     
@@ -123,13 +171,18 @@ public class WebhooksBuilder {
         }
         
         
+        if (builderBody.events.isEmpty()) {
+
+            throw new MailerSendException("At least one webhook event is required");
+        }
+
         for (String event : builderBody.events) {
             if (!Arrays.asList(WebhookEvents.events).contains(event)) {
-                
+
                 throw new MailerSendException("Webhook event is not valid");
             }
         }
-        
+
         String endpoint = "/webhooks";
         
         MailerSendApi api = new MailerSendApi();

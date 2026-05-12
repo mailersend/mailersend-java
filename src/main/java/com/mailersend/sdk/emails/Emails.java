@@ -185,7 +185,7 @@ public class Emails {
                 
                 newStatus.updatedAtString = data.get("updated_at").getAsString();
                 
-                JsonElement validationErrorsEl = data.get("validataion_errors"); 
+                JsonElement validationErrorsEl = data.get("validation_errors");
                 
                 if (validationErrorsEl != null) {
                 

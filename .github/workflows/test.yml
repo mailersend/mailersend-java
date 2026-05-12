@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run:
+
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        operating-system: [ubuntu-24.04]
+        java-versions: ['11', '17', '21']
+    name: Java ${{ matrix.java-versions }} Test on ${{ matrix.operating-system }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK ${{ matrix.java-versions }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: ${{ matrix.java-versions }}
+        cache: 'maven'
+
+    - name: Run test suite
+      run: mvn test

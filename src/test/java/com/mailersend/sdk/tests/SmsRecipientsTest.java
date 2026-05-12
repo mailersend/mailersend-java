@@ -1,6 +1,7 @@
 package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class SmsRecipientsTest {
 	
 
     @Test
-    public void TestSmsRecipientsRetrieval() {
+    public void testSmsRecipientsRetrieval() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -53,7 +54,7 @@ public class SmsRecipientsTest {
     
     
     @Test
-    public void TestSmsSingleRecipientRetrieval() {
+    public void testSmsSingleRecipientRetrieval() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -72,19 +73,63 @@ public class SmsRecipientsTest {
     }
     
     @Test
-    public void TestSmsRecipientUpdate() {
-        
+    public void testSmsRecipientUpdate() {
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
-        
+
         	SmsRecipientList list = ms.sms().recipients().getRecipients();
-        	
+
         	SmsRecipient recipient = ms.sms().recipients().updateRecipient(list.recipients[0].id, "opt_out");
-        	
+
         	assertEquals("opt_out", recipient.status);
-        	
+
+        } catch (MailerSendException ex) {
+        	fail();
+        }
+    }
+
+    /**
+     * Tests that the status filter is included in the request URL when set
+     */
+    @Test
+    public void testSmsRecipientsWithStatusFilter() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+        	SmsRecipientList list = ms.sms().recipients()
+        	        .status("opt_out")
+        	        .getRecipients();
+
+        	assertEquals("opt_out", list.recipients[0].status);
+
+        } catch (MailerSendException ex) {
+        	fail();
+        }
+    }
+
+    /**
+     * Tests that the sms_number_id filter is included in the request URL when set
+     */
+    @Test
+    public void testSmsRecipientsWithSmsNumberIdFilter() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+        	SmsRecipientList list = ms.sms().recipients()
+        	        .numberId(TestHelper.smsPhoneNumberId)
+        	        .getRecipients();
+
+        	assertNotNull(list.recipients);
+
         } catch (MailerSendException ex) {
         	fail();
         }

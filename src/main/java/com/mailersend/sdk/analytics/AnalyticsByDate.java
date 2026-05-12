@@ -24,9 +24,6 @@ public class AnalyticsByDate {
     
     public Date statDate;
     
-    @SerializedName("processed")
-    public int processed;
-    
     @SerializedName("queued")
     public int queued;
     
@@ -41,10 +38,7 @@ public class AnalyticsByDate {
     
     @SerializedName("hard_bounced")
     public int hardBounced;
-    
-    @SerializedName("junk")
-    public int junk;
-    
+
     @SerializedName("opened")
     public int opened;
     
@@ -56,8 +50,23 @@ public class AnalyticsByDate {
     
     @SerializedName("spam_complaints")
     public int spamComplaints;
-    
-    
+
+    @SerializedName("deferred")
+    public int deferred;
+
+    @SerializedName("opened_unique")
+    public int openedUnique;
+
+    @SerializedName("clicked_unique")
+    public int clickedUnique;
+
+    @SerializedName("survey_opened")
+    public int surveyOpened;
+
+    @SerializedName("survey_submitted")
+    public int surveySubmitted;
+
+
     /**
      * <p>postDeserialize.</p>
      */

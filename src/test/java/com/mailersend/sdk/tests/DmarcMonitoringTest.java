@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -44,7 +46,7 @@ public class DmarcMonitoringTest {
      * Tests listing DMARC monitors
      */
     @Test
-    public void ListMonitorsTest() {
+    public void listMonitorsTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -69,7 +71,7 @@ public class DmarcMonitoringTest {
      * Tests creating a DMARC monitor
      */
     @Test
-    public void CreateMonitorTest() {
+    public void createMonitorTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -92,7 +94,7 @@ public class DmarcMonitoringTest {
      * Tests updating a DMARC monitor
      */
     @Test
-    public void UpdateMonitorTest() {
+    public void updateMonitorTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -116,7 +118,7 @@ public class DmarcMonitoringTest {
      * Tests deleting a DMARC monitor
      */
     @Test
-    public void DeleteMonitorTest() {
+    public void deleteMonitorTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -137,7 +139,7 @@ public class DmarcMonitoringTest {
      * Tests retrieving aggregated DMARC reports
      */
     @Test
-    public void GetAggregatedReportTest() {
+    public void getAggregatedReportTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -162,7 +164,7 @@ public class DmarcMonitoringTest {
      * Tests retrieving IP-specific DMARC reports
      */
     @Test
-    public void GetIpReportTest() {
+    public void getIpReportTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -187,14 +189,17 @@ public class DmarcMonitoringTest {
      * Tests retrieving DMARC report sources
      */
     @Test
-    public void GetReportSourcesTest() {
+    public void getReportSourcesTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
         try {
 
-            DmarcReportSourcesList list = ms.dmarcMonitoring().getReportSources(TestHelper.dmarcMonitorId);
+            DmarcReportSourcesList list = ms.dmarcMonitoring()
+                    .dateFrom("2023-01-01")
+                    .dateTo("2023-12-31")
+                    .getReportSources(TestHelper.dmarcMonitorId);
 
             for (DmarcReportSource source : list.sources) {
                 System.out.println(source.reportSource);
@@ -211,7 +216,7 @@ public class DmarcMonitoringTest {
      * Tests marking an IP as favorite
      */
     @Test
-    public void MarkIpAsFavoriteTest() {
+    public void markIpAsFavoriteTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -232,7 +237,7 @@ public class DmarcMonitoringTest {
      * Tests removing an IP from favorites
      */
     @Test
-    public void RemoveIpFromFavoritesTest() {
+    public void removeIpFromFavoritesTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -242,6 +247,70 @@ public class DmarcMonitoringTest {
             boolean removed = ms.dmarcMonitoring().removeIpFromFavorites(TestHelper.dmarcMonitorId, TestHelper.dmarcMonitorIp);
 
             System.out.println("IP removed from favorites: " + removed);
+
+        } catch (MailerSendException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    /**
+     * Tests that getReportSources() throws when dateFrom is not set
+     */
+    @Test
+    public void getReportSourcesMissingDateFromTest() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException ex = assertThrows(MailerSendException.class, () ->
+                ms.dmarcMonitoring()
+                        .dateTo("2023-12-31")
+                        .getReportSources(TestHelper.dmarcMonitorId)
+        );
+
+        assertEquals("dateFrom and dateTo are required for getReportSources.", ex.getMessage());
+    }
+
+    /**
+     * Tests that getReportSources() throws when dateTo is not set
+     */
+    @Test
+    public void getReportSourcesMissingDateToTest() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException ex = assertThrows(MailerSendException.class, () ->
+                ms.dmarcMonitoring()
+                        .dateFrom("2023-01-01")
+                        .getReportSources(TestHelper.dmarcMonitorId)
+        );
+
+        assertEquals("dateFrom and dateTo are required for getReportSources.", ex.getMessage());
+    }
+
+    /**
+     * Tests retrieving DMARC report sources with the status filter
+     */
+    @Test
+    public void getReportSourcesWithStatusTest() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            DmarcReportSourcesList list = ms.dmarcMonitoring()
+                    .dateFrom("2023-01-01")
+                    .dateTo("2023-12-31")
+                    .status("accepted")
+                    .getReportSources(TestHelper.dmarcMonitorId);
+
+            for (DmarcReportSource source : list.sources) {
+                System.out.println(source.reportSource);
+                System.out.println(source.reports);
+            }
 
         } catch (MailerSendException e) {
             e.printStackTrace();

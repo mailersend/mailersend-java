@@ -13,7 +13,13 @@ MailerSend Java SDK
         - [Send a template-based email](#send-a-template-based-email)
         - [Personalization](#personalization)
         - [Send email with attachment](#send-email-with-attachment)
+        - [Send email with inline attachment](#send-email-with-inline-attachment)
         - [Schedule an email](#schedule-an-email)
+        - [Send email with settings](#send-email-with-settings)
+        - [Send email with custom headers](#send-email-with-custom-headers)
+        - [Send email with references](#send-email-with-references)
+        - [Send email with precedence bulk](#send-email-with-precedence-bulk)
+        - [Send an email with RCPT TO recipients](#send-an-email-with-rcpt-to-recipients)
         - [Send bulk emails](#send-bulk-emails)
         - [Get bulk request status](#get-bulk-request-status)
     - [Inbound routes](#inbound-routes)
@@ -24,6 +30,7 @@ MailerSend Java SDK
         - [Delete an inbound route](#delete-an-inbound-route)
     - [Activities](#activities)
         - [Get a list of Activities](#get-a-list-of-activities)
+        - [Get a single Activity](#get-a-single-activity)
         - [Activities filters](#activities-filters)
         - [Activities pagination](#activities-pagination)
         - [Get email for resend](#activity-email-for-resend)
@@ -49,6 +56,8 @@ MailerSend Java SDK
         - [Get a scheduled message](#get-a-scheduled-message)
         - [Delete a scheduled message](#delete-a-scheduled-message)
     - [Tokens](#tokens)
+        - [Get a list of tokens](#get-a-list-of-tokens)
+        - [Get a single token](#get-a-single-token)
         - [Create a token](#create-a-token)
         - [Update token](#update-token)
         - [Delete token](#delete-token)
@@ -59,6 +68,8 @@ MailerSend Java SDK
         - [Get recipients from a suppression list](#get-recipients-from-a-suppression-list)
         - [Add recipients to a suppression list](#add-recipients-to-a-suppression-list)
         - [Delete recipients from a suppression list](#delete-recipients-from-a-suppression-list)
+        - [Get recipients from the on-hold list](#get-recipients-from-the-on-hold-list)
+        - [Delete recipients from the on-hold list](#delete-recipients-from-the-on-hold-list)
     - [Webhooks](#webhooks)
         - [Get a list of webhooks](#get-a-list-of-webhooks)
         - [Get a single webhook](#get-a-single-webhook)
@@ -68,8 +79,13 @@ MailerSend Java SDK
     - [Templates](#templates)
         - [Get a list of templates](#get-a-list-of-templates)
         - [Get a single template](#get-a-single-template)
+        - [Create a template](#create-a-template)
+        - [Update a template](#update-a-template)
         - [Delete a template](#delete-a-template)
     - [Email verification](#email-verification)
+        - [Verify an email (sync)](#verify-an-email-sync)
+        - [Verify an email (async)](#verify-an-email-async)
+        - [Get async email verification status](#get-async-email-verification-status)
         - [Get all email verification lists](#get-all-email-verification-lists)
         - [Get an email verification list](#get-an-email-verification-list)
         - [Create an email verification list](#create-an-email-verification-list)
@@ -114,6 +130,33 @@ MailerSend Java SDK
         - [Get report sources](#get-report-sources)
         - [Mark IP as favorite](#mark-ip-as-favorite)
         - [Remove IP from favorites](#remove-ip-from-favorites)
+    - [Sender Identities](#sender-identities)
+        - [Get a list of sender identities](#get-a-list-of-sender-identities)
+        - [Get a single sender identity](#get-a-single-sender-identity)
+        - [Get a sender identity by email](#get-a-sender-identity-by-email)
+        - [Create a sender identity](#create-a-sender-identity)
+        - [Update a sender identity](#update-a-sender-identity)
+        - [Update a sender identity by email](#update-a-sender-identity-by-email)
+        - [Delete a sender identity](#delete-a-sender-identity)
+        - [Delete a sender identity by email](#delete-a-sender-identity-by-email)
+        - [Resend sender identity confirmation](#resend-sender-identity-confirmation)
+    - [Users and Invites](#users-and-invites)
+        - [Get a list of users](#get-a-list-of-users)
+        - [Get a single user](#get-a-single-user)
+        - [Invite a user](#invite-a-user)
+        - [Invite a custom user](#invite-a-custom-user)
+        - [Update a user](#update-a-user)
+        - [Delete a user](#delete-a-user)
+        - [Get a list of invites](#get-a-list-of-invites)
+        - [Get a single invite](#get-a-single-invite)
+        - [Resend an invite](#resend-an-invite)
+        - [Delete an invite](#delete-an-invite)
+    - [Blocklist Monitoring](#blocklist-monitoring)
+        - [Get a list of blocklist monitors](#get-a-list-of-blocklist-monitors)
+        - [Get a single blocklist monitor](#get-a-single-blocklist-monitor)
+        - [Create a blocklist monitor](#create-a-blocklist-monitor)
+        - [Update a blocklist monitor](#update-a-blocklist-monitor)
+        - [Delete a blocklist monitor](#delete-a-blocklist-monitor)
 
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
@@ -355,6 +398,51 @@ public void sendEmail() {
 }
 ```
 
+### Send email with inline attachment
+
+```java
+import com.mailersend.sdk.emails.Attachment;
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmail() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setHtml("<p>This is the HTML content with an inline image <img src=\"cid:image-content-id\"/></p>");
+    email.setPlain("This is the text content");
+
+    // create an inline attachment using a content ID that matches the cid in the HTML
+    Attachment inlineAttachment = new Attachment();
+    try {
+        inlineAttachment.AddImageFromFile("image-content-id", "/path/to/image.png");
+    } catch (java.io.IOException e) {
+        e.printStackTrace();
+    }
+    email.attachments.add(inlineAttachment);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ### Schedule an email
 
 ```java
@@ -428,6 +516,210 @@ public void sendEmailWithListUnsubscribe() {
 
     try {
     
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with settings
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.emails.EmailSettings;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithSettings() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Configure tracking settings
+    EmailSettings settings = new EmailSettings();
+    settings.trackClicks = true;
+    settings.trackOpens = true;
+    settings.trackContent = false;
+
+    email.setSettings(settings);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with custom headers
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithHeaders() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Add custom email headers
+    email.addHeader("X-Custom-Header", "custom-value");
+    email.addHeader("X-Another-Header", "another-value");
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with references
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithReferences() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Add message references (e.g. for threading)
+    email.addReference("<message-id-1@example.com>");
+    email.addReference("<message-id-2@example.com>");
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send email with precedence bulk
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithPrecedenceBulk() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+    email.addRecipient("name", "your@recipient.com");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Mark email as bulk/low-priority
+    email.setPrecedenceBulk(true);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send an email with RCPT TO recipients
+
+`rcptTo` is intended for SMTP source delivery and accepts a list of recipients.
+When `to` is empty and `rcptTo` is provided, the addresses are forwarded as BCC.
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmailWithRcptTo() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+
+    email.setSubject("Email subject");
+
+    email.setPlain("This is the text content");
+    email.setHtml("<p>This is the HTML content</p>");
+
+    // Add RCPT TO recipients for SMTP relay delivery
+    email.addRcptTo("name", "rcpt@client.com");
+
+    // you can also add a Recipient object directly
+    Recipient rcptRecipient = new Recipient("name2", "rcpt2@client.com");
+    email.addRcptTo(rcptRecipient);
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
         MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
@@ -720,6 +1012,37 @@ public void getActivities() {
 }
 ```
 
+### Get a single activity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.activities.Activity;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getSingleActivity() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        Activity activity = ms.activities().getSingleActivity("activity id");
+
+        System.out.println(activity.id);
+        System.out.println(activity.type);
+        System.out.println(activity.createdAt.toString());
+
+        System.out.println(activity.email.from);
+        System.out.println(activity.email.subject);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ### Activities filters
 
 ```java
@@ -990,7 +1313,7 @@ public void getOpensByUserAgentType() {
         AnalyticsList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
-                .getOpensByUserAgenType();
+                .getOpensByUserAgentType();
         
         System.out.println("\n\nOpens by user agent type:");
         
@@ -1234,6 +1557,180 @@ public void UpdateDomainSettings() {
     }
 }
 ```
+
+## SMTP Users
+
+### Get a list of SMTP users
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.smtpusers.SmtpUsersList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void ListSmtpUsers() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUsersList list = ms.smtpUsers().getSmtpUsers("domain id");
+
+        for (SmtpUser smtpUser : list.smtpUsers) {
+
+            System.out.println(smtpUser.id);
+            System.out.println(smtpUser.name);
+            System.out.println(smtpUser.username);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a list of SMTP users with pagination
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUsersList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void ListSmtpUsersWithPagination() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUsersList list = ms.smtpUsers()
+            .page(1)
+            .limit(25)
+            .getSmtpUsers("domain id");
+
+        System.out.println(list.smtpUsers.length);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void GetSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUser smtpUser = ms.smtpUsers().getSmtpUser("domain id", "smtp user id");
+
+        System.out.println(smtpUser.id);
+        System.out.println(smtpUser.name);
+        System.out.println(smtpUser.username);
+        System.out.println(smtpUser.enabled);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Create an SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void CreateSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUser smtpUser = ms.smtpUsers().smtpUserBuilder()
+            .name("Support SMTP")
+            .enabled(true)
+            .createSmtpUser("domain id");
+
+        System.out.println(smtpUser.id);
+        System.out.println(smtpUser.username);
+        System.out.println(smtpUser.password);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Update an SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.smtpusers.SmtpUser;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void UpdateSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        SmtpUser smtpUser = ms.smtpUsers().smtpUserBuilder()
+            .name("Updated Name")
+            .enabled(false)
+            .updateSmtpUser("domain id", "smtp user id");
+
+        System.out.println(smtpUser.id);
+        System.out.println(smtpUser.name);
+        System.out.println(smtpUser.enabled);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an SMTP user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void DeleteSmtpUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("api token");
+
+    try {
+
+        boolean deleted = ms.smtpUsers().deleteSmtpUser("domain id", "smtp user id");
+
+        System.out.println("Deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ## Messages
 
 ### Get a list of messages
@@ -1301,6 +1798,7 @@ public void SingleMessage() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.scheduledmessages.ScheduledMessages;
 import com.mailersend.sdk.scheduledmessages.ScheduledMessagesList;
 import com.mailersend.sdk.scheduledmessages.ScheduledMessage;
 
@@ -1311,8 +1809,11 @@ public void getScheduledMessages() {
     ms.setToken("Your API token");
 
     try {
-    
-        ScheduledMessagesList messages = ms.scheduledmessages().getScheduledMessages();
+
+        // Use the STATUS_* constants to filter by status
+        ScheduledMessagesList messages = ms.scheduledmessages()
+            .status(ScheduledMessages.STATUS_SCHEDULED)
+            .getScheduledMessages();
 
         for (ScheduledMessage message : messages.scheduledMessages) {
             System.out.println(message.id);
@@ -1381,6 +1882,66 @@ public void deleteScheduledMessage() {
 
 ## Tokens
 
+### Get a list of tokens
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+import com.mailersend.sdk.tokens.TokenListResponse;
+
+public void getTokens() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        TokenListResponse response = ms.tokens()
+            .page(1)
+            .limit(25)
+            .getTokens();
+
+        for (Token token : response.tokens) {
+            System.out.println(token.id);
+            System.out.println(token.name);
+            System.out.println(token.status);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single token
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+
+public void getToken() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Token token = ms.tokens().getToken("token id");
+
+        System.out.println(token.id);
+        System.out.println(token.name);
+        System.out.println(token.status);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ### Create a token
 
 ```java
@@ -1415,35 +1976,59 @@ public void CreateToken() {
 }
 ```
 
-### Update token
+### Update token (pause / unpause)
+
+Pause or unpause a token by passing `true` or `false`:
 
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.tokens.Token;
 
-public void CreateToken() {
-    
+public void updateToken() {
+
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
-    
-    try {
-        
-    MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
-    
+    ms.setToken("Your API token");
+
     try {
 
         // true to pause it, false to unpause it
-        Token token = ms.tokens().updateToken(T"token id", true);
-        
+        Token token = ms.tokens().updateToken("token id", true);
+
         System.out.println(token.name);
         System.out.println(token.status);
-        
+
     } catch (MailerSendException e) {
-        
+
         e.printStackTrace();
-        fail();
+    }
+}
+```
+
+### Update token name and/or status
+
+Update a token's name and status in a single call (both are optional; at least one must be provided):
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.tokens.Token;
+
+public void updateTokenNameAndStatus() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Token token = ms.tokens().updateToken("token id", "New Name", "pause");
+
+        System.out.println(token.name);
+        System.out.println(token.status);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
     }
 }
 ```
@@ -1555,7 +2140,7 @@ public void DeleteRecipient() {
 }
 ```
 
-### Get recpients from a suppression list
+### Get recipients from a suppression list
 
 ```java
 import com.mailersend.sdk.MailerSend;
@@ -1613,7 +2198,7 @@ public void GetRecipientsFromSuppressionList() {
 }
 ```
 
-### Add recpients to a suppression list
+### Add recipients to a suppression list
 
 ```java
 import com.mailersend.sdk.MailerSend;
@@ -1765,6 +2350,80 @@ public void DeleteRecipientsFromSuppressionList () {
 }
 ```
 
+### Get recipients from the on-hold list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.SuppressionItem;
+import com.mailersend.sdk.recipients.SuppressionList;
+
+public void GetRecipientsFromOnHoldList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SuppressionList onHoldList = ms.recipients().suppressions().getOnHoldList();
+        
+        for (SuppressionItem item : onHoldList.items) {
+            
+            System.out.println(item.id);
+            System.out.println(item.recipient.email);
+            System.out.println(item.readableReason);
+            System.out.println(item.createdAt);
+        }
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete recipients from the on-hold list
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.recipients.SuppressionItem;
+import com.mailersend.sdk.recipients.SuppressionList;
+
+public void DeleteRecipientsFromOnHoldList() {
+    
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+    
+    try {
+        
+        SuppressionList onHoldList = ms.recipients().suppressions().getOnHoldList();
+        
+        if (onHoldList.items.length == 0) {
+            
+            return;
+        }
+        
+        String itemId = onHoldList.items[0].id;
+        
+        // delete specific items by id
+        MailerSendResponse response = ms.recipients().suppressions().deleteOnHoldListItems(new String[] { itemId });
+        
+        System.out.println(response.responseStatusCode);
+        
+        // delete all items
+        response = ms.recipients().suppressions().deleteOnHoldListAllItems();
+        
+        System.out.println(response.responseStatusCode);
+
+    } catch (MailerSendException e) {
+        
+        e.printStackTrace();
+    }
+}
+```
+
 ## Webhooks
 
 ### Get a list of webhooks
@@ -1782,7 +2441,7 @@ public void GetWebhooks() {
     
     try {
         
-        WebhooksList list = ms.webhooks().getWebhooks("domain id");
+        WebhooksList list = ms.webhooks().page(1).limit(25).getWebhooks("domain id");
         
         for (Webhook webhook : list.webhooks) {
             
@@ -1838,6 +2497,7 @@ public void CreateWebhook() {
         Webhook webhook = ms.webhooks().builder()
             .name("Webhook name")
             .url("Webhook url")
+            .enabled(true)
             .addEvent(WebhookEvents.ACTIVITY_OPENED)
             .addEvent(WebhookEvents.ACTIVITY_CLICKED)
             .createWebhook("domain id");
@@ -1868,6 +2528,7 @@ public void UpdateWebhook() {
         Webhook webhook = ms.webhooks()
                 .builder()
                 .name("Updated webhook name")
+                .enabled(false)
                 .updateWebhook("webhook id");
                     
         System.out.println(webhook.name);
@@ -1883,7 +2544,6 @@ public void UpdateWebhook() {
 
 ```java
 import com.mailersend.sdk.MailerSend;
-import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
 public void DeleteWebhook() {
@@ -1893,9 +2553,9 @@ public void DeleteWebhook() {
     
     try {
         
-        MailerSendResponse response = ms.webhooks().deleteWebhook("webhook id");
+        boolean deleted = ms.webhooks().deleteWebhook("webhook id");
             
-        System.out.println(response.responseStatusCode);
+        System.out.println(deleted);
         
     } catch (MailerSendException e) {
         
@@ -1921,7 +2581,7 @@ public void getTemplatesList() {
     
     try {
         
-            TemplatesList list = ms.templates().getTemplates();
+            TemplatesList list = ms.templates().domainId("domain-id").page(1).limit(25).getTemplates();
             
             for (TemplateItem item : list.templates) {
                 
@@ -1966,6 +2626,66 @@ public void getTemplate() {
 }
 ```
 
+### Create a template
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.templates.Template;
+
+public void createTemplate() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        Template template = ms.templates().builder()
+            .name("My Template")
+            .html("<h1>Hello {{name}}</h1>")
+            .text("Hello {{name}}")
+            .tags(new String[]{"transactional", "welcome"})
+            .createTemplate();
+
+        System.out.println(template.id);
+        System.out.println(template.name);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a template
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.templates.Template;
+
+public void updateTemplate() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        Template template = ms.templates().builder()
+            .name("Updated Template Name")
+            .html("<h1>Updated content for {{name}}</h1>")
+            .updateTemplate("template id");
+
+        System.out.println(template.id);
+        System.out.println(template.name);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
 ### Delete a template
 
 ```java
@@ -1995,6 +2715,83 @@ public void deleteTemplate() {
 ```
 
 ## Email verification
+
+### Verify an email (sync)
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.SingleEmailVerificationResponse;
+
+public void verifyEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        SingleEmailVerificationResponse response = ms.emailVerification().verifyEmail("test@example.com");
+
+        System.out.println(response.status);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Verify an email (async)
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse;
+
+public void verifyEmailAsync() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        AsyncEmailVerificationResponse response = ms.emailVerification().verifyEmailAsync("test@example.com");
+
+        System.out.println(response.id);
+        System.out.println(response.status); // "queued"
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get async email verification status
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse;
+
+public void getVerifyEmailAsyncStatus() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        AsyncEmailVerificationResponse response = ms.emailVerification().getVerifyEmailAsyncStatus("async verification id");
+
+        System.out.println(response.status); // "queued", "completed" or "failed"
+        System.out.println(response.result); // null while processing, result string once completed
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
 
 ### Get all email verification lists
 
@@ -2986,6 +3783,711 @@ public void removeIpFromFavorites() {
         System.out.println("IP removed from favorites: " + removed);
 
     } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+## Sender Identities
+
+### Get a list of sender identities
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentitiesList;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void getSenderIdentities() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentitiesList list = ms.senderIdentities()
+                .page(1)
+                .limit(25)
+                .getIdentities();
+
+        for (SenderIdentity identity : list.identities) {
+            System.out.println(identity.id);
+            System.out.println(identity.email);
+            System.out.println(identity.name);
+            System.out.println(identity.isVerified);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+You can also filter by domain ID, email query, or control ordering:
+
+```java
+SenderIdentitiesList list = ms.senderIdentities()
+        .domainId("your-domain-id")
+        .query("alice")
+        .orderBy("created_at")
+        .order("desc")
+        .getIdentities();
+```
+
+### Get a single sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void getSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().getIdentity("your-identity-id");
+
+        System.out.println(identity.id);
+        System.out.println(identity.email);
+        System.out.println(identity.name);
+        System.out.println(identity.isVerified);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a sender identity by email
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void getSenderIdentityByEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().getIdentityByEmail("sender@yourdomain.com");
+
+        System.out.println(identity.id);
+        System.out.println(identity.email);
+        System.out.println(identity.name);
+        System.out.println(identity.isVerified);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Create a sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void createSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().builder()
+                .domainId("your-domain-id")
+                .email("sender@yourdomain.com")
+                .name("Sender Name")
+                .replyToEmail("reply@yourdomain.com")
+                .replyToName("Reply Name")
+                .addNote(true)
+                .personalNote("Please verify this sender identity.")
+                .createIdentity();
+
+        System.out.println(identity.id);
+        System.out.println(identity.email);
+        System.out.println(identity.isVerified);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void updateSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().builder()
+                .name("Updated Sender Name")
+                .replyToEmail("newreply@yourdomain.com")
+                .replyToName("New Reply Name")
+                .updateIdentity("your-identity-id");
+
+        System.out.println(identity.id);
+        System.out.println(identity.name);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a sender identity by email
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void updateSenderIdentityByEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().builder()
+                .name("Updated Sender Name")
+                .replyToEmail("newreply@yourdomain.com")
+                .replyToName("New Reply Name")
+                .updateIdentityByEmail("sender@yourdomain.com");
+
+        System.out.println(identity.id);
+        System.out.println(identity.name);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a sender identity
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSenderIdentity() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.senderIdentities().deleteIdentity("your-identity-id");
+
+        System.out.println("Identity deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a sender identity by email
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteSenderIdentityByEmail() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.senderIdentities().deleteIdentityByEmail("sender@yourdomain.com");
+
+        System.out.println("Identity deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Resend sender identity confirmation
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.senderidentities.SenderIdentity;
+
+public void resendSenderIdentityConfirmation() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        SenderIdentity identity = ms.senderIdentities().resendConfirmation("your-identity-id");
+
+        System.out.println("Confirmation resent. Resend count: " + identity.resends);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+## Blocklist Monitoring
+
+### Get a list of blocklist monitors
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitorsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void listBlocklistMonitors() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitorsList list = ms.blocklistMonitoring().page(1).limit(25).getMonitors();
+
+        for (BlocklistMonitor monitor : list.monitors) {
+            System.out.println(monitor.id);
+            System.out.println(monitor.name);
+            System.out.println(monitor.address);
+            System.out.println(monitor.type);
+            System.out.println(monitor.blocklisted);
+        }
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitor monitor = ms.blocklistMonitoring().getMonitor("your-monitor-id");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.name);
+        System.out.println(monitor.address);
+        System.out.println(monitor.type);
+        System.out.println(monitor.blocklisted);
+        System.out.println(monitor.notify);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Create a blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void createBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitor monitor = ms.blocklistMonitoring().createMonitorBuilder()
+                .name("My domain monitor")
+                .notify(true)
+                .notifyEmail("alerts@example.com")
+                .notifyAddress("https://example.com/webhook")
+                .createMonitor("example.com");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.name);
+        System.out.println(monitor.address);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.blocklistmonitoring.BlocklistMonitor;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void updateBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        BlocklistMonitor monitor = ms.blocklistMonitoring().updateMonitorBuilder()
+                .name("Updated monitor name")
+                .notify(false)
+                .updateMonitor("your-monitor-id");
+
+        System.out.println(monitor.id);
+        System.out.println(monitor.name);
+        System.out.println(monitor.notify);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a blocklist monitor
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteBlocklistMonitor() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.blocklistMonitoring().deleteMonitor("your-monitor-id");
+
+        System.out.println("Monitor deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+## Users and Invites
+
+### Get a list of users
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.User;
+import com.mailersend.sdk.users.UsersList;
+
+public void getUsers() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        UsersList response = ms.users()
+            .page(1)
+            .limit(25)
+            .getUsers();
+
+        for (User user : response.users) {
+            System.out.println(user.id);
+            System.out.println(user.name);
+            System.out.println(user.email);
+            System.out.println(user.role);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.User;
+
+public void getUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        User user = ms.users().getUser("user-id");
+
+        System.out.println(user.id);
+        System.out.println(user.name);
+        System.out.println(user.email);
+        System.out.println(user.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Invite a user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void inviteUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().builder()
+            .email("user@example.com")
+            .role("Admin")
+            .inviteUser();
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+        System.out.println(invite.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Invite a custom user
+
+Invite a user with the `Custom User` role and explicit permissions, domain, and template restrictions.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void inviteCustomUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().builder()
+            .email("custom@example.com")
+            .role("Custom User")
+            .addPermission("read-suppressions")
+            .addPermission("manage-suppressions")
+            .addDomain("domain-id")
+            .addTemplate("template-id")
+            .requiresPeriodicPasswordChange(true)
+            .inviteUser();
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+        System.out.println(invite.role);
+
+        for (String permission : invite.permissions) {
+            System.out.println(permission);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Update a user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.User;
+
+public void updateUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        User user = ms.users().builder()
+            .role("Manager")
+            .updateUser("user-id");
+
+        System.out.println(user.id);
+        System.out.println(user.name);
+        System.out.println(user.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete a user
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteUser() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.users().deleteUser("user-id");
+
+        System.out.println("User deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a list of invites
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+import com.mailersend.sdk.users.InvitesList;
+
+public void getInvites() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        InvitesList response = ms.users()
+            .page(1)
+            .limit(25)
+            .getInvites();
+
+        for (Invite invite : response.invites) {
+            System.out.println(invite.id);
+            System.out.println(invite.email);
+            System.out.println(invite.role);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a single invite
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void getInvite() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().getInvite("invite-id");
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+        System.out.println(invite.role);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Resend an invite
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.users.Invite;
+
+public void resendInvite() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        Invite invite = ms.users().resendInvite("invite-id");
+
+        System.out.println(invite.id);
+        System.out.println(invite.email);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Delete an invite
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void deleteInvite() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        boolean deleted = ms.users().deleteInvite("invite-id");
+
+        System.out.println("Invite deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
         e.printStackTrace();
     }
 }

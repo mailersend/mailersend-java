@@ -33,7 +33,7 @@ public class SmsWebhooksTests {
 	
 	
 	@Test
-	public void TestGetSmsWebhooks() {
+	public void testGetSmsWebhooks() {
 		
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -55,7 +55,7 @@ public class SmsWebhooksTests {
 	
 	
 	@Test
-	public void TestGetSingleSmsWebhook() {
+	public void testGetSingleSmsWebhook() {
 		
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -76,7 +76,7 @@ public class SmsWebhooksTests {
 	
 	
 	@Test
-	public void TestCreateSmsWebhook() {
+	public void testCreateSmsWebhook() {
 		
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -98,7 +98,7 @@ public class SmsWebhooksTests {
 	}
 	
 	@Test
-	public void TestUpdateSmsWebhook() {
+	public void testUpdateSmsWebhook() {
 		
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -121,7 +121,7 @@ public class SmsWebhooksTests {
 	
 	
 	@Test
-	public void TestDeleteSmsWebhook() {
+	public void testDeleteSmsWebhook() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
         

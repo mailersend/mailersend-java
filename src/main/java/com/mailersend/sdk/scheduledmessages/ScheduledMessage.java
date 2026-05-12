@@ -15,6 +15,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ScheduledMessage {
 
+	@SerializedName("id")
+	public String id;
+
 	@SerializedName("message_id")
 	public String messageId;
 	

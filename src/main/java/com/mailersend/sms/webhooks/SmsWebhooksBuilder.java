@@ -82,6 +82,20 @@ public class SmsWebhooksBuilder {
 	    
 	    
 	    /**
+	     * Set whether the webhook is enabled
+	     *
+	     * @param enabled a boolean.
+	     * @return a {@link com.mailersend.sms.webhooks.SmsWebhooksBuilder} object.
+	     */
+	    public SmsWebhooksBuilder enabled(boolean enabled) {
+
+	        builderBody.enabled = enabled;
+
+	        return this;
+	    }
+
+
+	    /**
 	     * Clears the events of the webhook request
 	     *
 	     * @return a {@link com.mailersend.sms.webhooks.SmsWebhooksBuilder} object.
