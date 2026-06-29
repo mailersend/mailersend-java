@@ -357,4 +357,38 @@ public class EmailConfigurationTest {
         assertEquals("reply name 2", email.replyTo.name);
         assertEquals("reply2@test.com", email.replyTo.email);
     }
+
+
+    /**
+     * Tests that setLanguage stores the language and it serializes as "language" in JSON
+     */
+    @Test
+    public void testLanguageSerialization() {
+
+        Email email = TestHelper.createBasicEmail(true);
+
+        email.setTemplateId("neqvygm021wl0p7w");
+        email.setLanguage("pt-BR");
+
+        assertEquals("pt-BR", email.language);
+
+        String json = email.serializeForSending();
+
+        assertTrue(json.contains("\"language\""));
+        assertTrue(json.contains("pt-BR"));
+    }
+
+
+    /**
+     * Tests that the language field is omitted from the JSON when not set
+     */
+    @Test
+    public void testLanguageOmittedWhenNotSet() {
+
+        Email email = TestHelper.createBasicEmail(true);
+
+        String json = email.serializeForSending();
+
+        assertTrue(!json.contains("\"language\""));
+    }
 }

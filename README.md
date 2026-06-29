@@ -11,6 +11,7 @@ MailerSend Java SDK
         - [Send an email](#send-an-email)
         - [Add CC, BCC recipients](#add-cc-bcc-recipients)
         - [Send a template-based email](#send-a-template-based-email)
+        - [Send a template-based email in a specific language](#send-a-template-based-email-in-a-specific-language)
         - [Personalization](#personalization)
         - [Send email with attachment](#send-email-with-attachment)
         - [Send email with inline attachment](#send-email-with-inline-attachment)
@@ -297,6 +298,45 @@ public void sendEmail() {
 
     try {
     
+        MailerSendResponse response = ms.emails().send(email);
+        System.out.println(response.messageId);
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send a template-based email in a specific language
+
+The optional `language` field is a language code that selects a template translation. It is only meaningful when a template id is set and is ignored
+for raw HTML/text sends. Supported values: `de`, `en`, `es`, `fr`, `it`, `lt`, `nl`, `pl`, `pt-BR`.
+
+```java
+import com.mailersend.sdk.emails.Email;
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendEmail() {
+
+    Email email = new Email();
+
+    email.setFrom("name", "your email");
+
+    Recipient recipient = new Recipient("name", "your@recipient.com");
+
+    email.addRecipient(recipient);
+
+    email.setTemplateId("Your MailerSend template ID");
+    email.setLanguage("pt-BR");
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
         MailerSendResponse response = ms.emails().send(email);
         System.out.println(response.messageId);
     } catch (MailerSendException e) {
