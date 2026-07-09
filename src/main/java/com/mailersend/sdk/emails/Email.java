@@ -64,6 +64,9 @@ public class Email {
     @SerializedName("template_id")
     public String templateId;
 
+    @SerializedName("language")
+    public String language;
+
     @SerializedName("tags")
     public ArrayList<String> tags = new ArrayList<String>();
     
@@ -384,10 +387,23 @@ public class Email {
      * @param templateId a {@link java.lang.String} object.
      */
     public void setTemplateId(String templateId) {
-        
+
         this.templateId = templateId;
     }
-    
+
+
+    /**
+     * Sets the email's template translation language as a language code
+     * (e.g. "de", "fr", "pt-BR"). Only meaningful when a template id is set;
+     * ignored for raw html/text sends.
+     *
+     * @param language a {@link java.lang.String} object.
+     */
+    public void setLanguage(String language) {
+
+        this.language = language;
+    }
+
     
     /**
      * Adds a personalization for the given recipient
