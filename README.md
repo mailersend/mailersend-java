@@ -172,12 +172,12 @@ Using Maven:
     <dependency>
       <groupId>com.mailersend</groupId>
       <artifactId>java-sdk</artifactId>
-      <version>1.5.0</version>
+      <version>2.1.0</version>
     </dependency>
 
 Using Gradle:
 
-    implementation 'com.mailersend:java-sdk:1.5.0'
+    implementation 'com.mailersend:java-sdk:2.1.0'
     
 # Usage
 
