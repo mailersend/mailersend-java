@@ -2,6 +2,7 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -170,6 +171,72 @@ public class ActivitiesTest {
     }
     
     
+    /**
+     * Tests that the activities can be filtered by the suppressed event
+     * Fixed dates are used so that the recorded request hash (url + method + body) stays stable
+     * and the fixture can be replayed without hitting the API
+     */
+    @Test
+    public void testActivitiesFilterBySuppressedEvent() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            Date dateFrom = Date.from(Instant.parse("2024-01-01T00:00:00Z"));
+            Date dateTo = Date.from(Instant.parse("2024-01-31T00:00:00Z"));
+
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 100, dateFrom, dateTo, new String[] { EventTypes.SUPPRESSED });
+
+            assertTrue(activities.activities.length > 0);
+
+            for (Activity activity : activities.activities) {
+
+                assertEquals(EventTypes.SUPPRESSED, activity.type);
+            }
+
+        } catch (MailerSendException e) {
+
+          fail();
+        }
+    }
+
+
+    /**
+     * Tests that the suppression_reason response field is deserialized for suppressed activities
+     * and is absent for activities of any other type
+     */
+    @Test
+    public void testActivitySuppressionReason() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            Date dateFrom = Date.from(Instant.parse("2024-01-01T00:00:00Z"));
+            Date dateTo = Date.from(Instant.parse("2024-01-31T00:00:00Z"));
+
+            ActivitiesList activities = ms.activities().getActivities(TestHelper.domainId, 1, 25, dateFrom, dateTo, null);
+
+            assertTrue(activities.activities.length > 1);
+
+            Activity suppressed = activities.activities[0];
+            assertEquals(EventTypes.SUPPRESSED, suppressed.type);
+            assertEquals("hard_bounced", suppressed.suppressionReason);
+
+            Activity delivered = activities.activities[1];
+            assertEquals(EventTypes.DELIVERED, delivered.type);
+            assertNull(delivered.suppressionReason);
+
+        } catch (MailerSendException e) {
+
+          fail();
+        }
+    }
+
+
     /**
      * Tests the contents of a single activity
      */

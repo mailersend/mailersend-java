@@ -31,7 +31,14 @@ public class Activity {
     
     @SerializedName("type")
     public String type;
-    
+
+    /**
+     * Only populated when type is EventTypes.SUPPRESSED. One of: on_hold, hard_bounced,
+     * unsubscribed, spam_complained, blocklisted. Null for every other activity type.
+     */
+    @SerializedName("suppression_reason")
+    public String suppressionReason;
+
     @SerializedName("email")
     public ActivityEmail email;
     

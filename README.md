@@ -1016,6 +1016,12 @@ The SDK returns an `Activities` object on successful send or throws a `MailerSen
 
 Through the `Activities` object you can get the list of activities, get the next page of results, convert an activity into an email for resend, etc.
 
+> **Note on `suppressed` activities**
+>
+> `activity.suppressionReason` is only populated when `activity.type` is `suppressed`; it is `null` for every other activity type. Its possible values are `on_hold`, `hard_bounced`, `unsubscribed`, `spam_complained` and `blocklisted`.
+>
+> The `suppressed` activity type requires the Starter plan or above.
+
 ### Get a list of activities
 
 ```java
@@ -1037,6 +1043,8 @@ public void getActivities() {
         for (Activity activity : activities.activities) {
 
             System.out.println(activity.id);
+            System.out.println(activity.type);
+            System.out.println(activity.suppressionReason); // only set when type is "suppressed", null otherwise
             System.out.println(activity.createdAt.toString());
 
             System.out.println(activity.email.from);
@@ -1071,6 +1079,7 @@ public void getSingleActivity() {
 
         System.out.println(activity.id);
         System.out.println(activity.type);
+        System.out.println(activity.suppressionReason); // only set when type is "suppressed", null otherwise
         System.out.println(activity.createdAt.toString());
 
         System.out.println(activity.email.from);
@@ -1105,13 +1114,15 @@ public void getActivities() {
         Date dateFrom = DateUtils.addDays(new Date(), -30); // you'll need apache-commons for this
         Date dateTo = new Date();
 
-        String events[] = {EventTypes.OPENED, EventTypes.SENT}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
+        String events[] = {EventTypes.OPENED, EventTypes.SENT, EventTypes.SUPPRESSED}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
 
         ActivitiesList activities = ms.activities().getActivities("domain id", page, limit, dateFrom, dateTo, events);
 
         for (Activity activity : activities.activities) {
 
             System.out.println(activity.id);
+            System.out.println(activity.type);
+            System.out.println(activity.suppressionReason); // only set when type is "suppressed", null otherwise
         }
         
     } catch (MailerSendException e) {
