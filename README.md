@@ -907,7 +907,7 @@ public void getEmails() {
 }
 ```
 
-Every `EmailListItem` carries `id`, `from`, `to`, `subject`, `text`, `html`, `templateId`, `domainId`, `messageId`, `status`, `tags`, `interaction`, `suppressionReason`, `createdAt`, `updatedAt` and `headers`. `text` and `html` are always `null` in a list item, use [`getEmail()`](#get-a-single-email) to retrieve the message content, its recipient and its activity events.
+Every `EmailListItem` carries `id`, `from`, `to`, `subject`, `text`, `html`, `templateId`, `domainId`, `messageId`, `status`, `tags`, `interaction`, `suppressionReason`, `createdAt`, `updatedAt` and `headers` (an `EmailHeader[]` of `name`/`value` pairs, not a map). `text` and `html` are always `null` in a list item, use [`getEmail()`](#get-a-single-email) to retrieve the message content, its recipient and its activity events.
 
 A filter that matches nothing, including an unknown recipient email, returns an empty `list.emails` array. An unknown domain id returns a `MailerSendException` with code `404`.
 

@@ -8,7 +8,6 @@
 package com.mailersend.sdk.emails;
 
 import java.util.Date;
-import java.util.HashMap;
 
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.util.ApiRecipient;
@@ -76,7 +75,7 @@ public class EmailInfo {
 
     /** The custom headers the email was sent with, null when there were none */
     @SerializedName("headers")
-    public HashMap<String, String> headers;
+    public EmailHeader[] headers;
 
     /**
      * The activity events of the email, newest first and capped at the 200 most recent ones.

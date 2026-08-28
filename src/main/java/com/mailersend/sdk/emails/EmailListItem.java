@@ -8,7 +8,6 @@
 package com.mailersend.sdk.emails;
 
 import java.util.Date;
-import java.util.HashMap;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -75,7 +74,7 @@ public class EmailListItem {
 
     /** The custom headers the email was sent with, null when there were none */
     @SerializedName("headers")
-    public HashMap<String, String> headers;
+    public EmailHeader[] headers;
 
     @SerializedName("created_at")
     private String createdAtString;
