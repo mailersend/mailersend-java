@@ -1496,7 +1496,8 @@ public void DomainDnsRecords() {
         DomainDnsRecords records = ms.domains().getDomainDnsRecords("domain id");
         
         printDomainDnsAttribute(records.spf);
-        printDomainDnsAttribute(records.dkim);
+        printDomainDnsAttribute(records.dkimMs1);
+        printDomainDnsAttribute(records.dkimMs2);
         printDomainDnsAttribute(records.customTracking);
         printDomainDnsAttribute(records.returnPath);
         printDomainDnsAttribute(records.inboundRouting);

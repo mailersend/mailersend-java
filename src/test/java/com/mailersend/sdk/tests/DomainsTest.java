@@ -173,7 +173,8 @@ public class DomainsTest {
            DomainDnsRecords records = ms.domains().getDomainDnsRecords(TestHelper.domainId);
            
            printDomainDnsAttribute(records.spf);
-           printDomainDnsAttribute(records.dkim);
+           printDomainDnsAttribute(records.dkimMs1);
+           printDomainDnsAttribute(records.dkimMs2);
            printDomainDnsAttribute(records.customTracking);
            printDomainDnsAttribute(records.returnPath);
            printDomainDnsAttribute(records.inboundRouting);
