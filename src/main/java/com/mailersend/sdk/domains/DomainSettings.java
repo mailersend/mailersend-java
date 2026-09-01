@@ -31,9 +31,15 @@ public class DomainSettings {
     
     @SerializedName("track_unsubscribe_html")
     public String trackUnsubscribeHtml;
-    
+
+    @SerializedName("track_unsubscribe_html_enabled")
+    public Boolean trackUnsubscribeHtmlEnabled;
+
     @SerializedName("track_unsubscribe_plain")
     public String trackUnsubscribePlain;
+
+    @SerializedName("track_unsubscribe_plain_enabled")
+    public Boolean trackUnsubscribePlainEnabled;
     
     @SerializedName("track_content")
     public Boolean trackContent;
@@ -69,8 +75,11 @@ public class DomainSettings {
         trackOpens = null;
         trackUnsubscribe = null;
         trackUnsubscribeHtml = null;
+        trackUnsubscribeHtmlEnabled = null;
         trackUnsubscribePlain = null;
+        trackUnsubscribePlainEnabled = null;
         trackContent = null;
+        customTrackingEnabled = null;
         customTrackingSubdomain = null;
         returnPathSubdomain = null;
         inboundRoutingEnabled = null;

@@ -24,24 +24,34 @@ class WebhooksBuilderBody {
     
     @SerializedName("enabled")
     public Boolean enabled = null;
-    
+
     @SerializedName("domain_id")
     public String domainId;
-    
-    
+
+    @SerializedName("editable")
+    public Boolean editable = null;
+
+    @SerializedName("version")
+    public Integer version = null;
+
+
     /**
      * Resets the values so that the object can be reused
      */
     public void reset() {
-        
+
         url = null;
-        
+
         name = null;
-        
+
         events = new ArrayList<String>();
-        
+
         enabled = null;
-        
+
         domainId = null;
+
+        editable = null;
+
+        version = null;
     }
 }

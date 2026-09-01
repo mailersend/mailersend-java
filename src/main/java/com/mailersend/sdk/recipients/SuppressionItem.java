@@ -22,7 +22,13 @@ public class SuppressionItem {
     
     @SerializedName("reason")
     public String reason;
-    
+
+    @SerializedName("readable_reason")
+    public String readableReason;
+
+    @SerializedName("created_at")
+    public String createdAt;
+
     @SerializedName("recipient")
     public Recipient recipient;
 }

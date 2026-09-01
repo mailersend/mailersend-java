@@ -153,7 +153,7 @@ public class SmsActivities {
      */
     public SmsMessageActivity getMessageActivity(String messageId) throws MailerSendException {
     	
-    	String endpoint = "/sms-activity/".concat(messageId);
+    	String endpoint = "/sms-messages/".concat(messageId);
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());

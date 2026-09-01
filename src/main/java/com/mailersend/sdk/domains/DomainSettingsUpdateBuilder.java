@@ -110,15 +110,43 @@ public class DomainSettingsUpdateBuilder {
     
     
     /**
+     * Set the unsubscribe HTML tracking enabled/disabled
+     *
+     * @param trackUnsubscribeHtmlEnabled a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
+     */
+    public DomainSettingsUpdateBuilder trackUnsubscribeHtmlEnabled(boolean trackUnsubscribeHtmlEnabled) {
+
+        settings.trackUnsubscribeHtmlEnabled = trackUnsubscribeHtmlEnabled;
+
+        return this;
+    }
+
+
+    /**
      * Set the unsubscribe plain content
      *
      * @param plain a {@link java.lang.String} object.
      * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
     public DomainSettingsUpdateBuilder trackUnsubscribePlain(String plain) {
-        
+
         settings.trackUnsubscribePlain = plain;
-        
+
+        return this;
+    }
+
+
+    /**
+     * Set the unsubscribe plain tracking enabled/disabled
+     *
+     * @param trackUnsubscribePlainEnabled a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
+     */
+    public DomainSettingsUpdateBuilder trackUnsubscribePlainEnabled(boolean trackUnsubscribePlainEnabled) {
+
+        settings.trackUnsubscribePlainEnabled = trackUnsubscribePlainEnabled;
+
         return this;
     }
     

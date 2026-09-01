@@ -31,7 +31,7 @@ public class SmsTests {
 	
 	
 	@Test
-	public void TestSendSms() {
+	public void testSendSms() {
 		
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

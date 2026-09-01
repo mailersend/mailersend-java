@@ -39,7 +39,27 @@ public class TokenAddBuilder {
          "analytics_full",
          "tokens_full",
          "webhooks_full",
-         "templates_full"
+         "templates_full",
+         "suppressions_read",
+         "suppressions_full",
+         "sms_read",
+         "sms_full",
+         "email_verification_read",
+         "email_verification_full",
+         "inbounds_full",
+         "recipients_read",
+         "recipients_full",
+         "sender_identity_read",
+         "sender_identity_full",
+         "users_read",
+         "users_full",
+         "smtp_users_read",
+         "smtp_users_full",
+         "dmarc_monitoring_read",
+         "dmarc_monitoring_full",
+         "blocklist_monitoring_read",
+         "blocklist_monitoring_full",
+         "whatsapp_full"
     };
     
     /**
@@ -111,15 +131,15 @@ public class TokenAddBuilder {
     public TokenAdd addToken() throws MailerSendException {
        
         if (tokenAddBody.name == null || tokenAddBody.name.isBlank()) {
-            
+
             throw new MailerSendException("Token name cannot be null or empty");
         }
-        
-        if (tokenAddBody.domainId == null || tokenAddBody.domainId.isBlank()) {
-            
-            throw new MailerSendException("Domain ID cannot be null or empty");
+
+        if (tokenAddBody.name.length() > 50) {
+
+            throw new MailerSendException("Token name cannot be longer than 50 characters");
         }
-        
+
         if (tokenAddBody.scopes.size() == 0) {
             
             throw new MailerSendException("At least one scope is required");

@@ -51,11 +51,14 @@ public class Domain extends MailerSendResponse {
     @SerializedName("is_cname_active")
     public boolean isCnameActive;
     
+    @SerializedName("mx")
+    public boolean mx;
+
     @SerializedName("is_tracking_allowed")
     public boolean isTrackingAllowed;
-    
-    @SerializedName("has_not_queued_messaged")
-    public boolean hasNotQueuedMessaged;
+
+    @SerializedName("has_not_queued_messages")
+    public boolean hasNotQueuedMessages;
     
     @SerializedName("not_queued_messages_count")
     public int notQueuedMessagesCount;

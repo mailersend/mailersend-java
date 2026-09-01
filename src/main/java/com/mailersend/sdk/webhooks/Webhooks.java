@@ -48,25 +48,37 @@ public class Webhooks {
      *
      * @param page a int.
      * @return a {@link com.mailersend.sdk.webhooks.Webhooks} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if page is less than 1.
      */
-    public Webhooks page(int page) {
-        
+    public Webhooks page(int page) throws MailerSendException {
+
+        if (page < 1) {
+
+            throw new MailerSendException("Page must be at least 1");
+        }
+
         pageFilter = page;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * Set the results limit (10 - 100)
      *
      * @param limit a int.
      * @return a {@link com.mailersend.sdk.webhooks.Webhooks} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if limit is not between 10 and 100.
      */
-    public Webhooks limit(int limit) {
-        
+    public Webhooks limit(int limit) throws MailerSendException {
+
+        if (limit < 10 || limit > 100) {
+
+            throw new MailerSendException("Limit must be between 10 and 100");
+        }
+
         limitFilter = limit;
-        
+
         return this;
     }
     
@@ -90,7 +102,12 @@ public class Webhooks {
      * @return a {@link com.mailersend.sdk.webhooks.WebhooksList} object.
      */
     public WebhooksList getWebhooks(String domainId) throws MailerSendException {
-        
+
+        if (domainId == null || domainId.isBlank()) {
+
+            throw new MailerSendException("Domain ID cannot be empty");
+        }
+
         String endpoint = "/webhooks".concat(prepareParamsUrl(domainId));
         
         MailerSendApi api = new MailerSendApi();

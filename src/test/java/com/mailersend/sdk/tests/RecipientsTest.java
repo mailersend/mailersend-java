@@ -45,7 +45,7 @@ public class RecipientsTest {
      * Gets a lists of recipients
      */
     @Test
-    public void TestRecipientsRetrievall() {
+    public void testRecipientsRetrievall() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -72,7 +72,7 @@ public class RecipientsTest {
      * Gets a single recipient
      */
     @Test
-    public void TestSingleRecipientRetrieval() {
+    public void testSingleRecipientRetrieval() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
@@ -104,7 +104,7 @@ public class RecipientsTest {
      * Deletes a recipient
      */
     @Test
-    public void TestDeleteRecipient() {
+    public void testDeleteRecipient() {
         
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);

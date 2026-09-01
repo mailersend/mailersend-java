@@ -39,6 +39,31 @@ public class Activities {
     
     
     /**
+     * Gets a single activity by its id
+     *
+     * @param activityId The id of the activity to retrieve
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.activities.Activity} object.
+     */
+    public Activity getSingleActivity(String activityId) throws MailerSendException {
+
+        String endpoint = "/activities/".concat(activityId);
+
+        MailerSendApi api = new MailerSendApi();
+        api.setToken(apiObjectReference.getToken());
+
+        SingleActivityResponse response = api.getRequest(endpoint, SingleActivityResponse.class);
+
+        if (response.activity != null) {
+
+            response.activity.postDeserialize();
+        }
+
+        return response.activity;
+    }
+
+
+    /**
      * Gets the activities for the given domain id
      *
      * @param domainId a {@link java.lang.String} object.
@@ -63,9 +88,14 @@ public class Activities {
      * @throws com.mailersend.sdk.exceptions.MailerSendException
      */
     public ActivitiesList getActivities(String domainId, int page, int limit, Date dateFrom, Date dateTo, String[] events) throws MailerSendException {
-        
+
+        if (dateFrom == null || dateTo == null) {
+
+            throw new MailerSendException("Date from and Date to dates are required.");
+        }
+
         String endpoint = "/activity/".concat(domainId);
-        
+
         // prepare the request parameters
         ArrayList<String> params = new ArrayList<String>();
         

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
-import com.mailersend.sdk.domains.DomainsList;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.ApiRecipientsList;
 
@@ -76,11 +75,17 @@ public class Recipients {
      *
      * @param limit a int.
      * @return a {@link com.mailersend.sdk.recipients.Recipients} object.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException if limit is not between 10 and 100.
      */
-    public Recipients limit(int limit) {
-        
+    public Recipients limit(int limit) throws MailerSendException {
+
+        if (limit < 10 || limit > 100) {
+
+            throw new MailerSendException("Limit must be between 10 and 100");
+        }
+
         limitFilter = limit;
-        
+
         return this;
     }
     

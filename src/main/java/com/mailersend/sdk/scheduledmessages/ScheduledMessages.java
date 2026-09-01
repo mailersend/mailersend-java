@@ -16,8 +16,17 @@ import com.mailersend.sdk.exceptions.MailerSendException;
  */
 public class ScheduledMessages {
 
+    /** Status constant for messages that are scheduled for future delivery. */
+    public static final String STATUS_SCHEDULED = "scheduled";
+
+    /** Status constant for messages that have been successfully sent. */
+    public static final String STATUS_SENT = "sent";
+
+    /** Status constant for messages that encountered an error during delivery. */
+    public static final String STATUS_ERROR = "error";
+
     private MailerSend apiObjectReference;
-    
+
     private int pageFilter = 1;
     private int limitFilter = 25;
     private String domainIdFilter;

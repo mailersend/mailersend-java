@@ -26,7 +26,10 @@ public class WebhookEvents {
     
     /** Constant <code>ACTIVITY_HARD_BOUNCED="activity.hard_bounced"</code> */
     public static String ACTIVITY_HARD_BOUNCED = "activity.hard_bounced";
-    
+
+    /** Constant <code>ACTIVITY_DEFERRED="activity.deferred"</code> */
+    public static String ACTIVITY_DEFERRED = "activity.deferred";
+
     /** Constant <code>ACTIVITY_OPENED="activity.opened"</code> */
     public static String ACTIVITY_OPENED = "activity.opened";
 
@@ -42,8 +45,8 @@ public class WebhookEvents {
     /** Constant <code>ACTIVITY_UNSUBSCRIBED="activity.unsubscribed"</code> */
     public static String ACTIVITY_UNSUBSCRIBED = "activity.unsubscribed";
     
-    /** Constant <code>ACTIVITY_SPAM_COMPLAINT="activity.spam_compaint"</code> */
-    public static String ACTIVITY_SPAM_COMPLAINT = "activity.spam_compaint";
+    /** Constant <code>ACTIVITY_SPAM_COMPLAINT="activity.spam_complaint"</code> */
+    public static String ACTIVITY_SPAM_COMPLAINT = "activity.spam_complaint";
 
     /** Constant <code>ACTIVITY_SURVEY_OPENED="activity.survey_opened"</code> */
     public static String ACTIVITY_SURVEY_OPENED = "activity.survey_opened";
@@ -59,13 +62,32 @@ public class WebhookEvents {
 
     /** Constant <code>MAINTENANCE_END="maintenance.end"</code> */
     public static String MAINTENANCE_END = "maintenance.end";
-    
+
+    /** Constant <code>INBOUND_FORWARD_FAILED="inbound_forward.failed"</code> */
+    public static String INBOUND_FORWARD_FAILED = "inbound_forward.failed";
+
+    /** Constant <code>EMAIL_SINGLE_VERIFIED="email_single.verified"</code> */
+    public static String EMAIL_SINGLE_VERIFIED = "email_single.verified";
+
+    /** Constant <code>EMAIL_LIST_VERIFIED="email_list.verified"</code> */
+    public static String EMAIL_LIST_VERIFIED = "email_list.verified";
+
+    /** Constant <code>BULK_EMAIL_COMPLETED="bulk_email.completed"</code> */
+    public static String BULK_EMAIL_COMPLETED = "bulk_email.completed";
+
+    /** Constant <code>RECIPIENT_ON_HOLD_ADDED="recipient.on_hold_added"</code> */
+    public static String RECIPIENT_ON_HOLD_ADDED = "recipient.on_hold_added";
+
+    /** Constant <code>RECIPIENT_ON_HOLD_REMOVED="recipient.on_hold_removed"</code> */
+    public static String RECIPIENT_ON_HOLD_REMOVED = "recipient.on_hold_removed";
+
     /** Constant <code>events</code> */
     protected static String[] events = {
             "activity.sent",
             "activity.delivered",
             "activity.soft_bounced",
             "activity.hard_bounced",
+            "activity.deferred",
             "activity.opened",
             "activity.opened_unique",
             "activity.clicked",
@@ -76,6 +98,12 @@ public class WebhookEvents {
             "activity.survey_submitted",
             "sender_identity.verified",
             "maintenance.start",
-            "maintenance.end"
+            "maintenance.end",
+            "inbound_forward.failed",
+            "email_single.verified",
+            "email_list.verified",
+            "bulk_email.completed",
+            "recipient.on_hold_added",
+            "recipient.on_hold_removed"
     };
 }

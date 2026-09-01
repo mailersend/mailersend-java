@@ -180,7 +180,7 @@ public class SmsInboundRoutes {
         params.add("limit=".concat(String.valueOf(limitFilter)));
         
         if (smsNumberIdFilter != null) {
-        	params.add("sms_numnber_id=".concat(smsNumberIdFilter));
+        	params.add("sms_number_id=".concat(smsNumberIdFilter));
         }
         
         if (enabledFilter != null) {

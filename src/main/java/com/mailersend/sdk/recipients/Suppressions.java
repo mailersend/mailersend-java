@@ -28,7 +28,7 @@ public class Suppressions {
     private MailerSend apiObjectReference;
     
     private int pageFilter = 1;
-    private int limitFilter = 25;
+    private int limitFilter = 10;
     private String domainIdFilter = null;
     
     private SuppressionAddBuilder addBuilder;
@@ -261,7 +261,7 @@ public class Suppressions {
      */
     public MailerSendResponse deleteUnsubscribesItems(String[] ids) throws MailerSendException {
         
-        return this.deleteSuppressionListItems("/suppressions/unsubscribres", ids);
+        return this.deleteSuppressionListItems("/suppressions/unsubscribes", ids);
     }
     
     
@@ -272,11 +272,50 @@ public class Suppressions {
      * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
      */
     public MailerSendResponse deleteUnsubscribesAllItems() throws MailerSendException {
-        
+
         return this.deleteSuppressionListAllItems("/suppressions/unsubscribes");
     }
-    
-    
+
+
+    /**
+     * Gets the recipients on the on-hold list
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.recipients.SuppressionList} object.
+     */
+    public SuppressionList getOnHoldList() throws MailerSendException {
+
+        String endpoint = "/suppressions/on-hold-list".concat(prepareParamsUrl());
+
+        return this.getSuppressionList(endpoint);
+    }
+
+
+    /**
+     * Deletes the items with the given id from the on-hold suppression list
+     *
+     * @param ids an array of {@link java.lang.String} objects.
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
+     */
+    public MailerSendResponse deleteOnHoldListItems(String[] ids) throws MailerSendException {
+
+        return this.deleteSuppressionListItems("/suppressions/on-hold-list", ids);
+    }
+
+
+    /**
+     * Deletes all items from the on-hold suppression list
+     *
+     * @throws com.mailersend.sdk.exceptions.MailerSendException
+     * @return a {@link com.mailersend.sdk.MailerSendResponse} object.
+     */
+    public MailerSendResponse deleteOnHoldListAllItems() throws MailerSendException {
+
+        return this.deleteSuppressionListAllItems("/suppressions/on-hold-list");
+    }
+
+
     /**
      * Deletes the items with the given id from the suppression list with the given endpoint
      * @param ids

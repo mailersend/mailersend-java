@@ -145,19 +145,14 @@ public class Analytics {
             throw new MailerSendException("Date from and Date to dates are required.");
         }
         
-        if (events == null || events.length == 0) {
-            
-            throw new MailerSendException("No events passed.");
-        }
-        
         String endpoint = "/analytics/date";
-        
+
         ArrayList<String> params = new ArrayList<String>();
-        
+
         params.add(groupBy);
-        
-        if (events != null) {
-            
+
+        if (events != null && events.length > 0) {
+
             params.add(arrayToUrlRequest(events, "event"));
         }
         
@@ -204,7 +199,7 @@ public class Analytics {
      * @throws com.mailersend.sdk.exceptions.MailerSendException
      * @return a {@link com.mailersend.sdk.analytics.AnalyticsList} object.
      */
-    public AnalyticsList getOpensByUserAgenType() throws MailerSendException {
+    public AnalyticsList getOpensByUserAgentType() throws MailerSendException {
         
         return genericAnalyticsRequest("/analytics/ua-type");
     }
