@@ -4538,6 +4538,8 @@ public void deleteInvite() {
 
 # WhatsApp
 
+`from` takes a connected WhatsApp sender, either as its phone number in E.164 format or as its MailerSend sender ID. A sender connected with a Meta virtual number has no phone number, so it can only be addressed by its sender ID. Recipients are phone numbers in E.164 format, or a BSUID taken from an inbound message. Sending requires a token with the `whatsapp_full` scope.
+
 ### Send a WhatsApp message
 
 ```java

@@ -1,6 +1,6 @@
 package com.mailersend.sdk.tests;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class WhatsAppTests {
                 .templateId("template_id_123")
                 .send();
 
-            assertNotNull(messageId);
+            assertEquals("67f91abd69f79df391e9d78d", messageId);
 
         } catch (MailerSendException e) {
             fail();
@@ -70,7 +70,26 @@ public class WhatsAppTests {
                 .addPersonalization(p2)
                 .send();
 
-            assertNotNull(messageId);
+            assertEquals("67f91b2c69f79df391e9d791", messageId);
+
+        } catch (MailerSendException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void TestSendWhatsAppWithoutMessageIdHeader() {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+            String messageId = ms.whatsapp().builder()
+                .from("12345678901")
+                .addRecipient("19191234567")
+                .templateId("template_id_123")
+                .send();
+
+            assertEquals("67f91abd69f79df391e9d78d", messageId);
 
         } catch (MailerSendException e) {
             fail();

@@ -26,7 +26,7 @@ public class WhatsAppPersonalization {
     /**
      * <p>Constructor for WhatsAppPersonalization.</p>
      *
-     * @param to the recipient phone number
+     * @param to the recipient the values apply to, as listed in the message's recipients
      */
     public WhatsAppPersonalization(String to) {
         this.to = to;

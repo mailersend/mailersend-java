@@ -8,14 +8,11 @@
 package com.mailersend.sdk.whatsapp;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
-import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
@@ -43,7 +40,7 @@ public class WhatsAppBuilder {
     /**
      * <p>from.</p>
      *
-     * @param from sender phone number in international format without +
+     * @param from the sender to send from, either a connected WhatsApp sender's phone number in E.164 format or its MailerSend sender ID
      * @return a {@link com.mailersend.sdk.whatsapp.WhatsAppBuilder} object.
      */
     public WhatsAppBuilder from(String from) {
@@ -54,11 +51,11 @@ public class WhatsAppBuilder {
     /**
      * <p>addRecipient.</p>
      *
-     * @param phoneNumber recipient phone number in international format without +
+     * @param recipient a phone number in E.164 format, or a BSUID taken from an inbound message
      * @return a {@link com.mailersend.sdk.whatsapp.WhatsAppBuilder} object.
      */
-    public WhatsAppBuilder addRecipient(String phoneNumber) {
-        builderBody.to.add(phoneNumber);
+    public WhatsAppBuilder addRecipient(String recipient) {
+        builderBody.to.add(recipient);
         return this;
     }
 
@@ -90,7 +87,7 @@ public class WhatsAppBuilder {
     /**
      * <p>send.</p>
      *
-     * @return the message ID from the X-Message-Id response header
+     * @return the ID of the created message
      * @throws com.mailersend.sdk.exceptions.MailerSendException if any.
      */
     public String send() throws MailerSendException {
@@ -108,17 +105,16 @@ public class WhatsAppBuilder {
 
         builderBody = new WhatsAppBuilderBody();
 
-        MailerSendResponse response = api.postRequest(endpoint, json, MailerSendResponse.class);
+        WhatsAppSendResponse response = api.postRequest(endpoint, json, WhatsAppSendResponse.class);
 
-        String messageId = null;
-
-        for (Entry<String, List<String>> entry : response.headers.entrySet()) {
-            if (entry.getKey().equals("x-message-id")) {
-                messageId = entry.getValue().get(0);
-                break;
-            }
+        if (response.messageId != null && !response.messageId.isBlank()) {
+            return response.messageId;
         }
 
-        return messageId;
+        if (response.data != null) {
+            return response.data.id;
+        }
+
+        return null;
     }
 }
