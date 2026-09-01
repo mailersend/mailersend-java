@@ -17,6 +17,7 @@ import com.mailersend.sdk.recipients.Recipients;
 import com.mailersend.sdk.scheduledmessages.ScheduledMessages;
 import com.mailersend.sdk.sms.Sms;
 import com.mailersend.sdk.templates.Templates;
+import com.mailersend.sdk.whatsapp.WhatsApp;
 import com.mailersend.sdk.tokens.Tokens;
 import com.mailersend.sdk.webhooks.Webhooks;
 import com.mailersend.sdk.emailverification.EmailVerification;
@@ -49,12 +50,13 @@ public class MailerSend {
     private ScheduledMessages scheduledMessages = null;
     private EmailVerification emailVerification = null;
     private Sms sms = null;
+    private WhatsApp whatsapp = null;
     private DmarcMonitoring dmarcMonitoring = null;
     private BlocklistMonitoring blocklistMonitoring = null;
     private SmtpUsers smtpUsers = null;
     private SenderIdentities senderIdentities = null;
     private Users users = null;
-    
+
     /**
      * <p>Constructor for MailerSend.</p>
      */
@@ -73,6 +75,7 @@ public class MailerSend {
         scheduledMessages = new ScheduledMessages(this);
         emailVerification = new EmailVerification(this);
         sms = new Sms(this);
+        whatsapp = new WhatsApp(this);
         dmarcMonitoring = new DmarcMonitoring(this);
         blocklistMonitoring = new BlocklistMonitoring(this);
         smtpUsers = new SmtpUsers(this);
@@ -217,7 +220,16 @@ public class MailerSend {
     public Sms sms() {
     	return sms;
     }
-    
+
+    /**
+     * Get the whatsapp access object
+     *
+     * @return The WhatsApp object
+     */
+    public WhatsApp whatsapp() {
+        return whatsapp;
+    }
+
     /**
      * Get the DMARC monitoring access object
      *
