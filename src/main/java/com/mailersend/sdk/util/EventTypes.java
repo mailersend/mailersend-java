@@ -55,4 +55,7 @@ public class EventTypes {
 
     /** Constant <code>SURVEY_SUBMITTED="survey_submitted"</code> */
     public static final String SURVEY_SUBMITTED = "survey_submitted";
+
+    /** Constant <code>SUPPRESSED="suppressed"</code> */
+    public static final String SUPPRESSED = "suppressed";
 }
