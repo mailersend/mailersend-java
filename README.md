@@ -23,6 +23,11 @@ MailerSend Java SDK
         - [Send an email with RCPT TO recipients](#send-an-email-with-rcpt-to-recipients)
         - [Send bulk emails](#send-bulk-emails)
         - [Get bulk request status](#get-bulk-request-status)
+    - [Emails](#emails)
+        - [Get a list of emails](#get-a-list-of-emails)
+        - [Emails filters](#emails-filters)
+        - [Emails pagination](#emails-pagination)
+        - [Get a single email](#get-a-single-email)
     - [Inbound routes](#inbound-routes)
         - [Get a list of inbound routes](#get-a-list-of-inbound-routes)
         - [Get an inbound route](#get-an-inbound-route)
@@ -848,6 +853,258 @@ public void getBulkEmailsStatus() {
     }
 }
 ```
+
+## Emails
+
+An email is the record of a message delivered to one recipient. Emails retrieval follows the builder pattern and is accessible from the `MailerSend.emails()` object, the same object used for sending.
+
+The SDK returns an `EmailsList` object for the list of emails and an `EmailInfo` object for a single email, or throws a `MailerSendException` on a failed request.
+
+### Get a list of emails
+
+`domainId`, `dateFrom` and `dateTo` are required, the request throws a `MailerSendException` without them. Emails are returned newest first.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.emails.EmailListItem;
+import com.mailersend.sdk.emails.EmailsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getEmails() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        EmailsList list = ms.emails()
+            .domainId("domain id")
+            .dateFrom(1623073576)
+            .dateTo(1623074976)
+            .page(1)
+            .limit(50)
+            .getEmails();
+
+        for (EmailListItem email : list.emails) {
+
+            System.out.println(email.id);
+            System.out.println(email.status);
+            System.out.println(email.subject);
+            System.out.println(email.from);
+            System.out.println(email.to);
+            System.out.println(email.messageId);
+            System.out.println(email.createdAt.toString());
+
+            // any of opened, clicked, unsubscribed or complained, empty when there was no interaction
+            for (String interaction : email.interaction) {
+
+                System.out.println(interaction);
+            }
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+Every `EmailListItem` carries `id`, `from`, `to`, `subject`, `text`, `html`, `templateId`, `domainId`, `messageId`, `status`, `tags`, `interaction`, `suppressionReason`, `createdAt`, `updatedAt` and `headers` (an `EmailHeader[]` of `name`/`value` pairs, not a map). `text` and `html` are always `null` in a list item, use [`getEmail()`](#get-a-single-email) to retrieve the message content, its recipient and its activity events.
+
+A filter that matches nothing, including an unknown recipient email, returns an empty `list.emails` array. An unknown domain id returns a `MailerSendException` with code `404`.
+
+> **Note:** A token with one of the `activity_read` or `activity_full` scopes is required. Requests to the emails list are limited to 10 requests per minute, shared with [the activities list](#get-a-list-of-activities). Requests to either endpoint count against the same budget.
+
+### Emails filters
+
+| Method                                | Type       | Required | Details                                                                                                    |
+|---------------------------------------|------------|----------|------------------------------------------------------------------------------------------------------------|
+| `domainId(String domainId)`           | `String`   | yes      | Must be a domain of your account.                                                                          |
+| `dateFrom(long dateFrom)`             | `long`     | yes      | Unix timestamp in seconds, assumed to be UTC. Also accepts a `java.util.Date`.                             |
+| `dateTo(long dateTo)`                 | `long`     | yes      | Unix timestamp in seconds, must be higher than `dateFrom` and not in the future. Also accepts a `Date`.     |
+| `page(int page)`                       | `int`      | no       | Min 1, max 100, default 1, see [Emails pagination](#emails-pagination).                                      |
+| `limit(int limit)`                     | `int`      | no       | Min 10, max 1000, default 25.                                                                              |
+| `status(String... status)`             | `String[]` | no       | Any of the constants in `com.mailersend.sdk.emails.EmailStatus`, combined with OR.                          |
+| `interaction(String... interaction)`   | `String[]` | no       | Any of the constants in `com.mailersend.sdk.emails.EmailInteraction`, combined with OR.                     |
+| `recipientEmail(String recipientEmail)` | `String`  | no       | Exact, case insensitive match.                                                                             |
+| `messageId(String messageId)`         | `String`   | no       | Exact match against the id of the message that created the email.                                          |
+| `templateId(String templateId)`       | `String`   | no       | Exact match.                                                                                               |
+| `subject(String subject)`             | `String`   | no       | Partial, case insensitive match, minimum 3 characters.                                                      |
+| `tag(String tag)`                     | `String`   | no       | Exact match against a value of the email's tags.                                                            |
+
+The `status` and `interaction` values are combined with OR within a filter and with AND between the two filters, so the example below returns the emails that are sent or delivered and that were opened.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.emails.EmailInteraction;
+import com.mailersend.sdk.emails.EmailListItem;
+import com.mailersend.sdk.emails.EmailStatus;
+import com.mailersend.sdk.emails.EmailsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getFilteredEmails() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        Date dateFrom = DateUtils.addDays(new Date(), -7); // you'll need apache-commons for this
+        Date dateTo = new Date();
+
+        EmailsList list = ms.emails()
+            .domainId("domain id")
+            .dateFrom(dateFrom)
+            .dateTo(dateTo)
+            .limit(50)
+            .status(EmailStatus.SENT, EmailStatus.DELIVERED)
+            .interaction(EmailInteraction.OPENED)
+            .recipientEmail("tyra.cummerata@example.org")
+            .subject("order")
+            .tag("receipt")
+            .getEmails();
+
+        for (EmailListItem email : list.emails) {
+
+            System.out.println(email.id);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+> **Note:** The filters are kept on the `Emails` object, so set the ones you need on every call instead of relying on the values of a previous request.
+
+### Emails pagination
+
+The emails list paginates by page number, the same way [the activities list](#activities-pagination) does. Set the page with `page(int page)` and the page size with `limit(int limit)`.
+
+The result set is not counted, so `meta` carries no `total` and no `lastPage`, and `links.last` is always `null`. Use `hasNext()` to find out whether more results exist.
+
+`next()` and `previous()` repeat the original request for the neighbouring page and return `null` when there is none, so you can walk the whole result set without tracking the page yourself.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.emails.EmailListItem;
+import com.mailersend.sdk.emails.EmailsList;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getAllEmails() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        EmailsList list = ms.emails()
+            .domainId("domain id")
+            .dateFrom(1623073576)
+            .dateTo(1623074976)
+            .limit(100)
+            .getEmails();
+
+        while (list != null) {
+
+            System.out.println(list.getCurrentPage()); // also available as list.meta.currentPage
+            System.out.println(list.meta.currentPageUrl);
+            System.out.println(list.meta.limit); // the per_page of the response
+            System.out.println(list.links.next); // the full url of the next page, null on the last page
+
+            for (EmailListItem email : list.emails) {
+
+                System.out.println(email.id);
+            }
+
+            // returns null when there is no next page
+            list = list.next();
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+You can also request a page yourself, together with the same domain id, dates and filters as the original request.
+
+```java
+EmailsList list = ms.emails()
+    .domainId("domain id")
+    .dateFrom(1623073576)
+    .dateTo(1623074976)
+    .page(2)
+    .getEmails();
+
+if (list.hasPrevious()) {
+
+    EmailsList previousPage = list.previous();
+}
+```
+
+### Get a single email
+
+Returns an `EmailInfo` object with the email, its content, its recipient and its activity events, none of which are present in a list item. The events are returned newest first and are capped at the 200 most recent ones. They are returned even when content tracking is disabled for the domain, in which case `html` and `text` are `null`.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.emails.EmailActivity;
+import com.mailersend.sdk.emails.EmailInfo;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getSingleEmail() {
+
+    MailerSend ms = new MailerSend();
+
+    ms.setToken("Your API token");
+
+    try {
+
+        EmailInfo email = ms.emails().getEmail("email id");
+
+        System.out.println(email.id);
+        System.out.println(email.status);
+        System.out.println(email.subject);
+        System.out.println(email.from);
+        System.out.println(email.to); // also available as email.recipient.email
+        System.out.println(email.messageId);
+        System.out.println(email.domainId);
+        System.out.println(email.templateId); // null when no template was used
+        System.out.println(email.suppressionReason); // only set when the status is rejected
+        System.out.println(email.createdAt.toString());
+
+        // any of opened, clicked, unsubscribed or complained, empty when there was no interaction
+        for (String interaction : email.interaction) {
+
+            System.out.println(interaction);
+        }
+
+        for (EmailActivity activity : email.activity) {
+
+            System.out.println(activity.id);
+            System.out.println(activity.type);
+            System.out.println(activity.createdAt.toString());
+
+            // only set on suppressed events
+            System.out.println(activity.suppressionReason);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+> **Note:** A token with one of the `email_full`, `activity_read` or `activity_full` scopes is required.
+
+> **Note:** The `junk` event type is reported as `soft_bounced`. The `deferred` and `suppressed` event types are only included if your plan has those features enabled, they are available on the Starter plan and above.
 
 ## Inbound routes
 
