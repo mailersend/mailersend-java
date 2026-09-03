@@ -305,7 +305,7 @@ public class Emails {
 
 
     /**
-     * Sets the results limit (10 - 100, default 25)
+     * Sets the results limit (10 - 1000, default 25)
      *
      * @param limit a int.
      * @return a {@link com.mailersend.sdk.emails.Emails} object.
@@ -319,7 +319,7 @@ public class Emails {
 
 
     /**
-     * Sets the results page to retrieve (1 - 1000, default 1)
+     * Sets the results page to retrieve (1 - 100, default 1)
      *
      * @param page a int.
      * @return a {@link com.mailersend.sdk.emails.Emails} object.

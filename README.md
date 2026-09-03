@@ -920,8 +920,8 @@ A filter that matches nothing, including an unknown recipient email, returns an 
 | `domainId(String domainId)`           | `String`   | yes      | Must be a domain of your account.                                                                          |
 | `dateFrom(long dateFrom)`             | `long`     | yes      | Unix timestamp in seconds, assumed to be UTC. Also accepts a `java.util.Date`.                             |
 | `dateTo(long dateTo)`                 | `long`     | yes      | Unix timestamp in seconds, must be higher than `dateFrom` and not in the future. Also accepts a `Date`.     |
-| `page(int page)`                       | `int`      | no       | Min 1, max 1000, default 1, see [Emails pagination](#emails-pagination).                                     |
-| `limit(int limit)`                     | `int`      | no       | Min 10, max 100, default 25.                                                                               |
+| `page(int page)`                       | `int`      | no       | Min 1, max 100, default 1, see [Emails pagination](#emails-pagination).                                      |
+| `limit(int limit)`                     | `int`      | no       | Min 10, max 1000, default 25.                                                                              |
 | `status(String... status)`             | `String[]` | no       | Any of the constants in `com.mailersend.sdk.emails.EmailStatus`, combined with OR.                          |
 | `interaction(String... interaction)`   | `String[]` | no       | Any of the constants in `com.mailersend.sdk.emails.EmailInteraction`, combined with OR.                     |
 | `recipientEmail(String recipientEmail)` | `String`  | no       | Exact, case insensitive match.                                                                             |
