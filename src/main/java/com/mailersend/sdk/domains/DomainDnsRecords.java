@@ -23,8 +23,17 @@ public class DomainDnsRecords {
     @SerializedName("spf")
     public DomainDnsAttribute spf;
     
+    /**
+     * @deprecated Use {@link #dkimMs1} and {@link #dkimMs2} instead.
+     */
     @SerializedName("dkim")
     public DomainDnsAttribute dkim;
+
+    @SerializedName("dkim_ms1")
+    public DomainDnsAttribute dkimMs1;
+
+    @SerializedName("dkim_ms2")
+    public DomainDnsAttribute dkimMs2;
     
     @SerializedName("return_path")
     public DomainDnsAttribute returnPath;

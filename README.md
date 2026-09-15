@@ -164,6 +164,9 @@ MailerSend Java SDK
         - [Update a blocklist monitor](#update-a-blocklist-monitor)
         - [Delete a blocklist monitor](#delete-a-blocklist-monitor)
 
+- [WhatsApp](#whatsapp)
+    - [Send a WhatsApp message](#send-a-whatsapp-message)
+    - [Send a WhatsApp message with personalization](#send-a-whatsapp-message-with-personalization)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -177,12 +180,12 @@ Using Maven:
     <dependency>
       <groupId>com.mailersend</groupId>
       <artifactId>java-sdk</artifactId>
-      <version>2.1.0</version>
+      <version>2.2.0</version>
     </dependency>
 
 Using Gradle:
 
-    implementation 'com.mailersend:java-sdk:2.1.0'
+    implementation 'com.mailersend:java-sdk:2.2.0'
     
 # Usage
 
@@ -1273,6 +1276,12 @@ The SDK returns an `Activities` object on successful send or throws a `MailerSen
 
 Through the `Activities` object you can get the list of activities, get the next page of results, convert an activity into an email for resend, etc.
 
+> **Note on `suppressed` activities**
+>
+> `activity.suppressionReason` is only populated when `activity.type` is `suppressed`; it is `null` for every other activity type. Its possible values are `on_hold`, `hard_bounced`, `unsubscribed`, `spam_complained` and `blocklisted`.
+>
+> The `suppressed` activity type requires the Starter plan or above.
+
 ### Get a list of activities
 
 ```java
@@ -1294,6 +1303,8 @@ public void getActivities() {
         for (Activity activity : activities.activities) {
 
             System.out.println(activity.id);
+            System.out.println(activity.type);
+            System.out.println(activity.suppressionReason); // only set when type is "suppressed", null otherwise
             System.out.println(activity.createdAt.toString());
 
             System.out.println(activity.email.from);
@@ -1328,6 +1339,7 @@ public void getSingleActivity() {
 
         System.out.println(activity.id);
         System.out.println(activity.type);
+        System.out.println(activity.suppressionReason); // only set when type is "suppressed", null otherwise
         System.out.println(activity.createdAt.toString());
 
         System.out.println(activity.email.from);
@@ -1362,13 +1374,15 @@ public void getActivities() {
         Date dateFrom = DateUtils.addDays(new Date(), -30); // you'll need apache-commons for this
         Date dateTo = new Date();
 
-        String events[] = {EventTypes.OPENED, EventTypes.SENT}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
+        String events[] = {EventTypes.OPENED, EventTypes.SENT, EventTypes.SUPPRESSED}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
 
         ActivitiesList activities = ms.activities().getActivities("domain id", page, limit, dateFrom, dateTo, events);
 
         for (Activity activity : activities.activities) {
 
             System.out.println(activity.id);
+            System.out.println(activity.type);
+            System.out.println(activity.suppressionReason); // only set when type is "suppressed", null otherwise
         }
         
     } catch (MailerSendException e) {
@@ -1753,7 +1767,8 @@ public void DomainDnsRecords() {
         DomainDnsRecords records = ms.domains().getDomainDnsRecords("domain id");
         
         printDomainDnsAttribute(records.spf);
-        printDomainDnsAttribute(records.dkim);
+        printDomainDnsAttribute(records.dkimMs1);
+        printDomainDnsAttribute(records.dkimMs2);
         printDomainDnsAttribute(records.customTracking);
         printDomainDnsAttribute(records.returnPath);
         printDomainDnsAttribute(records.inboundRouting);
@@ -4782,6 +4797,79 @@ public void deleteInvite() {
         boolean deleted = ms.users().deleteInvite("invite-id");
 
         System.out.println("Invite deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+# WhatsApp
+
+`from` takes a connected WhatsApp sender, either as its phone number in E.164 format or as its MailerSend sender ID. A sender connected with a Meta virtual number has no phone number, so it can only be addressed by its sender ID. Recipients are phone numbers in E.164 format, or a BSUID taken from an inbound message. Sending requires a token with the `whatsapp_full` scope.
+
+### Send a WhatsApp message
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void sendWhatsApp() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        String messageId = ms.whatsapp().builder()
+            .from("12345678901")
+            .addRecipient("19191234567")
+            .templateId("your_template_id")
+            .send();
+
+        System.out.println(messageId);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send a WhatsApp message with personalization
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.WhatsAppPersonalization;
+
+public void sendWhatsAppWithPersonalization() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppPersonalization p1 = new WhatsAppPersonalization("19191234567")
+            .setHeader(new String[]{"John"})
+            .setBody(new String[]{"order #1234", "tomorrow"})
+            .setButtons(new String[]{"https://example.com/track/1234"});
+
+        WhatsAppPersonalization p2 = new WhatsAppPersonalization("19199876543")
+            .setHeader(new String[]{"Jane"})
+            .setBody(new String[]{"order #5678", "Friday"});
+
+        String messageId = ms.whatsapp().builder()
+            .from("12345678901")
+            .addRecipient("19191234567")
+            .addRecipient("19199876543")
+            .templateId("your_template_id")
+            .addPersonalization(p1)
+            .addPersonalization(p2)
+            .send();
+
+        System.out.println(messageId);
 
     } catch (MailerSendException e) {
 
