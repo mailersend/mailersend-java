@@ -19,7 +19,11 @@ public class ResponseMeta {
 
     @SerializedName("current_page")
     public int currentPage;
-    
+
+    /** The full url of the current results page. Only returned by some endpoints, null otherwise */
+    @SerializedName("current_page_url")
+    public String currentPageUrl;
+
     @SerializedName("from")
     public int from;
     
