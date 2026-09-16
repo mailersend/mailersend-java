@@ -56,6 +56,13 @@ public class InboundRouteBuilderBody {
 	public Forward[] forwards;
 
 	/**
+	 * Optional. Boxed so an unset value is omitted from the request body: the API keeps
+	 * the route's stored value when the key is absent, and rejects an explicit null.
+	 */
+	@SerializedName("exclude_attachments")
+	public Boolean excludeAttachments;
+
+	/**
 	 * <p>reset.</p>
 	 */
 	public void reset() {
@@ -71,5 +78,6 @@ public class InboundRouteBuilderBody {
 		matchFilter = null;
 		matchType = null;
 		forwards = null;
+		excludeAttachments = null;
 	}
 }
