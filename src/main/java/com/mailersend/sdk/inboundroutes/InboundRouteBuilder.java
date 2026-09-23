@@ -194,9 +194,9 @@ public class InboundRouteBuilder {
 	 * <p>includeAttachments.</p>
 	 *
 	 * <p>Forwards attachments with the message. Defaults to {@code true}. Set it to
-	 * {@code false} to drop them before the message is stored or forwarded; inline (CID) parts
-	 * count as attachments, so images embedded in an HTML body are dropped too. Leaving this
-	 * unset on an update keeps the route's stored value.</p>
+	 * {@code false} to drop them before the message is forwarded; inline (CID) parts count as
+	 * attachments, so images embedded in an HTML body are dropped too. Leaving this unset on
+	 * an update keeps the route's stored value.</p>
 	 *
 	 * @param includeAttachments a boolean.
 	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.

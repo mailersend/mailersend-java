@@ -908,7 +908,7 @@ public void getInboundRoute() {
 
 ### Create an inbound route
 
-Call `includeAttachments(false)` to drop attachments before the message is stored or forwarded. It defaults to `true`. Inline (CID) parts count as attachments, so images embedded in an HTML body are dropped too.
+Call `includeAttachments(false)` to drop attachments before the message is forwarded. It defaults to `true`. Inline (CID) parts count as attachments, so images embedded in an HTML body are dropped too.
 
 ```java
 import com.mailersend.sdk.MailerSend;
