@@ -1168,6 +1168,8 @@ public void getInboundRoute() {
 
 ### Create an inbound route
 
+Call `includeAttachments(false)` to drop attachments before the message is forwarded. It defaults to `true`. Inline (CID) parts count as attachments, so images embedded in an HTML body are dropped too.
+
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -1192,6 +1194,7 @@ public void createInboundRoute() {
             .domainEnabled(false)
             .matchFilter("match_all")
             .forwards(new Forward[] { forward })
+            .includeAttachments(false)
             .addRoute();
 
     } catch (MailerSendException e) {
@@ -1203,6 +1206,8 @@ public void createInboundRoute() {
 ```
 
 ### Update an inbound route
+
+Leaving `includeAttachments()` unset keeps the route's stored value; the API does not reset it to `true`. Pass `false` explicitly to drop attachments.
 
 ```java
 import com.mailersend.sdk.MailerSend;
@@ -1229,6 +1234,7 @@ public void updateInboundRoute() {
             .domainEnabled(false)
             .matchFilter("match_all")
             .forwards(new Forward[] { forward })
+            .includeAttachments(true)
             .updateRoute("inbound route id");
 
         System.out.println(route.id);

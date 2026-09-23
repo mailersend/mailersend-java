@@ -47,6 +47,9 @@ public class InboundRoute {
 	@SerializedName("priority")
 	public int priority;
 
+	@SerializedName("include_attachments")
+	public boolean includeAttachments;
+
 	
 	/**
 	 * <p>postDeserialize.</p>
