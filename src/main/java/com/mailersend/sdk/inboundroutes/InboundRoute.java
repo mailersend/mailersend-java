@@ -47,8 +47,8 @@ public class InboundRoute {
 	@SerializedName("priority")
 	public int priority;
 
-	@SerializedName("exclude_attachments")
-	public boolean excludeAttachments;
+	@SerializedName("include_attachments")
+	public boolean includeAttachments;
 
 	
 	/**
