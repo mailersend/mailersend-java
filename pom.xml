@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mailersend</groupId>
 	<artifactId>java-sdk</artifactId>
-	<version>2.3.0</version>
+	<version>2.4.0</version>
 	<name>MailerSend Java SDK</name>
 	<description>An SDK for MailerSend API</description>
 	<url>https://github.com/mailersend/mailersend-java</url>
@@ -77,7 +77,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.6</version>
+				<version>3.2.8</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
