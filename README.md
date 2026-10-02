@@ -167,6 +167,15 @@ MailerSend Java SDK
 - [WhatsApp](#whatsapp)
     - [Send a WhatsApp message](#send-a-whatsapp-message)
     - [Send a WhatsApp message with personalization](#send-a-whatsapp-message-with-personalization)
+    - [WhatsApp messages](#whatsapp-messages)
+        - [Get a list of WhatsApp messages](#get-a-list-of-whatsapp-messages)
+        - [Get a WhatsApp message](#get-a-whatsapp-message)
+    - [WhatsApp inbound messages](#whatsapp-inbound-messages)
+        - [Get a list of WhatsApp inbound messages](#get-a-list-of-whatsapp-inbound-messages)
+        - [Get a WhatsApp inbound message](#get-a-whatsapp-inbound-message)
+    - [WhatsApp recipients](#whatsapp-recipients)
+        - [Get a list of WhatsApp recipients](#get-a-list-of-whatsapp-recipients)
+        - [Get a WhatsApp recipient](#get-a-whatsapp-recipient)
 - [Testing](#testing)
 - [Support and Feedback](#support-and-feedback)
 - [License](#license)
@@ -4876,6 +4885,222 @@ public void sendWhatsAppWithPersonalization() {
             .send();
 
         System.out.println(messageId);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+## WhatsApp messages
+
+> **Note:** A token with one of the `whatsapp_read` or `whatsapp_full` scopes is required. Sent messages are kept for 7 days.
+
+### Get a list of WhatsApp messages
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.messages.WhatsAppMessage;
+import com.mailersend.sdk.whatsapp.messages.WhatsAppMessageList;
+
+public void getWhatsAppMessages() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppMessageList list = ms.whatsapp().messages()
+            .page(1)
+            .limit(25)
+            .getMessages();
+
+        for (WhatsAppMessage message : list.messages) {
+            System.out.println(message.id);
+            System.out.println(message.templateId);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a WhatsApp message
+
+A single message includes the status, error and activity of each of its recipients.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.messages.WhatsAppMessage;
+import com.mailersend.sdk.whatsapp.messages.WhatsAppMessageRecipient;
+
+public void getWhatsAppMessage() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppMessage message = ms.whatsapp().messages().getMessage("message id");
+
+        System.out.println(message.id);
+
+        for (WhatsAppMessageRecipient recipient : message.recipients) {
+            System.out.println(recipient.to);
+            System.out.println(recipient.status);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+## WhatsApp inbound messages
+
+> **Note:** A token with one of the `whatsapp_read` or `whatsapp_full` scopes is required. Inbound messages are kept for the inbound retention period of your plan.
+
+### Get a list of WhatsApp inbound messages
+
+All filters are optional. `types` accepts `text`, `image`, `audio`, `video`, `document`, `sticker`, `location`, `contacts`, `interactive`, `button`, `order`, `reaction`, `system`, `unknown` and `unsupported`, combined with OR. `dateFrom` and `dateTo` take Unix timestamps and are exclusive.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessage;
+import com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessageList;
+
+public void getWhatsAppInboundMessages() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppInboundMessageList list = ms.whatsapp().inboundMessages()
+            .whatsappAccountId("whatsapp account id")
+            .types(new String[]{"text", "image"})
+            .dateFrom(1790000000)
+            .dateTo(1790086400)
+            .page(1)
+            .limit(25)
+            .getInboundMessages();
+
+        for (WhatsAppInboundMessage inboundMessage : list.inboundMessages) {
+            System.out.println(inboundMessage.id);
+            System.out.println(inboundMessage.from);
+            System.out.println(inboundMessage.type);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a WhatsApp inbound message
+
+Each inbound message has one content field set, determined by its `type`: `text`, `attachment` (for media), `location`, `contacts`, `reaction`, `button`, `listReply` or `interactive`. Replies also have `context`.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessage;
+
+public void getWhatsAppInboundMessage() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppInboundMessage inboundMessage = ms.whatsapp().inboundMessages().getInboundMessage("inbound message id");
+
+        System.out.println(inboundMessage.id);
+        System.out.println(inboundMessage.type);
+
+        if (inboundMessage.text != null) {
+            System.out.println(inboundMessage.text.body);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+## WhatsApp recipients
+
+> **Note:** A token with one of the `whatsapp_read` or `whatsapp_full` scopes is required.
+
+### Get a list of WhatsApp recipients
+
+`status` accepts `active`, `invalid`, `suppressed` or `blocked`. The list uses simple pagination: `meta.total` and `meta.last_page` are not returned, so keep requesting the next page until `links.next` is `null`.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.recipients.WhatsAppRecipient;
+import com.mailersend.sdk.whatsapp.recipients.WhatsAppRecipientList;
+
+public void getWhatsAppRecipients() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppRecipientList list = ms.whatsapp().recipients()
+            .status("active")
+            .page(1)
+            .limit(25)
+            .getRecipients();
+
+        for (WhatsAppRecipient recipient : list.recipients) {
+            System.out.println(recipient.id);
+            System.out.println(recipient.phoneNumber);
+        }
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Get a WhatsApp recipient
+
+A single recipient includes their latest 25 messages.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.recipients.WhatsAppRecipient;
+import com.mailersend.sdk.whatsapp.recipients.WhatsAppRecipientMessage;
+
+public void getWhatsAppRecipient() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        WhatsAppRecipient recipient = ms.whatsapp().recipients().getRecipient("recipient id");
+
+        System.out.println(recipient.id);
+
+        for (WhatsAppRecipientMessage message : recipient.messages) {
+            System.out.println(message.templateName);
+            System.out.println(message.status);
+        }
 
     } catch (MailerSendException e) {
 

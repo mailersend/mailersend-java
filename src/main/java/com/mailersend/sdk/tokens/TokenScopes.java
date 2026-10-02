@@ -102,6 +102,9 @@ public class TokenScopes {
     /** Constant <code>blocklistMonitoringFull="blocklist_monitoring_full"</code> */
     public static final String blocklistMonitoringFull = "blocklist_monitoring_full";
 
+    /** Constant <code>whatsappRead="whatsapp_read"</code> */
+    public static final String whatsappRead = "whatsapp_read";
+
     /** Constant <code>whatsappFull="whatsapp_full"</code> */
     public static final String whatsappFull = "whatsapp_full";
 }
