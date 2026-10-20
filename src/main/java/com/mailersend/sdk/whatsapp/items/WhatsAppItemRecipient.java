@@ -5,7 +5,7 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.whatsapp.messages;
+package com.mailersend.sdk.whatsapp.items;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -15,12 +15,21 @@ import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * <p>WhatsAppMessageActivity class.</p>
+ * <p>WhatsAppItemRecipient class.</p>
  *
  * @author mailersend
  * @version $Id: $Id
  */
-public class WhatsAppMessageActivity {
+public class WhatsAppItemRecipient {
+
+    @SerializedName("id")
+    public String id;
+
+    @SerializedName("phone_number")
+    public String phoneNumber;
+
+    @SerializedName("username")
+    public String username;
 
     @SerializedName("status")
     public String status;

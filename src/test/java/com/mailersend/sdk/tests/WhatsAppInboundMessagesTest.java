@@ -45,6 +45,7 @@ public class WhatsAppInboundMessagesTest {
         try {
             WhatsAppInboundMessageList list = ms.whatsapp().inboundMessages()
                 .whatsappAccountId("3enl6x27wmrxrl2v")
+                .from("+48600000001")
                 .types(new String[]{"text", "image"})
                 .dateFrom(1790000000)
                 .dateTo(1790086400)
@@ -56,14 +57,14 @@ public class WhatsAppInboundMessagesTest {
 
             WhatsAppInboundMessage text = list.inboundMessages[0];
             assertEquals("text", text.type);
-            assertEquals("Hello, I would like to check my order status.", text.text.body);
+            assertEquals("Hello, I would like to check my order status.", text.meta.get("body").getAsString());
             assertEquals("wamid.HBgLMzcwNjMzMjI3OTcVAgARGBIwREE3N0EwN0EyNjhENjEwOEMA", text.context.messageId);
             assertNotNull(text.receivedAt);
-            assertNull(text.attachment);
 
             WhatsAppInboundMessage image = list.inboundMessages[1];
-            assertEquals("stored", image.attachment.status);
-            assertEquals(102400L, image.attachment.size);
+            assertEquals("image", image.type);
+            assertEquals("stored", image.meta.get("status").getAsString());
+            assertEquals(102400L, image.meta.get("size").getAsLong());
             assertNull(image.context);
 
         } catch (MailerSendException e) {
@@ -82,8 +83,9 @@ public class WhatsAppInboundMessagesTest {
 
             assertEquals("62f114a3165fe0d8db0288d1", inboundMessage.id);
             assertEquals("interactive", inboundMessage.type);
-            assertEquals("delivery_today", inboundMessage.listReply.id);
-            assertNull(inboundMessage.interactive);
+            assertEquals("list_reply", inboundMessage.meta.get("reply_type").getAsString());
+            assertEquals("delivery_today", inboundMessage.meta.get("id").getAsString());
+            assertNotNull(inboundMessage.context);
 
         } catch (MailerSendException e) {
             fail();

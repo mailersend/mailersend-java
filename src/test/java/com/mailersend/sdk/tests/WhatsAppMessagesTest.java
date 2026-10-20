@@ -44,6 +44,11 @@ public class WhatsAppMessagesTest {
 
         try {
             WhatsAppMessageList list = ms.whatsapp().messages()
+                .whatsappAccountId("3enl6x27wmrxrl2v")
+                .from("+15550001234")
+                .templateId("23zxk54v6gjy6v7m")
+                .dateFrom(1791936000)
+                .dateTo(1792022400)
                 .page(1)
                 .limit(25)
                 .getMessages();
@@ -53,7 +58,9 @@ public class WhatsAppMessagesTest {
             assertEquals("23zxk54v6gjy6v7m", list.messages[0].templateId);
             assertEquals("3enl6x27wmrxrl2v", list.messages[0].whatsappAccountId);
             assertNotNull(list.messages[0].createdAt);
-            assertNull(list.messages[1].from);
+            assertNull(list.messages[0].items);
+            assertEquals(1, list.meta.currentPage);
+            assertNull(list.links.next);
 
         } catch (MailerSendException e) {
             fail();
@@ -69,12 +76,14 @@ public class WhatsAppMessagesTest {
             WhatsAppMessage message = ms.whatsapp().messages().getMessage("67f91abd69f79df391e9d78d");
 
             assertEquals("67f91abd69f79df391e9d78d", message.id);
-            assertEquals(2, message.recipients.length);
-            assertEquals("read", message.recipients[0].status);
-            assertNull(message.recipients[0].errorCode);
-            assertEquals(4, message.recipients[0].activity.length);
-            assertNotNull(message.recipients[0].activity[0].createdAt);
-            assertEquals(131026, message.recipients[1].errorCode);
+            assertEquals(2, message.items.length);
+            assertEquals("67f91abd69f79df391e9d78d", message.items[0].whatsappMessageId);
+            assertEquals("read", message.items[0].status);
+            assertEquals("Order confirmation", message.items[0].templateName);
+            assertNull(message.items[0].errorCode);
+            assertNotNull(message.items[0].createdAt);
+            assertEquals(131026, message.items[1].errorCode);
+            assertEquals("Message undeliverable", message.items[1].errorMessage);
 
         } catch (MailerSendException e) {
             fail();

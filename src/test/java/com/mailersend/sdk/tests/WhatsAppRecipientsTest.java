@@ -45,13 +45,14 @@ public class WhatsAppRecipientsTest {
         try {
             WhatsAppRecipientList list = ms.whatsapp().recipients()
                 .status("active")
+                .phoneNumber("+48600000001")
                 .page(1)
                 .limit(25)
                 .getRecipients();
 
             assertEquals(1, list.recipients.length);
             assertEquals("48600000001", list.recipients[0].phoneNumber);
-            assertEquals("US.13491208655302741918", list.recipients[0].bsuid);
+            assertEquals("active", list.recipients[0].status);
             assertNull(list.recipients[0].username);
             assertNotNull(list.recipients[0].createdAt);
             assertNull(list.links.next);
@@ -70,10 +71,11 @@ public class WhatsAppRecipientsTest {
             WhatsAppRecipient recipient = ms.whatsapp().recipients().getRecipient("67f91abe2202f37055402301");
 
             assertEquals("67f91abe2202f37055402301", recipient.id);
-            assertEquals(1, recipient.messages.length);
-            assertEquals("67f91abd69f79df391e9d78d", recipient.messages[0].whatsappMessageId);
-            assertEquals("Order confirmation", recipient.messages[0].templateName);
-            assertNotNull(recipient.messages[0].createdAt);
+            assertEquals(1, recipient.items.length);
+            assertEquals("67f91abd69f79df391e9d78d", recipient.items[0].whatsappMessageId);
+            assertEquals("Order confirmation", recipient.items[0].templateName);
+            assertEquals("48600000001", recipient.items[0].to);
+            assertNotNull(recipient.items[0].createdAt);
 
         } catch (MailerSendException e) {
             fail();

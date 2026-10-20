@@ -5,18 +5,13 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.whatsapp.inboundmessages;
+package com.mailersend.sdk.whatsapp.items;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.MailerSendResponse;
 
-/**
- * <p>The content of a <code>text</code> inbound message.</p>
- *
- * @author mailersend
- * @version $Id: $Id
- */
-public class WhatsAppInboundMessageText {
+class SingleWhatsAppItemResponse extends MailerSendResponse {
 
-    @SerializedName("body")
-    public String body;
+    @SerializedName("data")
+    public WhatsAppItem item;
 }

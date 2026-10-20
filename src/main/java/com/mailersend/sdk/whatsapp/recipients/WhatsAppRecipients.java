@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp.recipients;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import com.mailersend.sdk.MailerSend;
@@ -26,6 +28,7 @@ public class WhatsAppRecipients {
     private int pageFilter = 1;
     private int limitFilter = 25;
     private String statusFilter;
+    private String phoneNumberFilter;
 
     /**
      * <p>Constructor for WhatsAppRecipients.</p>
@@ -66,6 +69,17 @@ public class WhatsAppRecipients {
      */
     public WhatsAppRecipients status(String status) {
         statusFilter = status;
+        return this;
+    }
+
+    /**
+     * Filters the recipients by phone number in international format
+     *
+     * @param phoneNumber a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.whatsapp.recipients.WhatsAppRecipients} object.
+     */
+    public WhatsAppRecipients phoneNumber(String phoneNumber) {
+        phoneNumberFilter = phoneNumber;
         return this;
     }
 
@@ -119,7 +133,11 @@ public class WhatsAppRecipients {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (statusFilter != null) {
-            params.add("status=".concat(statusFilter));
+            params.add("status=".concat(urlEncode(statusFilter)));
+        }
+
+        if (phoneNumberFilter != null) {
+            params.add("phone_number=".concat(urlEncode(phoneNumberFilter)));
         }
 
         String requestParams = "";
@@ -136,5 +154,10 @@ public class WhatsAppRecipients {
         }
 
         return requestParams;
+    }
+
+    private String urlEncode(String value) {
+
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

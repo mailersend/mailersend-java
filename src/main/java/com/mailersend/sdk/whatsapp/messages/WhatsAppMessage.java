@@ -13,6 +13,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.whatsapp.items.WhatsAppItem;
 
 /**
  * <p>WhatsAppMessage class.</p>
@@ -43,10 +44,10 @@ public class WhatsAppMessage {
     public Date createdAt;
 
     /**
-     * Only returned when retrieving a single message
+     * One item per recipient. Only returned when retrieving a single message
      */
-    @SerializedName("recipients")
-    public WhatsAppMessageRecipient[] recipients;
+    @SerializedName("items")
+    public WhatsAppItem[] items;
 
     /**
      * <p>postDeserialize.</p>
@@ -62,9 +63,9 @@ public class WhatsAppMessage {
             createdAt = Date.from(instant);
         }
 
-        if (recipients != null) {
-            for (WhatsAppMessageRecipient r : recipients) {
-                r.postDeserialize();
+        if (items != null) {
+            for (WhatsAppItem i : items) {
+                i.postDeserialize();
             }
         }
     }

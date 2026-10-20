@@ -5,21 +5,27 @@
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
-package com.mailersend.sdk.whatsapp.inboundmessages;
+package com.mailersend.sdk.whatsapp.templates;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
- * <p>The content of a <code>reaction</code> inbound message.</p>
+ * <p>WhatsAppTemplateButton class.</p>
  *
  * @author mailersend
  * @version $Id: $Id
  */
-public class WhatsAppInboundMessageReaction {
+public class WhatsAppTemplateButton {
 
-    @SerializedName("message_id")
-    public String messageId;
+    @SerializedName("type")
+    public String type;
 
-    @SerializedName("emoji")
-    public String emoji;
+    @SerializedName("text")
+    public String text;
+
+    /**
+     * The URL a URL button opens, otherwise null
+     */
+    @SerializedName("url")
+    public String url;
 }

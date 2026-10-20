@@ -7,7 +7,10 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp.inboundmessages;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
@@ -26,9 +29,10 @@ public class WhatsAppInboundMessages {
     private int pageFilter = 1;
     private int limitFilter = 25;
     private String whatsappAccountIdFilter;
+    private String fromFilter;
     private String[] typesFilter;
-    private Integer dateFromFilter;
-    private Integer dateToFilter;
+    private Long dateFromFilter;
+    private Long dateToFilter;
 
     /**
      * <p>Constructor for WhatsAppInboundMessages.</p>
@@ -73,6 +77,17 @@ public class WhatsAppInboundMessages {
     }
 
     /**
+     * Filters by the customer's phone number in international format, or their BSUID
+     *
+     * @param from a {@link java.lang.String} object.
+     * @return a {@link com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessages} object.
+     */
+    public WhatsAppInboundMessages from(String from) {
+        fromFilter = from;
+        return this;
+    }
+
+    /**
      * Filters by message type. Multiple values are combined with OR.
      * Possible values: text, image, audio, video, document, sticker, location, contacts,
      * interactive, button, order, reaction, system, unknown, unsupported
@@ -88,22 +103,44 @@ public class WhatsAppInboundMessages {
     /**
      * Only messages received strictly after this Unix timestamp (UTC) are returned
      *
-     * @param dateFrom a int.
+     * @param dateFrom a long.
      * @return a {@link com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessages} object.
      */
-    public WhatsAppInboundMessages dateFrom(int dateFrom) {
+    public WhatsAppInboundMessages dateFrom(long dateFrom) {
         dateFromFilter = dateFrom;
+        return this;
+    }
+
+    /**
+     * Only messages received strictly after this date are returned
+     *
+     * @param dateFrom a {@link java.util.Date} object.
+     * @return a {@link com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessages} object.
+     */
+    public WhatsAppInboundMessages dateFrom(Date dateFrom) {
+        dateFromFilter = dateFrom.getTime() / 1000;
         return this;
     }
 
     /**
      * Only messages received strictly before this Unix timestamp (UTC) are returned
      *
-     * @param dateTo a int.
+     * @param dateTo a long.
      * @return a {@link com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessages} object.
      */
-    public WhatsAppInboundMessages dateTo(int dateTo) {
+    public WhatsAppInboundMessages dateTo(long dateTo) {
         dateToFilter = dateTo;
+        return this;
+    }
+
+    /**
+     * Only messages received strictly before this date are returned
+     *
+     * @param dateTo a {@link java.util.Date} object.
+     * @return a {@link com.mailersend.sdk.whatsapp.inboundmessages.WhatsAppInboundMessages} object.
+     */
+    public WhatsAppInboundMessages dateTo(Date dateTo) {
+        dateToFilter = dateTo.getTime() / 1000;
         return this;
     }
 
@@ -157,12 +194,16 @@ public class WhatsAppInboundMessages {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (whatsappAccountIdFilter != null) {
-            params.add("whatsapp_account_id=".concat(whatsappAccountIdFilter));
+            params.add("whatsapp_account_id=".concat(urlEncode(whatsappAccountIdFilter)));
+        }
+
+        if (fromFilter != null) {
+            params.add("from=".concat(urlEncode(fromFilter)));
         }
 
         if (typesFilter != null) {
             for (String t : typesFilter) {
-                params.add("type[]=".concat(t));
+                params.add("type[]=".concat(urlEncode(t)));
             }
         }
 
@@ -188,5 +229,10 @@ public class WhatsAppInboundMessages {
         }
 
         return requestParams;
+    }
+
+    private String urlEncode(String value) {
+
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }
