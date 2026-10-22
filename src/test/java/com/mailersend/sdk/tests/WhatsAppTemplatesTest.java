@@ -62,6 +62,7 @@ public class WhatsAppTemplatesTest {
             assertEquals("UTILITY", template.category);
             assertEquals("en_US", template.language);
             assertEquals("approved", template.status);
+            assertEquals("TEXT", template.components.header.format);
             assertEquals("{{1}}", template.components.header.text);
             assertNotNull(template.createdAt);
             assertNotNull(template.updatedAt);

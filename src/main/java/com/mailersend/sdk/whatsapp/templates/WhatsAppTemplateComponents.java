@@ -21,7 +21,7 @@ public class WhatsAppTemplateComponents {
      * Null when the template has no header
      */
     @SerializedName("header")
-    public WhatsAppTemplateText header;
+    public WhatsAppTemplateHeader header;
 
     /**
      * Null when the template has no body
