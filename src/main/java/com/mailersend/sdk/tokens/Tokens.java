@@ -9,10 +9,13 @@ package com.mailersend.sdk.tokens;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 /**
  * <p>Tokens class.</p>
@@ -136,19 +139,7 @@ public class Tokens {
      */
     public Token updateToken(String tokenId, boolean paused) throws MailerSendException {
 
-        String endpoint = "/token/".concat(tokenId);
-
-        MailerSendApi api = new MailerSendApi();
-        api.setToken(apiObjectReference.getToken());
-
-        String status = paused ? "pause" : "unpause";
-        String json = "{\"status\":\"" + status + "\"}";
-
-        TokenResponse response = api.putRequest(endpoint, json, TokenResponse.class);
-
-        response.token.postDeserialize();
-
-        return response.token;
+        return updateToken(tokenId, null, paused ? "pause" : "unpause");
     }
 
 
@@ -171,22 +162,31 @@ public class Tokens {
             throw new MailerSendException("At least one of name or status must be provided");
         }
 
+        if (!nameBlank && name.length() > 50) {
+
+            throw new MailerSendException("Token name cannot be longer than 50 characters");
+        }
+
+        if (!statusBlank && !"pause".equals(status) && !"unpause".equals(status)) {
+
+            throw new MailerSendException("Token status must be either pause or unpause");
+        }
+
         String endpoint = "/token/".concat(tokenId);
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        ArrayList<String> fields = new ArrayList<String>();
+        TokenUpdateRequestBody body = new TokenUpdateRequestBody();
+        body.name = nameBlank ? null : name;
+        body.status = statusBlank ? null : status;
 
-        if (name != null && !name.isBlank()) {
-            fields.add("\"name\":\"" + name + "\"");
-        }
+        Gson gson = new GsonBuilder()
+                .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
+                .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
+                .create();
 
-        if (status != null && !status.isBlank()) {
-            fields.add("\"status\":\"" + status + "\"");
-        }
-
-        String json = "{" + String.join(",", fields) + "}";
+        String json = gson.toJson(body);
 
         TokenResponse response = api.putRequest(endpoint, json, TokenResponse.class);
 

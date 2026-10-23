@@ -1,9 +1,12 @@
 package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,6 +93,140 @@ public class WhatsAppTests {
                 .send();
 
             assertEquals("67f91abd69f79df391e9d78d", messageId);
+
+        } catch (MailerSendException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void TestSendWhatsAppWithMediaHeader() {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+            WhatsAppPersonalization p1 = new WhatsAppPersonalization("19191234567")
+                .setMediaHeader("https://www.example.com/invoices/12345.pdf", "invoice-12345.pdf")
+                .setBody(new String[]{"John"});
+
+            String messageId = ms.whatsapp().builder()
+                .from("12345678901")
+                .addRecipient("19191234567")
+                .templateId("template_id_123")
+                .addPersonalization(p1)
+                .send();
+
+            assertEquals("67f91c3d69f79df391e9d795", messageId);
+
+        } catch (MailerSendException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void TestSendWhatsAppWithNamedVariables() {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+            Map<String, String> header = new LinkedHashMap<String, String>();
+            header.put("order_number", "12345");
+
+            Map<String, String> body = new LinkedHashMap<String, String>();
+            body.put("first_name", "John");
+            body.put("order_date", "December 31, 2026");
+
+            WhatsAppPersonalization p1 = new WhatsAppPersonalization("19191234567")
+                .setNamedHeader(header)
+                .setNamedBody(body);
+
+            String messageId = ms.whatsapp().builder()
+                .from("12345678901")
+                .addRecipient("19191234567")
+                .templateId("template_id_123")
+                .addPersonalization(p1)
+                .send();
+
+            assertEquals("67f91c3d69f79df391e9d796", messageId);
+
+        } catch (MailerSendException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Tests that setHeader replaces a media header set earlier
+     */
+    @Test
+    public void TestSendWhatsAppPositionalHeaderReplacesMediaHeader() {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+            WhatsAppPersonalization p1 = new WhatsAppPersonalization("19191234567")
+                .setMediaHeader("https://www.example.com/invoices/12345.pdf")
+                .setHeader(new String[]{"John"});
+
+            String messageId = ms.whatsapp().builder()
+                .from("12345678901")
+                .addRecipient("19191234567")
+                .templateId("template_id_123")
+                .addPersonalization(p1)
+                .send();
+
+            assertEquals("67f91c3d69f79df391e9d797", messageId);
+
+        } catch (MailerSendException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Tests that setBody replaces named body variables set earlier
+     */
+    @Test
+    public void TestSendWhatsAppPositionalBodyReplacesNamedBody() {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+            Map<String, String> body = new LinkedHashMap<String, String>();
+            body.put("first_name", "John");
+
+            WhatsAppPersonalization p1 = new WhatsAppPersonalization("19191234567")
+                .setNamedBody(body)
+                .setBody(new String[]{"John"});
+
+            String messageId = ms.whatsapp().builder()
+                .from("12345678901")
+                .addRecipient("19191234567")
+                .templateId("template_id_123")
+                .addPersonalization(p1)
+                .send();
+
+            assertEquals("67f91c3d69f79df391e9d798", messageId);
+
+        } catch (MailerSendException e) {
+            fail();
+        }
+    }
+
+    /**
+     * Tests that send() returns null when neither the header nor the body has a message id
+     */
+    @Test
+    public void TestSendWhatsAppWithoutMessageId() {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+            String messageId = ms.whatsapp().builder()
+                .from("12345678901")
+                .addRecipient("19191234567")
+                .templateId("template_id_123")
+                .send();
+
+            assertNull(messageId);
 
         } catch (MailerSendException e) {
             fail();

@@ -15,6 +15,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ScheduledMessage {
 
+	/**
+	 * @deprecated The API does not return an id for a scheduled message, so this is always null. Use {@link #messageId} instead.
+	 */
 	@SerializedName("id")
 	public String id;
 

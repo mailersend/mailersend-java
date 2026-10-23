@@ -7,11 +7,23 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.mailersend.sdk.*;
+import com.mailersend.sdk.emails.Attachment;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.emails.Personalization;
 
@@ -274,10 +286,10 @@ public class EmailConfigurationTest {
 
 
     /**
-     * Tests that rcptTo field serializes correctly as "rcpt_to" in JSON
+     * Tests that the RCPT TO recipients are not serialized, the email API does not accept them
      */
     @Test
-    public void testRcptToSerialization() {
+    public void testRcptToIsNotSerialized() {
 
         Email email = TestHelper.createBasicEmail(true);
 
@@ -285,8 +297,8 @@ public class EmailConfigurationTest {
 
         String json = email.serializeForSending();
 
-        assertTrue(json.contains("\"rcpt_to\""));
-        assertTrue(json.contains("rcpt@client.com"));
+        assertFalse(json.contains("\"rcpt_to\""));
+        assertFalse(json.contains("rcpt@client.com"));
     }
 
 
@@ -390,5 +402,64 @@ public class EmailConfigurationTest {
         String json = email.serializeForSending();
 
         assertTrue(!json.contains("\"language\""));
+    }
+
+
+    /**
+     * Tests that setImage() makes the attachment inline only when it has a content id
+     */
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("imageContentIds")
+    public void testImageDispositionDependsOnTheContentId(String label, String contentId, String expectedDisposition) {
+
+        Attachment attachment = new Attachment();
+
+        attachment.setImage(contentId, "aGVsbG8=", "logo.png");
+
+        assertEquals(expectedDisposition, attachment.disposition);
+        assertEquals(contentId, attachment.id);
+        assertEquals("aGVsbG8=", attachment.content);
+        assertEquals("logo.png", attachment.filename);
+    }
+
+    static Stream<Arguments> imageContentIds() {
+        return Stream.of(
+            Arguments.of("content id is inline", "logo", "inline"),
+            Arguments.of("one character content id is inline", "a", "inline"),
+            Arguments.of("null content id is an attachment", null, "attachment"),
+            Arguments.of("empty content id is an attachment", "", "attachment"),
+            Arguments.of("blank content id is an attachment", "  ", "attachment")
+        );
+    }
+
+
+    /**
+     * Tests that AddImageFromFile() reads and encodes the file and makes it inline when it has a content id
+     */
+    @Test
+    public void testImageFromFileWithContentIdIsInline() throws IOException {
+
+        Attachment attachment = new Attachment();
+
+        attachment.AddImageFromFile("a", "LICENSE");
+
+        assertEquals("inline", attachment.disposition);
+        assertEquals("a", attachment.id);
+        assertEquals("LICENSE", attachment.filename);
+        assertEquals(Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("LICENSE"))), attachment.content);
+    }
+
+
+    /**
+     * Tests that AddImageFromFile() makes the attachment a regular one when it has no content id
+     */
+    @Test
+    public void testImageFromFileWithoutContentIdIsAnAttachment() throws IOException {
+
+        Attachment attachment = new Attachment();
+
+        attachment.AddImageFromFile(null, "LICENSE");
+
+        assertEquals("attachment", attachment.disposition);
     }
 }

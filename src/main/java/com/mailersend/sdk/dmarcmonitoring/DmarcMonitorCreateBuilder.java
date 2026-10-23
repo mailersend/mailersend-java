@@ -61,6 +61,8 @@ public class DmarcMonitorCreateBuilder {
 
         DmarcMonitorResponse response = api.postRequest(endpoint, json, DmarcMonitorResponse.class);
 
+        response.monitor.postDeserialize();
+
         return response.monitor;
     }
 }

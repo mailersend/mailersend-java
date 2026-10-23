@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.blocklistmonitoring;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -136,7 +138,11 @@ public class BlocklistMonitoring {
         sortByFilter = null;
         orderFilter = null;
 
-        return api.getRequest(endpoint, BlocklistMonitorsList.class);
+        BlocklistMonitorsList response = api.getRequest(endpoint, BlocklistMonitorsList.class);
+
+        response.postDeserialize();
+
+        return response;
     }
 
     /**
@@ -153,6 +159,8 @@ public class BlocklistMonitoring {
         api.setToken(apiObjectReference.getToken());
 
         BlocklistMonitorResponse response = api.getRequest(endpoint, BlocklistMonitorResponse.class);
+
+        response.monitor.postDeserialize();
 
         return response.monitor;
     }
@@ -186,15 +194,15 @@ public class BlocklistMonitoring {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (queryFilter != null && !queryFilter.isBlank()) {
-            params.add("query=".concat(queryFilter));
+            params.add("query=".concat(urlEncode(queryFilter)));
         }
 
         if (sortByFilter != null && !sortByFilter.isBlank()) {
-            params.add("sort_by=".concat(sortByFilter));
+            params.add("sort_by=".concat(urlEncode(sortByFilter)));
         }
 
         if (orderFilter != null && !orderFilter.isBlank()) {
-            params.add("order=".concat(orderFilter));
+            params.add("order=".concat(urlEncode(orderFilter)));
         }
 
         String requestParams = "";
@@ -207,5 +215,12 @@ public class BlocklistMonitoring {
         }
 
         return requestParams;
+    }
+
+    /**
+     * Url encodes a query parameter value
+     */
+    private String urlEncode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

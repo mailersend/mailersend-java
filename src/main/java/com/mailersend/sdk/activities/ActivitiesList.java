@@ -130,6 +130,11 @@ public class ActivitiesList extends MailerSendResponse {
      */
     public void postDeserialize() {
         
+        if (activities == null) {
+            
+            return;
+        }
+        
         for (Activity activity : activities) {
             
             activity.postDeserialize();

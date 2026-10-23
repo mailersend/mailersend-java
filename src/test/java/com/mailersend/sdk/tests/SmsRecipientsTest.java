@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,10 +43,32 @@ public class SmsRecipientsTest {
         
         	SmsRecipientList list = ms.sms().recipients().getRecipients();
         	
-        	for (SmsRecipient recipient : list.recipients) {
-        		
-        		System.out.println(recipient.id);
-        	}
+        	assertEquals("627e7503d30078fb2208cc83", list.recipients[0].id);
+        	assertEquals(Instant.parse("2022-05-13T15:10:59.444Z"), list.recipients[0].createdAt.toInstant());
+        	
+        } catch (MailerSendException ex) {
+        	fail();
+        }
+    }
+    
+    
+    /**
+     * Tests that page and limit are sent
+     */
+    @Test
+    public void testSmsRecipientsWithPagination() {
+        
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        
+        try {
+        
+        	SmsRecipientList list = ms.sms().recipients()
+        	        .page(2)
+        	        .limit(10)
+        	        .getRecipients();
+        	
+        	assertEquals("627e7503d30078fb2208cc83", list.recipients[0].id);
         	
         } catch (MailerSendException ex) {
         	fail();
@@ -65,7 +88,7 @@ public class SmsRecipientsTest {
         	
         	SmsRecipient recipient = ms.sms().recipients().getRecipient(list.recipients[0].id);
         	
-        	System.out.println(recipient.id);
+        	assertEquals(list.recipients[0].id, recipient.id);
         	
         } catch (MailerSendException ex) {
         	fail();
@@ -85,6 +108,8 @@ public class SmsRecipientsTest {
         	SmsRecipient recipient = ms.sms().recipients().updateRecipient(list.recipients[0].id, "opt_out");
 
         	assertEquals("opt_out", recipient.status);
+        	assertEquals("api", recipient.optOutSource);
+        	assertEquals(Instant.parse("2022-01-02T12:00:00Z"), recipient.optedOutAt.toInstant());
 
         } catch (MailerSendException ex) {
         	fail();

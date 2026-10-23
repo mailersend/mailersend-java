@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.analytics;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +24,18 @@ import com.mailersend.sdk.exceptions.MailerSendException;
  * @version $Id: $Id
  */
 public class Analytics {
+
+    /** Constant <code>GROUP_BY_DAYS="days"</code> */
+    public static final String GROUP_BY_DAYS = "days";
+
+    /** Constant <code>GROUP_BY_WEEKS="weeks"</code> */
+    public static final String GROUP_BY_WEEKS = "weeks";
+
+    /** Constant <code>GROUP_BY_MONTHS="months"</code> */
+    public static final String GROUP_BY_MONTHS = "months";
+
+    /** Constant <code>GROUP_BY_YEARS="years"</code> */
+    public static final String GROUP_BY_YEARS = "years";
 
     // we need a reference to the MailerSend object to get the token and pass it to the responses
     private MailerSend apiObjectReference;
@@ -126,14 +140,14 @@ public class Analytics {
      */
     public AnalyticsByDateList getByDate(String[] events) throws MailerSendException {
         
-        return this.getByDate("group_by=days", events);
+        return this.getByDate(GROUP_BY_DAYS, events);
     }
     
     
     /**
      * Gets the analytics by date
      *
-     * @param groupBy a {@link java.lang.String} object.
+     * @param groupBy one of GROUP_BY_DAYS, GROUP_BY_WEEKS, GROUP_BY_MONTHS or GROUP_BY_YEARS
      * @param events an array of {@link java.lang.String} objects.
      * @throws com.mailersend.sdk.exceptions.MailerSendException
      * @return a {@link com.mailersend.sdk.analytics.AnalyticsByDateList} object.
@@ -149,7 +163,11 @@ public class Analytics {
 
         ArrayList<String> params = new ArrayList<String>();
 
-        params.add(groupBy);
+        if (groupBy != null && !groupBy.isBlank()) {
+
+            // keeps accepting the raw "group_by=..." fragment that callers had to pass before
+            params.add(groupBy.startsWith("group_by=") ? groupBy : "group_by=".concat(urlEncode(groupBy)));
+        }
 
         if (events != null && events.length > 0) {
 
@@ -300,10 +318,21 @@ public class Analytics {
                 params = params.concat("&");
             }
             
-            params = params.concat(field).concat("[]=").concat(values[i]);
+            params = params.concat(field).concat("[]=").concat(urlEncode(values[i]));
         }
         
         return params;
+    }
+
+
+    /**
+     * Url encodes a query parameter value
+     * @param value
+     * @return
+     */
+    private String urlEncode(String value) {
+
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
     
 }

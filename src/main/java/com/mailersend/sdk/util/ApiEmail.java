@@ -7,13 +7,10 @@
  **************************************************/
 package com.mailersend.sdk.util;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.Recipient;
+import com.mailersend.sdk.emails.EmailHeader;
 
 /**
  * <p>ApiEmail class.</p>
@@ -29,6 +26,9 @@ public class ApiEmail {
     @SerializedName("from")
     public String from;
 
+    @SerializedName("to")
+    public String to;
+
     @SerializedName("subject")
     public String subject;
 
@@ -38,11 +38,29 @@ public class ApiEmail {
     @SerializedName("html")
     public String html;
     
+    @SerializedName("template_id")
+    public String templateId;
+    
+    @SerializedName("domain_id")
+    public String domainId;
+    
+    @SerializedName("message_id")
+    public String messageId;
+    
     @SerializedName("tags")
     public String[] tags;
     
     @SerializedName("status")
     public String status;
+    
+    @SerializedName("interaction")
+    public String[] interaction;
+    
+    @SerializedName("suppression_reason")
+    public String suppressionReason;
+    
+    @SerializedName("headers")
+    public EmailHeader[] headers;
     
     @SerializedName("created_at")
     private String createdAtString;
@@ -60,21 +78,7 @@ public class ApiEmail {
      */
     public void parseDates() {
 
-        TemporalAccessor ta;
-        Instant instant;
-        
-        if (createdAtString != null && !createdAtString.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtString);
-            instant = Instant.from(ta);
-            createdAt = Date.from(instant);
-        }
-        
-        if (updatedAtString != null && !updatedAtString.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(updatedAtString);
-            instant = Instant.from(ta);
-            updatedAt = Date.from(instant);
-        }
+        createdAt = DateParser.parse(createdAtString);
+        updatedAt = DateParser.parse(updatedAtString);
     }
 }

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,10 +46,32 @@ public class SmsPhoneNumbersTest {
 
             PhoneNumberList numbers = ms.sms().phoneNumbers().getPhoneNumbers();
 
-            for (PhoneNumber number : numbers.phoneNumbers) {
+            assertEquals(TestHelper.smsPhoneNumberId, numbers.phoneNumbers[0].id);
+            assertEquals(Instant.parse("2022-08-01T15:33:47Z"), numbers.phoneNumbers[0].createdAt.toInstant());
 
-            	System.out.println(number.id);
-            }
+        } catch (MailerSendException e) {
+
+            fail();
+        }
+    }
+
+    /**
+     * Tests that page and limit are sent
+     */
+    @Test
+    public void testPhoneNumbersWithPagination() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            PhoneNumberList numbers = ms.sms().phoneNumbers()
+                    .page(2)
+                    .limit(10)
+                    .getPhoneNumbers();
+
+            assertEquals(TestHelper.smsPhoneNumberId, numbers.phoneNumbers[0].id);
 
         } catch (MailerSendException e) {
 

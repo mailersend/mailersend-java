@@ -9,6 +9,7 @@ package com.mailersend.sdk.templates;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -92,6 +93,7 @@ public class TemplateBuilder {
      *
      * @param subject a {@link java.lang.String} object.
      * @return a {@link com.mailersend.sdk.templates.TemplateBuilder} object.
+     * @deprecated The templates API does not accept a subject, so it is not sent.
      */
     public TemplateBuilder subject(String subject) {
 
@@ -162,6 +164,7 @@ public class TemplateBuilder {
 
     /**
      * Set whether plain text should be auto-generated from the HTML.
+     * Only sent by updateTemplate(), the create endpoint does not accept it.
      *
      * @param autoGenerate a boolean.
      * @return a {@link com.mailersend.sdk.templates.TemplateBuilder} object.
@@ -202,7 +205,10 @@ public class TemplateBuilder {
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
 
-        String json = gson.toJson(builderBody);
+        JsonObject body = gson.toJsonTree(builderBody).getAsJsonObject();
+        body.remove("auto_generate");
+
+        String json = gson.toJson(body);
 
         builderBody.reset();
 

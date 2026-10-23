@@ -143,12 +143,14 @@ public class Domains {
      */
     public DomainsList getDomains() throws MailerSendException {
         
-        String endpoint = "/domains".concat(prepareParamsUrl());
+        String endpoint = "/domains".concat(prepareParamsUrl(true));
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
         DomainsList response = api.getRequest(endpoint, DomainsList.class);
+        
+        response.postDeserialize();
         
         return response;
     }
@@ -169,6 +171,11 @@ public class Domains {
         api.setToken(apiObjectReference.getToken());
         
         SingleDomainResponse response = api.getRequest(endpoint, SingleDomainResponse.class);
+        
+        if (response.domain != null) {
+            
+            response.domain.postDeserialize();
+        }
         
         return response.domain;
     }
@@ -204,7 +211,7 @@ public class Domains {
      */
     public ApiRecipientsList getDomainRecipients(String domainId) throws MailerSendException {
         
-        String endpoint = "/domains/".concat(domainId).concat("/recipients").concat(prepareParamsUrl());
+        String endpoint = "/domains/".concat(domainId).concat("/recipients").concat(prepareParamsUrl(false));
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
@@ -259,9 +266,10 @@ public class Domains {
     
     /**
      * Prepares the query part of the request url
+     * @param withVerifiedFilter whether the verified filter applies to the endpoint
      * @return
      */
-    private String prepareParamsUrl() {
+    private String prepareParamsUrl(boolean withVerifiedFilter) {
         
         // prepare the request parameters
         ArrayList<String> params = new ArrayList<String>();
@@ -270,12 +278,12 @@ public class Domains {
         
         params.add("limit=".concat(String.valueOf(limitFilter)));
         
-        if (verifiedOnly == 0) {
+        if (withVerifiedFilter && verifiedOnly == 0) {
             
-            params.add("verified=false");
-        } else if (verifiedOnly == 1) {
+            params.add("verified=0");
+        } else if (withVerifiedFilter && verifiedOnly == 1) {
             
-            params.add("verified=true");
+            params.add("verified=1");
         }
         
         String requestParams = "";

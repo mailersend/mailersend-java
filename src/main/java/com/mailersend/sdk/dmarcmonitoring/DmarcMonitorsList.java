@@ -17,4 +17,15 @@ public class DmarcMonitorsList extends PaginatedResponse {
 
     @SerializedName("data")
     public DmarcMonitor[] monitors;
+
+    /**
+     * Called after deserialization to post-process each monitor.
+     */
+    public void postDeserialize() {
+        if (monitors != null) {
+            for (DmarcMonitor monitor : monitors) {
+                monitor.postDeserialize();
+            }
+        }
+    }
 }

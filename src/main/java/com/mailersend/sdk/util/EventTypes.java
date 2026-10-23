@@ -8,7 +8,11 @@ package com.mailersend.sdk.util;
  */
 public class EventTypes {
 
-    /** Constant <code>PROCESSED="processed"</code> */
+    /**
+     * Constant <code>PROCESSED="processed"</code>
+     *
+     * @deprecated The API does not accept processed as an event filter.
+     */
     public static final String PROCESSED = "processed";
     
     /** Constant <code>QUEUED="queued"</code> */

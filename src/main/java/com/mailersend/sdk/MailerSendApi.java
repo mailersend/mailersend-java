@@ -89,11 +89,11 @@ public class MailerSendApi {
         }
         
         if (responseClass == MailerSendStringResponse.class) {
-            
-            MailerSendStringResponse response = new MailerSendStringResponse();
-            response.responseString = responseObject.body().toString();
-            
-            return (T) response;
+
+            T response = this.handleApiResponse(responseObject, responseClass);
+            ((MailerSendStringResponse) response).responseString = responseObject.body().toString();
+
+            return response;
         }
         
         

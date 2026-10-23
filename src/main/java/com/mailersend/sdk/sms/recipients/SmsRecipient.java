@@ -32,6 +32,14 @@ public class SmsRecipient {
 	@SerializedName("status")
 	public String status;
 	
+	@SerializedName("opted_out_at")
+	private String optedOutAtStr;
+	
+	public Date optedOutAt;
+	
+	@SerializedName("opt_out_source")
+	public String optOutSource;
+	
 	@SerializedName("created_at")
 	private String createdAtStr;
 	
@@ -52,6 +60,16 @@ public class SmsRecipient {
             ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtStr);
             instant = Instant.from(ta);
             createdAt = Date.from(instant);
+		}
+		
+		if (optedOutAtStr != null && !optedOutAtStr.isBlank()) {
+			
+	        TemporalAccessor ta;
+	        Instant instant;
+	        
+            ta = DateTimeFormatter.ISO_INSTANT.parse(optedOutAtStr);
+            instant = Instant.from(ta);
+            optedOutAt = Date.from(instant);
 		}
 		
 		if (sms != null) {

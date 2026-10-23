@@ -9,6 +9,7 @@ package com.mailersend.sdk.activities;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
@@ -64,7 +65,7 @@ public class Activities {
 
 
     /**
-     * Gets the activities for the given domain id
+     * Gets the first page of the activities of the last 7 days for the given domain id
      *
      * @param domainId a {@link java.lang.String} object.
      * @throws com.mailersend.sdk.exceptions.MailerSendException
@@ -72,7 +73,10 @@ public class Activities {
      */
     public ActivitiesList getActivities(String domainId) throws MailerSendException {
         
-        return this.getActivities(domainId, 1, 25, null, null, null);
+        Date dateTo = new Date();
+        Date dateFrom = new Date(dateTo.getTime() - TimeUnit.DAYS.toMillis(7));
+        
+        return this.getActivities(domainId, 1, 25, dateFrom, dateTo, null);
     }
     
     /**

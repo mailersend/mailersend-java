@@ -22,7 +22,6 @@ import com.mailersend.sdk.scheduledmessages.ScheduledMessagesList;
 import com.mailersend.sdk.vcr.VcrRecorder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -89,8 +88,7 @@ public class ScheduledMessagesTest {
         ScheduledMessage message = ms.scheduledMessages().getScheduledMessage("test-schedule-id-123");
 
         assertNotNull(message);
-        assertNotNull(message.id);
-        assertFalse(message.id.isEmpty(), "id should not be empty");
+        assertEquals("test-message-id-456", message.messageId);
         assertNotNull(message.sendAt);
     }
 

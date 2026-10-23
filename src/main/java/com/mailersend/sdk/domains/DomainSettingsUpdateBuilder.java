@@ -165,16 +165,29 @@ public class DomainSettingsUpdateBuilder {
     }
     
     /**
-     * <p>customnTrackingEnabled.</p>
+     * Set custom tracking on/off
      *
      * @param customTrackingEnabled a boolean.
      * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      */
-    public DomainSettingsUpdateBuilder customnTrackingEnabled(boolean customTrackingEnabled) {
+    public DomainSettingsUpdateBuilder customTrackingEnabled(boolean customTrackingEnabled) {
         
         settings.customTrackingEnabled = customTrackingEnabled;
         
         return this;
+    }
+    
+    
+    /**
+     * Set custom tracking on/off
+     *
+     * @param customTrackingEnabled a boolean.
+     * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
+     * @deprecated Use {@link #customTrackingEnabled(boolean)} instead.
+     */
+    public DomainSettingsUpdateBuilder customnTrackingEnabled(boolean customTrackingEnabled) {
+        
+        return customTrackingEnabled(customTrackingEnabled);
     }
     
     
@@ -244,6 +257,11 @@ public class DomainSettingsUpdateBuilder {
         settings.reset();
         
         SingleDomainResponse response = api.putRequest(endpoint, json, SingleDomainResponse.class);
+        
+        if (response.domain != null) {
+            
+            response.domain.postDeserialize();
+        }
         
         return response.domain;
     }

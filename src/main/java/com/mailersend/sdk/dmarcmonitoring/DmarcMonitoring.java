@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.dmarcmonitoring;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -207,7 +209,11 @@ public class DmarcMonitoring {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        return api.getRequest(endpoint, DmarcMonitorsList.class);
+        DmarcMonitorsList response = api.getRequest(endpoint, DmarcMonitorsList.class);
+
+        response.postDeserialize();
+
+        return response;
     }
 
     /**
@@ -260,7 +266,11 @@ public class DmarcMonitoring {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        return api.getRequest(endpoint, DmarcIpReportList.class);
+        DmarcIpReportList response = api.getRequest(endpoint, DmarcIpReportList.class);
+
+        response.postDeserialize();
+
+        return response;
     }
 
     /**
@@ -336,15 +346,15 @@ public class DmarcMonitoring {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (queryFilter != null) {
-            params.add("query=".concat(queryFilter));
+            params.add("query=".concat(urlEncode(queryFilter)));
         }
 
         if (sortByFilter != null) {
-            params.add("sort_by=".concat(sortByFilter));
+            params.add("sort_by=".concat(urlEncode(sortByFilter)));
         }
 
         if (orderFilter != null) {
-            params.add("order=".concat(orderFilter));
+            params.add("order=".concat(urlEncode(orderFilter)));
         }
 
         return buildQueryString(params);
@@ -361,23 +371,23 @@ public class DmarcMonitoring {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (dateFromFilter != null) {
-            params.add("date_from=".concat(dateFromFilter));
+            params.add("date_from=".concat(urlEncode(dateFromFilter)));
         }
 
         if (dateToFilter != null) {
-            params.add("date_to=".concat(dateToFilter));
+            params.add("date_to=".concat(urlEncode(dateToFilter)));
         }
 
         if (searchFilter != null) {
-            params.add("search=".concat(searchFilter));
+            params.add("search=".concat(urlEncode(searchFilter)));
         }
 
         if (categoryFilter != null) {
-            params.add("category=".concat(categoryFilter));
+            params.add("category=".concat(urlEncode(categoryFilter)));
         }
 
         if (reportSourceFilter != null) {
-            params.add("report_source=".concat(reportSourceFilter));
+            params.add("report_source=".concat(urlEncode(reportSourceFilter)));
         }
 
         return buildQueryString(params);
@@ -390,11 +400,11 @@ public class DmarcMonitoring {
     private String prepareReportSourcesParamsUrl() {
         ArrayList<String> params = new ArrayList<String>();
 
-        params.add("date_from=".concat(dateFromFilter));
-        params.add("date_to=".concat(dateToFilter));
+        params.add("date_from=".concat(urlEncode(dateFromFilter)));
+        params.add("date_to=".concat(urlEncode(dateToFilter)));
 
         if (statusFilter != null) {
-            params.add("status=".concat(statusFilter));
+            params.add("status=".concat(urlEncode(statusFilter)));
         }
 
         return buildQueryString(params);
@@ -410,5 +420,12 @@ public class DmarcMonitoring {
             requestParams = requestParams.concat(attrSep).concat(params.get(i));
         }
         return requestParams;
+    }
+
+    /**
+     * Url encodes a query parameter value
+     */
+    private String urlEncode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

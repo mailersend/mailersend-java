@@ -25,7 +25,7 @@ class TemplateBuilderBody {
     public String text;
 
     @SerializedName("subject")
-    public String subject;
+    public transient String subject;
 
     @SerializedName("domain_id")
     public String domainId;

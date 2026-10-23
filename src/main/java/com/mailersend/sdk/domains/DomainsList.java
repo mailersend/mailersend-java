@@ -21,4 +21,22 @@ public class DomainsList extends PaginatedResponse {
     
     @SerializedName("data")
     public Domain[] domains;
+    
+    
+    /**
+     * Is called to perform any actions after the deserialization of the response
+     * Do not call directly
+     */
+    public void postDeserialize() {
+        
+        if (domains == null) {
+            
+            return;
+        }
+        
+        for (Domain domain : domains) {
+            
+            domain.postDeserialize();
+        }
+    }
 }

@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sms.webhooks;
 
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.MailerSend;
@@ -75,6 +77,11 @@ public class SmsWebhooksBuilder {
 	     */
 	    public SmsWebhooksBuilder addEvent(String event) {
 	        
+	        if (builderBody.events == null) {
+	            
+	            builderBody.events = new ArrayList<String>();
+	        }
+	        
 	        builderBody.events.add(event);
 	        
 	        return this;
@@ -102,7 +109,7 @@ public class SmsWebhooksBuilder {
 	     */
 	    public SmsWebhooksBuilder clearEvents() {
 	        
-	        builderBody.events.clear();
+	        builderBody.events = null;
 	        
 	        return this;
 	    }
@@ -151,6 +158,8 @@ public class SmsWebhooksBuilder {
 	        
 	        SingleSmsWebhookResponse response = api.postRequest(endpoint, json, SingleSmsWebhookResponse.class);
 	        
+	        response.webhook.postDeserialize();
+	        
 	        return response.webhook;
 	    }
 	    
@@ -185,6 +194,8 @@ public class SmsWebhooksBuilder {
 	        builderBody = new SmsWebhookBuilderBody();
 	        
 	        SingleSmsWebhookResponse response = api.putRequest(endpoint, json, SingleSmsWebhookResponse.class);
+	        
+	        response.webhook.postDeserialize();
 	        
 	        return response.webhook;
 	    }

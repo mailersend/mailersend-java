@@ -8,7 +8,7 @@
 package com.mailersend.sdk.smtpusers;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.util.PaginatedResponse;
 
 /**
  * <p>SmtpUsersList class.</p>
@@ -16,8 +16,26 @@ import com.mailersend.sdk.MailerSendResponse;
  * @author mailersend
  * @version $Id: $Id
  */
-public class SmtpUsersList extends MailerSendResponse {
+public class SmtpUsersList extends PaginatedResponse {
 
     @SerializedName("data")
     public SmtpUser[] smtpUsers;
+
+
+    /**
+     * Is called to perform any actions after the deserialization of the response
+     * Do not call directly
+     */
+    public void postDeserialize() {
+
+        if (smtpUsers == null) {
+
+            return;
+        }
+
+        for (SmtpUser smtpUser : smtpUsers) {
+
+            smtpUser.postDeserialize();
+        }
+    }
 }

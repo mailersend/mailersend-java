@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.users;
 
+import java.util.ArrayList;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.MailerSend;
@@ -89,6 +91,10 @@ public class UserBuilder {
      */
     public UserBuilder addPermission(String permission) {
 
+        if (builderBody.permissions == null) {
+            builderBody.permissions = new ArrayList<String>();
+        }
+
         builderBody.permissions.add(permission);
 
         return this;
@@ -103,6 +109,10 @@ public class UserBuilder {
      */
     public UserBuilder addTemplate(String templateId) {
 
+        if (builderBody.templates == null) {
+            builderBody.templates = new ArrayList<String>();
+        }
+
         builderBody.templates.add(templateId);
 
         return this;
@@ -116,6 +126,10 @@ public class UserBuilder {
      * @return this builder
      */
     public UserBuilder addDomain(String domainId) {
+
+        if (builderBody.domains == null) {
+            builderBody.domains = new ArrayList<String>();
+        }
 
         builderBody.domains.add(domainId);
 
@@ -155,7 +169,7 @@ public class UserBuilder {
             throw new MailerSendException("User role cannot be null or empty");
         }
 
-        if ("Custom User".equals(builderBody.role) && builderBody.permissions.isEmpty()) {
+        if ("Custom User".equals(builderBody.role) && builderBody.permissions == null) {
 
             throw new MailerSendException("Permissions are required for Custom User role");
         }
@@ -174,11 +188,11 @@ public class UserBuilder {
 
         builderBody.reset();
 
-        InviteResponse response = api.postRequest(endpoint, json, InviteResponse.class);
+        Invite invite = api.postRequest(endpoint, json, Invite.class);
 
-        response.invite.postDeserialize();
+        invite.postDeserialize();
 
-        return response.invite;
+        return invite;
     }
 
 
@@ -201,7 +215,7 @@ public class UserBuilder {
             throw new MailerSendException("User role cannot be null or empty");
         }
 
-        if ("Custom User".equals(builderBody.role) && builderBody.permissions.isEmpty()) {
+        if ("Custom User".equals(builderBody.role) && builderBody.permissions == null) {
 
             throw new MailerSendException("Permissions are required for Custom User role");
         }
@@ -210,6 +224,8 @@ public class UserBuilder {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+
+        builderBody.email = null;
 
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
@@ -220,10 +236,10 @@ public class UserBuilder {
 
         builderBody.reset();
 
-        UserResponse response = api.putRequest(endpoint, json, UserResponse.class);
+        User user = api.putRequest(endpoint, json, User.class);
 
-        response.user.postDeserialize();
+        user.postDeserialize();
 
-        return response.user;
+        return user;
     }
 }

@@ -47,6 +47,12 @@ public class InboundRoute {
 	@SerializedName("priority")
 	public int priority;
 
+	@SerializedName("catch_type")
+	public String catchType;
+	
+	@SerializedName("match_type")
+	public String matchType;
+
 	@SerializedName("include_attachments")
 	public boolean includeAttachments;
 

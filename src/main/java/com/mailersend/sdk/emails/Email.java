@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
@@ -49,8 +50,11 @@ public class Email {
     @SerializedName("reply_to")
     public Recipient replyTo;
 
+    /**
+     * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
+     */
     @SerializedName("rcpt_to")
-    public ArrayList<Recipient> rcptTo = new ArrayList<Recipient>();
+    public transient ArrayList<Recipient> rcptTo = new ArrayList<Recipient>();
 
     @SerializedName("subject")
     public String subject;
@@ -75,8 +79,8 @@ public class Email {
     @SerializedName("personalization")
     public ArrayList<Personalization> personalization = new ArrayList<Personalization>();
     
-    public Date sendAt;
-        
+    public transient Date sendAt;
+
     // keeps the global personalizations
     protected transient HashMap<String, Object> allRecipientsPersonalization = new HashMap<String, Object>();
     
@@ -310,11 +314,12 @@ public class Email {
 
 
     /**
-     * Adds an RCPT TO recipient for SMTP relay delivery.
-     * When {@code to} is empty and {@code rcptTo} is provided, addresses are forwarded as BCC.
+     * Adds an RCPT TO recipient
      *
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
+     * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
+     * Use {@link #addRecipient(String, String)}, {@link #addCc(String, String)} or {@link #addBcc(String, String)} instead.
      */
     public void addRcptTo(String name, String email) {
 
@@ -324,10 +329,11 @@ public class Email {
 
 
     /**
-     * Adds an RCPT TO recipient for SMTP relay delivery.
-     * When {@code to} is empty and {@code rcptTo} is provided, addresses are forwarded as BCC.
+     * Adds an RCPT TO recipient
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
+     * Use {@link #addRecipient(Recipient)}, {@link #addCc(Recipient)} or {@link #addBcc(Recipient)} instead.
      */
     public void addRcptTo(Recipient recipient) {
 
@@ -630,25 +636,48 @@ public class Email {
      * @return String
      */
     public String serializeForSending() {
-            
+
+        return createSendingGson().toJson(prepareForSending());
+    }
+
+
+    /**
+     * Prepares the email for sending and returns it as a JSON object
+     *
+     * @return a {@link com.google.gson.JsonObject} object.
+     */
+    protected JsonObject prepareForSending() {
+
         preparePersonalizationForAllRecipients();
         prepareSubstitutionsForAllRecipients();
-        
+
         if (sendAt != null) {
         	sendAtStamp = String.valueOf(sendAt.getTime() / 1000);
         }
-        
-        Gson gson = new GsonBuilder()
+
+        JsonObject json = createSendingGson().toJsonTree(this).getAsJsonObject();
+
+        // empty lists are left out because the API rejects some of them, e.g. "references": [] on the Sandbox plan
+        json.entrySet().removeIf(field -> field.getValue().isJsonArray() && field.getValue().getAsJsonArray().isEmpty());
+
+        return json;
+    }
+
+
+    /**
+     * Creates the Gson instance that serializes the email for sending
+     *
+     * @return a {@link com.google.gson.Gson} object.
+     */
+    protected Gson createSendingGson() {
+
+        return new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
                 .registerTypeAdapter(Instant.class, new InstantTypeAdapter().nullSafe())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter().nullSafe())
                 .create();
-        
-        String json = gson.toJson(this);
-
-        return json;
     }
 
     /**

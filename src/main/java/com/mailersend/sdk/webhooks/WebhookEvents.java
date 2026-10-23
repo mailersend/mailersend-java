@@ -48,6 +48,9 @@ public class WebhookEvents {
     /** Constant <code>ACTIVITY_SPAM_COMPLAINT="activity.spam_complaint"</code> */
     public static String ACTIVITY_SPAM_COMPLAINT = "activity.spam_complaint";
 
+    /** Constant <code>ACTIVITY_SUPPRESSED="activity.suppressed"</code> */
+    public static String ACTIVITY_SUPPRESSED = "activity.suppressed";
+
     /** Constant <code>ACTIVITY_SURVEY_OPENED="activity.survey_opened"</code> */
     public static String ACTIVITY_SURVEY_OPENED = "activity.survey_opened";
 
@@ -66,8 +69,14 @@ public class WebhookEvents {
     /** Constant <code>INBOUND_FORWARD_FAILED="inbound_forward.failed"</code> */
     public static String INBOUND_FORWARD_FAILED = "inbound_forward.failed";
 
+    /** Constant <code>INBOUND_MESSAGE_REJECTED="inbound_message.rejected"</code> */
+    public static String INBOUND_MESSAGE_REJECTED = "inbound_message.rejected";
+
     /** Constant <code>EMAIL_SINGLE_VERIFIED="email_single.verified"</code> */
     public static String EMAIL_SINGLE_VERIFIED = "email_single.verified";
+
+    /** Constant <code>EMAIL_LIST_CREATED="email_list.created"</code> */
+    public static String EMAIL_LIST_CREATED = "email_list.created";
 
     /** Constant <code>EMAIL_LIST_VERIFIED="email_list.verified"</code> */
     public static String EMAIL_LIST_VERIFIED = "email_list.verified";
@@ -94,13 +103,16 @@ public class WebhookEvents {
             "activity.clicked_unique",
             "activity.unsubscribed",
             "activity.spam_complaint",
+            "activity.suppressed",
             "activity.survey_opened",
             "activity.survey_submitted",
             "sender_identity.verified",
             "maintenance.start",
             "maintenance.end",
             "inbound_forward.failed",
+            "inbound_message.rejected",
             "email_single.verified",
+            "email_list.created",
             "email_list.verified",
             "bulk_email.completed",
             "recipient.on_hold_added",

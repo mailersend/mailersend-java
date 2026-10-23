@@ -41,6 +41,9 @@ public class Webhook {
     @SerializedName("editable")
     public Boolean editable;
     
+    @SerializedName("version")
+    public Integer version;
+    
     public Date createdAt;
     
     @SerializedName("created_at")

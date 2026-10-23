@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.senderidentities;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -287,19 +289,19 @@ public class SenderIdentities {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (domainIdFilter != null && !domainIdFilter.isBlank()) {
-            params.add("domain_id=".concat(domainIdFilter));
+            params.add("domain_id=".concat(urlEncode(domainIdFilter)));
         }
 
         if (queryFilter != null && !queryFilter.isBlank()) {
-            params.add("query=".concat(queryFilter));
+            params.add("query=".concat(urlEncode(queryFilter)));
         }
 
         if (orderByFilter != null && !orderByFilter.isBlank()) {
-            params.add("order_by=".concat(orderByFilter));
+            params.add("order_by=".concat(urlEncode(orderByFilter)));
         }
 
         if (orderFilter != null && !orderFilter.isBlank()) {
-            params.add("order=".concat(orderFilter));
+            params.add("order=".concat(urlEncode(orderFilter)));
         }
 
         String requestParams = "";
@@ -310,5 +312,16 @@ public class SenderIdentities {
         }
 
         return requestParams;
+    }
+
+
+    /**
+     * Url encodes a query parameter value
+     * @param value
+     * @return
+     */
+    private String urlEncode(String value) {
+
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

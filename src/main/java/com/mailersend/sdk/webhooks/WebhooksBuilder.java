@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -98,6 +99,7 @@ public class WebhooksBuilder {
 
     /**
      * Set whether the webhook is editable
+     * Only sent by createWebhook(), the update endpoint does not accept it.
      *
      * @param editable a boolean.
      * @return a {@link com.mailersend.sdk.webhooks.WebhooksBuilder} object.
@@ -200,6 +202,8 @@ public class WebhooksBuilder {
         
         WebhookResponse response = api.postRequest(endpoint, json, WebhookResponse.class);
         
+        response.postDeserialize();
+        
         return response.webhook;
     }
     
@@ -215,7 +219,7 @@ public class WebhooksBuilder {
         
         if (webhookId == null || webhookId.isBlank()) {
             
-            throw new MailerSendException("Domain ID cannot be empty");
+            throw new MailerSendException("Webhook ID cannot be empty");
         }
         
         String endpoint = "/webhooks/".concat(webhookId);
@@ -241,12 +245,17 @@ public class WebhooksBuilder {
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
         
-        String json = gson.toJson(builderBody);
+        JsonObject body = gson.toJsonTree(builderBody).getAsJsonObject();
+        body.remove("editable");
+        
+        String json = gson.toJson(body);
         
         // reset the body object's values so that it can be reused
         builderBody.reset();
         
         WebhookResponse response = api.putRequest(endpoint, json, WebhookResponse.class);
+        
+        response.postDeserialize();
         
         return response.webhook;
     }

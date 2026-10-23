@@ -1,30 +1,37 @@
 /*************************************************
  * MailerSend Java SDK
  * https://github.com/mailersend/mailersend-java
- * 
+ *
  * @author MailerSend <support@mailersend.com>
  * https://mailersend.com
  **************************************************/
 package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.tokens.Token;
 import com.mailersend.sdk.tokens.TokenAdd;
+import com.mailersend.sdk.tokens.TokenAddBuilder;
 import com.mailersend.sdk.tokens.TokenListResponse;
 import com.mailersend.sdk.tokens.TokenScopes;
 import com.mailersend.sdk.vcr.VcrRecorder;
@@ -36,68 +43,132 @@ public class TokensTest {
 	{
 		VcrRecorder.useRecording("TokensTest_" + info.getDisplayName());
 	}
-	
+
 	@AfterEach
 	public void afterEach() throws IOException
 	{
 		VcrRecorder.stopRecording();
 	}
-	
-	
+
+
     /**
-     * Test token creation
+     * Test token creation - behavior: POST /token with name, domain_id and scopes
      */
     @Test
     public void testCreateToken() {
-        
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
-            
+
             TokenAdd token = ms.tokens().addBuilder()
                 .name("Test token")
                 .domainId(TestHelper.domainId)
                 .addScope(TokenScopes.activityFull)
                 .addScope(TokenScopes.analyticsFull)
                 .addToken();
-            
-            System.out.println(token.id);
-            System.out.println(token.name);
-            
+
+            assertNotNull(token.id);
+            assertNotNull(token.accessToken);
+            assertEquals("Test token", token.name);
+            assertEquals(2, token.scopes.length);
+            assertEquals(TestHelper.domainId, token.domain.id);
+            assertFalse(token.hasFull);
+            assertFalse(token.hasOnlySending);
+            assertEquals("mlsn.783b62", token.preview);
+            assertNull(token.expiresAt);
+            assertNotNull(token.createdAt);
+
         } catch (MailerSendException e) {
-            
+
             e.printStackTrace();
             fail();
         }
     }
-    
-    
+
+
     /**
-     * Test token update (pause)
+     * Test that the add builder is reset after a token is created - behavior: a second
+     * addToken() on the same builder no longer has a name
+     */
+    @Test
+    public void testCreateTokenResetsBuilder() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        TokenAddBuilder builder = ms.tokens().addBuilder();
+
+        try {
+
+            builder.name("Test token")
+                .domainId(TestHelper.domainId)
+                .addScope(TokenScopes.activityFull)
+                .addScope(TokenScopes.analyticsFull)
+                .addToken();
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+
+        MailerSendException ex = assertThrows(MailerSendException.class, () -> {
+            builder.addToken();
+        });
+
+        assertEquals("Token name cannot be null or empty", ex.getMessage());
+    }
+
+
+    /**
+     * Test token update (pause) - behavior: PUT /token/{id} with body {"status":"pause"}
      */
     @Test
     public void updateToken() {
-        
+
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
-        
+
         try {
             Token token = ms.tokens().updateToken(TestHelper.tokenIdToPause, true);
-            
-            System.out.println(token.name);
-            System.out.println(token.status);
-            
+
+            assertEquals(TestHelper.tokenIdToPause, token.id);
+            assertEquals("pause", token.status);
+
         } catch (MailerSendException e) {
-            
+
             e.printStackTrace();
             fail();
         }
     }
-    
-    
+
+
     /**
-     * Test token deletion
+     * Test token update (unpause) - behavior: PUT /token/{id} with body {"status":"unpause"}
+     */
+    @Test
+    public void testUnpauseToken() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+            Token token = ms.tokens().updateToken(TestHelper.tokenIdToPause, false);
+
+            assertEquals("unpause", token.status);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
+    /**
+     * Test token deletion - behavior: DELETE /token/{id} forwards the 200 status
      */
     @Test
     public void deleteToken() {
@@ -108,7 +179,7 @@ public class TokensTest {
         try {
             MailerSendResponse response = ms.tokens().deleteToken(TestHelper.tokenIdToDelete);
 
-            System.out.println(response.responseStatusCode);
+            assertEquals(200, response.responseStatusCode);
 
         } catch (MailerSendException e) {
 
@@ -119,7 +190,7 @@ public class TokensTest {
 
 
     /**
-     * Test retrieving a list of tokens - behavior: GET /token returns list
+     * Test retrieving a list of tokens - behavior: GET /token returns list, domain and pagination
      */
     @Test
     public void testGetTokens() {
@@ -135,6 +206,9 @@ public class TokensTest {
             assertNotNull(response.tokens);
             assertTrue(response.tokens.length > 0);
             assertNotNull(response.tokens[0].id);
+            assertEquals(TestHelper.domainId, response.tokens[0].domain.id);
+            assertEquals(1, response.meta.currentPage);
+            assertNotNull(response.links.first);
 
         } catch (MailerSendException e) {
 
@@ -145,7 +219,32 @@ public class TokensTest {
 
 
     /**
-     * Test retrieving a single token - behavior: GET /token/{id} returns token with scopes
+     * Test page() and limit() are sent - behavior: GET /token?page=2&limit=10
+     */
+    @Test
+    public void testGetTokensWithPageAndLimit() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            TokenListResponse response = ms.tokens().page(2).limit(10).getTokens();
+
+            assertEquals(200, response.responseStatusCode);
+            assertEquals(2, response.meta.currentPage);
+            assertEquals(TestHelper.tokenIdToPause, response.tokens[0].id);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
+    /**
+     * Test retrieving a single token - behavior: GET /token/{id} returns token with scopes and domain
      */
     @Test
     public void testGetToken() {
@@ -161,6 +260,8 @@ public class TokensTest {
             assertNotNull(token.id);
             assertNotNull(token.scopes);
             assertTrue(token.scopes.length > 0);
+            assertEquals(TestHelper.domainId, token.domain.id);
+            assertEquals("test-sdk.com", token.domain.name);
 
         } catch (MailerSendException e) {
 
@@ -171,7 +272,7 @@ public class TokensTest {
 
 
     /**
-     * Test updating token name and status - behavior: PUT /token/{id}
+     * Test updating token name and status - behavior: PUT /token/{id} with body {"name":...,"status":"pause"}
      */
     @Test
     public void testUpdateTokenNameAndStatus() {
@@ -196,101 +297,138 @@ public class TokensTest {
 
 
     /**
-     * Test that updating token without name or status throws an exception
+     * Test updating only the token name - behavior: the fixture only matches the body {"name":"Updated Name"},
+     * so status is not sent
      */
     @Test
-    public void testUpdateTokenWithoutNameOrStatus() {
+    public void testUpdateTokenNameOnly() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        MailerSendException ex = assertThrows(MailerSendException.class, () -> {
-            ms.tokens().updateToken(TestHelper.tokenIdToPause, null, null);
-        });
+        try {
 
-        assertEquals("At least one of name or status must be provided", ex.getMessage());
+            Token token = ms.tokens().updateToken(TestHelper.tokenIdToPause, "Updated Name", null);
+
+            assertEquals("Updated Name", token.name);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
     }
 
 
     /**
-     * Test that creating a token with a null name throws an exception
+     * Test updating only the token status - behavior: the fixture only matches the body {"status":"pause"},
+     * so name is not sent
      */
     @Test
-    public void testCreateTokenWithNullName() {
+    public void testUpdateTokenStatusOnly() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        MailerSendException ex = assertThrows(MailerSendException.class, () -> {
-            ms.tokens().addBuilder()
-                .domainId(TestHelper.domainId)
-                .addScope(TokenScopes.emailFull)
-                .addToken();
-        });
+        try {
 
-        assertEquals("Token name cannot be null or empty", ex.getMessage());
+            Token token = ms.tokens().updateToken(TestHelper.tokenIdToPause, null, "pause");
+
+            assertEquals("pause", token.status);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
     }
 
 
     /**
-     * Test that creating a token with an empty name throws an exception
+     * Test that quotes and backslashes in the name are JSON-escaped - behavior: the fixture only matches
+     * the body {"name":"Name with \"quotes\" and \\ backslash"}
      */
     @Test
-    public void testCreateTokenWithEmptyName() {
+    public void testUpdateTokenNameIsJsonEscaped() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        MailerSendException ex = assertThrows(MailerSendException.class, () -> {
-            ms.tokens().addBuilder()
-                .name("   ")
-                .domainId(TestHelper.domainId)
-                .addScope(TokenScopes.emailFull)
-                .addToken();
-        });
+        String name = "Name with \"quotes\" and \\ backslash";
 
-        assertEquals("Token name cannot be null or empty", ex.getMessage());
+        try {
+
+            Token token = ms.tokens().updateToken(TestHelper.tokenIdToPause, name, null);
+
+            assertEquals(name, token.name);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
     }
 
 
     /**
-     * Test that creating a token with a name longer than 50 chars throws an exception
+     * Test that updateToken() rejects a missing name and status, a long name and an unknown status - validation
      */
-    @Test
-    public void testCreateTokenWithLongName() {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("invalidUpdateParams")
+    public void testUpdateTokenRejectsInvalidParams(String label, String name, String status, String expectedMessage) {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
         MailerSendException ex = assertThrows(MailerSendException.class, () -> {
-            ms.tokens().addBuilder()
-                .name("A".repeat(51))
-                .domainId(TestHelper.domainId)
-                .addScope(TokenScopes.emailFull)
-                .addToken();
+            ms.tokens().updateToken(TestHelper.tokenIdToPause, name, status);
         });
 
-        assertEquals("Token name cannot be longer than 50 characters", ex.getMessage());
+        assertEquals(expectedMessage, ex.getMessage());
+    }
+
+    static Stream<Arguments> invalidUpdateParams() {
+        return Stream.of(
+            Arguments.of("name and status null", null, null, "At least one of name or status must be provided"),
+            Arguments.of("name and status blank", "   ", "   ", "At least one of name or status must be provided"),
+            Arguments.of("name longer than 50 characters", "A".repeat(51), null, "Token name cannot be longer than 50 characters"),
+            Arguments.of("status not pause or unpause", null, "paused", "Token status must be either pause or unpause")
+        );
     }
 
 
     /**
-     * Test that creating a token with no scopes throws an exception
+     * Test that addToken() rejects a missing or long name and missing scopes - validation
      */
-    @Test
-    public void testCreateTokenWithNoScopes() {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("invalidAddParams")
+    public void testCreateTokenRejectsInvalidParams(String label, String name, String scope, String expectedMessage) {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
         MailerSendException ex = assertThrows(MailerSendException.class, () -> {
-            ms.tokens().addBuilder()
-                .name("Valid Name")
-                .domainId(TestHelper.domainId)
-                .addToken();
+            TokenAddBuilder builder = ms.tokens().addBuilder()
+                .name(name)
+                .domainId(TestHelper.domainId);
+
+            if (scope != null) {
+                builder.addScope(scope);
+            }
+
+            builder.addToken();
         });
 
-        assertEquals("At least one scope is required", ex.getMessage());
+        assertEquals(expectedMessage, ex.getMessage());
+    }
+
+    static Stream<Arguments> invalidAddParams() {
+        return Stream.of(
+            Arguments.of("null name", null, TokenScopes.emailFull, "Token name cannot be null or empty"),
+            Arguments.of("blank name", "   ", TokenScopes.emailFull, "Token name cannot be null or empty"),
+            Arguments.of("name longer than 50 characters", "A".repeat(51), TokenScopes.emailFull, "Token name cannot be longer than 50 characters"),
+            Arguments.of("no scopes", "Valid Name", null, "At least one scope is required")
+        );
     }
 
 

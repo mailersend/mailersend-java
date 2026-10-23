@@ -30,5 +30,5 @@ public class SmsInboundRouteBuilderBody {
 	public String forwardUrl;
 	
 	@SerializedName("enabled")
-	public boolean enabled;
+	public Boolean enabled = null;
 }

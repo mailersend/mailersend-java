@@ -38,6 +38,9 @@ public class Template {
     @SerializedName("description")
     public String description;
 
+    /**
+     * @deprecated The API does not return tags for a template, so this is always null.
+     */
     @SerializedName("tags")
     public String[] tags;
 
@@ -56,10 +59,22 @@ public class Template {
 
     @SerializedName("category")
     public TemplateCategory category;
-    
+
+    @SerializedName("categories")
+    public TemplateCategory[] categories;
+
     @SerializedName("domain")
     public TemplateDomain domain;
-    
+
+    @SerializedName("translations")
+    public TemplateTranslation[] translations;
+
+    @SerializedName("html")
+    public String html;
+
+    @SerializedName("text")
+    public String text;
+
     @SerializedName("template_stats")
     public TemplateStats stats;
     
@@ -80,6 +95,14 @@ public class Template {
         if (stats != null) {
 
             stats.postDeserialize();
+        }
+
+        if (translations != null) {
+
+            for (TemplateTranslation translation : translations) {
+
+                translation.postDeserialize();
+            }
         }
     }
 

@@ -17,4 +17,15 @@ public class DmarcIpReportList extends PaginatedResponse {
 
     @SerializedName("data")
     public DmarcIpReport[] reports;
+
+    /**
+     * Called after deserialization to post-process each report.
+     */
+    public void postDeserialize() {
+        if (reports != null) {
+            for (DmarcIpReport report : reports) {
+                report.postDeserialize();
+            }
+        }
+    }
 }
