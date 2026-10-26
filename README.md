@@ -197,12 +197,12 @@ Using Maven:
     <dependency>
       <groupId>com.mailersend</groupId>
       <artifactId>java-sdk</artifactId>
-      <version>2.4.0</version>
+      <version>2.5.0</version>
     </dependency>
 
 Using Gradle:
 
-    implementation 'com.mailersend:java-sdk:2.4.0'
+    implementation 'com.mailersend:java-sdk:2.5.0'
     
 # Usage
 
