@@ -185,6 +185,7 @@ public class DomainSettingsUpdateBuilder {
      * @return a {@link com.mailersend.sdk.domains.DomainSettingsUpdateBuilder} object.
      * @deprecated Use {@link #customTrackingEnabled(boolean)} instead.
      */
+    @Deprecated
     public DomainSettingsUpdateBuilder customnTrackingEnabled(boolean customTrackingEnabled) {
         
         return customTrackingEnabled(customTrackingEnabled);

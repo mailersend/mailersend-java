@@ -16,6 +16,7 @@ public class Forward {
 	 */
 	@Expose(serialize = false)
 	@SerializedName("id")
+	@Deprecated
 	public String id;
 	
 	@SerializedName("type")

@@ -95,6 +95,7 @@ public class TemplateBuilder {
      * @return a {@link com.mailersend.sdk.templates.TemplateBuilder} object.
      * @deprecated The templates API does not accept a subject, so it is not sent.
      */
+    @Deprecated
     public TemplateBuilder subject(String subject) {
 
         builderBody.subject = subject;

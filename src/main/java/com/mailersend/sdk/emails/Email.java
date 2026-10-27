@@ -54,6 +54,7 @@ public class Email {
      * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
      */
     @SerializedName("rcpt_to")
+    @Deprecated
     public transient ArrayList<Recipient> rcptTo = new ArrayList<Recipient>();
 
     @SerializedName("subject")
@@ -138,6 +139,7 @@ public class Email {
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addRecipient(Recipient)} instead.
      */
+    @Deprecated
     public void AddRecipient(Recipient recipient) {
 
         addRecipient(recipient);
@@ -161,6 +163,7 @@ public class Email {
      * @param recipients an array of {@link com.mailersend.sdk.Recipient} objects.
      * @deprecated Use {@link #addRecipients(Recipient[])} instead.
      */
+    @Deprecated
     public void AddRecipients(Recipient[] recipients) {
 
         addRecipients(recipients);
@@ -198,6 +201,7 @@ public class Email {
      * @param email a {@link java.lang.String} object.
      * @deprecated Use {@link #addCc(String, String)} instead.
      */
+    @Deprecated
     public void AddCc(String name, String email) {
 
         addCc(name, email);
@@ -210,6 +214,7 @@ public class Email {
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addCc(Recipient)} instead.
      */
+    @Deprecated
     public void AddCc(Recipient recipient) {
 
         addCc(recipient);
@@ -247,6 +252,7 @@ public class Email {
      * @param email a {@link java.lang.String} object.
      * @deprecated Use {@link #addBcc(String, String)} instead.
      */
+    @Deprecated
     public void AddBcc(String name, String email) {
 
         addBcc(name, email);
@@ -259,6 +265,7 @@ public class Email {
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addBcc(Recipient)} instead.
      */
+    @Deprecated
     public void AddBcc(Recipient recipient) {
 
         addBcc(recipient);
@@ -294,6 +301,7 @@ public class Email {
      * @param replyTo a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addReplyTo(Recipient)} instead.
      */
+    @Deprecated
     public void AddReplyTo(Recipient replyTo) {
 
         addReplyTo(replyTo);
@@ -307,6 +315,7 @@ public class Email {
      * @param email a {@link java.lang.String} object.
      * @deprecated Use {@link #addReplyTo(String, String)} instead.
      */
+    @Deprecated
     public void AddReplyTo(String name, String email) {
 
         addReplyTo(name, email);
@@ -321,6 +330,7 @@ public class Email {
      * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
      * Use {@link #addRecipient(String, String)}, {@link #addCc(String, String)} or {@link #addBcc(String, String)} instead.
      */
+    @Deprecated
     public void addRcptTo(String name, String email) {
 
         Recipient recipient = new Recipient(name, email);
@@ -335,6 +345,7 @@ public class Email {
      * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
      * Use {@link #addRecipient(Recipient)}, {@link #addCc(Recipient)} or {@link #addBcc(Recipient)} instead.
      */
+    @Deprecated
     public void addRcptTo(Recipient recipient) {
 
         this.rcptTo.add(recipient);
@@ -545,6 +556,7 @@ public class Email {
      * @param value a {@link java.lang.String} object.
      * @deprecated Use {@link #addVariable(String, String)} instead.
      */
+    @Deprecated
     public void AddVariable(String name, String value) {
 
         addVariable(name, value);
@@ -568,6 +580,7 @@ public class Email {
      * @param tag a {@link java.lang.String} object.
      * @deprecated Use {@link #addTag(String)} instead.
      */
+    @Deprecated
     public void AddTag(String tag) {
 
         addTag(tag);

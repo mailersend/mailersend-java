@@ -48,6 +48,7 @@ public class SmsMessage {
 	 *
 	 * @deprecated The API returns a list of SMS. Use {@link #smsList} instead.
 	 */
+	@Deprecated
 	public transient SmsInfo sms;
 	
 	@SerializedName("sms")

@@ -87,6 +87,7 @@ public class InboundRouteBuilder {
 	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
 	 * @deprecated The API does not accept an inbound address, so it is not sent.
 	 */
+	@Deprecated
 	public InboundRouteBuilder inboundAddress(String address) {
 		builderBody.inboundAddress = address;
 		return this;
@@ -99,6 +100,7 @@ public class InboundRouteBuilder {
 	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
 	 * @deprecated The API does not accept an inbound subdomain, so it is not sent.
 	 */
+	@Deprecated
 	public InboundRouteBuilder inboundSubdomain(String subdomain) {
 		builderBody.inboundSubdomain = subdomain;
 		

@@ -13,6 +13,7 @@ public class EventTypes {
      *
      * @deprecated The API does not accept processed as an event filter.
      */
+    @Deprecated
     public static final String PROCESSED = "processed";
     
     /** Constant <code>QUEUED="queued"</code> */
