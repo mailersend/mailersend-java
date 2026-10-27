@@ -59,6 +59,7 @@ public class TokenAddBuilder {
          "dmarc_monitoring_full",
          "blocklist_monitoring_read",
          "blocklist_monitoring_full",
+         "whatsapp_read",
          "whatsapp_full"
     };
     
