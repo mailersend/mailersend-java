@@ -7,11 +7,6 @@
  **************************************************/
 package com.mailersend.sdk.dmarcmonitoring;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
-
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
 
@@ -53,11 +48,6 @@ public class DmarcIpReport extends MailerSendResponse {
     @SerializedName("dkim_domain")
     public String dkimDomain;
 
-    @SerializedName("created_at")
-    private String createdAtStr;
-
-    public Date createdAt;
-
     @SerializedName("applied_policy")
     public String appliedPolicy;
 
@@ -87,14 +77,4 @@ public class DmarcIpReport extends MailerSendResponse {
 
     @SerializedName("dkim_auth")
     public DmarcDkimAuth[] dkimAuth;
-
-    /**
-     * Called after deserialization to parse date strings into Date objects.
-     */
-    public void postDeserialize() {
-        if (createdAtStr != null && !createdAtStr.isBlank()) {
-            TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtStr);
-            createdAt = Date.from(Instant.from(ta));
-        }
-    }
 }

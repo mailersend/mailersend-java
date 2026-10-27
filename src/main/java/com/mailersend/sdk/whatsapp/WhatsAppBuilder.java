@@ -40,7 +40,7 @@ public class WhatsAppBuilder {
     /**
      * <p>from.</p>
      *
-     * @param from the connected WhatsApp sender to send from: its phone number in E.164 format, phone number ID, username or MailerSend sender ID
+     * @param from the sender to send from, either a connected WhatsApp sender's phone number in E.164 format or its MailerSend sender ID
      * @return a {@link com.mailersend.sdk.whatsapp.WhatsAppBuilder} object.
      */
     public WhatsAppBuilder from(String from) {

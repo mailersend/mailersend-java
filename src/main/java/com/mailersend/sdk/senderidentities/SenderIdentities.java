@@ -289,7 +289,7 @@ public class SenderIdentities {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (domainIdFilter != null && !domainIdFilter.isBlank()) {
-            params.add("domain_id=".concat(urlEncode(domainIdFilter)));
+            params.add("domain_id=".concat(domainIdFilter));
         }
 
         if (queryFilter != null && !queryFilter.isBlank()) {
@@ -297,11 +297,11 @@ public class SenderIdentities {
         }
 
         if (orderByFilter != null && !orderByFilter.isBlank()) {
-            params.add("order_by=".concat(urlEncode(orderByFilter)));
+            params.add("order_by=".concat(orderByFilter));
         }
 
         if (orderFilter != null && !orderFilter.isBlank()) {
-            params.add("order=".concat(urlEncode(orderFilter)));
+            params.add("order=".concat(orderFilter));
         }
 
         String requestParams = "";

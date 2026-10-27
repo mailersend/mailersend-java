@@ -101,12 +101,6 @@ public class BlocklistMonitor extends MailerSendResponse {
 
         blocklisted = blocklistedCount != null && blocklistedCount > 0;
 
-        if (hits != null) {
-            for (BlocklistMonitorHit hit : hits) {
-                hit.postDeserialize();
-            }
-        }
-
         if (children != null) {
             for (BlocklistMonitor child : children) {
                 child.postDeserialize();

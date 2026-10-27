@@ -38,9 +38,6 @@ public class TemplateItem {
     @SerializedName("description")
     public String description;
 
-    /**
-     * @deprecated The API does not return tags for a template, so this is always null.
-     */
     @SerializedName("tags")
     public String[] tags;
 
@@ -56,23 +53,20 @@ public class TemplateItem {
 
     @SerializedName("updated_at")
     private String updatedAtStr;
-
-    @SerializedName("category")
-    public TemplateCategory category;
-
+    
     @SerializedName("categories")
     public TemplateCategory[] categories;
 
     @SerializedName("translations")
     public TemplateTranslation[] translations;
-
-
+    
+    
     /**
      * Is called to perform any actions after the deserialization of the response
      * Do not call directly
      */
     protected void postDeserialize() {
-
+        
         parseDates();
 
         if (translations != null) {

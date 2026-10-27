@@ -38,9 +38,6 @@ public class Template {
     @SerializedName("description")
     public String description;
 
-    /**
-     * @deprecated The API does not return tags for a template, so this is always null.
-     */
     @SerializedName("tags")
     public String[] tags;
 
@@ -59,13 +56,13 @@ public class Template {
 
     @SerializedName("category")
     public TemplateCategory category;
-
+    
     @SerializedName("categories")
     public TemplateCategory[] categories;
 
     @SerializedName("domain")
     public TemplateDomain domain;
-
+    
     @SerializedName("translations")
     public TemplateTranslation[] translations;
 

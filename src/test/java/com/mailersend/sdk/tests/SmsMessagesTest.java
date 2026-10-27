@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.time.Instant;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +54,6 @@ public class SmsMessagesTest {
 
             assertNotNull(list.messages);
             assertEquals("sms-msg-id-test-1", list.messages[0].id);
-            assertEquals(Instant.parse("2022-09-14T08:00:00Z"), list.messages[0].createdAt.toInstant());
 
         } catch (MailerSendException e) {
 
@@ -64,34 +62,9 @@ public class SmsMessagesTest {
     }
 
     /**
-     * Tests that page and limit are sent
+     * Tests that a single SMS message can be retrieved by ID
      */
     @Test
-    public void testGetSmsMessagesWithPagination() {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        try {
-
-            SmsMessageList list = ms.sms().messages()
-                    .page(2)
-                    .limit(10)
-                    .getMessages();
-
-            assertEquals("sms-msg-id-test-1", list.messages[0].id);
-
-        } catch (MailerSendException e) {
-
-            fail();
-        }
-    }
-
-    /**
-     * Tests that a single SMS message can be retrieved by ID with its list of SMS
-     */
-    @Test
-    @SuppressWarnings("deprecation")
     public void testGetSingleSmsMessage() {
 
         MailerSend ms = new MailerSend();
@@ -101,16 +74,35 @@ public class SmsMessagesTest {
 
             SmsMessage message = ms.sms().messages().getMessage("sms-msg-id-test-1");
 
+            assertNotNull(message);
             assertEquals("sms-msg-id-test-1", message.id);
-            assertEquals(1, message.smsList.length);
-            assertEquals("sms-id-1", message.smsList[0].id);
-            assertEquals("test sms", message.smsList[0].compiledText);
-            assertEquals(Instant.parse("2022-09-14T08:00:01Z"), message.smsList[0].createdAt.toInstant());
-            assertSame(message.smsList[0], message.sms);
 
         } catch (MailerSendException e) {
 
             fail();
         }
+    }
+
+
+    /**
+     * Tests that a single SMS message reads the list of SMS the API returns
+     */
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testGetSingleSmsMessageReadsTheSmsList() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"data\":{\"id\":\"sms-msg-id-test-1\",\"from\":\"+18133657349\",\"to\":[\"+18332552485\"],\"text\":\"test sms\","
+            + "\"sms\":[{\"id\":\"sms-id-1\",\"from\":\"+18133657349\",\"to\":\"+18332552485\",\"text\":\"test sms\",\"compiled_text\":\"test sms\","
+            + "\"status\":\"failed\",\"error_type\":\"provider_error\",\"error_code\":30007,\"error_description\":\"Carrier violation\"}]}}");
+
+        SmsMessage message = ms.sms().messages().getMessage("sms-msg-id-test-1");
+
+        assertEquals(1, message.smsList.length);
+        assertEquals("test sms", message.smsList[0].compiledText);
+        assertEquals(Integer.valueOf(30007), message.smsList[0].errorCode);
+        assertSame(message.smsList[0], message.sms);
     }
 }

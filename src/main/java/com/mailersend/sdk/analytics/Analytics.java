@@ -25,18 +25,6 @@ import com.mailersend.sdk.exceptions.MailerSendException;
  */
 public class Analytics {
 
-    /** Constant <code>GROUP_BY_DAYS="days"</code> */
-    public static final String GROUP_BY_DAYS = "days";
-
-    /** Constant <code>GROUP_BY_WEEKS="weeks"</code> */
-    public static final String GROUP_BY_WEEKS = "weeks";
-
-    /** Constant <code>GROUP_BY_MONTHS="months"</code> */
-    public static final String GROUP_BY_MONTHS = "months";
-
-    /** Constant <code>GROUP_BY_YEARS="years"</code> */
-    public static final String GROUP_BY_YEARS = "years";
-
     // we need a reference to the MailerSend object to get the token and pass it to the responses
     private MailerSend apiObjectReference;
     
@@ -140,14 +128,14 @@ public class Analytics {
      */
     public AnalyticsByDateList getByDate(String[] events) throws MailerSendException {
         
-        return this.getByDate(GROUP_BY_DAYS, events);
+        return this.getByDate("group_by=days", events);
     }
     
     
     /**
      * Gets the analytics by date
      *
-     * @param groupBy one of GROUP_BY_DAYS, GROUP_BY_WEEKS, GROUP_BY_MONTHS or GROUP_BY_YEARS
+     * @param groupBy a {@link java.lang.String} object.
      * @param events an array of {@link java.lang.String} objects.
      * @throws com.mailersend.sdk.exceptions.MailerSendException
      * @return a {@link com.mailersend.sdk.analytics.AnalyticsByDateList} object.

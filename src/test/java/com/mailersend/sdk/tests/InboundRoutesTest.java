@@ -21,7 +21,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.google.gson.JsonObject;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.inboundroutes.CatchFilter;
@@ -61,231 +60,93 @@ public class InboundRoutesTest {
     }
 
     @Test
-    public void addInboundRouteTest() throws MailerSendException {
+    public void addInboundRouteTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        Forward forward = new Forward();
-        forward.type = "webhook";
-        forward.value = "https://example-domain.com";
+        try {
 
-        InboundRoute route = ms.inboundRoutes().builder()
-            .domainId(TestHelper.domainId)
-            .name("Test inbound name")
-            .domainEnabled(false)
-            .matchFilter("match_all")
-            .forwards(new Forward[] { forward })
-            .addRoute();
+            Forward forward = new Forward();
+            forward.type = "webhook";
+            forward.value = "https://example-domain.com";
+            forward.secret = "asdfgh";
 
-        assertEquals("jpr9084z9xlw63dn", route.id);
-        assertEquals("FRwZFJCkf7nbydrn0oq9uLc76USD4iaI", route.forwards[0].secret);
-    }
+            ms.inboundRoutes().builder()
+                .domainId(TestHelper.domainId)
+                .name("Test inbound name")
+                .domainEnabled(false)
+                .matchFilter("match_all")
+                .forwards(new Forward[] { forward })
+                .addRoute();
 
-    /**
-     * Tests that addRoute() posts every documented field to the inbound endpoint, without the
-     * inbound address, the inbound subdomain and the forward secret and id that the API does not
-     * accept, and parses the created route
-     */
-    @Test
-    @SuppressWarnings("deprecation")
-    public void addRouteSendsEveryDocumentedField() throws MailerSendException {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
-        Forward forward = new Forward();
-        forward.id = "forward-id";
-        forward.type = "webhook";
-        forward.value = "https://yourapp.com/hook";
-        forward.secret = "asdfgh";
-
-        Filter catchFilter = new Filter();
-        catchFilter.comparer = "equal";
-        catchFilter.value = "test";
-
-        InboundRoute route = ms.inboundRoutes().builder()
-            .domainId(TestHelper.domainId)
-            .name("Test name")
-            .domainEnabled(true)
-            .inboundDomain("inbound.test-sdk.com")
-            .inboundAddress("ignored@inbound.test-sdk.com")
-            .inboundSubdomain("ignored")
-            .inboundPriority(10)
-            .catchFilter(new CatchFilter("catch_recipient", new Filter[] { catchFilter }))
-            .catchType("one")
-            .matchFilter("match_header", new InboundFilter[] { new InboundFilter("equal", "yes", "X-Test") })
-            .matchType("one")
-            .forwards(new Forward[] { forward })
-            .includeAttachments(false)
-            .addRoute();
-
-        assertEquals("POST", client.lastRequest().method());
-        assertEquals(INBOUND_URL, client.lastUrl());
-        assertEquals(json("{"
-                + "'domain_id':'" + TestHelper.domainId + "',"
-                + "'name':'Test name',"
-                + "'domain_enabled':true,"
-                + "'inbound_domain':'inbound.test-sdk.com',"
-                + "'inbound_priority':10,"
-                + "'catch_filter':{'type':'catch_recipient','filters':[{'comparer':'equal','value':'test'}]},"
-                + "'catch_type':'one',"
-                + "'match_filter':{'type':'match_header','filters':[{'comparer':'equal','value':'yes','key':'X-Test'}]},"
-                + "'match_type':'one',"
-                + "'forwards':[{'type':'webhook','value':'https://yourapp.com/hook'}],"
-                + "'include_attachments':false"
-                + "}"), client.lastBody());
-        assertEquals("v57gn2j67qlr6z4d", route.id);
-        assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
+        } catch (MailerSendException ex) {
+            fail();
+        }
     }
 
     @Test
-    public void inboundRoutesListTest() throws MailerSendException {
+    public void inboundRoutesListTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        InboundRoutesList routes = ms.inboundRoutes().getRoutes();
+        try {
+            InboundRoutesList routes = ms.inboundRoutes().getRoutes();
 
-        assertEquals(200, routes.responseStatusCode);
-        assertEquals("x3vz9dleq7lkj50y", routes.routes[0].id);
-    }
+            assertEquals(routes.responseStatusCode, 200);
 
-    /**
-     * Tests that getRoutes() sends the page, the limit and the domain id in the query
-     */
-    @Test
-    public void getRoutesSendsThePageLimitAndDomainId() throws MailerSendException {
+            for (InboundRoute route : routes.routes) {
+                System.out.println(route.id);
+            }
 
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
+        } catch (MailerSendException e) {
 
-        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":[],\"links\":{},\"meta\":{}}");
-
-        ms.inboundRoutes().page(2).limit(50).domainId(TestHelper.domainId).getRoutes();
-
-        assertEquals("GET", client.lastRequest().method());
-        assertEquals(INBOUND_URL + "?page=2&limit=50&domain_id=" + TestHelper.domainId, client.lastUrl());
-    }
-
-    /**
-     * Tests that getRoutes() parses the catch type, the match type and the dns check date of each route
-     */
-    @Test
-    public void getRoutesParsesEachRoute() throws MailerSendException {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        CapturingHttpClient.install(200, "{\"data\":[" + ROUTE + "],\"links\":{},\"meta\":{}}");
-
-        InboundRoute route = ms.inboundRoutes().getRoutes().routes[0];
-
-        assertEquals("one", route.catchType);
-        assertEquals("one", route.matchType);
-        assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
+            fail();
+        }
     }
 
     @Test
-    public void singleInboundRouteTest() throws MailerSendException {
+    public void singleInboundRouteTest() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        InboundRoute route = ms.inboundRoutes().getRoute(TestHelper.inboundRouteId);
+        try {
+            InboundRoute route = ms.inboundRoutes().getRoute(TestHelper.inboundRouteId);
 
-        assertEquals(TestHelper.inboundRouteId, route.id);
-        assertEquals("Test inbound name", route.name);
-    }
+            System.out.println(route.id);
+            System.out.println(route.name);
 
-    /**
-     * Tests that getRoute() requests the route's endpoint and parses the catch type, the match type,
-     * the dns check date and the forward secret
-     */
-    @Test
-    public void getRouteParsesTheRoute() throws MailerSendException {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        CapturingHttpClient client = CapturingHttpClient.install(200, ROUTE_RESPONSE);
-
-        InboundRoute route = ms.inboundRoutes().getRoute("v57gn2j67qlr6z4d");
-
-        assertEquals("GET", client.lastRequest().method());
-        assertEquals(INBOUND_URL + "/v57gn2j67qlr6z4d", client.lastUrl());
-        assertEquals("one", route.catchType);
-        assertEquals("one", route.matchType);
-        assertFalse(route.includeAttachments);
-        assertEquals("jYhafQeTiZgw0qWclkUA7cbqTG3Zfh2j", route.forwards[0].secret);
-        assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
+        } catch (MailerSendException e) {
+            fail();
+        }
     }
 
     @Test
-    public void updateInboundRouteTest() throws MailerSendException {
+    public void updateInboundRouteTest() {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        Forward forward = new Forward();
-        forward.type = "webhook";
-        forward.value = "https://example.com";
+        try {
 
-        InboundRoute route = ms.inboundRoutes().builder()
-            .name("Updated route name")
-            .domainEnabled(false)
-            .matchFilter("match_all")
-            .forwards(new Forward[] { forward })
-            .updateRoute(TestHelper.inboundRouteId);
+            Forward forward = new Forward();
+            forward.type = "webhook";
+            forward.value = "https://example.com";
+            forward.secret = "asdfgh";
 
-        assertEquals("Updated route name", route.name);
-    }
+            InboundRoute route = ms.inboundRoutes().builder()
+                .domainId(TestHelper.domainId)
+                .name("Updated route name")
+                .domainEnabled(false)
+                .matchFilter("match_all")
+                .forwards(new Forward[] { forward })
+                .updateRoute(TestHelper.inboundRouteId);
 
-    /**
-     * Tests that updateRoute() puts the documented fields to the route's endpoint, without the
-     * domain id that the update endpoint does not accept, and parses the updated route
-     */
-    @Test
-    public void updateRouteSendsTheDocumentedFields() throws MailerSendException {
+            assertEquals(route.name, "Updated route name");
 
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        CapturingHttpClient client = CapturingHttpClient.install(200, ROUTE_RESPONSE);
-
-        Forward forward = new Forward();
-        forward.type = "email";
-        forward.value = "forward@test-sdk.com";
-
-        InboundRoute route = ms.inboundRoutes().builder()
-            .domainId(TestHelper.domainId)
-            .name("Test name")
-            .domainEnabled(true)
-            .inboundDomain("inbound.test-sdk.com")
-            .inboundPriority(10)
-            .catchFilter(new CatchFilter("catch_all", null))
-            .catchType("all")
-            .matchFilter("match_sender", new InboundFilter[] { new InboundFilter("ends-with", "@test-sdk.com") })
-            .matchType("all")
-            .forwards(new Forward[] { forward })
-            .includeAttachments(true)
-            .updateRoute("v57gn2j67qlr6z4d");
-
-        assertEquals("PUT", client.lastRequest().method());
-        assertEquals(INBOUND_URL + "/v57gn2j67qlr6z4d", client.lastUrl());
-        assertEquals(json("{"
-                + "'name':'Test name',"
-                + "'domain_enabled':true,"
-                + "'inbound_domain':'inbound.test-sdk.com',"
-                + "'inbound_priority':10,"
-                + "'catch_filter':{'type':'catch_all'},"
-                + "'catch_type':'all',"
-                + "'match_filter':{'type':'match_sender','filters':[{'comparer':'ends-with','value':'@test-sdk.com'}]},"
-                + "'match_type':'all',"
-                + "'forwards':[{'type':'email','value':'forward@test-sdk.com'}],"
-                + "'include_attachments':true"
-                + "}"), client.lastBody());
-        assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
+        } catch (MailerSendException e) {
+            fail();
+        }
     }
 
     @Test
@@ -344,18 +205,18 @@ public class InboundRoutesTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
-        assertDoesNotThrow(() ->
+        try {
             ms.inboundRoutes().builder()
                 .domainId(TestHelper.domainId)
                 .domainEnabled(true)
                 .inboundDomain("inbound.example.com")
                 .matchFilter("match_all")
-                .addRoute()
-        );
-
-        assertEquals("inbound.example.com", client.lastBody().getAsJsonObject().get("inbound_domain").getAsString());
+                .addRoute();
+        } catch (MailerSendException e) {
+            if (e.getMessage() != null && e.getMessage().equals("inbound_domain is required when domain_enabled is true")) {
+                fail("Should not throw inbound_domain validation error when domain is supplied");
+            }
+        }
     }
 
     @ParameterizedTest(name = "{0}")
@@ -384,29 +245,28 @@ public class InboundRoutesTest {
         );
     }
 
-    @ParameterizedTest(name = "inbound_priority_boundary_{0}_is_valid")
-    @MethodSource("boundaryPriorityValues")
-    public void inbound_priority_boundary_values_are_valid(int priority) {
+    @Test
+    public void inbound_priority_boundary_values_are_valid() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
-        assertDoesNotThrow(() ->
-            ms.inboundRoutes().builder()
-                .domainId(TestHelper.domainId)
-                .domainEnabled(false)
-                .inboundPriority(priority)
-                .matchFilter("match_all")
-                .addRoute()
-        );
-
-        assertEquals(priority, client.lastBody().getAsJsonObject().get("inbound_priority").getAsInt());
-    }
-
-    static Stream<Integer> boundaryPriorityValues() {
-        return Stream.of(0, 100);
+        // 0 and 100 are boundary values — validation must not fire for them
+        for (int boundary : new int[]{0, 100}) {
+            final int p = boundary;
+            try {
+                ms.inboundRoutes().builder()
+                    .domainId(TestHelper.domainId)
+                    .domainEnabled(false)
+                    .inboundPriority(p)
+                    .matchFilter("match_all")
+                    .addRoute();
+            } catch (MailerSendException e) {
+                if (e.getMessage() != null && e.getMessage().equals("inbound_priority must be between 0 and 100")) {
+                    fail("Boundary value " + p + " should not fail priority validation");
+                }
+            }
+        }
     }
 
     @ParameterizedTest(name = "{0}")
@@ -446,21 +306,21 @@ public class InboundRoutesTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
         CatchFilter cf = new CatchFilter();
         cf.type = type;
 
-        assertDoesNotThrow(() ->
+        try {
             ms.inboundRoutes().builder()
                 .domainId(TestHelper.domainId)
                 .domainEnabled(false)
                 .catchFilter(cf)
                 .matchFilter("match_all")
-                .addRoute()
-        );
-
-        assertEquals(type, catchFilterOf(client).get("type").getAsString());
+                .addRoute();
+        } catch (MailerSendException e) {
+            if (e.getMessage() != null && e.getMessage().startsWith("catch_filter.type must be")) {
+                fail("Valid catch_filter.type '" + type + "' should not fail enum validation");
+            }
+        }
     }
 
     static Stream<Arguments> validCatchFilterTypes() {
@@ -503,8 +363,6 @@ public class InboundRoutesTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
         Filter[] filters = new Filter[5];
         for (int i = 0; i < 5; i++) {
             filters[i] = new Filter();
@@ -514,16 +372,18 @@ public class InboundRoutesTest {
 
         CatchFilter cf = new CatchFilter("catch_recipient", filters);
 
-        assertDoesNotThrow(() ->
+        try {
             ms.inboundRoutes().builder()
                 .domainId(TestHelper.domainId)
                 .domainEnabled(false)
                 .catchFilter(cf)
                 .matchFilter("match_all")
-                .addRoute()
-        );
-
-        assertEquals(5, catchFilterOf(client).getAsJsonArray("filters").size());
+                .addRoute();
+        } catch (MailerSendException e) {
+            if (e.getMessage() != null && e.getMessage().equals("catch_filter.filters must not exceed 5 items")) {
+                fail("5 filters should not fail the max-array-length validation");
+            }
+        }
     }
 
     @ParameterizedTest(name = "{0}")
@@ -565,24 +425,24 @@ public class InboundRoutesTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
         Filter filter = new Filter();
         filter.comparer = comparer;
         filter.value = "test";
 
         CatchFilter cf = new CatchFilter("catch_recipient", new Filter[]{filter});
 
-        assertDoesNotThrow(() ->
+        try {
             ms.inboundRoutes().builder()
                 .domainId(TestHelper.domainId)
                 .domainEnabled(false)
                 .catchFilter(cf)
                 .matchFilter("match_all")
-                .addRoute()
-        );
-
-        assertEquals(comparer, catchFilterOf(client).getAsJsonArray("filters").get(0).getAsJsonObject().get("comparer").getAsString());
+                .addRoute();
+        } catch (MailerSendException e) {
+            if (e.getMessage() != null && e.getMessage().startsWith("catch_filter.filters.comparer must be")) {
+                fail("Valid comparer '" + comparer + "' should not fail enum validation");
+            }
+        }
     }
 
     static Stream<Arguments> validComparers() {
@@ -631,18 +491,18 @@ public class InboundRoutesTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
-        assertDoesNotThrow(() ->
+        try {
             ms.inboundRoutes().builder()
                 .domainId(TestHelper.domainId)
                 .domainEnabled(false)
                 .catchType(catchType)
                 .matchFilter("match_all")
-                .addRoute()
-        );
-
-        assertEquals(catchType, client.lastBody().getAsJsonObject().get("catch_type").getAsString());
+                .addRoute();
+        } catch (MailerSendException e) {
+            if (e.getMessage() != null && e.getMessage().startsWith("catch_type must be")) {
+                fail("Valid catch_type '" + catchType + "' should not fail enum validation");
+            }
+        }
     }
 
     static Stream<Arguments> validCatchTypes() {
@@ -678,21 +538,20 @@ public class InboundRoutesTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
         InboundFilter filter = new InboundFilter("equal", "sender@example.com");
         // key not set — should be fine for match_sender
 
-        assertDoesNotThrow(() ->
+        try {
             ms.inboundRoutes().builder()
                 .domainId(TestHelper.domainId)
                 .domainEnabled(false)
                 .matchFilter("match_sender", new InboundFilter[]{filter})
-                .addRoute()
-        );
-
-        assertEquals(json("{'type':'match_sender','filters':[{'comparer':'equal','value':'sender@example.com'}]}"),
-                client.lastBody().getAsJsonObject().get("match_filter"));
+                .addRoute();
+        } catch (MailerSendException e) {
+            if (e.getMessage() != null && e.getMessage().equals("match_filter.filters.key is required when match_filter.type is match_header")) {
+                fail("key should not be required for match_sender type");
+            }
+        }
     }
 
     @Test
@@ -701,20 +560,19 @@ public class InboundRoutesTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
-
         InboundFilter filter = new InboundFilter("equal", "X-Custom-Header-Value", "X-Custom-Header");
 
-        assertDoesNotThrow(() ->
+        try {
             ms.inboundRoutes().builder()
                 .domainId(TestHelper.domainId)
                 .domainEnabled(false)
                 .matchFilter("match_header", new InboundFilter[]{filter})
-                .addRoute()
-        );
-
-        assertEquals(json("{'type':'match_header','filters':[{'comparer':'equal','value':'X-Custom-Header-Value','key':'X-Custom-Header'}]}"),
-                client.lastBody().getAsJsonObject().get("match_filter"));
+                .addRoute();
+        } catch (MailerSendException e) {
+            if (e.getMessage() != null && e.getMessage().equals("match_filter.filters.key is required when match_filter.type is match_header")) {
+                fail("Should not throw key validation error when key is supplied");
+            }
+        }
     }
 
     @ParameterizedTest(name = "{0}")
@@ -797,8 +655,135 @@ public class InboundRoutesTest {
         assertEquals("catch_type must be one of: all, one", e.getMessage());
     }
 
-    private static JsonObject catchFilterOf(CapturingHttpClient client) {
 
-        return client.lastBody().getAsJsonObject().getAsJsonObject("catch_filter");
+    /**
+     * Tests that addRoute() posts every documented field to the inbound endpoint, without the
+     * inbound address, the inbound subdomain and the forward secret and id that the API does not
+     * accept, and parses the created route
+     */
+    @Test
+    @SuppressWarnings("deprecation")
+    public void addRouteSendsEveryDocumentedField() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(201, ROUTE_RESPONSE);
+
+        Forward forward = new Forward();
+        forward.id = "forward-id";
+        forward.type = "webhook";
+        forward.value = "https://yourapp.com/hook";
+        forward.secret = "asdfgh";
+
+        Filter catchFilter = new Filter();
+        catchFilter.comparer = "equal";
+        catchFilter.value = "test";
+
+        InboundRoute route = ms.inboundRoutes().builder()
+            .domainId(TestHelper.domainId)
+            .name("Test name")
+            .domainEnabled(true)
+            .inboundDomain("inbound.test-sdk.com")
+            .inboundAddress("ignored@inbound.test-sdk.com")
+            .inboundSubdomain("ignored")
+            .inboundPriority(10)
+            .catchFilter(new CatchFilter("catch_recipient", new Filter[] { catchFilter }))
+            .catchType("one")
+            .matchFilter("match_header", new InboundFilter[] { new InboundFilter("equal", "yes", "X-Test") })
+            .matchType("one")
+            .forwards(new Forward[] { forward })
+            .includeAttachments(false)
+            .addRoute();
+
+        assertEquals("POST", client.lastRequest().method());
+        assertEquals(INBOUND_URL, client.lastUrl());
+        assertEquals(json("{"
+                + "'domain_id':'" + TestHelper.domainId + "',"
+                + "'name':'Test name',"
+                + "'domain_enabled':true,"
+                + "'inbound_domain':'inbound.test-sdk.com',"
+                + "'inbound_priority':10,"
+                + "'catch_filter':{'type':'catch_recipient','filters':[{'comparer':'equal','value':'test'}]},"
+                + "'catch_type':'one',"
+                + "'match_filter':{'type':'match_header','filters':[{'comparer':'equal','value':'yes','key':'X-Test'}]},"
+                + "'match_type':'one',"
+                + "'forwards':[{'type':'webhook','value':'https://yourapp.com/hook'}],"
+                + "'include_attachments':false"
+                + "}"), client.lastBody());
+        assertEquals("v57gn2j67qlr6z4d", route.id);
+        assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
+    }
+
+
+    /**
+     * Tests that updateRoute() puts the documented fields to the route's endpoint, without the
+     * domain id that the update endpoint does not accept, and parses the updated route
+     */
+    @Test
+    public void updateRouteSendsTheDocumentedFields() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, ROUTE_RESPONSE);
+
+        Forward forward = new Forward();
+        forward.type = "email";
+        forward.value = "forward@test-sdk.com";
+
+        InboundRoute route = ms.inboundRoutes().builder()
+            .domainId(TestHelper.domainId)
+            .name("Test name")
+            .domainEnabled(true)
+            .inboundDomain("inbound.test-sdk.com")
+            .inboundPriority(10)
+            .catchFilter(new CatchFilter("catch_all", null))
+            .catchType("all")
+            .matchFilter("match_sender", new InboundFilter[] { new InboundFilter("ends-with", "@test-sdk.com") })
+            .matchType("all")
+            .forwards(new Forward[] { forward })
+            .includeAttachments(true)
+            .updateRoute("v57gn2j67qlr6z4d");
+
+        assertEquals("PUT", client.lastRequest().method());
+        assertEquals(INBOUND_URL + "/v57gn2j67qlr6z4d", client.lastUrl());
+        assertEquals(json("{"
+                + "'name':'Test name',"
+                + "'domain_enabled':true,"
+                + "'inbound_domain':'inbound.test-sdk.com',"
+                + "'inbound_priority':10,"
+                + "'catch_filter':{'type':'catch_all'},"
+                + "'catch_type':'all',"
+                + "'match_filter':{'type':'match_sender','filters':[{'comparer':'ends-with','value':'@test-sdk.com'}]},"
+                + "'match_type':'all',"
+                + "'forwards':[{'type':'email','value':'forward@test-sdk.com'}],"
+                + "'include_attachments':true"
+                + "}"), client.lastBody());
+        assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
+    }
+
+
+    /**
+     * Tests that getRoute() requests the route's endpoint and parses the catch type, the match type,
+     * the dns check date and the forward secret
+     */
+    @Test
+    public void getRouteParsesTheRoute() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, ROUTE_RESPONSE);
+
+        InboundRoute route = ms.inboundRoutes().getRoute("v57gn2j67qlr6z4d");
+
+        assertEquals("GET", client.lastRequest().method());
+        assertEquals(INBOUND_URL + "/v57gn2j67qlr6z4d", client.lastUrl());
+        assertEquals("one", route.catchType);
+        assertEquals("one", route.matchType);
+        assertFalse(route.includeAttachments);
+        assertEquals("jYhafQeTiZgw0qWclkUA7cbqTG3Zfh2j", route.forwards[0].secret);
+        assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
     }
 }

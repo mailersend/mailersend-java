@@ -7,6 +7,9 @@
  **************************************************/
 package com.mailersend.sdk.util;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
@@ -47,9 +50,29 @@ public class ApiRecipient {
      */
     public void parseDates() {
 
-        createdAt = DateParser.parse(createdAtString);
-        updatedAt = DateParser.parse(updatedAtString);
-        deletedAt = DateParser.parse(deletedAtString);
+        TemporalAccessor ta;
+        Instant instant;
+        
+        if (createdAtString != null && !createdAtString.isBlank()) {
+            
+            ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtString);
+            instant = Instant.from(ta);
+            createdAt = Date.from(instant);
+        }
+        
+        if (updatedAtString != null && !updatedAtString.isBlank()) {
+            
+            ta = DateTimeFormatter.ISO_INSTANT.parse(updatedAtString);
+            instant = Instant.from(ta);
+            updatedAt = Date.from(instant);
+        }
+        
+        if (deletedAtString != null && !deletedAtString.isBlank()) {
+            
+            ta = DateTimeFormatter.ISO_INSTANT.parse(deletedAtString);
+            instant = Instant.from(ta);
+            deletedAt = Date.from(instant);
+        }
     }
     
     

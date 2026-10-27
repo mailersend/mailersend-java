@@ -25,9 +25,6 @@ public class UserTemplate {
     @SerializedName("name")
     public String name;
 
-    @SerializedName("description")
-    public String description;
-
     @SerializedName("type")
     public String type;
 

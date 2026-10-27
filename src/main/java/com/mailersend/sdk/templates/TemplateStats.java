@@ -25,12 +25,9 @@ public class TemplateStats {
     @SerializedName("total")
     public int total;
     
-    /**
-     * @deprecated The API does not return a processed count for a template, so this is always 0.
-     */
     @SerializedName("processed")
     public int processed;
-
+    
     @SerializedName("queued")
     public int queued;
     
@@ -42,7 +39,7 @@ public class TemplateStats {
     
     @SerializedName("delivered")
     public int delivered;
-
+    
     @SerializedName("delivery_rate")
     public String deliveryRate;
 

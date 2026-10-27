@@ -72,7 +72,7 @@ public class Attachment {
         this.id = contentId;
         this.content = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file));
         this.filename = file.getName();
-        setDisposition(contentId != null && !contentId.isBlank());
+        setDisposition(contentId != null && contentId.trim().length() > 1);
     }
 
     /**
@@ -86,7 +86,7 @@ public class Attachment {
         this.id = contentId;
         this.content = content;
         this.filename = filename;
-        setDisposition(contentId != null && !contentId.isBlank());
+        setDisposition(contentId != null && contentId.trim().length() > 1);
     }
 
     /**

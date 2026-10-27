@@ -26,11 +26,6 @@ public class ApiRecipientsList extends PaginatedResponse {
      */
     public void postProcessing() {
         
-        if (recipients == null) {
-            
-            return;
-        }
-        
         for (ApiRecipient rec : recipients) {
             
             rec.parseDates();

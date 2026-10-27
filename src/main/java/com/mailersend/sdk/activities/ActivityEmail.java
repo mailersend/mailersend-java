@@ -7,15 +7,16 @@
  **************************************************/
 package com.mailersend.sdk.activities;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Collections;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.emails.Email;
-import com.mailersend.sdk.emails.EmailHeader;
 import com.mailersend.sdk.util.ApiRecipient;
-import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>ActivityEmail class.</p>
@@ -31,10 +32,6 @@ public class ActivityEmail {
     @SerializedName("from")
     public String from;
     
-    /** Only returned by the single activity endpoint */
-    @SerializedName("to")
-    public String to;
-    
     @SerializedName("subject")
     public String subject;
     
@@ -44,33 +41,11 @@ public class ActivityEmail {
     @SerializedName("html")
     public String html;
     
-    @SerializedName("template_id")
-    public String templateId;
-    
-    /** Only returned by the single activity endpoint */
-    @SerializedName("domain_id")
-    public String domainId;
-    
-    /** Only returned by the single activity endpoint */
-    @SerializedName("message_id")
-    public String messageId;
-    
     @SerializedName("status")
     public String status;
     
     @SerializedName("tags")
     public String[] tags;
-    
-    /** Only returned by the single activity endpoint */
-    @SerializedName("interaction")
-    public String[] interaction;
-    
-    /** Only returned by the single activity endpoint */
-    @SerializedName("suppression_reason")
-    public String suppressionReason;
-    
-    @SerializedName("headers")
-    public EmailHeader[] headers;
     
     public Date createdAt;
     
@@ -107,8 +82,22 @@ public class ActivityEmail {
      */
     private void parseDates() {
         
-        createdAt = DateParser.parse(createdAtString);
-        updatedAt = DateParser.parse(updatedAtString);
+        TemporalAccessor ta;
+        Instant instant;
+        
+        if (createdAtString != null && !createdAtString.isBlank()) {
+            
+            ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtString);
+            instant = Instant.from(ta);
+            createdAt = Date.from(instant);
+        }
+        
+        if (updatedAtString != null && !updatedAtString.isBlank()) {
+            
+            ta = DateTimeFormatter.ISO_INSTANT.parse(updatedAtString);
+            instant = Instant.from(ta);
+            updatedAt = Date.from(instant);
+        }
     }
     
     
@@ -130,10 +119,7 @@ public class ActivityEmail {
             Collections.addAll(email.tags, tags);
         }
         
-        if (recipient != null) {
-            
-            email.addRecipient(recipient.toRecipient());
-        }
+        email.AddRecipient(recipient.toRecipient());
         
         return email;
     }

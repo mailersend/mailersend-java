@@ -12,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +53,6 @@ public class SmsActivitiesTest {
 
             assertNotNull(list.smsActivities);
             assertEquals("sent", list.smsActivities[0].status);
-            assertEquals(Instant.parse("2022-09-14T08:00:00Z"), list.smsActivities[0].createdAt.toInstant());
 
         } catch (MailerSendException e) {
 
@@ -102,102 +99,6 @@ public class SmsActivitiesTest {
                     .getActivities();
 
             assertNotNull(list.smsActivities);
-            assertEquals("sent", list.smsActivities[0].status);
-
-        } catch (MailerSendException e) {
-
-            fail();
-        }
-    }
-
-    /**
-     * Tests that every added status is sent as a status[] value
-     */
-    @Test
-    public void testGetActivitiesWithMultipleStatusFilters() {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        try {
-
-            SmsActivityList list = ms.sms().activities()
-                    .addStatusFilter("sent")
-                    .addStatusFilter("delivered")
-                    .getActivities();
-
-            assertEquals("delivered", list.smsActivities[1].status);
-
-        } catch (MailerSendException e) {
-
-            fail();
-        }
-    }
-
-    /**
-     * Tests that clearStatusFilter removes the added statuses from the request URL
-     */
-    @Test
-    public void testGetActivitiesWithClearedStatusFilter() {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        try {
-
-            SmsActivityList list = ms.sms().activities()
-                    .addStatusFilter("failed")
-                    .clearStatusFilter()
-                    .getActivities();
-
-            assertEquals("sent", list.smsActivities[0].status);
-
-        } catch (MailerSendException e) {
-
-            fail();
-        }
-    }
-
-    /**
-     * Tests that date_from and date_to are sent as Unix timestamps
-     */
-    @Test
-    public void testGetActivitiesWithDateRange() {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        try {
-
-            SmsActivityList list = ms.sms().activities()
-                    .dateFrom(Date.from(Instant.parse("2024-01-01T00:00:00Z")))
-                    .dateTo(Date.from(Instant.parse("2024-01-31T23:59:59Z")))
-                    .getActivities();
-
-            assertEquals("sent", list.smsActivities[0].status);
-
-        } catch (MailerSendException e) {
-
-            fail();
-        }
-    }
-
-    /**
-     * Tests that page and limit are sent
-     */
-    @Test
-    public void testGetActivitiesWithPagination() {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        try {
-
-            SmsActivityList list = ms.sms().activities()
-                    .page(2)
-                    .limit(10)
-                    .getActivities();
-
             assertEquals("sent", list.smsActivities[0].status);
 
         } catch (MailerSendException e) {

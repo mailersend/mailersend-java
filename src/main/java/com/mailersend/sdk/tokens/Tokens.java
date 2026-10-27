@@ -139,7 +139,19 @@ public class Tokens {
      */
     public Token updateToken(String tokenId, boolean paused) throws MailerSendException {
 
-        return updateToken(tokenId, null, paused ? "pause" : "unpause");
+        String endpoint = "/token/".concat(tokenId);
+
+        MailerSendApi api = new MailerSendApi();
+        api.setToken(apiObjectReference.getToken());
+
+        String status = paused ? "pause" : "unpause";
+        String json = "{\"status\":\"" + status + "\"}";
+
+        TokenResponse response = api.putRequest(endpoint, json, TokenResponse.class);
+
+        response.token.postDeserialize();
+
+        return response.token;
     }
 
 
@@ -160,16 +172,6 @@ public class Tokens {
         if (nameBlank && statusBlank) {
 
             throw new MailerSendException("At least one of name or status must be provided");
-        }
-
-        if (!nameBlank && name.length() > 50) {
-
-            throw new MailerSendException("Token name cannot be longer than 50 characters");
-        }
-
-        if (!statusBlank && !"pause".equals(status) && !"unpause".equals(status)) {
-
-            throw new MailerSendException("Token status must be either pause or unpause");
         }
 
         String endpoint = "/token/".concat(tokenId);

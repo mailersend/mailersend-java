@@ -202,8 +202,6 @@ public class WebhooksBuilder {
         
         WebhookResponse response = api.postRequest(endpoint, json, WebhookResponse.class);
         
-        response.postDeserialize();
-        
         return response.webhook;
     }
     
@@ -254,8 +252,6 @@ public class WebhooksBuilder {
         builderBody.reset();
         
         WebhookResponse response = api.putRequest(endpoint, json, WebhookResponse.class);
-        
-        response.postDeserialize();
         
         return response.webhook;
     }

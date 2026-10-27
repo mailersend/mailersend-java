@@ -225,8 +225,6 @@ public class UserBuilder {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        builderBody.email = null;
-
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))

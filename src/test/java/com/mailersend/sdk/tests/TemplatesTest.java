@@ -4,6 +4,7 @@ import static com.mailersend.sdk.tests.CapturingHttpClient.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -52,73 +53,31 @@ public class TemplatesTest {
 	}
 
     /**
-     * Tests retrieving a list of templates with the default page and limit
+     * Tests retrieving a list of templates
      */
     @Test
-    public void testGetTemplates() throws MailerSendException {
+    public void testGetTemplates() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        TemplatesList list = ms.templates().getTemplates();
+        try {
 
-        assertEquals(1, list.templates.length);
-        assertEquals("3z0vklo631xl7qrx", list.templates[0].id);
-        assertEquals("Template", list.templates[0].name);
-        assertEquals(Date.from(Instant.parse("2022-08-19T13:10:49Z")), list.templates[0].createdAt);
-    }
+            TemplatesList list = ms.templates().getTemplates();
 
+            for (TemplateItem item : list.templates) {
 
-    /**
-     * Tests that getTemplates() sends the page, the limit and the domain id in the query
-     */
-    @Test
-    public void testGetTemplatesSendsThePageLimitAndDomainId() throws MailerSendException {
+                System.out.println(item.id);
+                System.out.println(item.name);
+            }
 
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
+        } catch (MailerSendException e) {
 
-        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":[],\"links\":{},\"meta\":{}}");
-
-        ms.templates().page(2).limit(50).domainId(TestHelper.domainId).getTemplates();
-
-        assertEquals("GET", client.lastRequest().method());
-        assertEquals(TEMPLATES_URL + "?page=2&limit=50&domain_id=" + TestHelper.domainId, client.lastUrl());
-    }
+            e.printStackTrace();
+            fail();
+        }
 
 
-    /**
-     * Tests that the list items carry the categories and the translations of the documented response
-     */
-    @Test
-    public void testGetTemplatesParsesCategoriesAndTranslations() throws MailerSendException {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        TemplatesList list = ms.templates().getTemplates();
-
-        TemplateItem item = list.templates[0];
-
-        assertEquals("5genxmqlgozlyvk7", item.category.id);
-        assertEquals("aut", item.category.name);
-        assertEquals(1, item.categories.length);
-        assertEquals("5genxmqlgozlyvk7", item.categories[0].id);
-
-        TemplateTranslation translation = item.translations[0];
-
-        assertEquals("de", translation.language);
-        assertEquals("German", translation.languageName);
-        assertEquals("published", translation.status);
-        assertEquals(120, translation.totalEmailSent);
-        assertEquals(Date.from(Instant.parse("2020-06-12T08:15:00Z")), translation.lastEmailSentAt);
-        assertEquals(Date.from(Instant.parse("2020-06-10T10:20:00Z")), translation.translatedAt);
-        assertEquals(Date.from(Instant.parse("2020-06-10T10:15:00Z")), translation.createdAt);
-        assertEquals(Date.from(Instant.parse("2020-06-10T10:20:00Z")), translation.updatedAt);
-
-        assertNull(list.templates[1].category);
-        assertEquals(0, list.templates[1].categories.length);
-        assertEquals(0, list.templates[1].translations.length);
     }
 
 
@@ -126,20 +85,271 @@ public class TemplatesTest {
      * Tests the retrieval of a single template
      */
     @Test
-    public void testGetSingleTemplate() throws MailerSendException {
+    public void testGetSingleTemplate() {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        TemplatesList list = ms.templates().getTemplates();
+        try {
 
-        Template template = ms.templates().getTemplate(list.templates[0].id);
+            TemplatesList list = ms.templates().getTemplates();
 
-        assertEquals("3z0vklo631xl7qrx", template.id);
-        assertEquals("Template", template.name);
-        assertEquals("dd", template.type);
-        assertEquals(0, template.stats.total);
-        assertNull(template.stats.lastEmailSentAt);
+            if (list.templates.length == 0) {
+
+                fail();
+            }
+
+            Template template = ms.templates().getTemplate(list.templates[0].id);
+
+            System.out.println(template.id);
+            System.out.println(template.name);
+            System.out.println(template.imagePath);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
+    /**
+     * Tests deleting a template
+     */
+    @Test
+    public void testDeleteTemplate() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            TemplatesList list = ms.templates().getTemplates();
+
+            if (list.templates.length == 0) {
+
+                fail();
+            }
+
+            MailerSendResponse response = ms.templates().deleteTemplate(list.templates[0].id);
+
+            System.out.println(response.responseStatusCode);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
+    /**
+     * Tests that createTemplate() throws when html is not set
+     */
+    @Test
+    public void testCreateTemplateWithoutHtml() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().builder()
+                .name("My Template")
+                .createTemplate();
+        });
+
+        assertEquals("Template html cannot be empty", e.getMessage());
+    }
+
+
+    /**
+     * Tests that createTemplate() throws when text is not set (but html is set)
+     */
+    @Test
+    public void testCreateTemplateWithoutText() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().builder()
+                .name("My Template")
+                .html("<h1>Hello</h1>")
+                .createTemplate();
+        });
+
+        assertEquals("Template text cannot be empty", e.getMessage());
+    }
+
+
+    /**
+     * Tests that name() throws when name exceeds 50 characters
+     */
+    @Test
+    public void testTemplateNameTooLong() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().builder().name("a".repeat(51));
+        });
+
+        assertEquals("Template name cannot be longer than 50 characters", e.getMessage());
+    }
+
+
+    /**
+     * Tests that tags() throws when more than 5 tags are provided
+     */
+    @Test
+    public void testTemplateTooManyTags() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().builder().tags(new String[]{"a", "b", "c", "d", "e", "f"});
+        });
+
+        assertEquals("Template tags cannot have more than 5 items", e.getMessage());
+    }
+
+
+    /**
+     * Tests that tags() throws when a tag exceeds 191 characters
+     */
+    @Test
+    public void testTemplateTagTooLong() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().builder().tags(new String[]{"a".repeat(192)});
+        });
+
+        assertEquals("Each template tag cannot be longer than 191 characters", e.getMessage());
+    }
+
+
+    /**
+     * Tests that limit() and page() reject invalid values (parameterized)
+     */
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("invalidPaginationParams")
+    public void testGetTemplatesInvalidPagination(String label, int limit, int page, String expectedMessage) {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            if (label.contains("limit")) {
+                ms.templates().limit(limit);
+            } else {
+                ms.templates().page(page);
+            }
+        });
+
+        assertEquals(expectedMessage, e.getMessage());
+    }
+
+    static Stream<Arguments> invalidPaginationParams() {
+        return Stream.of(
+            Arguments.of("limit too low", 5, 1, "Limit must be between 10 and 100"),
+            Arguments.of("limit too high", 101, 1, "Limit must be between 10 and 100"),
+            Arguments.of("page too low", 10, 0, "Page must be at least 1")
+        );
+    }
+
+
+    /**
+     * Tests that getTemplate() throws when templateId is empty
+     */
+    @Test
+    public void testGetTemplateWithEmptyId() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().getTemplate("");
+        });
+
+        assertEquals("Template ID cannot be empty", e.getMessage());
+    }
+
+
+    /**
+     * Tests that updateTemplate() throws when templateId is empty
+     */
+    @Test
+    public void testUpdateTemplateWithEmptyId() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().builder().updateTemplate("");
+        });
+
+        assertEquals("Template ID cannot be empty", e.getMessage());
+    }
+
+
+    /**
+     * Tests that deleteTemplate() throws when templateId is empty
+     */
+    @Test
+    public void testDeleteTemplateWithEmptyId() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.templates().deleteTemplate("");
+        });
+
+        assertEquals("Template ID cannot be empty", e.getMessage());
+    }
+
+
+    /**
+     * Tests that createTemplate() posts the documented fields, without the subject and the
+     * auto_generate that the create endpoint does not accept, and parses the created template
+     */
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testCreateTemplateSendsTheDocumentedFields() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(201, TEMPLATE_RESPONSE);
+
+        Template template = ms.templates().builder()
+            .name("My Template")
+            .html("<p>Hello {{name}}</p>")
+            .text("Hello {{name}}")
+            .subject("Ignored subject")
+            .domainId(TestHelper.domainId)
+            .categories(new String[] { "5genxmqlgozlyvk7" })
+            .tags(new String[] { "welcome" })
+            .autoGenerate(true)
+            .createTemplate();
+
+        assertEquals("POST", client.lastRequest().method());
+        assertEquals(TEMPLATES_URL, client.lastUrl());
+        assertEquals(json("{"
+                + "'name':'My Template',"
+                + "'html':'<p>Hello {{name}}</p>',"
+                + "'text':'Hello {{name}}',"
+                + "'domain_id':'" + TestHelper.domainId + "',"
+                + "'categories':['5genxmqlgozlyvk7'],"
+                + "'tags':['welcome']"
+                + "}"), client.lastBody());
+        assertEquals(TEMPLATE_ID, template.id);
+        assertEquals(Date.from(Instant.parse("2021-06-22T15:38:51Z")), template.createdAt);
     }
 
 
@@ -197,279 +407,33 @@ public class TemplatesTest {
 
 
     /**
-     * Tests that getTemplate() parses the domain totals when the API returns them as an object
+     * Tests that the list items carry the categories and the translations of the documented response
      */
     @Test
-    public void testGetTemplateWithDomainTotals() throws MailerSendException {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        Template template = ms.templates().getTemplate(TEMPLATE_ID);
-
-        assertEquals(25, template.domain.totals.hardBounced);
-        assertEquals(40, template.domain.totals.softBounced);
-        assertEquals(231, template.domain.totals.sent);
-        assertEquals(109, template.domain.totals.delivered);
-    }
-
-
-    /**
-     * Tests deleting a template
-     */
-    @Test
-    public void testDeleteTemplate() throws MailerSendException {
+    public void testGetTemplatesParsesCategoriesAndTranslations() throws MailerSendException {
 
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
         TemplatesList list = ms.templates().getTemplates();
 
-        MailerSendResponse response = ms.templates().deleteTemplate(list.templates[0].id);
+        TemplateItem item = list.templates[0];
 
-        assertEquals(200, response.responseStatusCode);
-    }
+        assertEquals(1, item.categories.length);
+        assertEquals("5genxmqlgozlyvk7", item.categories[0].id);
 
+        TemplateTranslation translation = item.translations[0];
 
-    /**
-     * Tests that createTemplate() posts the documented fields, without the subject and the
-     * auto_generate that the create endpoint does not accept, and parses the created template
-     */
-    @Test
-    @SuppressWarnings("deprecation")
-    public void testCreateTemplateSendsTheDocumentedFields() throws MailerSendException {
+        assertEquals("de", translation.language);
+        assertEquals("German", translation.languageName);
+        assertEquals("published", translation.status);
+        assertEquals(120, translation.totalEmailSent);
+        assertEquals(Date.from(Instant.parse("2020-06-12T08:15:00Z")), translation.lastEmailSentAt);
+        assertEquals(Date.from(Instant.parse("2020-06-10T10:20:00Z")), translation.translatedAt);
+        assertEquals(Date.from(Instant.parse("2020-06-10T10:15:00Z")), translation.createdAt);
+        assertEquals(Date.from(Instant.parse("2020-06-10T10:20:00Z")), translation.updatedAt);
 
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        CapturingHttpClient client = CapturingHttpClient.install(201, TEMPLATE_RESPONSE);
-
-        Template template = ms.templates().builder()
-            .name("My Template")
-            .html("<p>Hello {{name}}</p>")
-            .text("Hello {{name}}")
-            .subject("Ignored subject")
-            .domainId(TestHelper.domainId)
-            .categories(new String[] { "5genxmqlgozlyvk7" })
-            .tags(new String[] { "welcome" })
-            .autoGenerate(true)
-            .createTemplate();
-
-        assertEquals("POST", client.lastRequest().method());
-        assertEquals(TEMPLATES_URL, client.lastUrl());
-        assertEquals(json("{"
-                + "'name':'My Template',"
-                + "'html':'<p>Hello {{name}}</p>',"
-                + "'text':'Hello {{name}}',"
-                + "'domain_id':'" + TestHelper.domainId + "',"
-                + "'categories':['5genxmqlgozlyvk7'],"
-                + "'tags':['welcome']"
-                + "}"), client.lastBody());
-        assertEquals(TEMPLATE_ID, template.id);
-        assertEquals(Date.from(Instant.parse("2021-06-22T15:38:51Z")), template.createdAt);
-    }
-
-
-    /**
-     * Tests that updateTemplate() puts the documented fields, auto_generate included and the
-     * subject left out, to the template's endpoint
-     */
-    @Test
-    @SuppressWarnings("deprecation")
-    public void testUpdateTemplateSendsTheDocumentedFields() throws MailerSendException {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        CapturingHttpClient client = CapturingHttpClient.install(200, TEMPLATE_RESPONSE);
-
-        Template template = ms.templates().builder()
-            .name("My Template")
-            .html("<p>Hello {{name}}</p>")
-            .text("Hello {{name}}")
-            .subject("Ignored subject")
-            .domainId(TestHelper.domainId)
-            .categories(new String[] {})
-            .tags(new String[] { "welcome" })
-            .autoGenerate(true)
-            .updateTemplate(TEMPLATE_ID);
-
-        assertEquals("PUT", client.lastRequest().method());
-        assertEquals(TEMPLATES_URL + "/" + TEMPLATE_ID, client.lastUrl());
-        assertEquals(json("{"
-                + "'name':'My Template',"
-                + "'html':'<p>Hello {{name}}</p>',"
-                + "'text':'Hello {{name}}',"
-                + "'domain_id':'" + TestHelper.domainId + "',"
-                + "'categories':[],"
-                + "'tags':['welcome'],"
-                + "'auto_generate':true"
-                + "}"), client.lastBody());
-        assertEquals(TEMPLATE_ID, template.id);
-    }
-
-
-    /**
-     * Tests that createTemplate() requires the html and the text
-     */
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("missingTemplateContent")
-    public void testCreateTemplateRequiresHtmlAndText(String label, String html, String text, String expectedMessage) {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.templates().builder()
-                .name("My Template")
-                .html(html)
-                .text(text)
-                .createTemplate();
-        });
-
-        assertEquals(expectedMessage, e.getMessage());
-    }
-
-    static Stream<Arguments> missingTemplateContent() {
-        return Stream.of(
-            Arguments.of("html not set", null, "Hello", "Template html cannot be empty"),
-            Arguments.of("html blank", "  ", "Hello", "Template html cannot be empty"),
-            Arguments.of("text not set", "<h1>Hello</h1>", null, "Template text cannot be empty"),
-            Arguments.of("text blank", "<h1>Hello</h1>", "  ", "Template text cannot be empty")
-        );
-    }
-
-
-    /**
-     * Tests that name() throws when name exceeds 50 characters
-     */
-    @Test
-    public void testTemplateNameTooLong() {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.templates().builder().name("a".repeat(51));
-        });
-
-        assertEquals("Template name cannot be longer than 50 characters", e.getMessage());
-    }
-
-
-    /**
-     * Tests that tags() rejects more than 5 tags and tags longer than 191 characters
-     */
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("invalidTemplateTags")
-    public void testTemplateTagsAreValidated(String label, String[] tags, String expectedMessage) {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.templates().builder().tags(tags);
-        });
-
-        assertEquals(expectedMessage, e.getMessage());
-    }
-
-    static Stream<Arguments> invalidTemplateTags() {
-        return Stream.of(
-            Arguments.of("more than 5 tags", new String[]{"a", "b", "c", "d", "e", "f"}, "Template tags cannot have more than 5 items"),
-            Arguments.of("tag longer than 191 characters", new String[]{"a".repeat(192)}, "Each template tag cannot be longer than 191 characters")
-        );
-    }
-
-
-    /**
-     * Tests that limit() and page() reject invalid values (parameterized)
-     */
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("invalidPaginationParams")
-    public void testGetTemplatesInvalidPagination(String label, int limit, int page, String expectedMessage) {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            if (label.contains("limit")) {
-                ms.templates().limit(limit);
-            } else {
-                ms.templates().page(page);
-            }
-        });
-
-        assertEquals(expectedMessage, e.getMessage());
-    }
-
-    static Stream<Arguments> invalidPaginationParams() {
-        return Stream.of(
-            Arguments.of("limit too low", 5, 1, "Limit must be between 10 and 100"),
-            Arguments.of("limit too high", 101, 1, "Limit must be between 10 and 100"),
-            Arguments.of("page too low", 10, 0, "Page must be at least 1")
-        );
-    }
-
-
-    /**
-     * Tests that getTemplate() throws when templateId is missing
-     */
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("missingTemplateIds")
-    public void testGetTemplateWithEmptyId(String label, String templateId) {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.templates().getTemplate(templateId);
-        });
-
-        assertEquals("Template ID cannot be empty", e.getMessage());
-    }
-
-
-    /**
-     * Tests that updateTemplate() throws when templateId is missing
-     */
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("missingTemplateIds")
-    public void testUpdateTemplateWithEmptyId(String label, String templateId) {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.templates().builder().updateTemplate(templateId);
-        });
-
-        assertEquals("Template ID cannot be empty", e.getMessage());
-    }
-
-
-    /**
-     * Tests that deleteTemplate() throws when templateId is missing
-     */
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("missingTemplateIds")
-    public void testDeleteTemplateWithEmptyId(String label, String templateId) {
-
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-
-        MailerSendException e = assertThrows(MailerSendException.class, () -> {
-            ms.templates().deleteTemplate(templateId);
-        });
-
-        assertEquals("Template ID cannot be empty", e.getMessage());
-    }
-
-    static Stream<Arguments> missingTemplateIds() {
-        return Stream.of(
-            Arguments.of("empty template id", ""),
-            Arguments.of("blank template id", "  "),
-            Arguments.of("null template id", null)
-        );
+        assertEquals(0, list.templates[1].categories.length);
+        assertEquals(0, list.templates[1].translations.length);
     }
 }

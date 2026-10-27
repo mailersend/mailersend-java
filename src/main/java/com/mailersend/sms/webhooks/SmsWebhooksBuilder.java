@@ -158,8 +158,6 @@ public class SmsWebhooksBuilder {
 	        
 	        SingleSmsWebhookResponse response = api.postRequest(endpoint, json, SingleSmsWebhookResponse.class);
 	        
-	        response.webhook.postDeserialize();
-	        
 	        return response.webhook;
 	    }
 	    
@@ -194,8 +192,6 @@ public class SmsWebhooksBuilder {
 	        builderBody = new SmsWebhookBuilderBody();
 	        
 	        SingleSmsWebhookResponse response = api.putRequest(endpoint, json, SingleSmsWebhookResponse.class);
-	        
-	        response.webhook.postDeserialize();
 	        
 	        return response.webhook;
 	    }

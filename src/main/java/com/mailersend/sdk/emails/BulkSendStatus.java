@@ -45,9 +45,6 @@ public class BulkSendStatus {
     @SerializedName("validation_errors")
     public JsonObject validationErrors;
     
-    /**
-     * The message id of each email at the position of the email in the bulk request, null for an email that was not sent
-     */
     @SerializedName("messages_id")
     public String[] messagesId;
     

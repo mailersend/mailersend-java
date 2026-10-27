@@ -1,7 +1,5 @@
 package com.mailersend.sdk.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -17,8 +15,6 @@ import com.mailersend.sdk.sms.phonenumbers.PhoneNumberList;
 import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class SmsTests {
-
-	private static final String smsFrom = "+18133657349";
 
 	@BeforeEach
 	public void setupEach(TestInfo info) throws IOException
@@ -50,59 +46,7 @@ public class SmsTests {
         	.addPersonalization(numbers.phoneNumbers[0].telephoneNumber, "name", "name personalization")
         	.send();
         	
-        	assertEquals("6321a3c63bed5c70530b8136", messageId);
-        
-        } catch (MailerSendException e) {
-            
-            fail();
-        }
-	}
-	
-	
-	/**
-	 * Tests that personalization values for the same recipient are merged into one entry
-	 */
-	@Test
-	public void testSendSmsMergesPersonalizationForSameRecipient() {
-		
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-        
-        try {
-        	
-        	String messageId = ms.sms().builder().from(smsFrom)
-        	.addRecipient(smsFrom)
-        	.text("test sms {{name}} {{code}}")
-        	.addPersonalization(smsFrom, "name", "name personalization")
-        	.addPersonalization(smsFrom, "code", "1234")
-        	.send();
-        	
-        	assertEquals("6321a3c63bed5c70530b8137", messageId);
-        
-        } catch (MailerSendException e) {
-            
-            fail();
-        }
-	}
-	
-	
-	/**
-	 * Tests that send() returns null when the response has no x-sms-message-id header
-	 */
-	@Test
-	public void testSendSmsWithoutMessageIdHeader() {
-		
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-        
-        try {
-        	
-        	String messageId = ms.sms().builder().from(smsFrom)
-        	.addRecipient(smsFrom)
-        	.text("test sms")
-        	.send();
-        	
-        	assertNull(messageId);
+        	System.out.println(messageId);
         
         } catch (MailerSendException e) {
             

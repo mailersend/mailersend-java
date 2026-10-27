@@ -127,8 +127,6 @@ public class EmailVerificationBuilder {
         
         SingleEmailVerificationListResponse response = api.postRequest(endpoint, json, SingleEmailVerificationListResponse.class);
         
-        response.list.postDeserialize();
-        
         return response.list;
 	}
 	

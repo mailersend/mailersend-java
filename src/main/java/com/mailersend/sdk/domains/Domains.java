@@ -143,7 +143,7 @@ public class Domains {
      */
     public DomainsList getDomains() throws MailerSendException {
         
-        String endpoint = "/domains".concat(prepareParamsUrl(true));
+        String endpoint = "/domains".concat(prepareParamsUrl());
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
@@ -211,7 +211,7 @@ public class Domains {
      */
     public ApiRecipientsList getDomainRecipients(String domainId) throws MailerSendException {
         
-        String endpoint = "/domains/".concat(domainId).concat("/recipients").concat(prepareParamsUrl(false));
+        String endpoint = "/domains/".concat(domainId).concat("/recipients").concat(prepareParamsUrl());
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
@@ -266,10 +266,9 @@ public class Domains {
     
     /**
      * Prepares the query part of the request url
-     * @param withVerifiedFilter whether the verified filter applies to the endpoint
      * @return
      */
-    private String prepareParamsUrl(boolean withVerifiedFilter) {
+    private String prepareParamsUrl() {
         
         // prepare the request parameters
         ArrayList<String> params = new ArrayList<String>();
@@ -278,10 +277,10 @@ public class Domains {
         
         params.add("limit=".concat(String.valueOf(limitFilter)));
         
-        if (withVerifiedFilter && verifiedOnly == 0) {
+        if (verifiedOnly == 0) {
             
             params.add("verified=0");
-        } else if (withVerifiedFilter && verifiedOnly == 1) {
+        } else if (verifiedOnly == 1) {
             
             params.add("verified=1");
         }

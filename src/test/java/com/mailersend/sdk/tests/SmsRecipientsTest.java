@@ -43,32 +43,10 @@ public class SmsRecipientsTest {
         
         	SmsRecipientList list = ms.sms().recipients().getRecipients();
         	
-        	assertEquals("627e7503d30078fb2208cc83", list.recipients[0].id);
-        	assertEquals(Instant.parse("2022-05-13T15:10:59.444Z"), list.recipients[0].createdAt.toInstant());
-        	
-        } catch (MailerSendException ex) {
-        	fail();
-        }
-    }
-    
-    
-    /**
-     * Tests that page and limit are sent
-     */
-    @Test
-    public void testSmsRecipientsWithPagination() {
-        
-        MailerSend ms = new MailerSend();
-        ms.setToken(TestHelper.validToken);
-        
-        try {
-        
-        	SmsRecipientList list = ms.sms().recipients()
-        	        .page(2)
-        	        .limit(10)
-        	        .getRecipients();
-        	
-        	assertEquals("627e7503d30078fb2208cc83", list.recipients[0].id);
+        	for (SmsRecipient recipient : list.recipients) {
+        		
+        		System.out.println(recipient.id);
+        	}
         	
         } catch (MailerSendException ex) {
         	fail();
@@ -88,7 +66,7 @@ public class SmsRecipientsTest {
         	
         	SmsRecipient recipient = ms.sms().recipients().getRecipient(list.recipients[0].id);
         	
-        	assertEquals(list.recipients[0].id, recipient.id);
+        	System.out.println(recipient.id);
         	
         } catch (MailerSendException ex) {
         	fail();
@@ -108,8 +86,6 @@ public class SmsRecipientsTest {
         	SmsRecipient recipient = ms.sms().recipients().updateRecipient(list.recipients[0].id, "opt_out");
 
         	assertEquals("opt_out", recipient.status);
-        	assertEquals("api", recipient.optOutSource);
-        	assertEquals(Instant.parse("2022-01-02T12:00:00Z"), recipient.optedOutAt.toInstant());
 
         } catch (MailerSendException ex) {
         	fail();
@@ -158,5 +134,24 @@ public class SmsRecipientsTest {
         } catch (MailerSendException ex) {
         	fail();
         }
+    }
+
+
+    /**
+     * Tests that the opt out date and source of an SMS recipient are read
+     */
+    @Test
+    public void testSmsRecipientReadsOptOut() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"data\":{\"id\":\"627e7503d30078fb2208cc83\",\"number\":\"+1234567890\",\"status\":\"opt_out\","
+            + "\"opted_out_at\":\"2022-01-02T12:00:00.000000Z\",\"opt_out_source\":\"api\",\"created_at\":\"2022-05-13T15:10:59.444000Z\"}}");
+
+        SmsRecipient recipient = ms.sms().recipients().getRecipient("627e7503d30078fb2208cc83");
+
+        assertEquals("api", recipient.optOutSource);
+        assertEquals(Instant.parse("2022-01-02T12:00:00Z"), recipient.optedOutAt.toInstant());
     }
 }

@@ -209,11 +209,7 @@ public class DmarcMonitoring {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        DmarcMonitorsList response = api.getRequest(endpoint, DmarcMonitorsList.class);
-
-        response.postDeserialize();
-
-        return response;
+        return api.getRequest(endpoint, DmarcMonitorsList.class);
     }
 
     /**
@@ -266,11 +262,7 @@ public class DmarcMonitoring {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        DmarcIpReportList response = api.getRequest(endpoint, DmarcIpReportList.class);
-
-        response.postDeserialize();
-
-        return response;
+        return api.getRequest(endpoint, DmarcIpReportList.class);
     }
 
     /**
