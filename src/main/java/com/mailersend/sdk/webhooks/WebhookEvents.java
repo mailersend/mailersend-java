@@ -81,6 +81,12 @@ public class WebhookEvents {
     /** Constant <code>RECIPIENT_ON_HOLD_REMOVED="recipient.on_hold_removed"</code> */
     public static String RECIPIENT_ON_HOLD_REMOVED = "recipient.on_hold_removed";
 
+    /** Constant <code>DOMAIN_REPUTATION_CHANGED="domain.reputation_changed"</code> */
+    public static String DOMAIN_REPUTATION_CHANGED = "domain.reputation_changed";
+
+    /** Constant <code>ACCOUNT_REPUTATION_CHANGED="account.reputation_changed"</code> */
+    public static String ACCOUNT_REPUTATION_CHANGED = "account.reputation_changed";
+
     /** Constant <code>events</code> */
     protected static String[] events = {
             "activity.sent",
@@ -104,6 +110,8 @@ public class WebhookEvents {
             "email_list.verified",
             "bulk_email.completed",
             "recipient.on_hold_added",
-            "recipient.on_hold_removed"
+            "recipient.on_hold_removed",
+            "domain.reputation_changed",
+            "account.reputation_changed"
     };
 }
