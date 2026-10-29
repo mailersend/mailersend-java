@@ -20,7 +20,11 @@ public class InboundRoutesList extends PaginatedResponse {
 	 * Do not call directly
 	 */
 	protected void postDeserialize() {
-		
+
+		if (routes == null) {
+			return;
+		}
+
 		for (InboundRoute route : routes) {
 			
 			route.postDeserialize();

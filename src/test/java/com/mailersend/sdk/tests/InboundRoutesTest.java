@@ -4,6 +4,7 @@ import static com.mailersend.sdk.tests.CapturingHttpClient.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -785,5 +786,22 @@ public class InboundRoutesTest {
         assertFalse(route.includeAttachments);
         assertEquals("jYhafQeTiZgw0qWclkUA7cbqTG3Zfh2j", route.forwards[0].secret);
         assertEquals(Date.from(Instant.parse("2026-01-15T10:20:30Z")), route.dnsCheckedAt);
+    }
+
+
+    /**
+     * Tests that getRoutes() returns no routes instead of throwing when the response has no data
+     */
+    @Test
+    public void getRoutesWithoutDataReturnsNoRoutes() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{}");
+
+        InboundRoutesList list = ms.inboundRoutes().getRoutes();
+
+        assertNull(list.routes);
     }
 }

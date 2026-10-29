@@ -7,12 +7,10 @@
  **************************************************/
 package com.mailersend.sdk.templates;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>TemplateTranslation class.</p>
@@ -61,26 +59,9 @@ public class TemplateTranslation {
      */
     protected void postDeserialize() {
 
-        lastEmailSentAt = parseDate(lastEmailSentAtStr);
-        translatedAt = parseDate(translatedAtStr);
-        createdAt = parseDate(createdAtStr);
-        updatedAt = parseDate(updatedAtStr);
-    }
-
-
-    /**
-     * Parses a string date from the response into a java.util.Date object
-     */
-    private Date parseDate(String date) {
-
-        if (date == null || date.isBlank()) {
-
-            return null;
-        }
-
-        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(date);
-        Instant instant = Instant.from(ta);
-
-        return Date.from(instant);
+        lastEmailSentAt = DateParser.parse(lastEmailSentAtStr);
+        translatedAt = DateParser.parse(translatedAtStr);
+        createdAt = DateParser.parse(createdAtStr);
+        updatedAt = DateParser.parse(updatedAtStr);
     }
 }
