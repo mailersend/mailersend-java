@@ -13,11 +13,12 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.MailerSendResponse;
 
 /**
  * Represents a MailerSend account user.
  */
-public class User {
+public class User extends MailerSendResponse {
 
     @SerializedName("id")
     public String id;

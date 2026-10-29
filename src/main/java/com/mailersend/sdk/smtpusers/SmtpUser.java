@@ -7,8 +7,11 @@
  **************************************************/
 package com.mailersend.sdk.smtpusers;
 
+import java.util.Date;
+
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>SmtpUser class.</p>
@@ -42,6 +45,21 @@ public class SmtpUser extends MailerSendResponse {
     @SerializedName("port")
     public int port;
 
-    @SerializedName("domain_id")
+    @SerializedName("domain")
     public String domainId;
+
+    @SerializedName("created_at")
+    private String createdAtStr;
+
+    public Date createdAt;
+
+
+    /**
+     * Is called to perform any actions after the deserialization of the response
+     * Do not call directly
+     */
+    public void postDeserialize() {
+
+        createdAt = DateParser.parse(createdAtStr);
+    }
 }

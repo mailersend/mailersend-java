@@ -7,6 +7,9 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp;
 
+import java.util.Map;
+
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -15,6 +18,7 @@ import com.google.gson.annotations.SerializedName;
  * @author mailersend
  * @version $Id: $Id
  */
+@JsonAdapter(WhatsAppPersonalizationDataSerializer.class)
 public class WhatsAppPersonalizationData {
 
     @SerializedName("header")
@@ -25,4 +29,19 @@ public class WhatsAppPersonalizationData {
 
     @SerializedName("buttons")
     public String[] buttons;
+
+    /**
+     * Sent as {@code header} for templates with an image, video or document header.
+     */
+    public transient WhatsAppMediaHeader mediaHeader;
+
+    /**
+     * Sent as {@code header} for templates with named header variables.
+     */
+    public transient Map<String, String> namedHeader;
+
+    /**
+     * Sent as {@code body} for templates with named body variables.
+     */
+    public transient Map<String, String> namedBody;
 }

@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -123,18 +124,19 @@ public class Emails {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
+        JsonArray emailsJson = new JsonArray();
+
         for (Email email : emails) {
-            
-            email.preparePersonalizationForAllRecipients();
-            email.prepareSubstitutionsForAllRecipients();
+
+            emailsJson.add(email.prepareForSending());
         }
-        
+
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
-        
-        String json = gson.toJson(emails);
+
+        String json = gson.toJson(emailsJson);
         
         SendBulkResponse response = api.postRequest("/bulk-email", json, SendBulkResponse.class);
         
@@ -185,14 +187,28 @@ public class Emails {
                 
                 ArrayList<String> messagesIdsList = new ArrayList<String>();
                 
-                if (!data.get("messages_id").isJsonNull()) {
-                	
-	                JsonArray messagesIds = data.get("messages_id").getAsJsonArray();
-	             	                
-	                for (JsonElement messageId : messagesIds) {
-	                    
+                JsonElement messagesIdEl = data.get("messages_id");
+
+                if (messagesIdEl.isJsonArray()) {
+
+	                for (JsonElement messageId : messagesIdEl.getAsJsonArray()) {
+
 	                    messagesIdsList.add(messageId.getAsString());
 	                }
+                } else if (messagesIdEl.isJsonObject()) {
+
+                	// when an email of the request is not sent, the ids come keyed by the position of the email in the request
+                	for (Map.Entry<String, JsonElement> messageId : messagesIdEl.getAsJsonObject().entrySet()) {
+
+                		int position = Integer.parseInt(messageId.getKey());
+
+                		while (messagesIdsList.size() <= position) {
+
+                			messagesIdsList.add(null);
+                		}
+
+                		messagesIdsList.set(position, messageId.getValue().getAsString());
+                	}
                 }
                 
                 newStatus.messagesId = messagesIdsList.toArray(new String[0]);
@@ -203,8 +219,8 @@ public class Emails {
                 
                 JsonElement validationErrorsEl = data.get("validation_errors");
                 
-                if (validationErrorsEl != null) {
-                
+                if (validationErrorsEl != null && !validationErrorsEl.isJsonNull()) {
+
                     newStatus.validationErrors = validationErrorsEl.getAsJsonObject();
                 }
                 

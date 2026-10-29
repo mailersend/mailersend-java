@@ -136,7 +136,11 @@ public class BlocklistMonitoring {
         sortByFilter = null;
         orderFilter = null;
 
-        return api.getRequest(endpoint, BlocklistMonitorsList.class);
+        BlocklistMonitorsList response = api.getRequest(endpoint, BlocklistMonitorsList.class);
+
+        response.postDeserialize();
+
+        return response;
     }
 
     /**
@@ -153,6 +157,8 @@ public class BlocklistMonitoring {
         api.setToken(apiObjectReference.getToken());
 
         BlocklistMonitorResponse response = api.getRequest(endpoint, BlocklistMonitorResponse.class);
+
+        response.monitor.postDeserialize();
 
         return response.monitor;
     }

@@ -20,4 +20,22 @@ public class BlocklistListResponse extends PaginatedResponse {
 
     @SerializedName("data")
     public BlocklistItem[] items;
+    
+    
+    /**
+     * Is called to perform any actions after the deserialization of the response
+     * Do not call directly
+     */
+    public void postDeserialize() {
+        
+        if (items == null) {
+            
+            return;
+        }
+        
+        for (BlocklistItem item : items) {
+            
+            item.parseDates();
+        }
+    }
 }

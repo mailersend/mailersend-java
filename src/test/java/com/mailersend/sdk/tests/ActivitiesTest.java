@@ -7,11 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.net.URI;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -309,5 +312,70 @@ public class ActivitiesTest {
 
             fail();
         }
+    }
+
+
+    /**
+     * Tests that the one argument overload requests the first page of the last 7 days
+     */
+    @Test
+    public void testGetActivitiesWithoutDatesUsesTheLast7Days() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":[],\"links\":{},\"meta\":{\"current_page\":1}}");
+
+        long before = System.currentTimeMillis() / 1000;
+        ms.activities().getActivities(TestHelper.domainId);
+        long after = System.currentTimeMillis() / 1000;
+
+        URI uri = client.lastRequest().uri();
+        Map<String, String> query = queryParams(uri);
+
+        assertEquals("GET", client.lastRequest().method());
+        assertEquals("/v1/activity/" + TestHelper.domainId, uri.getPath());
+        assertEquals("1", query.get("page"));
+        assertEquals("25", query.get("limit"));
+
+        long dateTo = Long.parseLong(query.get("date_to"));
+        long dateFrom = Long.parseLong(query.get("date_from"));
+
+        assertTrue(dateTo >= before && dateTo <= after);
+        assertEquals(7 * 24 * 60 * 60, dateTo - dateFrom);
+    }
+
+
+    /**
+     * Tests that an activity email without tags converts to an email without tags
+     */
+    @Test
+    public void testActivityEmailConversionWithoutTags() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"data\":{\"id\":\"65a4f0b5b1ffd57ddb0b5eec\",\"type\":\"sent\",\"email\":{\"id\":\"65a4f0a86f6d7fb43c0c498b\",\"from\":\"sender@test-sdk.com\",\"subject\":\"Subject\",\"tags\":null,\"recipient\":{\"email\":\"java@mailersend.com\"}}}}");
+
+        Activity activity = ms.activities().getSingleActivity("65a4f0b5b1ffd57ddb0b5eec");
+
+        Email email = activity.email.toEmail();
+
+        assertEquals("Subject", email.subject);
+        assertTrue(email.tags.isEmpty());
+    }
+
+
+    private static Map<String, String> queryParams(URI uri) {
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        for (String pair : uri.getRawQuery().split("&")) {
+
+            String[] parts = pair.split("=", 2);
+            params.put(parts[0], parts.length > 1 ? parts[1] : "");
+        }
+
+        return params;
     }
 }

@@ -314,4 +314,79 @@ public class TokensTest {
         assertEquals("Scope is not valid", ex.getMessage());
     }
 
+
+    /**
+     * Test that quotes and backslashes in the name are JSON-escaped - behavior: the fixture only matches
+     * the body {"name":"Name with \"quotes\" and \\ backslash"}
+     */
+    @Test
+    public void testUpdateTokenNameIsJsonEscaped() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        String name = "Name with \"quotes\" and \\ backslash";
+
+        try {
+
+            Token token = ms.tokens().updateToken(TestHelper.tokenIdToPause, name, null);
+
+            assertEquals(name, token.name);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
+    /**
+     * Test page() and limit() are sent - behavior: GET /token?page=2&limit=10
+     */
+    @Test
+    public void testGetTokensWithPageAndLimit() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            TokenListResponse response = ms.tokens().page(2).limit(10).getTokens();
+
+            assertEquals(200, response.responseStatusCode);
+            assertEquals(2, response.meta.currentPage);
+            assertEquals(TestHelper.tokenIdToPause, response.tokens[0].id);
+            assertEquals(TestHelper.domainId, response.tokens[0].domain.id);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+
+    /**
+     * Test that the create response fields are read
+     */
+    @Test
+    public void testCreateTokenReadsTheResponseFields() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(201, "{\"data\":{\"id\":\"token-id-test\","
+            + "\"accessToken\":\"[redacted]\",\"name\":\"Test token\",\"scopes\":[\"activity_full\"],"
+            + "\"has_full\":false,\"has_only_sending\":true,\"preview\":\"mlsn.a1b2c3\",\"expires_at\":null,"
+            + "\"created_at\":\"2022-08-19T13:25:53.000000Z\"}}");
+
+        TokenAdd token = ms.tokens().addBuilder()
+            .name("Test token")
+            .addScope(TokenScopes.activityFull)
+            .addToken();
+
+        assertTrue(token.hasOnlySending);
+        assertEquals("mlsn.a1b2c3", token.preview);
+    }
 }

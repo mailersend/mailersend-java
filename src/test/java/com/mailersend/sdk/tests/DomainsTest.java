@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -274,6 +276,72 @@ public class DomainsTest {
             e.printStackTrace();
             fail();
         }
+    }
+
+
+    /**
+     * Tests that the verified filter is sent as 1 or 0, the only forms of a boolean query value the API accepts
+     */
+    @Test
+    public void testGetDomainsWithVerifiedFilter() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":[],\"links\":{},\"meta\":{\"current_page\":1}}");
+
+        ms.domains().onlyVerified().getDomains();
+
+        assertEquals("https://api.mailersend.com/v1/domains?page=1&limit=25&verified=1", client.lastUrl());
+
+        ms.domains().onlyUnverified().getDomains();
+
+        assertEquals("https://api.mailersend.com/v1/domains?page=1&limit=25&verified=0", client.lastUrl());
+    }
+
+
+    /**
+     * Tests that the dates of the domains list and of a single domain are parsed
+     */
+    @Test
+    public void testDomainDatesAreParsed() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        String domain = "{\"id\":\"jpzkmgq7e5vl059v\",\"name\":\"test-sdk.com\",\"created_at\":\"2022-04-20T11:36:15.000000Z\",\"updated_at\":\"2022-06-15T11:32:41.000000Z\"}";
+
+        CapturingHttpClient.install(200, "{\"data\":[" + domain + "],\"links\":{},\"meta\":{\"current_page\":1}}");
+
+        DomainsList list = ms.domains().getDomains();
+
+        assertEquals(Date.from(Instant.parse("2022-04-20T11:36:15Z")), list.domains[0].createdAt);
+        assertEquals(Date.from(Instant.parse("2022-06-15T11:32:41Z")), list.domains[0].updatedAt);
+
+        CapturingHttpClient.install(200, "{\"data\":" + domain + "}");
+
+        Domain single = ms.domains().getDomain(TestHelper.domainId);
+
+        assertEquals(Date.from(Instant.parse("2022-04-20T11:36:15Z")), single.createdAt);
+    }
+
+
+    /**
+     * Tests that customTrackingEnabled sets custom_tracking_enabled
+     */
+    @Test
+    public void testCustomTrackingEnabled() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":{\"id\":\"jpzkmgq7e5vl059v\",\"name\":\"test-sdk.com\"}}");
+
+        ms.domains().updateDomainSettingsBuilder()
+            .customTrackingEnabled(true)
+            .updateDomain(TestHelper.domainId);
+
+        assertEquals(CapturingHttpClient.json("{'custom_tracking_enabled':true}"), client.lastBody());
     }
 
 

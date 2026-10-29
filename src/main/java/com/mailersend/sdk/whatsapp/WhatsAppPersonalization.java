@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp;
 
+import java.util.Map;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -40,6 +42,45 @@ public class WhatsAppPersonalization {
      */
     public WhatsAppPersonalization setHeader(String[] header) {
         this.data.header = header;
+        this.data.mediaHeader = null;
+        this.data.namedHeader = null;
+        return this;
+    }
+
+    /**
+     * <p>setMediaHeader.</p>
+     *
+     * @param link the public https URL of the image, video or document to show in the header
+     * @return a {@link com.mailersend.sdk.whatsapp.WhatsAppPersonalization} object.
+     */
+    public WhatsAppPersonalization setMediaHeader(String link) {
+        return setMediaHeader(link, null);
+    }
+
+    /**
+     * <p>setMediaHeader.</p>
+     *
+     * @param link the public https URL of the image, video or document to show in the header
+     * @param filename the file name shown for a document header
+     * @return a {@link com.mailersend.sdk.whatsapp.WhatsAppPersonalization} object.
+     */
+    public WhatsAppPersonalization setMediaHeader(String link, String filename) {
+        this.data.mediaHeader = new WhatsAppMediaHeader(link, filename);
+        this.data.header = null;
+        this.data.namedHeader = null;
+        return this;
+    }
+
+    /**
+     * <p>setNamedHeader.</p>
+     *
+     * @param header header variable values keyed by variable name
+     * @return a {@link com.mailersend.sdk.whatsapp.WhatsAppPersonalization} object.
+     */
+    public WhatsAppPersonalization setNamedHeader(Map<String, String> header) {
+        this.data.namedHeader = header;
+        this.data.header = null;
+        this.data.mediaHeader = null;
         return this;
     }
 
@@ -51,6 +92,19 @@ public class WhatsAppPersonalization {
      */
     public WhatsAppPersonalization setBody(String[] body) {
         this.data.body = body;
+        this.data.namedBody = null;
+        return this;
+    }
+
+    /**
+     * <p>setNamedBody.</p>
+     *
+     * @param body body variable values keyed by variable name
+     * @return a {@link com.mailersend.sdk.whatsapp.WhatsAppPersonalization} object.
+     */
+    public WhatsAppPersonalization setNamedBody(Map<String, String> body) {
+        this.data.namedBody = body;
+        this.data.body = null;
         return this;
     }
 

@@ -1,6 +1,7 @@
 package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -17,6 +18,8 @@ import com.mailersend.sdk.sms.inboundroutes.SmsInboundRouteList;
 import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class SmsInboundRoutesTests {
+
+	private static final String smsInboundRouteId = "83yxj6lj5gdo2rme";
 
 	@BeforeEach
 	public void setupEach(TestInfo info) throws IOException
@@ -139,6 +142,59 @@ public class SmsInboundRoutesTests {
 
         } catch (MailerSendException e) {
             
+            fail();
+        }
+    }
+
+
+    /**
+     * Tests that a route created without enabled does not send enabled
+     */
+    @Test
+    public void testAddSmsInboundRouteWithoutEnabled() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+        	SmsInboundRoute route = ms.sms().inboundRoutes().builder()
+        			.smsNumberId(TestHelper.smsPhoneNumberId)
+        			.name("Test inbound route")
+        			.forwardUrl("https://example.com")
+        			.filter("equal", "START")
+        			.addSmsInboundRoute();
+
+        	assertEquals(smsInboundRouteId, route.id);
+        	assertTrue(route.enabled);
+
+        } catch (MailerSendException e) {
+
+            fail();
+        }
+    }
+
+
+    /**
+     * Tests that an update without enabled does not send enabled
+     */
+    @Test
+    public void testUpdateSmsInboundRouteWithoutEnabled() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+        	SmsInboundRoute route = ms.sms().inboundRoutes().builder()
+        			.name("Test inbound route renamed")
+        			.updateSmsInboundRoute(smsInboundRouteId);
+
+        	assertEquals("Test inbound route renamed", route.name);
+        	assertTrue(route.enabled);
+
+        } catch (MailerSendException e) {
+
             fail();
         }
     }

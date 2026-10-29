@@ -114,7 +114,10 @@ public class ActivityEmail {
         email.html = html;
         email.text = text;
         
-        Collections.addAll(email.tags, tags);
+        if (tags != null) {
+            
+            Collections.addAll(email.tags, tags);
+        }
         
         email.AddRecipient(recipient.toRecipient());
         

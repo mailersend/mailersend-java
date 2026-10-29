@@ -27,6 +27,7 @@ public class DomainDnsRecords {
      * @deprecated Use {@link #dkimMs1} and {@link #dkimMs2} instead.
      */
     @SerializedName("dkim")
+    @Deprecated
     public DomainDnsAttribute dkim;
 
     @SerializedName("dkim_ms1")

@@ -54,6 +54,12 @@ public class TemplateItem {
     @SerializedName("updated_at")
     private String updatedAtStr;
     
+    @SerializedName("categories")
+    public TemplateCategory[] categories;
+
+    @SerializedName("translations")
+    public TemplateTranslation[] translations;
+    
     
     /**
      * Is called to perform any actions after the deserialization of the response
@@ -62,6 +68,14 @@ public class TemplateItem {
     protected void postDeserialize() {
         
         parseDates();
+
+        if (translations != null) {
+
+            for (TemplateTranslation translation : translations) {
+
+                translation.postDeserialize();
+            }
+        }
     }
     
     

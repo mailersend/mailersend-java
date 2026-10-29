@@ -59,6 +59,9 @@ public class EmailVerificationList {
 	
 	@SerializedName("statistics")
 	public Statistics statistics;
+
+	@SerializedName("emails")
+	public EmailVerificationListEmails emails;
 	
 	/**
 	 * <p>postDeserialize.</p>

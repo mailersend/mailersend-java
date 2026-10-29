@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
 
@@ -38,8 +39,17 @@ public class BlocklistMonitor extends MailerSendResponse {
     @SerializedName("notify")
     public boolean notify;
 
+    /**
+     * True when the address is listed on at least one blocklist. Derived from {@link #blocklistedCount}.
+     */
+    public transient boolean blocklisted;
+
+    /**
+     * The number of blocklists the address is listed on.
+     */
     @SerializedName("blocklisted")
-    public boolean blocklisted;
+    @JsonAdapter(BlocklistedCountAdapter.class)
+    public Integer blocklistedCount;
 
     @SerializedName("last_checks_count")
     public int lastChecksCount;
@@ -88,6 +98,14 @@ public class BlocklistMonitor extends MailerSendResponse {
      */
     public void postDeserialize() {
         parseDates();
+
+        blocklisted = blocklistedCount != null && blocklistedCount > 0;
+
+        if (children != null) {
+            for (BlocklistMonitor child : children) {
+                child.postDeserialize();
+            }
+        }
     }
 
     private void parseDates() {

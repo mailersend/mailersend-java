@@ -29,6 +29,14 @@ public class SuppressionItem {
     @SerializedName("created_at")
     public String createdAt;
 
+    /** Only returned by the on-hold list, null otherwise */
+    @SerializedName("on_hold_until")
+    public String onHoldUntil;
+
+    /** Only returned by the on-hold list, null otherwise */
+    @SerializedName("email")
+    public String email;
+
     @SerializedName("recipient")
     public Recipient recipient;
 }

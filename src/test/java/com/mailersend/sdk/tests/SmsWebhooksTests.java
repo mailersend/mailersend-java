@@ -1,5 +1,6 @@
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -137,5 +138,24 @@ public class SmsWebhooksTests {
             
             fail();
         }
+	}
+
+
+	/**
+	 * Tests that an update without events does not send an empty events list, which would remove the webhook's events
+	 */
+	@Test
+	public void testUpdateSmsWebhookWithoutEventsLeavesThemOut() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":{\"id\":\"jpr9084zjgw63dnx\",\"name\":\"sms updated webhook\",\"events\":[\"sms.sent\"],\"enabled\":true}}");
+
+        ms.sms().webhooks().builder()
+        	.name("sms updated webhook")
+        	.updateWebhook("jpr9084zjgw63dnx");
+
+        assertFalse(client.lastBody().getAsJsonObject().has("events"));
 	}
 }

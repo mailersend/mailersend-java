@@ -119,6 +119,8 @@ public class Recipients {
         
         ApiRecipientsList response = api.getRequest(endpoint, ApiRecipientsList.class);
         
+        response.postProcessing();
+        
         return response;
     }
     
@@ -138,6 +140,11 @@ public class Recipients {
         api.setToken(apiObjectReference.getToken());
         
         RecipientResponse response = api.getRequest(endpoint, RecipientResponse.class);
+        
+        if (response.recipient != null) {
+            
+            response.recipient.parseDates();
+        }
         
         return response.recipient;
     }

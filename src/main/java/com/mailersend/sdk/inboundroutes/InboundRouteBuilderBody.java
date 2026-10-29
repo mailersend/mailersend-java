@@ -22,11 +22,19 @@ public class InboundRouteBuilderBody {
 	@SerializedName("inbound_domain")
 	public String inboundDomain;
 	
+	/**
+	 * @deprecated The API does not accept an inbound address, so it is not sent.
+	 */
 	@SerializedName("inbound_address")
-	public String inboundAddress;
+	@Deprecated
+	public transient String inboundAddress;
 	
+	/**
+	 * @deprecated The API does not accept an inbound subdomain, so it is not sent.
+	 */
 	@SerializedName("inbound_subdomain")
-	public String inboundSubdomain;
+	@Deprecated
+	public transient String inboundSubdomain;
 	
 	@SerializedName("inbound_priority")
 	public int inboundPriority;

@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -232,5 +234,24 @@ public class SmtpUsersTest {
         });
 
         assertEquals(401, e.code);
+    }
+
+
+    /**
+     * Tests that the domain and the creation date of an SMTP user are read
+     */
+    @Test
+    public void testSmtpUserReadsDomainAndCreatedAt() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"data\":{\"id\":\"0wkg2zj19ovx5py7\",\"name\":\"Support SMTP\",\"enabled\":true,"
+            + "\"domain\":\"jpzkmgq7e5vl059v\",\"created_at\":\"2024-02-20T09:39:44.000000Z\"}}");
+
+        SmtpUser smtpUser = ms.smtpUsers().getSmtpUser(TestHelper.domainId, TestHelper.smtpUserId);
+
+        assertEquals(TestHelper.domainId, smtpUser.domainId);
+        assertEquals(Date.from(Instant.parse("2024-02-20T09:39:44Z")), smtpUser.createdAt);
     }
 }

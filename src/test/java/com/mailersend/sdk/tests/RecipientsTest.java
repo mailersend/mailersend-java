@@ -7,9 +7,12 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -131,4 +134,23 @@ public class RecipientsTest {
         }
     }
     
+
+
+    /**
+     * Tests that the deleted_at of a soft-deleted recipient, which the API returns as "2020-06-10 10:10:13", is parsed as UTC
+     */
+    @Test
+    public void testSingleRecipientParsesSpaceSeparatedDeletedAt() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":{\"id\":\"62a2120ba4920c48900f2761\",\"email\":\"john@mailerlite.com\",\"created_at\":\"2020-06-10T10:09:56.000000Z\",\"updated_at\":\"2020-06-10T10:10:13.000000Z\",\"deleted_at\":\"2020-06-10 10:10:13\"}}");
+
+        Recipient recipient = ms.recipients().getRecipient("62a2120ba4920c48900f2761");
+
+        assertEquals("GET", client.lastRequest().method());
+        assertEquals("https://api.mailersend.com/v1/recipients/62a2120ba4920c48900f2761", client.lastUrl());
+        assertEquals(Date.from(Instant.parse("2020-06-10T10:10:13Z")), recipient.deletedAt);
+    }
 }

@@ -2,6 +2,7 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -16,6 +17,7 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.vcr.VcrRecorder;
 import com.mailersend.sdk.emailverification.AsyncEmailVerificationResponse;
+import com.mailersend.sdk.emailverification.EmailVerificationBuilder;
 import com.mailersend.sdk.emailverification.EmailVerificationList;
 import com.mailersend.sdk.emailverification.EmailVerificationLists;
 import com.mailersend.sdk.emailverification.ListVerificationResults;
@@ -346,5 +348,72 @@ public class EmailVerificationTests {
 		});
 
 		assertEquals(404, ex.code);
+	}
+
+
+	/**
+	 * Behavior: the shared builder sends only the emails added since the last create().
+	 * The fixture only matches a second body of {"name":"Second list","emails":["info3@example.com"]}.
+	 */
+	@Test
+	public void testBuilderResetsEmailsAfterCreate() {
+		MailerSend ms = new MailerSend();
+		ms.setToken(TestHelper.validToken);
+
+		try {
+
+			EmailVerificationBuilder builder = ms.emailVerification().builder();
+
+			builder.name("Test email verification")
+				.addEmail("info@example.com")
+				.addEmail("info1@example.com")
+				.addEmail("info2@example.com")
+				.create();
+
+			EmailVerificationList second = builder.name("Second list")
+				.addEmail("info3@example.com")
+				.create();
+
+			assertEquals("Second list", second.name);
+
+		} catch (MailerSendException e) {
+
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+
+	/**
+	 * Behavior: GET /email-verification/{id}?detailed=true&page=2&limit=10 returns the paginated emails
+	 * and the not_verified statistic.
+	 */
+	@Test
+	public void testGetListDetailed() {
+		MailerSend ms = new MailerSend();
+		ms.setToken(TestHelper.validToken);
+
+		try {
+
+			EmailVerificationList list = ms.emailVerification()
+				.detailed(true)
+				.getListPage(2)
+				.getListLimit(10)
+				.getList(TestHelper.emailVerificationListId);
+
+			assertEquals(1, list.statistics.notVerified);
+			assertEquals(2, list.emails.results.length);
+			assertEquals("info@example.com", list.emails.results[0].address);
+			assertEquals("valid", list.emails.results[0].result);
+			assertEquals(2, list.emails.pagination.currentPage);
+			assertEquals(10, list.emails.pagination.perPage);
+			assertEquals(12, list.emails.pagination.total);
+			assertNull(list.emails.links.next);
+
+		} catch (MailerSendException e) {
+
+			e.printStackTrace();
+			fail();
+		}
 	}
 }

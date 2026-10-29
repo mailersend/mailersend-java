@@ -123,6 +123,7 @@ public class EmailVerificationBuilder {
         String json = gson.toJson(builderBody);
         
         builderBody.reset();
+        emails.clear();
         
         SingleEmailVerificationListResponse response = api.postRequest(endpoint, json, SingleEmailVerificationListResponse.class);
         

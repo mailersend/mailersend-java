@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -75,6 +77,8 @@ public class BlocklistMonitoringTest {
             BlocklistMonitor monitor = ms.blocklistMonitoring().getMonitor(TestHelper.blocklistMonitorId);
 
             assertNotNull(monitor);
+            assertEquals(1, monitor.blocklistedCount);
+            assertTrue(monitor.blocklisted);
             System.out.println(monitor.id);
             System.out.println(monitor.address);
 
@@ -99,6 +103,8 @@ public class BlocklistMonitoringTest {
                     .createMonitor(TestHelper.blocklistMonitorAddress);
 
             assertNotNull(monitor);
+            assertEquals(0, monitor.blocklistedCount);
+            assertFalse(monitor.blocklisted);
             System.out.println(monitor.id);
             System.out.println(monitor.address);
 

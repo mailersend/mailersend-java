@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.senderidentities;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -291,7 +293,7 @@ public class SenderIdentities {
         }
 
         if (queryFilter != null && !queryFilter.isBlank()) {
-            params.add("query=".concat(queryFilter));
+            params.add("query=".concat(urlEncode(queryFilter)));
         }
 
         if (orderByFilter != null && !orderByFilter.isBlank()) {
@@ -310,5 +312,16 @@ public class SenderIdentities {
         }
 
         return requestParams;
+    }
+
+
+    /**
+     * Url encodes a query parameter value
+     * @param value
+     * @return
+     */
+    private String urlEncode(String value) {
+
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
@@ -32,6 +33,8 @@ public class InboundRouteBuilder {
 	
 	/**
 	 * <p>domainId.</p>
+	 *
+	 * <p>Only sent by addRoute(), the update endpoint does not accept it.</p>
 	 *
 	 * @param domainId a {@link java.lang.String} object.
 	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
@@ -82,7 +85,9 @@ public class InboundRouteBuilder {
 	 *
 	 * @param address a {@link java.lang.String} object.
 	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 * @deprecated The API does not accept an inbound address, so it is not sent.
 	 */
+	@Deprecated
 	public InboundRouteBuilder inboundAddress(String address) {
 		builderBody.inboundAddress = address;
 		return this;
@@ -93,7 +98,9 @@ public class InboundRouteBuilder {
 	 *
 	 * @param subdomain a {@link java.lang.String} object.
 	 * @return a {@link com.mailersend.sdk.inboundroutes.InboundRouteBuilder} object.
+	 * @deprecated The API does not accept an inbound subdomain, so it is not sent.
 	 */
+	@Deprecated
 	public InboundRouteBuilder inboundSubdomain(String subdomain) {
 		builderBody.inboundSubdomain = subdomain;
 		
@@ -297,6 +304,8 @@ public class InboundRouteBuilder {
         
         SingleInboundRouteResponse response = api.postRequest(endpoint, json, SingleInboundRouteResponse.class);
         
+        response.route.postDeserialize();
+        
         return response.route;
 	}
 	
@@ -321,11 +330,16 @@ public class InboundRouteBuilder {
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
         
-        String json = gson.toJson(builderBody);
+        JsonObject body = gson.toJsonTree(builderBody).getAsJsonObject();
+        body.remove("domain_id");
+        
+        String json = gson.toJson(body);
         
         builderBody.reset();
         
         SingleInboundRouteResponse response = api.putRequest(endpoint, json, SingleInboundRouteResponse.class);
+        
+        response.route.postDeserialize();
         
         return response.route;
 	}

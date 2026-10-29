@@ -114,6 +114,8 @@ public class Suppressions {
         
         BlocklistListResponse response = api.getRequest(endpoint, BlocklistListResponse.class);
         
+        response.postDeserialize();
+        
         return response;
     }
     
@@ -172,6 +174,8 @@ public class Suppressions {
         api.setToken(apiObjectReference.getToken());
         
         SuppressionList response = api.getRequest(endpoint, SuppressionList.class);
+        
+        response.postDeserialize();
         
         return response;
     }

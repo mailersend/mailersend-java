@@ -19,6 +19,9 @@ import com.mailersend.sdk.MailerSendResponse;
  */
 public class AsyncEmailVerificationResponse extends MailerSendResponse {
 
+    @SerializedName("data")
+    private AsyncEmailVerificationData data;
+
     @SerializedName("id")
     public String id;
 
@@ -33,4 +36,20 @@ public class AsyncEmailVerificationResponse extends MailerSendResponse {
 
     @SerializedName("error")
     public String error;
+
+
+    /**
+     * Is called to perform any actions after the deserialization of the response.
+     * Do not call directly.
+     */
+    protected void postDeserialize() {
+
+        if (data != null) {
+            id = data.id;
+            address = data.address;
+            status = data.status;
+            result = data.result;
+            error = data.error;
+        }
+    }
 }
