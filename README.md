@@ -1165,7 +1165,6 @@ public void createInboundRoute() {
         Forward forward = new Forward();
         forward.type = "webhook";
         forward.value = "https://example-domain.com";
-        forward.secret = "asdfgh";
     
         ms.inboundRoutes().builder()
             .domainId("domain id")
@@ -1205,7 +1204,6 @@ public void updateInboundRoute() {
         Forward forward = new Forward();
         forward.type = "webhook";
         forward.value = "https://example-domain.com";
-        forward.secret = "asdfgh";
     
         InboundRoute route = ms.inboundRoutes().builder()
             .domainId("domain id")

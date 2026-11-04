@@ -120,7 +120,10 @@ public class InboundRoutes {
         
         SingleInboundRouteResponse response = api.getRequest(endpoint, SingleInboundRouteResponse.class);
         
-        response.route.postDeserialize();
+        if (response.route != null) {
+
+            response.route.postDeserialize();
+        }
         
         return response.route;
     }

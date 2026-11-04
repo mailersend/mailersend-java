@@ -160,4 +160,24 @@ public class BlocklistMonitoringTest {
             fail();
         }
     }
+
+    /**
+     * Tests that the list filters are url encoded
+     */
+    @Test
+    public void getMonitorsEncodesFiltersTest() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":[]}");
+
+        ms.blocklistMonitoring()
+            .query("a&b c")
+            .sortBy("name")
+            .order("desc")
+            .getMonitors();
+
+        assertEquals("https://api.mailersend.com/v1/blocklist-monitoring?page=1&limit=25&query=a%26b+c&sort_by=name&order=desc", client.lastUrl());
+    }
 }

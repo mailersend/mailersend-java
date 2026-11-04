@@ -103,7 +103,10 @@ public class BlocklistMonitorUpdateBuilder {
 
         BlocklistMonitorResponse response = api.putRequest(endpoint, json, BlocklistMonitorResponse.class);
 
-        response.monitor.postDeserialize();
+        if (response.monitor != null) {
+
+            response.monitor.postDeserialize();
+        }
 
         return response.monitor;
     }

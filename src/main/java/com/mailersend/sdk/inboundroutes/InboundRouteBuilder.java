@@ -304,7 +304,10 @@ public class InboundRouteBuilder {
         
         SingleInboundRouteResponse response = api.postRequest(endpoint, json, SingleInboundRouteResponse.class);
         
-        response.route.postDeserialize();
+        if (response.route != null) {
+
+            response.route.postDeserialize();
+        }
         
         return response.route;
 	}
@@ -339,7 +342,10 @@ public class InboundRouteBuilder {
         
         SingleInboundRouteResponse response = api.putRequest(endpoint, json, SingleInboundRouteResponse.class);
         
-        response.route.postDeserialize();
+        if (response.route != null) {
+
+            response.route.postDeserialize();
+        }
         
         return response.route;
 	}

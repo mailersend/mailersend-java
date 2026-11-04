@@ -53,7 +53,6 @@ public class Email {
     /**
      * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
      */
-    @SerializedName("rcpt_to")
     @Deprecated
     public transient ArrayList<Recipient> rcptTo = new ArrayList<Recipient>();
 
