@@ -162,6 +162,8 @@ MailerSend Java SDK
         - [Create a blocklist monitor](#create-a-blocklist-monitor)
         - [Update a blocklist monitor](#update-a-blocklist-monitor)
         - [Delete a blocklist monitor](#delete-a-blocklist-monitor)
+    - [Account](#account)
+        - [Get account](#get-account)
 
 - [WhatsApp](#whatsapp)
     - [Send a WhatsApp message](#send-a-whatsapp-message)
@@ -4787,6 +4789,42 @@ public void deleteInvite() {
         boolean deleted = ms.users().deleteInvite("invite-id");
 
         System.out.println("Invite deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+## Account
+
+### Get account
+
+Returns the plan, usage, API rate limits and resource limits of the account the API token belongs to. A `limit` of `-1` means unlimited. `addons.whatsapp` is `null` when the account has no WhatsApp add-on, and `resources.webhooks.limit` can be `null`.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.account.AccountDetails;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getAccount() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        AccountDetails account = ms.account().getAccount();
+
+        System.out.println(account.name);
+        System.out.println(account.status);
+        System.out.println(account.planType);
+        System.out.println(account.emails.sent);
+        System.out.println(account.emails.limit);
+        System.out.println(account.rateLimits.general);
+        System.out.println(account.resources.domains.used);
+        System.out.println(account.resources.domains.limit);
 
     } catch (MailerSendException e) {
 
