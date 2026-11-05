@@ -7,6 +7,7 @@
  **************************************************/
 package com.mailersend.sdk;
 
+import com.mailersend.sdk.account.Account;
 import com.mailersend.sdk.activities.Activities;
 import com.mailersend.sdk.analytics.Analytics;
 import com.mailersend.sdk.domains.Domains;
@@ -56,6 +57,7 @@ public class MailerSend {
     private SmtpUsers smtpUsers = null;
     private SenderIdentities senderIdentities = null;
     private Users users = null;
+    private Account account = null;
 
     /**
      * <p>Constructor for MailerSend.</p>
@@ -81,6 +83,7 @@ public class MailerSend {
         smtpUsers = new SmtpUsers(this);
         senderIdentities = new SenderIdentities(this);
         users = new Users(this);
+        account = new Account(this);
     }
     
     
@@ -273,6 +276,15 @@ public class MailerSend {
      */
     public Users users() {
         return users;
+    }
+
+    /**
+     * Get the account access object
+     *
+     * @return the Account object
+     */
+    public Account account() {
+        return account;
     }
 
     /**
