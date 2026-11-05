@@ -649,7 +649,7 @@ public class Email {
      */
     public String serializeForSending() {
 
-        return createSendingGson().toJson(prepareForSending());
+        return SENDING_GSON.toJson(prepareForSending());
     }
 
 
@@ -667,7 +667,7 @@ public class Email {
         	sendAtStamp = String.valueOf(sendAt.getTime() / 1000);
         }
 
-        JsonObject json = createSendingGson().toJsonTree(this).getAsJsonObject();
+        JsonObject json = SENDING_GSON.toJsonTree(this).getAsJsonObject();
 
         // empty lists are left out because the API rejects some of them, e.g. "references": [] on the Sandbox plan
         json.entrySet().removeIf(field -> field.getValue().isJsonArray() && field.getValue().getAsJsonArray().isEmpty());
@@ -676,21 +676,13 @@ public class Email {
     }
 
 
-    /**
-     * Creates the Gson instance that serializes the email for sending
-     *
-     * @return a {@link com.google.gson.Gson} object.
-     */
-    protected Gson createSendingGson() {
-
-        return new GsonBuilder()
-                .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
-                .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
-                .registerTypeAdapter(Instant.class, new InstantTypeAdapter().nullSafe())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter().nullSafe())
-                .create();
-    }
+    private static final Gson SENDING_GSON = new GsonBuilder()
+            .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
+            .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
+            .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
+            .registerTypeAdapter(Instant.class, new InstantTypeAdapter().nullSafe())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter().nullSafe())
+            .create();
 
     /**
     * Simple adapter for {@link LocalDate} type in Gson serialization.
@@ -698,7 +690,7 @@ public class Email {
     * To use this {@link TypeAdapter}, register it into a {@link Gson} serializer using a
     * {@link GsonBuilder}.
     */
-    class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
+    static class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
 
         @Override
         public void write(JsonWriter out, LocalDate value) throws IOException {
@@ -717,7 +709,7 @@ public class Email {
      * To use this {@link TypeAdapter}, register it into a {@link Gson} serializer using a
      * {@link GsonBuilder}.
      */
-    class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
+    static class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
 
         @Override
         public void write(JsonWriter out, LocalDateTime value) throws IOException {
@@ -736,7 +728,7 @@ public class Email {
     * To use this {@link Instant}, register it into a {@link Gson} serializer using a
     * {@link GsonBuilder}.
     */
-    class InstantTypeAdapter extends TypeAdapter<Instant> {
+    static class InstantTypeAdapter extends TypeAdapter<Instant> {
 
         @Override
         public void write(JsonWriter out, Instant value) throws IOException {

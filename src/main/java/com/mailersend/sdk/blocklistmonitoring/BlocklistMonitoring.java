@@ -7,8 +7,6 @@
  **************************************************/
 package com.mailersend.sdk.blocklistmonitoring;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -16,6 +14,7 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * Provides access to the Blocklist Monitoring API endpoints.
@@ -197,15 +196,15 @@ public class BlocklistMonitoring {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (queryFilter != null && !queryFilter.isBlank()) {
-            params.add("query=".concat(urlEncode(queryFilter)));
+            params.add("query=".concat(UrlEncoder.encode(queryFilter)));
         }
 
         if (sortByFilter != null && !sortByFilter.isBlank()) {
-            params.add("sort_by=".concat(urlEncode(sortByFilter)));
+            params.add("sort_by=".concat(UrlEncoder.encode(sortByFilter)));
         }
 
         if (orderFilter != null && !orderFilter.isBlank()) {
-            params.add("order=".concat(urlEncode(orderFilter)));
+            params.add("order=".concat(UrlEncoder.encode(orderFilter)));
         }
 
         String requestParams = "";
@@ -218,9 +217,5 @@ public class BlocklistMonitoring {
         }
 
         return requestParams;
-    }
-
-    private String urlEncode(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

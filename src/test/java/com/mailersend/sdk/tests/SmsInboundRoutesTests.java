@@ -198,4 +198,23 @@ public class SmsInboundRoutesTests {
             fail();
         }
     }
+
+
+    /**
+     * Tests that the enabled filter is sent as 1, the only form the API's boolean rule accepts in a query
+     */
+    @Test
+    public void TestGetSmsInboundRoutesSendsEnabledAsNumber() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":[]}");
+
+        ms.sms().inboundRoutes()
+            .enabled(true)
+            .getSmsInboundRoutes();
+
+        assertEquals("https://api.mailersend.com/v1/sms-inbounds?page=1&limit=25&enabled=1", client.lastUrl());
+    }
 }

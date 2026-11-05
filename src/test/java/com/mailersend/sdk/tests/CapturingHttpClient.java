@@ -84,6 +84,12 @@ class CapturingHttpClient extends HttpClientVcr {
     }
 
 
+    List<HttpRequest> requests() {
+
+        return requests;
+    }
+
+
     HttpRequest lastRequest() {
 
         assertFalse(requests.isEmpty(), "no request was made");

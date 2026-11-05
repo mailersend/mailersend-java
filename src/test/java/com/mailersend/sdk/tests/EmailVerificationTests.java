@@ -385,13 +385,15 @@ public class EmailVerificationTests {
 
 
 	/**
-	 * Behavior: GET /email-verification/{id}?detailed=true&page=2&limit=10 returns the paginated emails
+	 * Behavior: GET /email-verification/{id}?detailed=1&page=2&limit=10 returns the paginated emails
 	 * and the not_verified statistic.
 	 */
 	@Test
 	public void testGetListDetailed() {
 		MailerSend ms = new MailerSend();
 		ms.setToken(TestHelper.validToken);
+
+		CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":{\"id\":\"7z3m5jgroogdpyo6\",\"name\":\"Test email verification\",\"total\":3,\"verification_started\":\"2022-08-20T12:47:11.000000Z\",\"verification_ended\":\"2022-08-20T12:52:00.000000Z\",\"created_at\":\"2022-08-20T12:44:51.000000Z\",\"updated_at\":\"2022-08-20T12:47:11.000000Z\",\"status\":{\"name\":\"verified\",\"count\":3},\"source\":\"api\",\"statistics\":{\"valid\":1,\"catch_all\":0,\"mailbox_full\":0,\"role_based\":0,\"unknown\":0,\"syntax_error\":0,\"typo\":1,\"mailbox_not_found\":0,\"disposable\":0,\"mailbox_blocked\":0,\"failed\":0,\"not_verified\":1},\"emails\":{\"data\":[{\"address\":\"info@example.com\",\"result\":\"valid\"},{\"address\":\"info1@example.com\",\"result\":\"typo\"}],\"pagination\":{\"current_page\":2,\"per_page\":10,\"total\":12,\"last_page\":2,\"from\":11,\"to\":12},\"links\":{\"first\":\"https://api.mailersend.com/v1/email-verification/7z3m5jgroogdpyo6?detailed=1&page=1\",\"last\":\"https://api.mailersend.com/v1/email-verification/7z3m5jgroogdpyo6?detailed=1&page=2\",\"prev\":\"https://api.mailersend.com/v1/email-verification/7z3m5jgroogdpyo6?detailed=1&page=1\",\"next\":null}}}}");
 
 		try {
 
@@ -409,6 +411,8 @@ public class EmailVerificationTests {
 			assertEquals(10, list.emails.pagination.perPage);
 			assertEquals(12, list.emails.pagination.total);
 			assertNull(list.emails.links.next);
+			assertEquals("https://api.mailersend.com/v1/email-verification/" + TestHelper.emailVerificationListId
+				+ "?detailed=1&page=2&limit=10", client.lastUrl());
 
 		} catch (MailerSendException e) {
 

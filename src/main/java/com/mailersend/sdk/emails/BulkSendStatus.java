@@ -13,6 +13,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.recipients.Recipient;
 
@@ -37,15 +38,18 @@ public class BulkSendStatus {
     public int suppressedRecipientsCount;
     
     @SerializedName("suppressed_recipients")
+    @JsonAdapter(JsonObjectAdapter.class)
     public JsonObject suppressedRecipients;
     
     @SerializedName("validation_errors_count")
     public int validationErrorsCount;
     
     @SerializedName("validation_errors")
+    @JsonAdapter(JsonObjectAdapter.class)
     public JsonObject validationErrors;
     
     @SerializedName("messages_id")
+    @JsonAdapter(value = MessagesIdAdapter.class, nullSafe = false)
     public String[] messagesId;
     
     public Date createdAt;

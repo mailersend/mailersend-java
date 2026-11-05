@@ -7,8 +7,6 @@
  **************************************************/
 package com.mailersend.sdk.analytics;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,6 +14,7 @@ import java.util.Date;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * <p>Analytics class.</p>
@@ -154,7 +153,7 @@ public class Analytics {
         if (groupBy != null && !groupBy.isBlank()) {
 
             // keeps accepting the raw "group_by=..." fragment that callers had to pass before
-            params.add(groupBy.startsWith("group_by=") ? groupBy : "group_by=".concat(urlEncode(groupBy)));
+            params.add(groupBy.startsWith("group_by=") ? groupBy : "group_by=".concat(UrlEncoder.encode(groupBy)));
         }
 
         if (events != null && events.length > 0) {
@@ -306,21 +305,10 @@ public class Analytics {
                 params = params.concat("&");
             }
             
-            params = params.concat(field).concat("[]=").concat(urlEncode(values[i]));
+            params = params.concat(field).concat("[]=").concat(UrlEncoder.encode(values[i]));
         }
         
         return params;
-    }
-
-
-    /**
-     * Url encodes a query parameter value
-     * @param value
-     * @return
-     */
-    private String urlEncode(String value) {
-
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
     
 }

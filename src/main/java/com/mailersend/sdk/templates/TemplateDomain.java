@@ -9,7 +9,6 @@ package com.mailersend.sdk.templates;
 
 import java.lang.reflect.Type;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -46,7 +45,7 @@ public class TemplateDomain extends Domain {
                 return null;
             }
 
-            return new Gson().fromJson(json, TemplateDomainTotals.class);
+            return context.deserialize(json, TemplateDomainTotals.class);
         }
     }
 }

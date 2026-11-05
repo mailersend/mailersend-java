@@ -339,7 +339,7 @@ public class EmailVerification {
         ArrayList<String> params = new ArrayList<String>();
 
         if (detailedFilter != null) {
-            params.add("detailed=".concat(detailedFilter ? "true" : "false"));
+            params.add("detailed=".concat(detailedFilter ? "1" : "0"));
         }
 
         if (detailedFilter != null && detailedFilter) {
