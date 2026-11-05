@@ -109,6 +109,11 @@ public class DomainAddBuilder {
         
         SingleDomainResponse response = api.postRequest(endpoint, json, SingleDomainResponse.class);
         
+        if (response.domain != null) {
+            
+            response.domain.postDeserialize();
+        }
+        
         return response.domain;
     }
 }

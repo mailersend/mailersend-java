@@ -7,28 +7,19 @@
  **************************************************/
 package com.mailersend.sdk.emails;
 
-import java.lang.reflect.Type;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
-import com.mailersend.sdk.MailerSendStringResponse;
 import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * <p>Emails class.</p>
@@ -123,18 +114,19 @@ public class Emails {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
         
+        JsonArray emailsJson = new JsonArray();
+
         for (Email email : emails) {
-            
-            email.preparePersonalizationForAllRecipients();
-            email.prepareSubstitutionsForAllRecipients();
+
+            emailsJson.add(email.prepareForSending());
         }
-        
+
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
                 .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
                 .create();
-        
-        String json = gson.toJson(emails);
+
+        String json = gson.toJson(emailsJson);
         
         SendBulkResponse response = api.postRequest("/bulk-email", json, SendBulkResponse.class);
         
@@ -157,79 +149,14 @@ public class Emails {
         api.setToken(apiObjectReference.getToken());
     
         
-        MailerSendStringResponse response = api.getRequest(endpoint, MailerSendStringResponse.class);
-        
-        // because the response might include null fields, we'll use a custom deserializer to get the BulkSendStatus object
-   
-        JsonDeserializer<BulkSendStatus> deserializer = new JsonDeserializer<BulkSendStatus>() {  
+        BulkSendStatusResponse response = api.getRequest(endpoint, BulkSendStatusResponse.class);
 
-            @Override
-            public BulkSendStatus deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                    throws JsonParseException {
-                
-                JsonObject jsonObject = json.getAsJsonObject();
-                
-                JsonObject data = jsonObject.get("data").getAsJsonObject();
-                
-                BulkSendStatus newStatus = new BulkSendStatus();
-                
-                newStatus.id = data.get("id").getAsString();
-                
-                newStatus.state = data.get("state").getAsString();
-                
-                newStatus.totalRecipientsCount = data.get("total_recipients_count").getAsInt();
-                
-                newStatus.suppressedRecipientsCount = data.get("suppressed_recipients_count").getAsInt();
-                
-                newStatus.validationErrorsCount = data.get("validation_errors_count").getAsInt();
-                
-                ArrayList<String> messagesIdsList = new ArrayList<String>();
-                
-                if (!data.get("messages_id").isJsonNull()) {
-                	
-	                JsonArray messagesIds = data.get("messages_id").getAsJsonArray();
-	             	                
-	                for (JsonElement messageId : messagesIds) {
-	                    
-	                    messagesIdsList.add(messageId.getAsString());
-	                }
-                }
-                
-                newStatus.messagesId = messagesIdsList.toArray(new String[0]);
-                
-                newStatus.createdAtString = data.get("created_at").getAsString();
-                
-                newStatus.updatedAtString = data.get("updated_at").getAsString();
-                
-                JsonElement validationErrorsEl = data.get("validation_errors");
-                
-                if (validationErrorsEl != null) {
-                
-                    newStatus.validationErrors = validationErrorsEl.getAsJsonObject();
-                }
-                
-                JsonElement suppressedRecipientsEl = data.get("suppressed_recipients");
-                
-                if (suppressedRecipientsEl != null && !suppressedRecipientsEl.isJsonNull()) {
-                    
-                    newStatus.suppressedRecipients = suppressedRecipientsEl.getAsJsonObject();
-                }
-                
-                return newStatus;
-            }
-        };
-        
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        
-        gsonBuilder.registerTypeAdapter(BulkSendStatus.class, deserializer);
-        
-        Gson customGson = gsonBuilder.create();  
-        
-        BulkSendStatus status = customGson.fromJson(response.responseString, BulkSendStatus.class);
-        
-        status.parseDates();
+        if (response.status != null) {
 
-        return status;
+            response.status.parseDates();
+        }
+
+        return response.status;
 
     }
 
@@ -522,7 +449,7 @@ public class Emails {
 
         ArrayList<String> params = new ArrayList<String>();
 
-        params.add("domain_id=".concat(urlEncode(domainIdFilter)));
+        params.add("domain_id=".concat(UrlEncoder.encode(domainIdFilter)));
 
         params.add("date_from=".concat(String.valueOf(dateFromFilter)));
 
@@ -537,7 +464,7 @@ public class Emails {
 
             for (String status : statusFilter) {
 
-                params.add("status[]=".concat(urlEncode(status)));
+                params.add("status[]=".concat(UrlEncoder.encode(status)));
             }
         }
 
@@ -545,33 +472,33 @@ public class Emails {
 
             for (String interaction : interactionFilter) {
 
-                params.add("interaction[]=".concat(urlEncode(interaction)));
+                params.add("interaction[]=".concat(UrlEncoder.encode(interaction)));
             }
         }
 
         if (recipientEmailFilter != null) {
 
-            params.add("recipient_email=".concat(urlEncode(recipientEmailFilter)));
+            params.add("recipient_email=".concat(UrlEncoder.encode(recipientEmailFilter)));
         }
 
         if (messageIdFilter != null) {
 
-            params.add("message_id=".concat(urlEncode(messageIdFilter)));
+            params.add("message_id=".concat(UrlEncoder.encode(messageIdFilter)));
         }
 
         if (templateIdFilter != null) {
 
-            params.add("template_id=".concat(urlEncode(templateIdFilter)));
+            params.add("template_id=".concat(UrlEncoder.encode(templateIdFilter)));
         }
 
         if (subjectFilter != null) {
 
-            params.add("subject=".concat(urlEncode(subjectFilter)));
+            params.add("subject=".concat(UrlEncoder.encode(subjectFilter)));
         }
 
         if (tagFilter != null) {
 
-            params.add("tag=".concat(urlEncode(tagFilter)));
+            params.add("tag=".concat(UrlEncoder.encode(tagFilter)));
         }
 
         String requestParams = "";
@@ -589,16 +516,5 @@ public class Emails {
         }
 
         return requestParams;
-    }
-
-
-    /**
-     * Url encodes a query parameter value
-     * @param value
-     * @return
-     */
-    private String urlEncode(String value) {
-
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

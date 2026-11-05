@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -133,5 +134,24 @@ public class SmsRecipientsTest {
         } catch (MailerSendException ex) {
         	fail();
         }
+    }
+
+
+    /**
+     * Tests that the opt out date and source of an SMS recipient are read
+     */
+    @Test
+    public void testSmsRecipientReadsOptOut() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"data\":{\"id\":\"627e7503d30078fb2208cc83\",\"number\":\"+1234567890\",\"status\":\"opt_out\","
+            + "\"opted_out_at\":\"2022-01-02T12:00:00.000000Z\",\"opt_out_source\":\"api\",\"created_at\":\"2022-05-13T15:10:59.444000Z\"}}");
+
+        SmsRecipient recipient = ms.sms().recipients().getRecipient("627e7503d30078fb2208cc83");
+
+        assertEquals("api", recipient.optOutSource);
+        assertEquals(Instant.parse("2022-01-02T12:00:00Z"), recipient.optedOutAt.toInstant());
     }
 }

@@ -7,6 +7,8 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -75,6 +77,8 @@ public class BlocklistMonitoringTest {
             BlocklistMonitor monitor = ms.blocklistMonitoring().getMonitor(TestHelper.blocklistMonitorId);
 
             assertNotNull(monitor);
+            assertEquals(1, monitor.blocklistedCount);
+            assertTrue(monitor.blocklisted);
             System.out.println(monitor.id);
             System.out.println(monitor.address);
 
@@ -99,6 +103,8 @@ public class BlocklistMonitoringTest {
                     .createMonitor(TestHelper.blocklistMonitorAddress);
 
             assertNotNull(monitor);
+            assertEquals(0, monitor.blocklistedCount);
+            assertFalse(monitor.blocklisted);
             System.out.println(monitor.id);
             System.out.println(monitor.address);
 
@@ -153,5 +159,25 @@ public class BlocklistMonitoringTest {
             e.printStackTrace();
             fail();
         }
+    }
+
+    /**
+     * Tests that the list filters are url encoded
+     */
+    @Test
+    public void getMonitorsEncodesFiltersTest() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":[]}");
+
+        ms.blocklistMonitoring()
+            .query("a&b c")
+            .sortBy("name")
+            .order("desc")
+            .getMonitors();
+
+        assertEquals("https://api.mailersend.com/v1/blocklist-monitoring?page=1&limit=25&query=a%26b+c&sort_by=name&order=desc", client.lastUrl());
     }
 }

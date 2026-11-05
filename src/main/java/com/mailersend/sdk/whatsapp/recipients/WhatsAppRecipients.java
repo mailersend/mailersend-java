@@ -7,13 +7,12 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp.recipients;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * <p>WhatsAppRecipients class.</p>
@@ -133,11 +132,11 @@ public class WhatsAppRecipients {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (statusFilter != null) {
-            params.add("status=".concat(urlEncode(statusFilter)));
+            params.add("status=".concat(UrlEncoder.encode(statusFilter)));
         }
 
         if (phoneNumberFilter != null) {
-            params.add("phone_number=".concat(urlEncode(phoneNumberFilter)));
+            params.add("phone_number=".concat(UrlEncoder.encode(phoneNumberFilter)));
         }
 
         String requestParams = "";
@@ -154,10 +153,5 @@ public class WhatsAppRecipients {
         }
 
         return requestParams;
-    }
-
-    private String urlEncode(String value) {
-
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

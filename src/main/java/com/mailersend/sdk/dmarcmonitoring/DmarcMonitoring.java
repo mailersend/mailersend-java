@@ -14,6 +14,7 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * Provides access to the DMARC Monitoring API endpoints.
@@ -336,15 +337,15 @@ public class DmarcMonitoring {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (queryFilter != null) {
-            params.add("query=".concat(queryFilter));
+            params.add("query=".concat(UrlEncoder.encode(queryFilter)));
         }
 
         if (sortByFilter != null) {
-            params.add("sort_by=".concat(sortByFilter));
+            params.add("sort_by=".concat(UrlEncoder.encode(sortByFilter)));
         }
 
         if (orderFilter != null) {
-            params.add("order=".concat(orderFilter));
+            params.add("order=".concat(UrlEncoder.encode(orderFilter)));
         }
 
         return buildQueryString(params);
@@ -361,23 +362,23 @@ public class DmarcMonitoring {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (dateFromFilter != null) {
-            params.add("date_from=".concat(dateFromFilter));
+            params.add("date_from=".concat(UrlEncoder.encode(dateFromFilter)));
         }
 
         if (dateToFilter != null) {
-            params.add("date_to=".concat(dateToFilter));
+            params.add("date_to=".concat(UrlEncoder.encode(dateToFilter)));
         }
 
         if (searchFilter != null) {
-            params.add("search=".concat(searchFilter));
+            params.add("search=".concat(UrlEncoder.encode(searchFilter)));
         }
 
         if (categoryFilter != null) {
-            params.add("category=".concat(categoryFilter));
+            params.add("category=".concat(UrlEncoder.encode(categoryFilter)));
         }
 
         if (reportSourceFilter != null) {
-            params.add("report_source=".concat(reportSourceFilter));
+            params.add("report_source=".concat(UrlEncoder.encode(reportSourceFilter)));
         }
 
         return buildQueryString(params);
@@ -390,11 +391,11 @@ public class DmarcMonitoring {
     private String prepareReportSourcesParamsUrl() {
         ArrayList<String> params = new ArrayList<String>();
 
-        params.add("date_from=".concat(dateFromFilter));
-        params.add("date_to=".concat(dateToFilter));
+        params.add("date_from=".concat(UrlEncoder.encode(dateFromFilter)));
+        params.add("date_to=".concat(UrlEncoder.encode(dateToFilter)));
 
         if (statusFilter != null) {
-            params.add("status=".concat(statusFilter));
+            params.add("status=".concat(UrlEncoder.encode(statusFilter)));
         }
 
         return buildQueryString(params);

@@ -14,6 +14,7 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * Provides access to the Sender Identities API endpoints.
@@ -291,15 +292,15 @@ public class SenderIdentities {
         }
 
         if (queryFilter != null && !queryFilter.isBlank()) {
-            params.add("query=".concat(queryFilter));
+            params.add("query=".concat(UrlEncoder.encode(queryFilter)));
         }
 
         if (orderByFilter != null && !orderByFilter.isBlank()) {
-            params.add("order_by=".concat(orderByFilter));
+            params.add("order_by=".concat(UrlEncoder.encode(orderByFilter)));
         }
 
         if (orderFilter != null && !orderFilter.isBlank()) {
-            params.add("order=".concat(orderFilter));
+            params.add("order=".concat(UrlEncoder.encode(orderFilter)));
         }
 
         String requestParams = "";

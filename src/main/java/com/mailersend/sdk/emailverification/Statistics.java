@@ -49,5 +49,8 @@ public class Statistics {
 	
 	@SerializedName("failed")
 	public int failed;
+
+	@SerializedName("not_verified")
+	public int notVerified;
 }
 

@@ -150,6 +150,8 @@ public class Domains {
         
         DomainsList response = api.getRequest(endpoint, DomainsList.class);
         
+        response.postDeserialize();
+        
         return response;
     }
     
@@ -169,6 +171,11 @@ public class Domains {
         api.setToken(apiObjectReference.getToken());
         
         SingleDomainResponse response = api.getRequest(endpoint, SingleDomainResponse.class);
+        
+        if (response.domain != null) {
+            
+            response.domain.postDeserialize();
+        }
         
         return response.domain;
     }
@@ -272,10 +279,10 @@ public class Domains {
         
         if (verifiedOnly == 0) {
             
-            params.add("verified=false");
+            params.add("verified=0");
         } else if (verifiedOnly == 1) {
             
-            params.add("verified=true");
+            params.add("verified=1");
         }
         
         String requestParams = "";

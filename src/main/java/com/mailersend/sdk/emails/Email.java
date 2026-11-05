@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
@@ -49,8 +50,11 @@ public class Email {
     @SerializedName("reply_to")
     public Recipient replyTo;
 
-    @SerializedName("rcpt_to")
-    public ArrayList<Recipient> rcptTo = new ArrayList<Recipient>();
+    /**
+     * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
+     */
+    @Deprecated
+    public transient ArrayList<Recipient> rcptTo = new ArrayList<Recipient>();
 
     @SerializedName("subject")
     public String subject;
@@ -75,8 +79,8 @@ public class Email {
     @SerializedName("personalization")
     public ArrayList<Personalization> personalization = new ArrayList<Personalization>();
     
-    public Date sendAt;
-        
+    public transient Date sendAt;
+
     // keeps the global personalizations
     protected transient HashMap<String, Object> allRecipientsPersonalization = new HashMap<String, Object>();
     
@@ -134,6 +138,7 @@ public class Email {
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addRecipient(Recipient)} instead.
      */
+    @Deprecated
     public void AddRecipient(Recipient recipient) {
 
         addRecipient(recipient);
@@ -157,6 +162,7 @@ public class Email {
      * @param recipients an array of {@link com.mailersend.sdk.Recipient} objects.
      * @deprecated Use {@link #addRecipients(Recipient[])} instead.
      */
+    @Deprecated
     public void AddRecipients(Recipient[] recipients) {
 
         addRecipients(recipients);
@@ -194,6 +200,7 @@ public class Email {
      * @param email a {@link java.lang.String} object.
      * @deprecated Use {@link #addCc(String, String)} instead.
      */
+    @Deprecated
     public void AddCc(String name, String email) {
 
         addCc(name, email);
@@ -206,6 +213,7 @@ public class Email {
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addCc(Recipient)} instead.
      */
+    @Deprecated
     public void AddCc(Recipient recipient) {
 
         addCc(recipient);
@@ -243,6 +251,7 @@ public class Email {
      * @param email a {@link java.lang.String} object.
      * @deprecated Use {@link #addBcc(String, String)} instead.
      */
+    @Deprecated
     public void AddBcc(String name, String email) {
 
         addBcc(name, email);
@@ -255,6 +264,7 @@ public class Email {
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addBcc(Recipient)} instead.
      */
+    @Deprecated
     public void AddBcc(Recipient recipient) {
 
         addBcc(recipient);
@@ -290,6 +300,7 @@ public class Email {
      * @param replyTo a {@link com.mailersend.sdk.Recipient} object.
      * @deprecated Use {@link #addReplyTo(Recipient)} instead.
      */
+    @Deprecated
     public void AddReplyTo(Recipient replyTo) {
 
         addReplyTo(replyTo);
@@ -303,6 +314,7 @@ public class Email {
      * @param email a {@link java.lang.String} object.
      * @deprecated Use {@link #addReplyTo(String, String)} instead.
      */
+    @Deprecated
     public void AddReplyTo(String name, String email) {
 
         addReplyTo(name, email);
@@ -310,12 +322,14 @@ public class Email {
 
 
     /**
-     * Adds an RCPT TO recipient for SMTP relay delivery.
-     * When {@code to} is empty and {@code rcptTo} is provided, addresses are forwarded as BCC.
+     * Adds an RCPT TO recipient
      *
      * @param name a {@link java.lang.String} object.
      * @param email a {@link java.lang.String} object.
+     * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
+     * Use {@link #addRecipient(String, String)}, {@link #addCc(String, String)} or {@link #addBcc(String, String)} instead.
      */
+    @Deprecated
     public void addRcptTo(String name, String email) {
 
         Recipient recipient = new Recipient(name, email);
@@ -324,11 +338,13 @@ public class Email {
 
 
     /**
-     * Adds an RCPT TO recipient for SMTP relay delivery.
-     * When {@code to} is empty and {@code rcptTo} is provided, addresses are forwarded as BCC.
+     * Adds an RCPT TO recipient
      *
      * @param recipient a {@link com.mailersend.sdk.Recipient} object.
+     * @deprecated The email API does not accept RCPT TO recipients, so they are not sent.
+     * Use {@link #addRecipient(Recipient)}, {@link #addCc(Recipient)} or {@link #addBcc(Recipient)} instead.
      */
+    @Deprecated
     public void addRcptTo(Recipient recipient) {
 
         this.rcptTo.add(recipient);
@@ -539,6 +555,7 @@ public class Email {
      * @param value a {@link java.lang.String} object.
      * @deprecated Use {@link #addVariable(String, String)} instead.
      */
+    @Deprecated
     public void AddVariable(String name, String value) {
 
         addVariable(name, value);
@@ -562,6 +579,7 @@ public class Email {
      * @param tag a {@link java.lang.String} object.
      * @deprecated Use {@link #addTag(String)} instead.
      */
+    @Deprecated
     public void AddTag(String tag) {
 
         addTag(tag);
@@ -630,26 +648,41 @@ public class Email {
      * @return String
      */
     public String serializeForSending() {
-            
+
+        return SENDING_GSON.toJson(prepareForSending());
+    }
+
+
+    /**
+     * Prepares the email for sending and returns it as a JSON object
+     *
+     * @return a {@link com.google.gson.JsonObject} object.
+     */
+    protected JsonObject prepareForSending() {
+
         preparePersonalizationForAllRecipients();
         prepareSubstitutionsForAllRecipients();
-        
+
         if (sendAt != null) {
         	sendAtStamp = String.valueOf(sendAt.getTime() / 1000);
         }
-        
-        Gson gson = new GsonBuilder()
-                .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
-                .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
-                .registerTypeAdapter(Instant.class, new InstantTypeAdapter().nullSafe())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter().nullSafe())
-                .create();
-        
-        String json = gson.toJson(this);
+
+        JsonObject json = SENDING_GSON.toJsonTree(this).getAsJsonObject();
+
+        // empty lists are left out because the API rejects some of them, e.g. "references": [] on the Sandbox plan
+        json.entrySet().removeIf(field -> field.getValue().isJsonArray() && field.getValue().getAsJsonArray().isEmpty());
 
         return json;
     }
+
+
+    private static final Gson SENDING_GSON = new GsonBuilder()
+            .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
+            .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
+            .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter().nullSafe())
+            .registerTypeAdapter(Instant.class, new InstantTypeAdapter().nullSafe())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter().nullSafe())
+            .create();
 
     /**
     * Simple adapter for {@link LocalDate} type in Gson serialization.
@@ -657,7 +690,7 @@ public class Email {
     * To use this {@link TypeAdapter}, register it into a {@link Gson} serializer using a
     * {@link GsonBuilder}.
     */
-    class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
+    static class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
 
         @Override
         public void write(JsonWriter out, LocalDate value) throws IOException {
@@ -676,7 +709,7 @@ public class Email {
      * To use this {@link TypeAdapter}, register it into a {@link Gson} serializer using a
      * {@link GsonBuilder}.
      */
-    class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
+    static class LocalDateTimeTypeAdapter extends TypeAdapter<LocalDateTime> {
 
         @Override
         public void write(JsonWriter out, LocalDateTime value) throws IOException {
@@ -695,7 +728,7 @@ public class Email {
     * To use this {@link Instant}, register it into a {@link Gson} serializer using a
     * {@link GsonBuilder}.
     */
-    class InstantTypeAdapter extends TypeAdapter<Instant> {
+    static class InstantTypeAdapter extends TypeAdapter<Instant> {
 
         @Override
         public void write(JsonWriter out, Instant value) throws IOException {

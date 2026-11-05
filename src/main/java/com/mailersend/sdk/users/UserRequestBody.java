@@ -23,13 +23,13 @@ class UserRequestBody {
     public String role = null;
 
     @SerializedName("permissions")
-    public ArrayList<String> permissions = new ArrayList<String>();
+    public ArrayList<String> permissions = null;
 
     @SerializedName("templates")
-    public ArrayList<String> templates = new ArrayList<String>();
+    public ArrayList<String> templates = null;
 
     @SerializedName("domains")
-    public ArrayList<String> domains = new ArrayList<String>();
+    public ArrayList<String> domains = null;
 
     @SerializedName("requires_periodic_password_change")
     public Boolean requiresPeriodicPasswordChange = null;
@@ -42,9 +42,9 @@ class UserRequestBody {
 
         email = null;
         role = null;
-        permissions.clear();
-        templates.clear();
-        domains.clear();
+        permissions = null;
+        templates = null;
+        domains = null;
         requiresPeriodicPasswordChange = null;
     }
 }

@@ -100,6 +100,8 @@ public class InboundRoutes {
         
         InboundRoutesList response = api.getRequest(endpoint, InboundRoutesList.class);
         
+        response.postDeserialize();
+        
         return response;
     }
     
@@ -117,6 +119,11 @@ public class InboundRoutes {
         api.setToken(apiObjectReference.getToken());
         
         SingleInboundRouteResponse response = api.getRequest(endpoint, SingleInboundRouteResponse.class);
+        
+        if (response.route != null) {
+
+            response.route.postDeserialize();
+        }
         
         return response.route;
     }

@@ -7,6 +7,7 @@
  **************************************************/
 package com.mailersend.sdk.tests;
 
+import static com.mailersend.sdk.tests.CapturingHttpClient.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -32,6 +33,17 @@ import java.util.stream.Stream;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WebhooksTest {
+
+    private static final String WEBHOOKS_URL = "https://api.mailersend.com/v1/webhooks";
+
+    private static final String WEBHOOK_ID = "pzkmgq7ow2l059vx";
+
+    /** The create and update response of the docs, without the domain */
+    private static final String WEBHOOK_RESPONSE = "{\"data\":{\"id\":\"pzkmgq7ow2l059vx\","
+            + "\"url\":\"https://www.example.com/webhook\",\"events\":[\"activity.sent\",\"activity.delivered\"],"
+            + "\"name\":\"Webhook\",\"version\":2,\"enabled\":true,\"editable\":true,"
+            + "\"secret\":\"NSKNbRpNZoItpYpMiDcqfO7A1kzi1Ikk\","
+            + "\"created_at\":\"2026-01-15T10:20:30.000000Z\",\"updated_at\":\"2026-01-15T10:20:30.000000Z\"}}";
 
 	@BeforeEach
 	public void setupEach(TestInfo info) throws IOException
@@ -357,5 +369,86 @@ public class WebhooksTest {
         });
 
         assertEquals("Webhook version must be 1 or 2", e.getMessage());
+    }
+
+
+    /**
+     * Tests that createWebhook() accepts the events that the docs list and older SDK versions rejected
+     */
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("addedEvents")
+    public void testCreateWebhookAcceptsTheEvent(String event) throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(201, WEBHOOK_RESPONSE);
+
+        ms.webhooks().builder()
+            .url("https://www.example.com/webhook")
+            .name("Webhook")
+            .addEvent(event)
+            .createWebhook(TestHelper.domainId);
+
+        assertEquals(json("['" + event + "']"), client.lastBody().getAsJsonObject().get("events"));
+    }
+
+
+    static Stream<String> addedEvents() {
+        return Stream.of(
+            WebhookEvents.ACTIVITY_SUPPRESSED,
+            WebhookEvents.INBOUND_MESSAGE_REJECTED,
+            WebhookEvents.EMAIL_LIST_CREATED
+        );
+    }
+
+
+    /**
+     * Tests that updateWebhook() puts the documented fields to the webhook's endpoint, without
+     * the editable flag and the domain id that the update endpoint does not accept
+     */
+    @Test
+    public void testUpdateWebhookSendsTheDocumentedFields() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, WEBHOOK_RESPONSE);
+
+        ms.webhooks().builder()
+            .url("https://www.example.com/webhook")
+            .name("Webhook")
+            .addEvent(WebhookEvents.ACTIVITY_SENT)
+            .enabled(false)
+            .editable(true)
+            .version(2)
+            .updateWebhook(WEBHOOK_ID);
+
+        assertEquals("PUT", client.lastRequest().method());
+        assertEquals(WEBHOOKS_URL + "/" + WEBHOOK_ID, client.lastUrl());
+        assertEquals(json("{"
+                + "'url':'https://www.example.com/webhook',"
+                + "'name':'Webhook',"
+                + "'events':['activity.sent'],"
+                + "'enabled':false,"
+                + "'version':2"
+                + "}"), client.lastBody());
+    }
+
+
+    /**
+     * Tests that updateWebhook() throws when the webhook id is empty
+     */
+    @Test
+    public void testUpdateWebhookWithEmptyId() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.webhooks().builder().updateWebhook("");
+        });
+
+        assertEquals("Webhook ID cannot be empty", e.getMessage());
     }
 }

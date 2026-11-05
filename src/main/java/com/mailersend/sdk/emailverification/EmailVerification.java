@@ -298,7 +298,11 @@ public class EmailVerification {
 
         String json = gson.toJson(new EmailBody(email));
 
-        return api.postRequest(endpoint, json, AsyncEmailVerificationResponse.class);
+        AsyncEmailVerificationResponse response = api.postRequest(endpoint, json, AsyncEmailVerificationResponse.class);
+
+        response.postDeserialize();
+
+        return response;
     }
 
     /**
@@ -319,7 +323,11 @@ public class EmailVerification {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        return api.getRequest(endpoint, AsyncEmailVerificationResponse.class);
+        AsyncEmailVerificationResponse response = api.getRequest(endpoint, AsyncEmailVerificationResponse.class);
+
+        response.postDeserialize();
+
+        return response;
     }
 
     /**
@@ -331,7 +339,7 @@ public class EmailVerification {
         ArrayList<String> params = new ArrayList<String>();
 
         if (detailedFilter != null) {
-            params.add("detailed=".concat(detailedFilter ? "true" : "false"));
+            params.add("detailed=".concat(detailedFilter ? "1" : "0"));
         }
 
         if (detailedFilter != null && detailedFilter) {

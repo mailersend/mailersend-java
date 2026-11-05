@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
@@ -23,14 +24,19 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.google.gson.JsonArray;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.Recipient;
+import com.mailersend.sdk.emails.BulkSendStatus;
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.vcr.VcrRecorder;
 
+import static com.mailersend.sdk.tests.CapturingHttpClient.json;
 import static com.mailersend.sdk.util.EventTypes.QUEUED;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -378,4 +384,94 @@ public class EmailSendTest {
 
         assertEquals(202, ms.emails().send(email).responseStatusCode);
     }
+
+
+    /**
+     * Test bulk send status keeps each message id at the position of its email in the request
+     * when the API keys the ids because some emails were not sent
+     */
+    @Test
+    public void testBulkSendStatusKeepsThePositionOfKeyedMessageIds() throws MailerSendException {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        BulkSendStatus status = ms.emails().bulkSendStatus("keyed-bulk-send-id");
+
+        assertArrayEquals(new String[] { null, "61487a14608b1d0b4d506633", null, "61487a14608b1d0b4d506644" }, status.messagesId);
+    }
+
+
+    /**
+     * Test bulk send status of an unknown bulk send fails with the API's 404
+     */
+    @Test
+    public void testBulkSendStatusWithAnUnknownIdFailsWith404() {
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        MailerSendException e = assertThrows(MailerSendException.class, () -> {
+            ms.emails().bulkSendStatus("unknown-bulk-send-id");
+        });
+        assertEquals(404, e.code);
+        assertEquals("Resource not found.", e.getMessage());
+    }
+
+
+    /**
+     * Tests that send() leaves the lists that were never filled out of the request. The API
+     * rejects an empty references list on the Sandbox plan
+     */
+    @Test
+    public void testSendLeavesOutEmptyLists() throws MailerSendException {
+
+        Email email = TestHelper.createBasicEmail(true);
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(202, "", Map.of());
+
+        ms.emails().send(email);
+
+        assertEquals(json("{"
+                + "'from':{'name':'From Name','email':'sender@test-sdk.com'},"
+                + "'to':[{'name':'To Name','email':'java@mailersend.com'}],"
+                + "'subject':'Subject',"
+                + "'text':'This is the text content',"
+                + "'html':'<p>This is the HTML <strong>content</strong></p>'"
+                + "}"), client.lastBody());
+    }
+
+
+    /**
+     * Tests that bulkSend() sends the send_at of each email as a unix timestamp
+     */
+    @Test
+    public void testBulkSendSendsTheSendAtOfEachEmail() throws MailerSendException {
+
+        Email email = TestHelper.createBasicEmail(true);
+        email.setSendAt(new Date(SEND_AT * 1000));
+
+        Email email2 = TestHelper.createBasicEmail(true);
+        email2.setSendAt(new Date((SEND_AT + 3600) * 1000));
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(202,
+                "{\"message\":\"The bulk email is being processed.\",\"bulk_email_id\":\"614470d1588b866d0454f3e2\"}",
+                Map.of());
+
+        ms.emails().bulkSend(new Email[] { email, email2 });
+
+        JsonArray body = client.lastBody().getAsJsonArray();
+
+        assertEquals(String.valueOf(SEND_AT), body.get(0).getAsJsonObject().get("send_at").getAsString());
+        assertEquals(String.valueOf(SEND_AT + 3600), body.get(1).getAsJsonObject().get("send_at").getAsString());
+        assertFalse(body.get(0).getAsJsonObject().has("sendAt"));
+    }
+
+
+    /** 2025-08-27 01:00:00 UTC */
+    private static final long SEND_AT = 1756256400L;
 }

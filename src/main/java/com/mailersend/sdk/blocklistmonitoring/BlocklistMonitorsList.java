@@ -17,4 +17,15 @@ public class BlocklistMonitorsList extends PaginatedResponse {
 
     @SerializedName("data")
     public BlocklistMonitor[] monitors;
+
+    /**
+     * Called after deserialization to post-process each monitor.
+     */
+    public void postDeserialize() {
+        if (monitors != null) {
+            for (BlocklistMonitor monitor : monitors) {
+                monitor.postDeserialize();
+            }
+        }
+    }
 }

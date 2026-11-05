@@ -184,7 +184,7 @@ public class SmsInboundRoutes {
         }
         
         if (enabledFilter != null) {
-        	params.add("enabled=".concat(String.valueOf(enabledFilter)));
+        	params.add("enabled=".concat(enabledFilter ? "1" : "0"));
         }
   
         String requestParams = "";

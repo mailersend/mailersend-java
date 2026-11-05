@@ -7,14 +7,13 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp.activities;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * <p>WhatsAppActivities class.</p>
@@ -194,19 +193,19 @@ public class WhatsAppActivities {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (whatsappItemIdFilter != null) {
-            params.add("whatsapp_item_id=".concat(urlEncode(whatsappItemIdFilter)));
+            params.add("whatsapp_item_id=".concat(UrlEncoder.encode(whatsappItemIdFilter)));
         }
 
         if (whatsappMessageIdFilter != null) {
-            params.add("whatsapp_message_id=".concat(urlEncode(whatsappMessageIdFilter)));
+            params.add("whatsapp_message_id=".concat(UrlEncoder.encode(whatsappMessageIdFilter)));
         }
 
         if (recipientFilter != null) {
-            params.add("recipient=".concat(urlEncode(recipientFilter)));
+            params.add("recipient=".concat(UrlEncoder.encode(recipientFilter)));
         }
 
         for (String t : typeFilter) {
-            params.add("type[]=".concat(urlEncode(t)));
+            params.add("type[]=".concat(UrlEncoder.encode(t)));
         }
 
         if (dateFromFilter != null) {
@@ -231,10 +230,5 @@ public class WhatsAppActivities {
         }
 
         return requestParams;
-    }
-
-    private String urlEncode(String value) {
-
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

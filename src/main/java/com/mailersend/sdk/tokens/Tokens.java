@@ -9,10 +9,13 @@ package com.mailersend.sdk.tokens;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
 
 /**
  * <p>Tokens class.</p>
@@ -176,17 +179,16 @@ public class Tokens {
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
 
-        ArrayList<String> fields = new ArrayList<String>();
+        TokenUpdateRequestBody body = new TokenUpdateRequestBody();
+        body.name = nameBlank ? null : name;
+        body.status = statusBlank ? null : status;
 
-        if (name != null && !name.isBlank()) {
-            fields.add("\"name\":\"" + name + "\"");
-        }
+        Gson gson = new GsonBuilder()
+                .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
+                .addDeserializationExclusionStrategy(new JsonSerializationDeserializationStrategy(true))
+                .create();
 
-        if (status != null && !status.isBlank()) {
-            fields.add("\"status\":\"" + status + "\"");
-        }
-
-        String json = "{" + String.join(",", fields) + "}";
+        String json = gson.toJson(body);
 
         TokenResponse response = api.putRequest(endpoint, json, TokenResponse.class);
 

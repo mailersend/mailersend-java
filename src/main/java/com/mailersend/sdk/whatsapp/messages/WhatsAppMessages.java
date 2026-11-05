@@ -7,14 +7,13 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp.messages;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * <p>WhatsAppMessages class.</p>
@@ -192,15 +191,15 @@ public class WhatsAppMessages {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (whatsappAccountIdFilter != null) {
-            params.add("whatsapp_account_id=".concat(urlEncode(whatsappAccountIdFilter)));
+            params.add("whatsapp_account_id=".concat(UrlEncoder.encode(whatsappAccountIdFilter)));
         }
 
         if (fromFilter != null) {
-            params.add("from=".concat(urlEncode(fromFilter)));
+            params.add("from=".concat(UrlEncoder.encode(fromFilter)));
         }
 
         if (templateIdFilter != null) {
-            params.add("template_id=".concat(urlEncode(templateIdFilter)));
+            params.add("template_id=".concat(UrlEncoder.encode(templateIdFilter)));
         }
 
         if (dateFromFilter != null) {
@@ -225,10 +224,5 @@ public class WhatsAppMessages {
         }
 
         return requestParams;
-    }
-
-    private String urlEncode(String value) {
-
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

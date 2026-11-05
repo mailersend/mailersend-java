@@ -351,4 +351,37 @@ public class SenderIdentitiesTest {
             fail();
         }
     }
+
+
+    /**
+     * Test that every list filter is sent and query values are URL-encoded - behavior:
+     * GET /identities?page=2&limit=10&domain_id=...&query=test%2B1%40example.com&order_by=email&order=desc
+     */
+    @Test
+    public void testGetIdentitiesWithFilters() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            SenderIdentitiesList list = ms.senderIdentities()
+                .page(2)
+                .limit(10)
+                .domainId(TestHelper.domainId)
+                .query("test+1@example.com")
+                .orderBy("email")
+                .order("desc")
+                .getIdentities();
+
+            assertEquals(200, list.responseStatusCode);
+            assertEquals(2, list.meta.currentPage);
+            assertEquals("test+1@example.com", list.identities[0].email);
+
+        } catch (MailerSendException e) {
+
+            e.printStackTrace();
+            fail();
+        }
+    }
 }

@@ -9,6 +9,7 @@ package com.mailersend.sdk.tests;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.mailersend.sdk.*;
@@ -274,10 +275,10 @@ public class EmailConfigurationTest {
 
 
     /**
-     * Tests that rcptTo field serializes correctly as "rcpt_to" in JSON
+     * Tests that the RCPT TO recipients are not serialized, the email API does not accept them
      */
     @Test
-    public void testRcptToSerialization() {
+    public void testRcptToIsNotSerialized() {
 
         Email email = TestHelper.createBasicEmail(true);
 
@@ -285,8 +286,8 @@ public class EmailConfigurationTest {
 
         String json = email.serializeForSending();
 
-        assertTrue(json.contains("\"rcpt_to\""));
-        assertTrue(json.contains("rcpt@client.com"));
+        assertFalse(json.contains("\"rcpt_to\""));
+        assertFalse(json.contains("rcpt@client.com"));
     }
 
 

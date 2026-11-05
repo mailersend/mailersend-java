@@ -66,6 +66,9 @@ public class AnalyticsByDate {
     @SerializedName("survey_submitted")
     public int surveySubmitted;
 
+    @SerializedName("suppressed")
+    public int suppressed;
+
 
     /**
      * <p>postDeserialize.</p>

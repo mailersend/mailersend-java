@@ -7,13 +7,12 @@
  **************************************************/
 package com.mailersend.sdk.whatsapp.templates;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * <p>WhatsAppTemplates class.</p>
@@ -158,19 +157,19 @@ public class WhatsAppTemplates {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (whatsappAccountIdFilter != null) {
-            params.add("whatsapp_account_id=".concat(urlEncode(whatsappAccountIdFilter)));
+            params.add("whatsapp_account_id=".concat(UrlEncoder.encode(whatsappAccountIdFilter)));
         }
 
         if (statusFilter != null) {
-            params.add("status=".concat(urlEncode(statusFilter)));
+            params.add("status=".concat(UrlEncoder.encode(statusFilter)));
         }
 
         if (categoryFilter != null) {
-            params.add("category=".concat(urlEncode(categoryFilter)));
+            params.add("category=".concat(UrlEncoder.encode(categoryFilter)));
         }
 
         if (languageFilter != null) {
-            params.add("language=".concat(urlEncode(languageFilter)));
+            params.add("language=".concat(UrlEncoder.encode(languageFilter)));
         }
 
         String requestParams = "";
@@ -187,10 +186,5 @@ public class WhatsAppTemplates {
         }
 
         return requestParams;
-    }
-
-    private String urlEncode(String value) {
-
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

@@ -8,10 +8,13 @@
 package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -570,5 +573,48 @@ public class RecpientsSuppressionListsTest {
             e.printStackTrace();
             fail();
         }
+    }
+
+
+    /**
+     * Tests that the on-hold list items carry the on hold until date and the email address
+     */
+    @Test
+    public void testOnHoldListReadsOnHoldFields() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"data\":[{\"id\":\"64c760a33e2db0f6340f4710\",\"created_at\":\"2023-07-15T19:22:37.579000Z\","
+            + "\"on_hold_until\":\"2023-07-18T19:22:37.579000Z\",\"email\":\"shanna.fadel@example.net\","
+            + "\"recipient\":{\"id\":\"64c760a33e2db0f6340f470f\",\"email\":\"shanna.fadel@example.net\",\"created_at\":\"2023-07-15T19:22:37.579000Z\","
+            + "\"updated_at\":\"2023-07-15T19:22:37.579000Z\",\"deleted_at\":\"\"}}],\"links\":{},\"meta\":{\"current_page\":1}}");
+
+        SuppressionList onHoldList = ms.recipients().suppressions().getOnHoldList();
+
+        SuppressionItem item = onHoldList.items[0];
+
+        assertEquals("2023-07-18T19:22:37.579000Z", item.onHoldUntil);
+        assertEquals("shanna.fadel@example.net", item.email);
+        assertEquals(Date.from(Instant.parse("2023-07-15T19:22:37.579Z")), item.recipient.createdAt);
+        assertNull(item.readableReason);
+    }
+
+
+    /**
+     * Tests that the dates of the blocklist items are parsed
+     */
+    @Test
+    public void testBlocklistDatesAreParsed() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"data\":[{\"id\":\"62ff8e0c7fb2fa3f0b0d1f07\",\"type\":\"pattern\",\"pattern\":\".*@example.com\","
+            + "\"created_at\":\"2022-08-19T13:23:19.349000Z\",\"updated_at\":\"2022-08-19T13:23:19.349000Z\"}],\"links\":{},\"meta\":{\"current_page\":1}}");
+
+        BlocklistListResponse blocklist = ms.recipients().suppressions().getBlocklist();
+
+        assertEquals(Date.from(Instant.parse("2022-08-19T13:23:19.349Z")), blocklist.items[0].createdAt);
     }
 }

@@ -17,14 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandler;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,9 +34,6 @@ import com.mailersend.sdk.emails.EmailStatus;
 import com.mailersend.sdk.emails.Emails;
 import com.mailersend.sdk.emails.EmailsList;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailersend.sdk.util.MailerSendHttpClientFactory;
-import com.mailersend.sdk.vcr.HttpClientVcr;
-import com.mailersend.sdk.vcr.HttpClientVcrResponse;
 import com.mailersend.sdk.vcr.VcrRecorder;
 
 /**
@@ -70,6 +60,8 @@ public class EmailsTest {
     private static final String SUPPRESSED_EMAIL_ID = "6a8fa9b1902fab56e0ce50ee";
 
     private static final String BARE_EMAIL_ID = "6a8fa9b1902fab56e0ce50cc";
+
+    private static final String EMPTY_LIST_RESPONSE = "{\"data\":[],\"links\":{},\"meta\":{\"current_page\":1}}";
 
     /** 2026-08-27 03:06:25 UTC, the created_at and updated_at of the emails in the fixtures */
     private static final long CREATED_AT = 1787799985000L;
@@ -104,7 +96,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -115,10 +107,10 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        assertEquals(1, client.requestedUris.size());
+        assertEquals(1, client.requests().size());
 
         assertEquals(EMAILS_URL + REQUIRED_QUERY + "&limit=50&page=2",
-                client.lastRequestedUri().toString());
+                client.lastRequest().uri().toString());
     }
 
 
@@ -132,7 +124,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -146,7 +138,7 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        String query = client.lastRequestedUri().getQuery();
+        String query = client.lastRequest().uri().getQuery();
 
         assertEquals("domain_id=" + TestHelper.domainId
                 + "&date_from=" + DATE_FROM
@@ -179,7 +171,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -195,7 +187,7 @@ public class EmailsTest {
 
         assertEquals(EMAILS_URL + REQUIRED_QUERY
                 + "&status[]=queued&interaction[]=no_interaction",
-                client.lastRequestedUri().toString());
+                client.lastRequest().uri().toString());
     }
 
 
@@ -208,7 +200,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -226,7 +218,7 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        String uri = client.lastRequestedUri().toString();
+        String uri = client.lastRequest().uri().toString();
 
         assertEquals(EMAILS_URL + REQUIRED_QUERY
                 + "&limit=100"
@@ -247,7 +239,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -258,7 +250,7 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        String uri = client.lastRequestedUri().toString();
+        String uri = client.lastRequest().uri().toString();
 
         assertEquals(EMAILS_URL + REQUIRED_QUERY, uri);
 
@@ -283,7 +275,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -294,7 +286,7 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        assertEquals(EMAILS_URL + REQUIRED_QUERY, client.lastRequestedUri().toString());
+        assertEquals(EMAILS_URL + REQUIRED_QUERY, client.lastRequest().uri().toString());
     }
 
 
@@ -308,7 +300,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -324,7 +316,7 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        assertEquals(EMAILS_URL + REQUIRED_QUERY, client.lastRequestedUri().toString());
+        assertEquals(EMAILS_URL + REQUIRED_QUERY, client.lastRequest().uri().toString());
     }
 
 
@@ -340,7 +332,7 @@ public class EmailsTest {
         // ms.emails() hands out the same object every time, which is what makes the filters persist
         assertSame(ms.emails(), ms.emails());
 
-        RequestCapturingClient client = captureRequests();
+        CapturingHttpClient client = CapturingHttpClient.install(200, EMPTY_LIST_RESPONSE);
 
         try {
 
@@ -354,12 +346,12 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        assertEquals(2, client.requestedUris.size());
+        assertEquals(2, client.requests().size());
 
         assertEquals(EMAILS_URL + REQUIRED_QUERY + "&tag=newsletter",
-                client.requestedUris.get(0).toString());
+                client.requests().get(0).uri().toString());
 
-        assertEquals(client.requestedUris.get(0).toString(), client.requestedUris.get(1).toString());
+        assertEquals(client.requests().get(0).uri().toString(), client.requests().get(1).uri().toString());
 
         // a new MailerSend object starts with no filters at all
         MailerSend other = new MailerSend();
@@ -450,8 +442,7 @@ public class EmailsTest {
         MailerSend ms = new MailerSend();
         ms.setToken(TestHelper.validToken);
 
-        RequestCapturingClient client = captureRequests();
-        client.responseBody = "{\"data\":{\"id\":\"" + EMAIL_ID + "\"}}";
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"data\":{\"id\":\"" + EMAIL_ID + "\"}}");
 
         try {
 
@@ -463,10 +454,10 @@ public class EmailsTest {
         }
 
         assertEquals("https://api.mailersend.com/v1/email/" + EMAIL_ID,
-                client.lastRequestedUri().toString());
+                client.lastRequest().uri().toString());
 
         // the endpoint is singular, the list endpoint is the plural one
-        assertFalse(client.lastRequestedUri().getPath().startsWith("/v1/emails"));
+        assertFalse(client.lastRequest().uri().getPath().startsWith("/v1/emails"));
     }
 
 
@@ -922,51 +913,5 @@ public class EmailsTest {
                 .domainId(TestHelper.domainId)
                 .dateFrom(DATE_FROM)
                 .dateTo(DATE_TO);
-    }
-
-
-    /**
-     * Replaces the recording client with one that captures the request urls, for the tests that
-     * assert what the SDK requests instead of how it parses the response
-     */
-    private RequestCapturingClient captureRequests() {
-
-        RequestCapturingClient client = new RequestCapturingClient();
-
-        MailerSendHttpClientFactory.getInstance().setClient(client);
-
-        return client;
-    }
-
-
-    /**
-     * Records the urls the SDK requests and answers each of them with a canned response
-     */
-    private static class RequestCapturingClient extends HttpClientVcr {
-
-        private final List<URI> requestedUris = new ArrayList<URI>();
-
-        private String responseBody = "{\"data\":[],\"links\":{},\"meta\":{\"current_page\":1}}";
-
-        private URI lastRequestedUri() {
-
-            assertFalse(requestedUris.isEmpty(), "no request was made");
-
-            return requestedUris.get(requestedUris.size() - 1);
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public <T> HttpResponse<T> send(HttpRequest request, BodyHandler<T> responseBodyHandler) {
-
-            requestedUris.add(request.uri());
-
-            HttpClientVcrResponse response = new HttpClientVcrResponse();
-            response.body = responseBody;
-            response.headers = Map.of("content-type", List.of("application/json"));
-            response.statusCode = 200;
-
-            return (HttpResponse<T>) response;
-        }
     }
 }

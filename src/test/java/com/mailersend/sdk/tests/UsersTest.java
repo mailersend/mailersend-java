@@ -366,4 +366,44 @@ public class UsersTest {
             fail();
         }
     }
+
+
+    /**
+     * Test that an invite without permissions, templates or domains sends none of them and reads the response, which is not wrapped in data
+     */
+    @Test
+    public void testInviteUserSendsNoEmptyLists() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, "{\"id\":\"invite-id-123\",\"email\":\"newuser@example.com\",\"role\":\"Admin\"}");
+
+        Invite invite = ms.users().builder()
+            .email(USER_EMAIL)
+            .role("Admin")
+            .inviteUser();
+
+        assertEquals(CapturingHttpClient.json("{'email':'newuser@example.com','role':'Admin'}"), client.lastBody());
+        assertEquals("invite-id-123", invite.id);
+    }
+
+
+    /**
+     * Test that the update response, which is not wrapped in data, is read
+     */
+    @Test
+    public void testUpdateUserReadsTheResponse() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        CapturingHttpClient.install(200, "{\"id\":\"user-id-123\",\"email\":\"member@example.com\",\"role\":\"Manager\"}");
+
+        User user = ms.users().builder()
+            .role("Manager")
+            .updateUser(USER_ID);
+
+        assertEquals("Manager", user.role);
+    }
 }

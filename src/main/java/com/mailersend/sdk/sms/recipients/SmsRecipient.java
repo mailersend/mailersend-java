@@ -7,13 +7,11 @@
  **************************************************/
 package com.mailersend.sdk.sms.recipients;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.sms.SmsInfo;
+import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>SmsRecipient class.</p>
@@ -32,6 +30,14 @@ public class SmsRecipient {
 	@SerializedName("status")
 	public String status;
 	
+	@SerializedName("opted_out_at")
+	private String optedOutAtStr;
+	
+	public Date optedOutAt;
+	
+	@SerializedName("opt_out_source")
+	public String optOutSource;
+	
 	@SerializedName("created_at")
 	private String createdAtStr;
 	
@@ -44,15 +50,8 @@ public class SmsRecipient {
 	 * <p>postDeserialize.</p>
 	 */
 	public void postDeserialize() {
-		if (createdAtStr != null && !createdAtStr.isBlank()) {
-			
-	        TemporalAccessor ta;
-	        Instant instant;
-	        
-            ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtStr);
-            instant = Instant.from(ta);
-            createdAt = Date.from(instant);
-		}
+		createdAt = DateParser.parse(createdAtStr);
+		optedOutAt = DateParser.parse(optedOutAtStr);
 		
 		if (sms != null) {
 			for (SmsInfo s : sms) {
