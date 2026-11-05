@@ -111,6 +111,7 @@ public class Suppressions {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         BlocklistListResponse response = api.getRequest(endpoint, BlocklistListResponse.class);
         
@@ -170,6 +171,7 @@ public class Suppressions {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SuppressionList response = api.getRequest(endpoint, SuppressionList.class);
         
@@ -326,6 +328,7 @@ public class Suppressions {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
@@ -358,6 +361,7 @@ public class Suppressions {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         String requestBody = "{\"all\":true";
         

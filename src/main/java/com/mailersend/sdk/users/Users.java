@@ -97,6 +97,7 @@ public class Users {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         UsersList response = api.getRequest(endpoint, UsersList.class);
 
@@ -119,6 +120,7 @@ public class Users {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         UserResponse response = api.getRequest(endpoint, UserResponse.class);
 
@@ -141,6 +143,7 @@ public class Users {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 
@@ -164,6 +167,7 @@ public class Users {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         InvitesList response = api.getRequest(endpoint, InvitesList.class);
 
@@ -186,6 +190,7 @@ public class Users {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         InviteResponse response = api.getRequest(endpoint, InviteResponse.class);
 
@@ -208,6 +213,7 @@ public class Users {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         InviteResponse response = api.postRequest(endpoint, "{}", InviteResponse.class);
 
@@ -230,6 +236,7 @@ public class Users {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 

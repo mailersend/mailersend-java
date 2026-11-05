@@ -93,6 +93,7 @@ public class SmsRecipients {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SmsRecipientList response = api.getRequest(endpoint, SmsRecipientList.class);
         response.postDeserialize();
@@ -112,6 +113,7 @@ public class SmsRecipients {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleSmsRecipientResponse response = api.getRequest(endpoint, SingleSmsRecipientResponse.class);
         
@@ -133,6 +135,7 @@ public class SmsRecipients {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleSmsRecipientResponse response = api.putRequest(endpoint, null, SingleSmsRecipientResponse.class);
         

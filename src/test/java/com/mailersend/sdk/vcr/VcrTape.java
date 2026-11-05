@@ -133,7 +133,8 @@ public class VcrTape {
 	private String getRequestHash(HttpRequest request)
 	{
 		
-		String url = request.uri().toString();
+		// fixtures were recorded on v1, which returns the same as the dated versions
+		String url = request.uri().toString().replaceFirst("^(https?://[^/]+)/\\d{4}-\\d{2}/", "$1/v1/");
 		String method = request.method();
 		
 		Optional<String> body = request.bodyPublisher().map(p -> {

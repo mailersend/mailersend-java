@@ -167,6 +167,7 @@ public class EmailVerification {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         EmailVerificationLists lists = api.getRequest(endpoint, EmailVerificationLists.class);
         
@@ -189,6 +190,7 @@ public class EmailVerification {
 
     	MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleEmailVerificationListResponse response = api.getRequest(endpoint, SingleEmailVerificationListResponse.class);
 
@@ -214,6 +216,7 @@ public class EmailVerification {
     	
     	MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleEmailVerificationListResponse response = api.getRequest(endpoint, SingleEmailVerificationListResponse.class);
         
@@ -234,6 +237,7 @@ public class EmailVerification {
 
     	MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         ListVerificationResults response = api.getRequest(endpoint, ListVerificationResults.class);
 
@@ -262,6 +266,7 @@ public class EmailVerification {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
@@ -290,6 +295,7 @@ public class EmailVerification {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         Gson gson = new GsonBuilder()
                 .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
@@ -318,6 +324,7 @@ public class EmailVerification {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         return api.getRequest(endpoint, AsyncEmailVerificationResponse.class);
     }

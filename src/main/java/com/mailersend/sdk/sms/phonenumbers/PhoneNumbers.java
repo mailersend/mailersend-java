@@ -82,6 +82,7 @@ public class PhoneNumbers {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         PhoneNumberList response = api.getRequest(endpoint, PhoneNumberList.class);
         
@@ -102,6 +103,7 @@ public class PhoneNumbers {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SinglePhoneNumberResponse response = api.getRequest(endpoint, SinglePhoneNumberResponse.class);
         
@@ -124,6 +126,7 @@ public class PhoneNumbers {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SinglePhoneNumberResponse response = api.putRequest(endpoint, null, SinglePhoneNumberResponse.class);
         
@@ -145,6 +148,7 @@ public class PhoneNumbers {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         

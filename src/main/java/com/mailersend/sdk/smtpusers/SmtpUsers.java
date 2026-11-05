@@ -95,6 +95,7 @@ public class SmtpUsers {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SmtpUsersList response = api.getRequest(endpoint, SmtpUsersList.class);
 
@@ -116,6 +117,7 @@ public class SmtpUsers {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleSmtpUserResponse response = api.getRequest(endpoint, SingleSmtpUserResponse.class);
 
@@ -137,6 +139,7 @@ public class SmtpUsers {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 

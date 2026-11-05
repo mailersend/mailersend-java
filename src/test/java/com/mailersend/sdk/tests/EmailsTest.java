@@ -52,9 +52,12 @@ import com.mailersend.sdk.vcr.VcrRecorder;
  */
 public class EmailsTest {
 
-    private static final String EMAILS_URL = "https://api.mailersend.com/v1/emails";
+    private static final String EMAILS_URL = "https://api.mailersend.com/2026-10/emails";
 
-    private static final String EMAIL_URL = "https://api.mailersend.com/v1/email/";
+    /** The urls in the recorded response bodies, which were recorded on v1 */
+    private static final String RECORDED_EMAILS_URL = "https://api.mailersend.com/v1/emails";
+
+    private static final String EMAIL_URL = "https://api.mailersend.com/2026-10/email/";
 
     /** Fixed timestamps so that the request urls, and with them the fixture hashes, are stable */
     private static final long DATE_FROM = 1756256400L;
@@ -462,11 +465,85 @@ public class EmailsTest {
             fail(e.getMessage());
         }
 
-        assertEquals("https://api.mailersend.com/v1/email/" + EMAIL_ID,
+        assertEquals("https://api.mailersend.com/2026-10/email/" + EMAIL_ID,
                 client.lastRequestedUri().toString());
 
         // the endpoint is singular, the list endpoint is the plural one
-        assertFalse(client.lastRequestedUri().getPath().startsWith("/v1/emails"));
+        assertFalse(client.lastRequestedUri().getPath().startsWith("/2026-10/emails"));
+    }
+
+
+    /**
+     * Tests that requests go to the default dated API version
+     */
+    @Test
+    public void testRequestsUseTheDefaultApiVersion() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        RequestCapturingClient client = captureRequests();
+        client.responseBody = "{\"data\":{\"id\":\"" + EMAIL_ID + "\"}}";
+
+        try {
+
+            ms.emails().getEmail(EMAIL_ID);
+
+        } catch (MailerSendException e) {
+
+            fail(e.getMessage());
+        }
+
+        assertEquals("2026-10", ms.getApiVersion());
+        assertTrue(client.lastRequestedUri().toString().startsWith("https://api.mailersend.com/2026-10/"));
+    }
+
+
+    /**
+     * Tests that setApiVersion() changes the version in the request url
+     */
+    @Test
+    public void testSetApiVersionChangesTheRequestUrl() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        RequestCapturingClient client = captureRequests();
+        client.responseBody = "{\"data\":{\"id\":\"" + EMAIL_ID + "\"}}";
+
+        try {
+
+            ms.setApiVersion("v1");
+            ms.emails().getEmail(EMAIL_ID);
+
+            assertEquals("https://api.mailersend.com/v1/email/" + EMAIL_ID,
+                    client.lastRequestedUri().toString());
+
+            ms.setApiVersion("2027-01");
+            ms.emails().getEmail(EMAIL_ID);
+
+            assertEquals("https://api.mailersend.com/2027-01/email/" + EMAIL_ID,
+                    client.lastRequestedUri().toString());
+
+        } catch (MailerSendException e) {
+
+            fail(e.getMessage());
+        }
+    }
+
+
+    /**
+     * Tests that setApiVersion() rejects a version that is not v1 or a YYYY-MM date
+     */
+    @Test
+    public void testSetApiVersionRejectsAnInvalidVersion() {
+
+        MailerSend ms = new MailerSend();
+
+        assertThrows(IllegalArgumentException.class, () -> ms.setApiVersion("2026-13"));
+        assertThrows(IllegalArgumentException.class, () -> ms.setApiVersion("latest"));
+
+        assertEquals(MailerSend.DEFAULT_API_VERSION, ms.getApiVersion());
     }
 
 
@@ -530,9 +607,9 @@ public class EmailsTest {
             // the meta of the response
             assertNotNull(emails.meta);
             assertEquals(1, emails.meta.currentPage);
-            assertEquals(EMAILS_URL + "?page=1", emails.meta.currentPageUrl);
+            assertEquals(RECORDED_EMAILS_URL + "?page=1", emails.meta.currentPageUrl);
             assertEquals(1, emails.meta.from);
-            assertEquals(EMAILS_URL, emails.meta.path);
+            assertEquals(RECORDED_EMAILS_URL, emails.meta.path);
             assertEquals(10, emails.meta.limit);
             assertEquals(3, emails.meta.to);
 
@@ -542,7 +619,7 @@ public class EmailsTest {
 
             // the links of the response
             assertNotNull(emails.links);
-            assertEquals(EMAILS_URL + "?page=1", emails.links.first);
+            assertEquals(RECORDED_EMAILS_URL + "?page=1", emails.links.first);
             assertNull(emails.links.last);
             assertNull(emails.links.prev);
             assertNull(emails.links.next);
@@ -657,7 +734,7 @@ public class EmailsTest {
             assertEquals(10, emails.meta.limit);
 
             assertNull(emails.links.next);
-            assertEquals(EMAILS_URL + "?page=1", emails.links.prev);
+            assertEquals(RECORDED_EMAILS_URL + "?page=1", emails.links.prev);
 
             assertFalse(emails.hasNext());
             assertTrue(emails.hasPrevious());

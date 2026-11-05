@@ -35,7 +35,12 @@ import com.mailersend.sdk.users.Users;
  */
 public class MailerSend {    
    
+    /** The API version the SDK requests unless setApiVersion() is called */
+    public static final String DEFAULT_API_VERSION = "2026-10";
+
     protected String token;
+
+    private String apiVersion = DEFAULT_API_VERSION;
     
     private Activities activities = null;
     private Analytics analytics = null;
@@ -294,6 +299,34 @@ public class MailerSend {
     public String getToken() {
         
         return this.token;
+    }
+
+
+    /**
+     * Sets the MailerSend API version, a dated version like "2026-10" or "v1"
+     *
+     * @param apiVersion the API version
+     * @throws java.lang.IllegalArgumentException if the version is not "v1" or a YYYY-MM date
+     */
+    public void setApiVersion(String apiVersion) {
+
+        if (apiVersion == null || !(apiVersion.equals("v1") || apiVersion.matches("^\\d{4}-(0[1-9]|1[0-2])$"))) {
+
+            throw new IllegalArgumentException("Invalid API version \"" + apiVersion + "\", expected \"v1\" or a YYYY-MM date like \"" + DEFAULT_API_VERSION + "\"");
+        }
+
+        this.apiVersion = apiVersion;
+    }
+
+
+    /**
+     * Returns the MailerSend API version
+     *
+     * @return the MailerSend API version
+     */
+    public String getApiVersion() {
+
+        return this.apiVersion;
     }
     
 }

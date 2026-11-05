@@ -156,6 +156,7 @@ public class WhatsAppInboundMessages {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         WhatsAppInboundMessageList response = api.getRequest(endpoint, WhatsAppInboundMessageList.class);
 
@@ -177,6 +178,7 @@ public class WhatsAppInboundMessages {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleWhatsAppInboundMessageResponse response = api.getRequest(endpoint, SingleWhatsAppInboundMessageResponse.class);
 

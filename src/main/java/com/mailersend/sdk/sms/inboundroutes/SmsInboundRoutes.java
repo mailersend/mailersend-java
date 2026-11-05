@@ -117,6 +117,7 @@ public class SmsInboundRoutes {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SmsInboundRouteList response = api.getRequest(endpoint, SmsInboundRouteList.class);
         
@@ -138,6 +139,7 @@ public class SmsInboundRoutes {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleSmsInboundRouteResponse response = api.getRequest(endpoint, SingleSmsInboundRouteResponse.class);
         
@@ -159,6 +161,7 @@ public class SmsInboundRoutes {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         

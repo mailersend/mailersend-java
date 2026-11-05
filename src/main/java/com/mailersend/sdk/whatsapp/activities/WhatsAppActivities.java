@@ -177,6 +177,7 @@ public class WhatsAppActivities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         WhatsAppActivityList response = api.getRequest(endpoint, WhatsAppActivityList.class);
 

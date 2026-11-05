@@ -160,6 +160,7 @@ public class Analytics {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         AnalyticsByDateResponse msResponse = api.getRequest(endpoint, AnalyticsByDateResponse.class);
         
@@ -217,6 +218,7 @@ public class Analytics {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         AnalyticsResponse msResponse = api.getRequest(endpoint, AnalyticsResponse.class);
         

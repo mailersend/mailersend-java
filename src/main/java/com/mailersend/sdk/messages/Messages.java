@@ -76,6 +76,7 @@ public class Messages {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MessagesList response = api.getRequest(endpoint, MessagesList.class);
         
@@ -98,6 +99,7 @@ public class Messages {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleMessageResponse response = api.getRequest(endpoint, SingleMessageResponse.class);
         

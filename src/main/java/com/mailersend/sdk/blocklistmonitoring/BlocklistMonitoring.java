@@ -128,6 +128,7 @@ public class BlocklistMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         // reset pagination filters after use
         pageFilter = 1;
@@ -151,6 +152,7 @@ public class BlocklistMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         BlocklistMonitorResponse response = api.getRequest(endpoint, BlocklistMonitorResponse.class);
 
@@ -170,6 +172,7 @@ public class BlocklistMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 

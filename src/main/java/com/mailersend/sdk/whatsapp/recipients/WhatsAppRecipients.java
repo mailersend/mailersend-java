@@ -95,6 +95,7 @@ public class WhatsAppRecipients {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         WhatsAppRecipientList response = api.getRequest(endpoint, WhatsAppRecipientList.class);
 
@@ -116,6 +117,7 @@ public class WhatsAppRecipients {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleWhatsAppRecipientResponse response = api.getRequest(endpoint, SingleWhatsAppRecipientResponse.class);
 

@@ -70,6 +70,7 @@ public class SmsMessages {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SmsMessageList response = api.getRequest(endpoint, SmsMessageList.class);
         
@@ -91,6 +92,7 @@ public class SmsMessages {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleSmsMessageResponse response = api.getRequest(endpoint, SingleSmsMessageResponse.class);
         
