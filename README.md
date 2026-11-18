@@ -221,6 +221,8 @@ ms.setApiVersion("2026-10");
 
 To stay on `v1`, call `ms.setApiVersion("v1")`. See the [API changelog](https://developers.mailersend.com/api/changelog) for the changes in each version.
 
+Later releases of the SDK only change this default in a major version. Call `setApiVersion` to choose when you move.
+
 ## Email 
 
 The SDK provides a simple interface to send an email through MailerSend. Check the examples below for various use cases.
