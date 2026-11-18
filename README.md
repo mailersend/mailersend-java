@@ -21,7 +21,6 @@ MailerSend Java SDK
         - [Send email with custom headers](#send-email-with-custom-headers)
         - [Send email with references](#send-email-with-references)
         - [Send email with precedence bulk](#send-email-with-precedence-bulk)
-        - [Send an email with RCPT TO recipients](#send-an-email-with-rcpt-to-recipients)
         - [Send bulk emails](#send-bulk-emails)
         - [Get bulk request status](#get-bulk-request-status)
     - [Emails](#emails)
@@ -168,6 +167,7 @@ MailerSend Java SDK
 - [WhatsApp](#whatsapp)
     - [Send a WhatsApp message](#send-a-whatsapp-message)
     - [Send a WhatsApp message with personalization](#send-a-whatsapp-message-with-personalization)
+    - [Send a WhatsApp message with a media header and named variables](#send-a-whatsapp-message-with-a-media-header-and-named-variables)
     - [WhatsApp messages](#whatsapp-messages)
         - [Get a list of WhatsApp messages](#get-a-list-of-whatsapp-messages)
         - [Get a WhatsApp message](#get-a-whatsapp-message)
@@ -198,12 +198,12 @@ Using Maven:
     <dependency>
       <groupId>com.mailersend</groupId>
       <artifactId>java-sdk</artifactId>
-      <version>2.5.0</version>
+      <version>2.6.0</version>
     </dependency>
 
 Using Gradle:
 
-    implementation 'com.mailersend:java-sdk:2.5.0'
+    implementation 'com.mailersend:java-sdk:2.6.0'
     
 # Usage
 
@@ -234,6 +234,7 @@ Through the `MailerSendResponse` object you can get the ID of the sent message, 
 ```java
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
@@ -317,6 +318,7 @@ public void sendEmail() {
 ```java
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
@@ -355,6 +357,7 @@ for raw HTML/text sends. Supported values: `de`, `en`, `es`, `fr`, `it`, `lt`, `
 ```java
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
@@ -391,6 +394,7 @@ public void sendEmail() {
 ```java
 import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.Recipient;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 
@@ -443,6 +447,7 @@ import com.mailersend.sdk.emails.Email;
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import java.io.File;
 
 public void sendEmail() {
 
@@ -765,50 +770,6 @@ public void sendEmailWithPrecedenceBulk() {
 }
 ```
 
-### Send an email with RCPT TO recipients
-
-`rcptTo` is intended for SMTP source delivery and accepts a list of recipients.
-When `to` is empty and `rcptTo` is provided, the addresses are forwarded as BCC.
-
-```java
-import com.mailersend.sdk.emails.Email;
-import com.mailersend.sdk.MailerSend;
-import com.mailersend.sdk.MailerSendResponse;
-import com.mailersend.sdk.exceptions.MailerSendException;
-
-public void sendEmailWithRcptTo() {
-
-    Email email = new Email();
-
-    email.setFrom("name", "your email");
-
-    email.setSubject("Email subject");
-
-    email.setPlain("This is the text content");
-    email.setHtml("<p>This is the HTML content</p>");
-
-    // Add RCPT TO recipients for SMTP relay delivery
-    email.addRcptTo("name", "rcpt@client.com");
-
-    // you can also add a Recipient object directly
-    Recipient rcptRecipient = new Recipient("name2", "rcpt2@client.com");
-    email.addRcptTo(rcptRecipient);
-
-    MailerSend ms = new MailerSend();
-
-    ms.setToken("Your API token");
-
-    try {
-
-        MailerSendResponse response = ms.emails().send(email);
-        System.out.println(response.messageId);
-    } catch (MailerSendException e) {
-
-        e.printStackTrace();
-    }
-}
-```
-
 ### Send bulk emails
 
 ```java
@@ -974,6 +935,7 @@ import com.mailersend.sdk.emails.EmailListItem;
 import com.mailersend.sdk.emails.EmailStatus;
 import com.mailersend.sdk.emails.EmailsList;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import java.util.Date;
 
 public void getFilteredEmails() {
 
@@ -983,7 +945,7 @@ public void getFilteredEmails() {
 
     try {
 
-        Date dateFrom = DateUtils.addDays(new Date(), -7); // you'll need apache-commons for this
+        Date dateFrom = new Date(System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000); // 7 days ago
         Date dateTo = new Date();
 
         EmailsList list = ms.emails()
@@ -1218,7 +1180,6 @@ public void createInboundRoute() {
         Forward forward = new Forward();
         forward.type = "webhook";
         forward.value = "https://example-domain.com";
-        forward.secret = "asdfgh";
     
         ms.inboundRoutes().builder()
             .domainId("domain id")
@@ -1258,7 +1219,6 @@ public void updateInboundRoute() {
         Forward forward = new Forward();
         forward.type = "webhook";
         forward.value = "https://example-domain.com";
-        forward.secret = "asdfgh";
     
         InboundRoute route = ms.inboundRoutes().builder()
             .domainId("domain id")
@@ -1336,6 +1296,7 @@ public void getActivities() {
 
     try {
     
+        // without dates, the first page (25 activities) of the last 7 days is returned
         ActivitiesList activities = ms.activities().getActivities("domain id");
 
         for (Activity activity : activities.activities) {
@@ -1398,6 +1359,7 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.util.EventTypes;
+import java.util.Date;
 
 public void getActivities() {
 
@@ -1409,7 +1371,7 @@ public void getActivities() {
     
         int page = 1;
         int limit = 25; // also the default limit is 25
-        Date dateFrom = DateUtils.addDays(new Date(), -30); // you'll need apache-commons for this
+        Date dateFrom = new Date(System.currentTimeMillis() - 30L * 24 * 60 * 60 * 1000); // 30 days ago
         Date dateTo = new Date();
 
         String events[] = {EventTypes.OPENED, EventTypes.SENT, EventTypes.SUPPRESSED}; // check com.mailsersend.sdk.util.EventTypes for a full list of events
@@ -1537,7 +1499,7 @@ import com.mailersend.sdk.util.EventTypes;
 public void getAnalyticsByDate() {
 
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
+    ms.setToken("Your API token");
     
     try {
         
@@ -1546,7 +1508,7 @@ public void getAnalyticsByDate() {
         AnalyticsByDateList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
-                .domainId(TestHelper.domainId)
+                .domainId("domain id")
                 .getByDate(new String[] {EventTypes.DELIVERED, EventTypes.OPENED, EventTypes.CLICKED});
         
         System.out.println("\n\nAnalytics by date for domain:");
@@ -1578,7 +1540,7 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 public void getOpensByCountry() {
 
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
+    ms.setToken("Your API token");
     
     try {
         
@@ -1587,7 +1549,7 @@ public void getOpensByCountry() {
         AnalyticsList list = ms.analytics()
                 .dateFrom(dateFrom)
                 .dateTo(new Date())
-                .domainId(TestHelper.domainId)
+                .domainId("domain id")
                 .getOpensByCountry();
         
         System.out.println("\n\nOpens by country:");
@@ -1616,7 +1578,7 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 public void getOpensByUserAgentName() {
 
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
+    ms.setToken("Your API token");
     
     try {
         
@@ -1653,7 +1615,7 @@ import com.mailersend.sdk.exceptions.MailerSendException;
 public void getOpensByUserAgentType() {
 
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
+    ms.setToken("Your API token");
     
     try {
         
@@ -1894,7 +1856,7 @@ public void UpdateDomainSettings() {
     try {
         
         Domain domain = ms.domains().updateDomainSettingsBuilder()
-            .customnTrackingEnabled(true)
+            .customTrackingEnabled(true)
             .sendPaused(false)
             .updateDomain("domain id");
         
@@ -2088,8 +2050,8 @@ public void DeleteSmtpUser() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailersend.sdk.messages.Message;
 import com.mailersend.sdk.messages.MessagesList;
+import com.mailersend.sdk.messages.MessagesListItem;
 
 public void MessagesList() {
     
@@ -2100,7 +2062,7 @@ public void MessagesList() {
         
         MessagesList list = ms.messages().getMessages();
         
-        for (MessageListItem message : list.messages) {
+        for (MessagesListItem message : list.messages) {
             
             System.out.println(message.id);
             System.out.println(message.createdAt.toString());
@@ -2161,7 +2123,7 @@ public void getScheduledMessages() {
     try {
 
         // Use the STATUS_* constants to filter by status
-        ScheduledMessagesList messages = ms.scheduledmessages()
+        ScheduledMessagesList messages = ms.scheduledMessages()
             .status(ScheduledMessages.STATUS_SCHEDULED)
             .getScheduledMessages();
 
@@ -2192,7 +2154,7 @@ public void getScheduledMessage() {
 
     try {
     
-        ScheduledMessage message = ms.scheduledmessages().getScheduledMessage("message id");
+        ScheduledMessage message = ms.scheduledMessages().getScheduledMessage("message id");
 
         System.out.println(message.id);
         System.out.println(message.subject);
@@ -2219,7 +2181,7 @@ public void deleteScheduledMessage() {
 
     try {
     
-        boolean result = ms.scheduledmessages().deleteScheduledMessage("message id");
+        boolean result = ms.scheduledMessages().deleteScheduledMessage("message id");
 
         System.out.println(result);
 
@@ -2304,7 +2266,7 @@ import com.mailersend.sdk.tokens.TokenScopes;
 public void CreateToken() {
     
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
+    ms.setToken("Your API token");
     
     try {
         
@@ -2393,7 +2355,7 @@ import com.mailersend.sdk.tokens.Token;
 public void CreateToken() {
     
     MailerSend ms = new MailerSend();
-    ms.setToken(TestHelper.validToken);
+    ms.setToken("Your API token");
     
     try {
         MailerSendResponse response = ms.tokens().deleteToken("token to delete");
@@ -2579,7 +2541,7 @@ public void AddRecipientsToSuppressionList() {
         
         // hard bounces
         ms.recipients().suppressions().addBuilder().recipient("test@example.com");
-        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+        ms.recipients().suppressions().addBuilder().domainId("domain id");
         SuppressionList list = ms.recipients().suppressions().addBuilder().addRecipientsToHardBounces();
         
         for (SuppressionItem item : list.items) {
@@ -2590,7 +2552,7 @@ public void AddRecipientsToSuppressionList() {
         
         // spam complaints
         ms.recipients().suppressions().addBuilder().recipient("test@example.com");
-        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+        ms.recipients().suppressions().addBuilder().domainId("domain id");
         list = ms.recipients().suppressions().addBuilder().addRecipientsToSpamComplaints();
         
         for (SuppressionItem item : list.items) {
@@ -2601,7 +2563,7 @@ public void AddRecipientsToSuppressionList() {
         
         // unsubscribes
         ms.recipients().suppressions().addBuilder().recipient("test@example.com");
-        ms.recipients().suppressions().addBuilder().domainId(TestHelper.domainId);
+        ms.recipients().suppressions().addBuilder().domainId("domain id");
         list = ms.recipients().suppressions().addBuilder().addRecipientsToUnsubscribes();
         
         for (SuppressionItem item : list.items) {
@@ -2639,7 +2601,7 @@ public void DeleteRecipientsFromSuppressionList () {
         
         if (blocklist.items.length == 0) {
             
-            fail();
+            return;
         }
         
         String itemId = blocklist.items[0].id;
@@ -2654,7 +2616,7 @@ public void DeleteRecipientsFromSuppressionList () {
         
         if (hardBounces.items.length == 0) {
             
-            fail();
+            return;
         }
         
         itemId = hardBounces.items[0].id;
@@ -2669,7 +2631,7 @@ public void DeleteRecipientsFromSuppressionList () {
         
         if (spamComplaints.items.length == 0) {
             
-            fail();
+            return;
         }
         
         itemId = spamComplaints.items[0].id;
@@ -2684,7 +2646,7 @@ public void DeleteRecipientsFromSuppressionList () {
         
         if (unsubscribes.items.length == 0) {
             
-            fail();
+            return;
         }
         
         itemId = unsubscribes.items[0].id;
@@ -2836,6 +2798,7 @@ public void GetSingleWebhook() {
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
 import com.mailersend.sdk.webhooks.Webhook;
+import com.mailersend.sdk.webhooks.WebhookEvents;
 
 public void CreateWebhook() {
     
@@ -3071,7 +3034,7 @@ public void deleteTemplate() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.SingleEmailVerificationResponse;
+import com.mailersend.sdk.emailverification.SingleEmailVerificationResponse;
 
 public void verifyEmail() {
 
@@ -3096,7 +3059,7 @@ public void verifyEmail() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse;
+import com.mailersend.sdk.emailverification.AsyncEmailVerificationResponse;
 
 public void verifyEmailAsync() {
 
@@ -3122,7 +3085,7 @@ public void verifyEmailAsync() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.AsyncEmailVerificationResponse;
+import com.mailersend.sdk.emailverification.AsyncEmailVerificationResponse;
 
 public void getVerifyEmailAsyncStatus() {
 
@@ -3148,8 +3111,8 @@ public void getVerifyEmailAsyncStatus() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.EmailVerificationList;
-import com.mailsend.sdk.emailverification.EmailVerificationLists;
+import com.mailersend.sdk.emailverification.EmailVerificationList;
+import com.mailersend.sdk.emailverification.EmailVerificationLists;
 
 public void getLists() {
     
@@ -3177,7 +3140,7 @@ public void getLists() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.EmailVerificationList;
+import com.mailersend.sdk.emailverification.EmailVerificationList;
 
 public void getList() {
     
@@ -3202,7 +3165,7 @@ public void getList() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.EmailVerificationList;
+import com.mailersend.sdk.emailverification.EmailVerificationList;
 
 public void createList() {
     
@@ -3232,7 +3195,7 @@ public void createList() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.EmailVerificationList;
+import com.mailersend.sdk.emailverification.EmailVerificationList;
 
 public void verifyList() {
     
@@ -3257,8 +3220,8 @@ public void verifyList() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.emailverification.ListVerificationResults;
-import com.mailsend.sdk.emailverification.VerificationResult;
+import com.mailersend.sdk.emailverification.ListVerificationResults;
+import com.mailersend.sdk.emailverification.VerificationResult;
 
 public void verifyList() {
     
@@ -3288,8 +3251,8 @@ public void verifyList() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.sms.activities.SmsActivityList;
-import com.mailsend.sdk.sms.activities.SmsActivity;
+import com.mailersend.sdk.sms.activities.SmsActivityList;
+import com.mailersend.sdk.sms.activities.SmsActivity;
 
 public void getActivities() {
     
@@ -3317,7 +3280,7 @@ public void getActivities() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.sms.activities.SmsActivity;
+import com.mailersend.sdk.sms.activities.SmsActivity;
 
 public void getActivity() {
     
@@ -3345,8 +3308,8 @@ public void getActivity() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.sms.messages.SmsMessageList;
-import com.mailsend.sdk.sms.messages.SmsMessage;
+import com.mailersend.sdk.sms.messages.SmsMessageList;
+import com.mailersend.sdk.sms.messages.SmsMessage;
 
 public void getSmsMessages() {
     
@@ -3374,7 +3337,7 @@ public void getSmsMessages() {
 ```java
 import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.exceptions.MailerSendException;
-import com.mailsend.sdk.sms.messages.SmsMessage;
+import com.mailersend.sdk.sms.messages.SmsMessage;
 
 public void getSmsMessage() {
     
@@ -4079,7 +4042,10 @@ public void getReportSources() {
 
     try {
 
-        DmarcReportSourcesList list = ms.dmarcMonitoring().getReportSources("your-monitor-id");
+        DmarcReportSourcesList list = ms.dmarcMonitoring()
+            .dateFrom("2024-01-01 00:00:00")
+            .dateTo("2024-01-31 23:59:59")
+            .getReportSources("your-monitor-id");
 
         for (DmarcReportSource source : list.sources) {
             System.out.println(source.reportSource);
@@ -4660,6 +4626,7 @@ public void inviteCustomUser() {
             .role("Custom User")
             .addPermission("read-suppressions")
             .addPermission("manage-suppressions")
+            .addPermission("read-own-templates")
             .addDomain("domain-id")
             .addTemplate("template-id")
             .requiresPeriodicPasswordChange(true)
@@ -4905,6 +4872,49 @@ public void sendWhatsAppWithPersonalization() {
             .templateId("your_template_id")
             .addPersonalization(p1)
             .addPersonalization(p2)
+            .send();
+
+        System.out.println(messageId);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+### Send a WhatsApp message with a media header and named variables
+
+`setMediaHeader(link)` or `setMediaHeader(link, filename)` fills an image, video or document header; `setNamedHeader(Map)` and `setNamedBody(Map)` fill templates that use named variables. A header or body setter replaces the previous one, so the last call wins.
+
+```java
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.whatsapp.WhatsAppPersonalization;
+
+public void sendWhatsAppWithMediaHeaderAndNamedVariables() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("mailersend token");
+
+    try {
+
+        Map<String, String> body = new LinkedHashMap<String, String>();
+        body.put("first_name", "John");
+        body.put("order_date", "December 31, 2026");
+
+        WhatsAppPersonalization p1 = new WhatsAppPersonalization("19191234567")
+            .setMediaHeader("https://www.example.com/invoices/12345.pdf", "invoice-12345.pdf")
+            .setNamedBody(body);
+
+        String messageId = ms.whatsapp().builder()
+            .from("12345678901")
+            .addRecipient("19191234567")
+            .templateId("your_template_id")
+            .addPersonalization(p1)
             .send();
 
         System.out.println(messageId);

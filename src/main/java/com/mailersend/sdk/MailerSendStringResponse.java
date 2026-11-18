@@ -5,7 +5,9 @@ package com.mailersend.sdk;
  *
  * @author mailersend
  * @version $Id: $Id
+ * @deprecated The SDK no longer reads raw responses. Use a response class that maps the fields instead.
  */
+@Deprecated
 public class MailerSendStringResponse extends MailerSendResponse {
 
     public String responseString;

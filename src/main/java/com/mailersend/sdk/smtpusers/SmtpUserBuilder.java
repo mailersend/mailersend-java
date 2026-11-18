@@ -94,6 +94,11 @@ public class SmtpUserBuilder {
 
         SingleSmtpUserResponse response = api.postRequest(endpoint, json, SingleSmtpUserResponse.class);
 
+        if (response.smtpUser != null) {
+
+            response.smtpUser.postDeserialize();
+        }
+
         return response.smtpUser;
     }
 
@@ -125,6 +130,11 @@ public class SmtpUserBuilder {
         body.reset();
 
         SingleSmtpUserResponse response = api.putRequest(endpoint, json, SingleSmtpUserResponse.class);
+
+        if (response.smtpUser != null) {
+
+            response.smtpUser.postDeserialize();
+        }
 
         return response.smtpUser;
     }

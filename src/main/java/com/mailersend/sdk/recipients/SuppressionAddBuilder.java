@@ -105,6 +105,8 @@ public class SuppressionAddBuilder {
         
         BlocklistListResponse response = api.postRequest(endpoint, json, BlocklistListResponse.class);
         
+        response.postDeserialize();
+        
         return response.items;
     }
     
@@ -179,6 +181,8 @@ public class SuppressionAddBuilder {
         suppressionAddBody.reset();
         
         SuppressionList response = api.postRequest(endpoint, json, SuppressionList.class);
+        
+        response.postDeserialize();
         
         return response;
     }

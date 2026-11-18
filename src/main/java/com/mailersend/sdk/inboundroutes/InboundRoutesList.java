@@ -13,4 +13,21 @@ public class InboundRoutesList extends PaginatedResponse {
 
 	@SerializedName("data")
 	public InboundRoute[] routes;
+	
+	
+	/**
+	 * Is called to perform any actions after the deserialization of the response
+	 * Do not call directly
+	 */
+	protected void postDeserialize() {
+
+		if (routes == null) {
+			return;
+		}
+
+		for (InboundRoute route : routes) {
+			
+			route.postDeserialize();
+		}
+	}
 }

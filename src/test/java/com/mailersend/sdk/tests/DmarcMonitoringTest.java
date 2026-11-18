@@ -317,4 +317,33 @@ public class DmarcMonitoringTest {
             fail();
         }
     }
+
+    /**
+     * Tests that every report filter is sent, with the Y-m-d H:i:s dates and the search url encoded
+     */
+    @Test
+    public void getAggregatedReportWithFiltersTest() {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+
+        try {
+
+            DmarcAggregatedReportList list = ms.dmarcMonitoring()
+                    .page(2)
+                    .limit(10)
+                    .dateFrom("2024-01-01 00:00:00")
+                    .dateTo("2024-01-31 23:59:59")
+                    .search("example org")
+                    .category("category-id-test")
+                    .reportSource("google.com")
+                    .getAggregatedReport(TestHelper.dmarcMonitorId);
+
+            assertEquals(TestHelper.dmarcMonitorIp, list.reports[0].ipAddress);
+
+        } catch (MailerSendException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
 }

@@ -20,4 +20,22 @@ public class SmtpUsersList extends MailerSendResponse {
 
     @SerializedName("data")
     public SmtpUser[] smtpUsers;
+
+
+    /**
+     * Is called to perform any actions after the deserialization of the response
+     * Do not call directly
+     */
+    public void postDeserialize() {
+
+        if (smtpUsers == null) {
+
+            return;
+        }
+
+        for (SmtpUser smtpUser : smtpUsers) {
+
+            smtpUser.postDeserialize();
+        }
+    }
 }

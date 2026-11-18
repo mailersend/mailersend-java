@@ -43,8 +43,16 @@ public class SmsMessage {
 	
 	public Date createdAt;
 	
+	/**
+	 * The first entry of {@link #smsList}.
+	 *
+	 * @deprecated The API returns a list of SMS. Use {@link #smsList} instead.
+	 */
+	@Deprecated
+	public transient SmsInfo sms;
+	
 	@SerializedName("sms")
-	public SmsInfo sms;
+	public SmsInfo[] smsList;
 	
 	/**
 	 * <p>postDeserialize.</p>
@@ -58,6 +66,16 @@ public class SmsMessage {
             ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtStr);
             instant = Instant.from(ta);
             createdAt = Date.from(instant);
+		}
+		
+		if (smsList != null) {
+			for (SmsInfo s : smsList) {
+				s.postDeserialize();
+			}
+			
+			if (smsList.length > 0) {
+				sms = smsList[0];
+			}
 		}
 	}
 }

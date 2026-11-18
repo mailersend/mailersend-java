@@ -34,6 +34,9 @@ public class SmsInfo {
 	@SerializedName("text")
 	public String text;
 	
+	@SerializedName("compiled_text")
+	public String compiledText;
+	
 	@SerializedName("status")
 	public String status;
 	
@@ -42,6 +45,9 @@ public class SmsInfo {
 	
 	@SerializedName("error_type")
 	public String errorType;
+	
+	@SerializedName("error_code")
+	public Integer errorCode;
 	
 	@SerializedName("error_description")
 	public String errorDescription;

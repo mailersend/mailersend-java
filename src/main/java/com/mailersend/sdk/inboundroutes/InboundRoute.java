@@ -1,11 +1,9 @@
 package com.mailersend.sdk.inboundroutes;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>InboundRoute class.</p>
@@ -47,6 +45,12 @@ public class InboundRoute {
 	@SerializedName("priority")
 	public int priority;
 
+	@SerializedName("catch_type")
+	public String catchType;
+	
+	@SerializedName("match_type")
+	public String matchType;
+
 	@SerializedName("include_attachments")
 	public boolean includeAttachments;
 
@@ -55,14 +59,6 @@ public class InboundRoute {
 	 * <p>postDeserialize.</p>
 	 */
 	public void postDeserialize() {
-		if (dnsCheckedAtString != null && !dnsCheckedAtString.isBlank()) {
-			
-	        TemporalAccessor ta;
-	        Instant instant;
-	        
-            ta = DateTimeFormatter.ISO_INSTANT.parse(dnsCheckedAtString);
-            instant = Instant.from(ta);
-            dnsCheckedAt = Date.from(instant);
-		}
+		dnsCheckedAt = DateParser.parse(dnsCheckedAtString);
 	}
 }

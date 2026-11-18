@@ -20,7 +20,7 @@ class SmsWebhookBuilderBody {
     public String name;
     
     @SerializedName("events")
-    public ArrayList<String> events = new ArrayList<String>();
+    public ArrayList<String> events = null;
     
     @SerializedName("enabled")
     public Boolean enabled = null;

@@ -38,6 +38,18 @@ public class TokenAdd {
     @SerializedName("domain")
     public TokenDomain domain;
 
+    @SerializedName("has_full")
+    public boolean hasFull;
+
+    @SerializedName("has_only_sending")
+    public boolean hasOnlySending;
+
+    @SerializedName("preview")
+    public String preview;
+
+    @SerializedName("expires_at")
+    public String expiresAt;
+
     @SerializedName("created_at")
     private String createdAtStr;
     

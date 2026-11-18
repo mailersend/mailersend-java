@@ -106,6 +106,11 @@ public class BlocklistMonitorCreateBuilder {
 
         BlocklistMonitorResponse response = api.postRequest(endpoint, json, BlocklistMonitorResponse.class);
 
+        if (response.monitor != null) {
+
+            response.monitor.postDeserialize();
+        }
+
         return response.monitor;
     }
 }

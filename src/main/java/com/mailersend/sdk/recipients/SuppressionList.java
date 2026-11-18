@@ -20,4 +20,25 @@ public class SuppressionList extends PaginatedResponse {
 
     @SerializedName("data")
     public SuppressionItem[] items;
+    
+    
+    /**
+     * Is called to perform any actions after the deserialization of the response
+     * Do not call directly
+     */
+    public void postDeserialize() {
+        
+        if (items == null) {
+            
+            return;
+        }
+        
+        for (SuppressionItem item : items) {
+            
+            if (item.recipient != null) {
+                
+                item.recipient.parseDates();
+            }
+        }
+    }
 }

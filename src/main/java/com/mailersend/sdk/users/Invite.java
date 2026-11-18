@@ -13,11 +13,12 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.MailerSendResponse;
 
 /**
  * Represents a pending user invite.
  */
-public class Invite {
+public class Invite extends MailerSendResponse {
 
     @SerializedName("id")
     public String id;

@@ -7,13 +7,11 @@
  **************************************************/
 package com.mailersend.sdk.domains;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>Domain class.</p>
@@ -92,21 +90,7 @@ public class Domain extends MailerSendResponse {
      */
     private void parseDates() {
         
-        TemporalAccessor ta;
-        Instant instant;
-        
-        if (createdAtStr != null && !createdAtStr.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtStr);
-            instant = Instant.from(ta);
-            createdAt = Date.from(instant);
-        }
-        
-        if (updatedAtStr != null && !updatedAtStr.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(updatedAtStr);
-            instant = Instant.from(ta);
-            updatedAt = Date.from(instant);
-        }
+        createdAt = DateParser.parse(createdAtStr);
+        updatedAt = DateParser.parse(updatedAtStr);
     }
 }

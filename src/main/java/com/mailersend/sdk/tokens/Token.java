@@ -34,6 +34,9 @@ public class Token {
     @SerializedName("scopes")
     public String[] scopes;
 
+    @SerializedName("domain")
+    public TokenDomain domain;
+
     @SerializedName("created_at")
     private String createdAtStr;
     

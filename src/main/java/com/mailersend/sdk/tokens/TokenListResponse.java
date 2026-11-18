@@ -8,7 +8,7 @@
 package com.mailersend.sdk.tokens;
 
 import com.google.gson.annotations.SerializedName;
-import com.mailersend.sdk.MailerSendResponse;
+import com.mailersend.sdk.util.PaginatedResponse;
 
 /**
  * <p>TokenListResponse class.</p>
@@ -16,7 +16,7 @@ import com.mailersend.sdk.MailerSendResponse;
  * @author mailersend
  * @version $Id: $Id
  */
-public class TokenListResponse extends MailerSendResponse {
+public class TokenListResponse extends PaginatedResponse {
 
     @SerializedName("data")
     public Token[] tokens;

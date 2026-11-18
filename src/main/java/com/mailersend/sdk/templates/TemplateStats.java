@@ -7,12 +7,10 @@
  **************************************************/
 package com.mailersend.sdk.templates;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>TemplateStats class.</p>
@@ -40,6 +38,33 @@ public class TemplateStats {
     @SerializedName("delivered")
     public int delivered;
     
+    @SerializedName("delivery_rate")
+    public String deliveryRate;
+
+    @SerializedName("opened")
+    public int opened;
+
+    @SerializedName("open_rate")
+    public String openRate;
+
+    @SerializedName("clicked")
+    public int clicked;
+
+    @SerializedName("click_rate")
+    public String clickRate;
+
+    @SerializedName("unsubscribed")
+    public int unsubscribed;
+
+    @SerializedName("unsubscribe_rate")
+    public String unsubscribeRate;
+
+    @SerializedName("complained")
+    public int complained;
+
+    @SerializedName("complain_rate")
+    public String complainRate;
+
     public Date lastEmailSentAt;
     
     @SerializedName("last_email_sent_at")
@@ -60,16 +85,7 @@ public class TemplateStats {
      * Parses the string dates from the response into java.util.Date objects
      */
     protected void parseDates() {
-        
-        TemporalAccessor ta;
-        Instant instant;
-        
-        if (lastEmailSentAtStr != null && !lastEmailSentAtStr.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(lastEmailSentAtStr);
-            instant = Instant.from(ta);
-            lastEmailSentAt = Date.from(instant);
-        }
-        
+
+        lastEmailSentAt = DateParser.parse(lastEmailSentAtStr);
     }
 }

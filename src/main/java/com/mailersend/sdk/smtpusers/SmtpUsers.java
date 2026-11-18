@@ -99,6 +99,8 @@ public class SmtpUsers {
 
         SmtpUsersList response = api.getRequest(endpoint, SmtpUsersList.class);
 
+        response.postDeserialize();
+
         return response;
     }
 
@@ -120,6 +122,11 @@ public class SmtpUsers {
         api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleSmtpUserResponse response = api.getRequest(endpoint, SingleSmtpUserResponse.class);
+
+        if (response.smtpUser != null) {
+
+            response.smtpUser.postDeserialize();
+        }
 
         return response.smtpUser;
     }

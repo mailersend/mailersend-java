@@ -14,6 +14,7 @@ import com.mailersend.sdk.MailerSend;
 import com.mailersend.sdk.MailerSendApi;
 import com.mailersend.sdk.MailerSendResponse;
 import com.mailersend.sdk.exceptions.MailerSendException;
+import com.mailersend.sdk.util.UrlEncoder;
 
 /**
  * Provides access to the Blocklist Monitoring API endpoints.
@@ -137,7 +138,11 @@ public class BlocklistMonitoring {
         sortByFilter = null;
         orderFilter = null;
 
-        return api.getRequest(endpoint, BlocklistMonitorsList.class);
+        BlocklistMonitorsList response = api.getRequest(endpoint, BlocklistMonitorsList.class);
+
+        response.postDeserialize();
+
+        return response;
     }
 
     /**
@@ -155,6 +160,11 @@ public class BlocklistMonitoring {
         api.setApiVersion(apiObjectReference.getApiVersion());
 
         BlocklistMonitorResponse response = api.getRequest(endpoint, BlocklistMonitorResponse.class);
+
+        if (response.monitor != null) {
+
+            response.monitor.postDeserialize();
+        }
 
         return response.monitor;
     }
@@ -189,15 +199,15 @@ public class BlocklistMonitoring {
         params.add("limit=".concat(String.valueOf(limitFilter)));
 
         if (queryFilter != null && !queryFilter.isBlank()) {
-            params.add("query=".concat(queryFilter));
+            params.add("query=".concat(UrlEncoder.encode(queryFilter)));
         }
 
         if (sortByFilter != null && !sortByFilter.isBlank()) {
-            params.add("sort_by=".concat(sortByFilter));
+            params.add("sort_by=".concat(UrlEncoder.encode(sortByFilter)));
         }
 
         if (orderFilter != null && !orderFilter.isBlank()) {
-            params.add("order=".concat(orderFilter));
+            params.add("order=".concat(UrlEncoder.encode(orderFilter)));
         }
 
         String requestParams = "";

@@ -7,12 +7,10 @@
  **************************************************/
 package com.mailersend.sdk.recipients;
 
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import com.mailersend.sdk.util.DateParser;
 
 /**
  * <p>BlocklistDomain class.</p>
@@ -44,21 +42,7 @@ public class BlocklistDomain {
      */
     protected void parseDates() {
         
-        TemporalAccessor ta;
-        Instant instant;
-        
-        if (createdAtString != null && !createdAtString.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(createdAtString);
-            instant = Instant.from(ta);
-            createdAt = Date.from(instant);
-        }
-        
-        if (updatedAtString != null && !updatedAtString.isBlank()) {
-            
-            ta = DateTimeFormatter.ISO_INSTANT.parse(updatedAtString);
-            instant = Instant.from(ta);
-            updatedAt = Date.from(instant);
-        }
+        createdAt = DateParser.parse(createdAtString);
+        updatedAt = DateParser.parse(updatedAtString);
     }
 }
