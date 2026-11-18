@@ -1,8 +1,10 @@
 name: Maven Publish
 on:
+  # Run by hand on a tag to retry a failed publish.
   workflow_dispatch:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,14 +22,15 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
 
-      - name: Check release tag matches pom version
-        if: github.event_name == 'release'
+      # The tag is the only source of the version; pom.xml holds a placeholder.
+      - name: Set the version from the tag
         run: |
-          VERSION=$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
-          if [ "${GITHUB_REF_NAME#v}" != "$VERSION" ]; then
-            echo "::error::Release tag $GITHUB_REF_NAME does not match pom version $VERSION"
+          if ! [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::$GITHUB_REF_NAME is not a version tag such as v1.2.3"
             exit 1
           fi
+          mvn -q org.codehaus.mojo:versions-maven-plugin:2.18.0:set \
+            -DnewVersion="${GITHUB_REF_NAME#v}" -DgenerateBackupPoms=false
 
       - name: Publish to Apache Maven Central
         run: mvn clean deploy
