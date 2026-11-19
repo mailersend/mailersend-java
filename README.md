@@ -2,6 +2,7 @@
 
 MailerSend Java SDK
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.mailersend/java-sdk)](https://central.sonatype.com/artifact/com.mailersend/java-sdk)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 # Table of Contents
@@ -192,17 +193,19 @@ MailerSend Java SDK
 
 # Installation
 
+Replace `x.y.z` with the latest version on [Maven Central](https://central.sonatype.com/artifact/com.mailersend/java-sdk).
+
 Using Maven:
 
     <dependency>
       <groupId>com.mailersend</groupId>
       <artifactId>java-sdk</artifactId>
-      <version>2.6.0</version>
+      <version>x.y.z</version>
     </dependency>
 
 Using Gradle:
 
-    implementation 'com.mailersend:java-sdk:2.6.0'
+    implementation 'com.mailersend:java-sdk:x.y.z'
     
 # Usage
 
