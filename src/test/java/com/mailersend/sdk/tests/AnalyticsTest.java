@@ -25,7 +25,7 @@ import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class AnalyticsTest {
 
-    private static final String API_URL = "https://api.mailersend.com/v1";
+    private static final String API_URL = "https://api.mailersend.com/2026-10";
 
     private static final Date DATE_FROM = Date.from(Instant.parse("2024-01-01T00:00:00Z"));
 

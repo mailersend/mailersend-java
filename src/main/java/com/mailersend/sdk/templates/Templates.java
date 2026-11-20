@@ -120,6 +120,7 @@ public class Templates {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         TemplatesList response = api.getRequest(endpoint, TemplatesList.class);
         
@@ -147,6 +148,7 @@ public class Templates {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         TemplateResponse response = api.getRequest(endpoint, TemplateResponse.class);
         
@@ -177,6 +179,7 @@ public class Templates {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         

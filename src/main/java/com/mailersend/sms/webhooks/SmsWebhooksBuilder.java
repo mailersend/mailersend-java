@@ -146,6 +146,7 @@ public class SmsWebhooksBuilder {
 	        
 	        MailerSendApi api = new MailerSendApi();
 	        api.setToken(apiObjectReference.getToken());
+	        api.setApiVersion(apiObjectReference.getApiVersion());
 	        
 	        Gson gson = new GsonBuilder()
 	                .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))
@@ -181,6 +182,7 @@ public class SmsWebhooksBuilder {
 	        
 	        MailerSendApi api = new MailerSendApi();
 	        api.setToken(apiObjectReference.getToken());
+	        api.setApiVersion(apiObjectReference.getApiVersion());
 	        
 	        Gson gson = new GsonBuilder()
 	                .addSerializationExclusionStrategy(new JsonSerializationDeserializationStrategy(false))

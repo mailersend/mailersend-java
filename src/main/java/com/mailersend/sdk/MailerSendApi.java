@@ -32,7 +32,9 @@ import com.mailersend.sdk.util.JsonSerializationDeserializationStrategy;
  */
 public class MailerSendApi {
 
-    private final String endpointBase = "https://api.mailersend.com/v1";
+    private static final String API_HOST = "https://api.mailersend.com/";
+
+    private String endpointBase = API_HOST.concat(MailerSend.DEFAULT_API_VERSION);
     
     private String apiToken = "";
     
@@ -55,6 +57,17 @@ public class MailerSendApi {
     public void setToken(String token) {
         
         this.apiToken = token;
+    }
+
+
+    /**
+     * Sets the MailerSend API version used in the request urls
+     *
+     * @param apiVersion the API version, for example "2026-10" or "v1"
+     */
+    public void setApiVersion(String apiVersion) {
+
+        this.endpointBase = API_HOST.concat(apiVersion);
     }
         
 

@@ -411,7 +411,7 @@ public class EmailVerificationTests {
 			assertEquals(10, list.emails.pagination.perPage);
 			assertEquals(12, list.emails.pagination.total);
 			assertNull(list.emails.links.next);
-			assertEquals("https://api.mailersend.com/v1/email-verification/" + TestHelper.emailVerificationListId
+			assertEquals("https://api.mailersend.com/2026-10/email-verification/" + TestHelper.emailVerificationListId
 				+ "?detailed=1&page=2&limit=10", client.lastUrl());
 
 		} catch (MailerSendException e) {

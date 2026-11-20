@@ -30,7 +30,7 @@ import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class TemplatesTest {
 
-    private static final String TEMPLATES_URL = "https://api.mailersend.com/v1/templates";
+    private static final String TEMPLATES_URL = "https://api.mailersend.com/2026-10/templates";
 
     private static final String TEMPLATE_ID = "x8emy5o5world01w";
 

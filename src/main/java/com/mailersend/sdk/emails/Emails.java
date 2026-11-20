@@ -95,6 +95,7 @@ public class Emails {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
        
         MailerSendResponse response = api.postRequest("/email", json, MailerSendResponse.class);
         
@@ -113,6 +114,7 @@ public class Emails {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         JsonArray emailsJson = new JsonArray();
 
@@ -147,6 +149,7 @@ public class Emails {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
     
         
         BulkSendStatusResponse response = api.getRequest(endpoint, BulkSendStatusResponse.class);
@@ -398,6 +401,7 @@ public class Emails {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleEmailResponse response = api.getRequest(endpoint, SingleEmailResponse.class);
 
@@ -428,6 +432,7 @@ public class Emails {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         EmailsList response = api.getRequest(endpoint, EmailsList.class);
 

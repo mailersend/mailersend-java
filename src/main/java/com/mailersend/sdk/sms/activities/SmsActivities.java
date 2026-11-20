@@ -136,6 +136,7 @@ public class SmsActivities {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SmsActivityList response = api.getRequest(endpoint, SmsActivityList.class);
         response.postDeserialize();
@@ -157,6 +158,7 @@ public class SmsActivities {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleSmsMessageActivityResponse response = api.getRequest(endpoint, SingleSmsMessageActivityResponse.class);
         

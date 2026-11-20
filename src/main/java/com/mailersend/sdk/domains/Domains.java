@@ -147,6 +147,7 @@ public class Domains {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         DomainsList response = api.getRequest(endpoint, DomainsList.class);
         
@@ -169,6 +170,7 @@ public class Domains {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleDomainResponse response = api.getRequest(endpoint, SingleDomainResponse.class);
         
@@ -194,6 +196,7 @@ public class Domains {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         
@@ -215,6 +218,7 @@ public class Domains {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         ApiRecipientsList response = api.getRequest(endpoint, ApiRecipientsList.class);
         
@@ -237,6 +241,7 @@ public class Domains {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         DomainDnsRecordsResponse response = api.getRequest(endpoint, DomainDnsRecordsResponse.class);
         
@@ -257,6 +262,7 @@ public class Domains {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         DomainVerificationStatus response = api.getRequest(endpoint, DomainVerificationStatus.class);
         

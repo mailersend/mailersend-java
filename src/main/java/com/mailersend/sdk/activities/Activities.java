@@ -52,6 +52,7 @@ public class Activities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleActivityResponse response = api.getRequest(endpoint, SingleActivityResponse.class);
 
@@ -163,6 +164,7 @@ public class Activities {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         ActivitiesList activities = api.getRequest(endpoint, ActivitiesList.class);
         

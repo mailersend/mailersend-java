@@ -215,6 +215,6 @@ public class SmsInboundRoutesTests {
             .enabled(true)
             .getSmsInboundRoutes();
 
-        assertEquals("https://api.mailersend.com/v1/sms-inbounds?page=1&limit=25&enabled=1", client.lastUrl());
+        assertEquals("https://api.mailersend.com/2026-10/sms-inbounds?page=1&limit=25&enabled=1", client.lastUrl());
     }
 }

@@ -207,6 +207,7 @@ public class DmarcMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         return api.getRequest(endpoint, DmarcMonitorsList.class);
     }
@@ -223,6 +224,7 @@ public class DmarcMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 
@@ -242,6 +244,7 @@ public class DmarcMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         return api.getRequest(endpoint, DmarcAggregatedReportList.class);
     }
@@ -260,6 +263,7 @@ public class DmarcMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         return api.getRequest(endpoint, DmarcIpReportList.class);
     }
@@ -284,6 +288,7 @@ public class DmarcMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         return api.getRequest(endpoint, DmarcReportSourcesList.class);
     }
@@ -301,6 +306,7 @@ public class DmarcMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.putRequest(endpoint, "", MailerSendResponse.class);
 
@@ -320,6 +326,7 @@ public class DmarcMonitoring {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 

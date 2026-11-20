@@ -97,6 +97,7 @@ public class InboundRoutes {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         InboundRoutesList response = api.getRequest(endpoint, InboundRoutesList.class);
         
@@ -117,6 +118,7 @@ public class InboundRoutes {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleInboundRouteResponse response = api.getRequest(endpoint, SingleInboundRouteResponse.class);
         
@@ -140,6 +142,7 @@ public class InboundRoutes {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         

@@ -200,6 +200,7 @@ public class WhatsAppItems {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         WhatsAppItemList response = api.getRequest(endpoint, WhatsAppItemList.class);
 
@@ -221,6 +222,7 @@ public class WhatsAppItems {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleWhatsAppItemResponse response = api.getRequest(endpoint, SingleWhatsAppItemResponse.class);
 

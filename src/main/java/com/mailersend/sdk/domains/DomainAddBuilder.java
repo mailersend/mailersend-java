@@ -94,6 +94,7 @@ public class DomainAddBuilder {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         domainAddBody.name = name;
         

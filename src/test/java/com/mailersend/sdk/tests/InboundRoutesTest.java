@@ -34,7 +34,7 @@ import com.mailersend.sdk.vcr.VcrRecorder;
 
 public class InboundRoutesTest {
 
-    private static final String INBOUND_URL = "https://api.mailersend.com/v1/inbound";
+    private static final String INBOUND_URL = "https://api.mailersend.com/2026-10/inbound";
 
     /** The inbound route of the docs, with dns_checked_at set */
     private static final String ROUTE = "{\"id\":\"v57gn2j67qlr6z4d\",\"name\":\"Test name\","

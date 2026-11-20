@@ -158,6 +158,7 @@ public class SenderIdentities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SenderIdentitiesList response = api.getRequest(endpoint, SenderIdentitiesList.class);
 
@@ -184,6 +185,7 @@ public class SenderIdentities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleSenderIdentityResponse response = api.getRequest(endpoint, SingleSenderIdentityResponse.class);
 
@@ -206,6 +208,7 @@ public class SenderIdentities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleSenderIdentityResponse response = api.getRequest(endpoint, SingleSenderIdentityResponse.class);
 
@@ -228,6 +231,7 @@ public class SenderIdentities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 
@@ -248,6 +252,7 @@ public class SenderIdentities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 
@@ -268,6 +273,7 @@ public class SenderIdentities {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleSenderIdentityResponse response = api.postRequest(endpoint, "", SingleSenderIdentityResponse.class);
 

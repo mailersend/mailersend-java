@@ -46,6 +46,7 @@ public class DmarcMonitorCreateBuilder {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         createBody.domainId = domainId;
 

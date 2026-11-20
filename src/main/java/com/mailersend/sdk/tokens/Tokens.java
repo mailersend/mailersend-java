@@ -96,6 +96,7 @@ public class Tokens {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         TokenListResponse response = api.getRequest(endpoint, TokenListResponse.class);
 
@@ -120,6 +121,7 @@ public class Tokens {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         TokenResponse response = api.getRequest(endpoint, TokenResponse.class);
 
@@ -143,6 +145,7 @@ public class Tokens {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         String status = paused ? "pause" : "unpause";
         String json = "{\"status\":\"" + status + "\"}";
@@ -178,6 +181,7 @@ public class Tokens {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         TokenUpdateRequestBody body = new TokenUpdateRequestBody();
         body.name = nameBlank ? null : name;
@@ -211,6 +215,7 @@ public class Tokens {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
 

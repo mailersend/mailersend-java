@@ -150,7 +150,7 @@ public class RecipientsTest {
         Recipient recipient = ms.recipients().getRecipient("62a2120ba4920c48900f2761");
 
         assertEquals("GET", client.lastRequest().method());
-        assertEquals("https://api.mailersend.com/v1/recipients/62a2120ba4920c48900f2761", client.lastUrl());
+        assertEquals("https://api.mailersend.com/2026-10/recipients/62a2120ba4920c48900f2761", client.lastUrl());
         assertEquals(Date.from(Instant.parse("2020-06-10T10:10:13Z")), recipient.deletedAt);
     }
 }

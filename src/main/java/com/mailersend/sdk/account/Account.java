@@ -42,6 +42,7 @@ public class Account {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         AccountResponse response = api.getRequest("/account", AccountResponse.class);
 

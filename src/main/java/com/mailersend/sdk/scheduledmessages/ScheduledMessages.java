@@ -96,6 +96,7 @@ public class ScheduledMessages {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         ScheduledMessagesList response = api.getRequest(endpoint, ScheduledMessagesList.class);
         
@@ -118,6 +119,7 @@ public class ScheduledMessages {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleScheduledMessageResponse response = api.getRequest(endpoint, SingleScheduledMessageResponse.class);
         
@@ -139,6 +141,7 @@ public class ScheduledMessages {
     	
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         

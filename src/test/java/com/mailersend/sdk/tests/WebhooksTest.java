@@ -34,7 +34,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class WebhooksTest {
 
-    private static final String WEBHOOKS_URL = "https://api.mailersend.com/v1/webhooks";
+    private static final String WEBHOOKS_URL = "https://api.mailersend.com/2026-10/webhooks";
 
     private static final String WEBHOOK_ID = "pzkmgq7ow2l059vx";
 

@@ -84,6 +84,7 @@ public class SmsWebhooks {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SmsWebhookList response = api.getRequest(endpoint, SmsWebhookList.class);
         
@@ -106,6 +107,7 @@ public class SmsWebhooks {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         SingleSmsWebhookResponse response = api.getRequest(endpoint, SingleSmsWebhookResponse.class);
         
@@ -128,6 +130,7 @@ public class SmsWebhooks {
         
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
         
         MailerSendResponse response = api.deleteRequest(endpoint, MailerSendResponse.class);
         

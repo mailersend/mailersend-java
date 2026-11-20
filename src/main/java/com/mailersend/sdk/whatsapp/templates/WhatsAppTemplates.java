@@ -119,6 +119,7 @@ public class WhatsAppTemplates {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         WhatsAppTemplateList response = api.getRequest(endpoint, WhatsAppTemplateList.class);
 
@@ -140,6 +141,7 @@ public class WhatsAppTemplates {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         SingleWhatsAppTemplateResponse response = api.getRequest(endpoint, SingleWhatsAppTemplateResponse.class);
 

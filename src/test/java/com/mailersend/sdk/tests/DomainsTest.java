@@ -292,11 +292,11 @@ public class DomainsTest {
 
         ms.domains().onlyVerified().getDomains();
 
-        assertEquals("https://api.mailersend.com/v1/domains?page=1&limit=25&verified=1", client.lastUrl());
+        assertEquals("https://api.mailersend.com/2026-10/domains?page=1&limit=25&verified=1", client.lastUrl());
 
         ms.domains().onlyUnverified().getDomains();
 
-        assertEquals("https://api.mailersend.com/v1/domains?page=1&limit=25&verified=0", client.lastUrl());
+        assertEquals("https://api.mailersend.com/2026-10/domains?page=1&limit=25&verified=0", client.lastUrl());
     }
 
 

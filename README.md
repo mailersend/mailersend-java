@@ -8,6 +8,7 @@ MailerSend Java SDK
 # Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
+    - [API version](#api-version)
     - [Email](#email)
         - [Send an email](#send-an-email)
         - [Add CC, BCC recipients](#add-cc-bcc-recipients)
@@ -210,6 +211,22 @@ Using Gradle:
     implementation 'com.mailersend:java-sdk:x.y.z'
     
 # Usage
+
+## API version
+
+The SDK requests the dated API version `2026-10` by default, which returns the same responses as `v1`. To pin a version, call `setApiVersion`:
+
+```java
+import com.mailersend.sdk.MailerSend;
+
+MailerSend ms = new MailerSend();
+ms.setToken("Your API token");
+ms.setApiVersion("2026-10");
+```
+
+To stay on `v1`, call `ms.setApiVersion("v1")`. See the [API changelog](https://developers.mailersend.com/api/changelog) for the changes in each version.
+
+Later releases of the SDK only change this default in a major version. Call `setApiVersion` to choose when you move.
 
 ## Email 
 

@@ -90,6 +90,7 @@ public class BlocklistMonitorCreateBuilder {
 
         MailerSendApi api = new MailerSendApi();
         api.setToken(apiObjectReference.getToken());
+        api.setApiVersion(apiObjectReference.getApiVersion());
 
         createBody.address = address;
 

@@ -178,6 +178,6 @@ public class BlocklistMonitoringTest {
             .order("desc")
             .getMonitors();
 
-        assertEquals("https://api.mailersend.com/v1/blocklist-monitoring?page=1&limit=25&query=a%26b+c&sort_by=name&order=desc", client.lastUrl());
+        assertEquals("https://api.mailersend.com/2026-10/blocklist-monitoring?page=1&limit=25&query=a%26b+c&sort_by=name&order=desc", client.lastUrl());
     }
 }

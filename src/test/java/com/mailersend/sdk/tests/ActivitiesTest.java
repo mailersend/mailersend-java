@@ -334,7 +334,7 @@ public class ActivitiesTest {
         Map<String, String> query = queryParams(uri);
 
         assertEquals("GET", client.lastRequest().method());
-        assertEquals("/v1/activity/" + TestHelper.domainId, uri.getPath());
+        assertEquals("/2026-10/activity/" + TestHelper.domainId, uri.getPath());
         assertEquals("1", query.get("page"));
         assertEquals("25", query.get("limit"));
 
