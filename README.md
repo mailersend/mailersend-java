@@ -2,6 +2,7 @@
 
 MailerSend Java SDK
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.mailersend/java-sdk)](https://central.sonatype.com/artifact/com.mailersend/java-sdk)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 # Table of Contents
@@ -163,6 +164,8 @@ MailerSend Java SDK
         - [Create a blocklist monitor](#create-a-blocklist-monitor)
         - [Update a blocklist monitor](#update-a-blocklist-monitor)
         - [Delete a blocklist monitor](#delete-a-blocklist-monitor)
+    - [Account](#account)
+        - [Get account](#get-account)
 
 - [WhatsApp](#whatsapp)
     - [Send a WhatsApp message](#send-a-whatsapp-message)
@@ -193,17 +196,19 @@ MailerSend Java SDK
 
 # Installation
 
+Replace `x.y.z` with the latest version on [Maven Central](https://central.sonatype.com/artifact/com.mailersend/java-sdk).
+
 Using Maven:
 
     <dependency>
       <groupId>com.mailersend</groupId>
       <artifactId>java-sdk</artifactId>
-      <version>2.6.0</version>
+      <version>x.y.z</version>
     </dependency>
 
 Using Gradle:
 
-    implementation 'com.mailersend:java-sdk:2.6.0'
+    implementation 'com.mailersend:java-sdk:x.y.z'
     
 # Usage
 
@@ -4804,6 +4809,42 @@ public void deleteInvite() {
         boolean deleted = ms.users().deleteInvite("invite-id");
 
         System.out.println("Invite deleted: " + deleted);
+
+    } catch (MailerSendException e) {
+
+        e.printStackTrace();
+    }
+}
+```
+
+## Account
+
+### Get account
+
+Returns the plan, usage, API rate limits and resource limits of the account the API token belongs to. A `limit` of `-1` means unlimited. `addons.whatsapp` is `null` when the account has no WhatsApp add-on, and `resources.webhooks.limit` can be `null`.
+
+```java
+import com.mailersend.sdk.MailerSend;
+import com.mailersend.sdk.account.AccountDetails;
+import com.mailersend.sdk.exceptions.MailerSendException;
+
+public void getAccount() {
+
+    MailerSend ms = new MailerSend();
+    ms.setToken("Your API token");
+
+    try {
+
+        AccountDetails account = ms.account().getAccount();
+
+        System.out.println(account.name);
+        System.out.println(account.status);
+        System.out.println(account.planType);
+        System.out.println(account.emails.sent);
+        System.out.println(account.emails.limit);
+        System.out.println(account.rateLimits.general);
+        System.out.println(account.resources.domains.used);
+        System.out.println(account.resources.domains.limit);
 
     } catch (MailerSendException e) {
 
