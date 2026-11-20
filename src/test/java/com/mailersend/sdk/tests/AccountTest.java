@@ -70,6 +70,24 @@ public class AccountTest {
 
 
     /**
+     * Test that the account is requested with the version set by setApiVersion()
+     */
+    @Test
+    public void testGetAccountUsesTheConfiguredApiVersion() throws MailerSendException {
+
+        MailerSend ms = new MailerSend();
+        ms.setToken(TestHelper.validToken);
+        ms.setApiVersion("v1");
+
+        CapturingHttpClient client = CapturingHttpClient.install(200, ACCOUNT_RESPONSE);
+
+        ms.account().getAccount();
+
+        assertEquals("https://api.mailersend.com/v1/account", client.lastUrl());
+    }
+
+
+    /**
      * Test that the whole account response is read
      */
     @Test
