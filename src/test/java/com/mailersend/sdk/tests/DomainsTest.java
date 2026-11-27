@@ -2,6 +2,7 @@ package com.mailersend.sdk.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
@@ -180,6 +181,9 @@ public class DomainsTest {
            printDomainDnsAttribute(records.customTracking);
            printDomainDnsAttribute(records.returnPath);
            printDomainDnsAttribute(records.inboundRouting);
+           printDomainDnsAttribute(records.ownership);
+           
+           assertEquals("_mailersend.test-sdk.com", records.ownership.hostname);
             
         } catch (MailerSendException e) {
             
@@ -203,6 +207,8 @@ public class DomainsTest {
            DomainVerificationStatus status = ms.domains().verifyDomain(TestHelper.domainId);
            
            System.out.println(status.message);
+           
+           assertTrue(status.status.ownership);
             
         } catch (MailerSendException e) {
             

@@ -34,4 +34,7 @@ public class DomainVerificationAttributes {
     
     @SerializedName("rp_cname")
     public boolean rpCname;
+    
+    @SerializedName("ownership")
+    public boolean ownership;
 }

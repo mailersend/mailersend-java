@@ -1779,6 +1779,7 @@ public void DomainDnsRecords() {
         printDomainDnsAttribute(records.customTracking);
         printDomainDnsAttribute(records.returnPath);
         printDomainDnsAttribute(records.inboundRouting);
+        printDomainDnsAttribute(records.ownership);
         
     } catch (MailerSendException e) {
         
