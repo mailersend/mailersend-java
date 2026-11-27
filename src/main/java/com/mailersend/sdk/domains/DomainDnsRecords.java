@@ -44,4 +44,7 @@ public class DomainDnsRecords {
     
     @SerializedName("inbound_routing")
     public DomainDnsPriorityAttribute inboundRouting;
+    
+    @SerializedName("ownership")
+    public DomainDnsAttribute ownership;
 }
